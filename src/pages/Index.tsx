@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import heroVideo from "@/assets/hero-tuscany-video.mp4";
+import heroVideo from "@/assets/hero-tuscany-video.mov";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 
