@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import heroVideo from "@/assets/hero-tuscany-video.mov";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 
@@ -29,7 +28,7 @@ const Index = () => {
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
           style={{ WebkitAppearance: "none" } as React.CSSProperties}
         >
-          <source src={heroVideo.url} type="video/mp4" />
+          <source src="https://res.cloudinary.com/dx9jqeqxj/video/upload/v1774652318/hero-tuscany-video_vkp2gn.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a2e1a]/90 via-[#1a2e1a]/20 to-transparent" />
         <FadeIn className="relative z-10 px-6 md:px-12 lg:px-24 pb-16 md:pb-24">
