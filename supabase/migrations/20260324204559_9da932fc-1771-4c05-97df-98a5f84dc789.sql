@@ -1,0 +1,1 @@
+UPDATE room_categories SET price = 1200 WHERE name = 'Luxury Suite';

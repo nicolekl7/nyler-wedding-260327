@@ -1,0 +1,1 @@
+UPDATE room_categories SET inventory_count = 12 WHERE id = '3a45fe12-13e5-47c9-b0c8-7797adee8602';

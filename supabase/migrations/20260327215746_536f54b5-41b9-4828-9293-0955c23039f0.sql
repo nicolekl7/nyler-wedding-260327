@@ -1,0 +1,1 @@
+UPDATE public.room_categories SET price = 950 WHERE name = 'Classic Estate Room';
