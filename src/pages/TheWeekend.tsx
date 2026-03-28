@@ -91,7 +91,16 @@ const TheWeekend = () => (
                   <div className="w-2 h-2 rounded-full bg-primary" />
                 </div>
 
-                <p className={`heading-sub text-foreground mb-2 ${i === 2 ? "pt-1" : ""}`}>{event.day}</p>
+                <p className={`heading-sub text-foreground mb-2 ${i === 2 ? "pt-1" : ""}`}>
+                  {i === 2 ? (
+                    <>
+                      <span className="block sm:inline">Friday,</span>{" "}
+                      <span className="block sm:inline">September 18</span>
+                    </>
+                  ) : (
+                    event.day
+                  )}
+                </p>
 
                 {/* Icon */}
                 {i === 0 ? (
@@ -108,7 +117,7 @@ const TheWeekend = () => (
                     />
                   </div>
                 ) : i === 2 ? (
-                  <div className="relative w-32 h-28 -mb-0.5 -mt-1">
+                  <div className="relative w-32 h-24 -mb-2 -mt-1">
                     {/* Sun — twirling rise */}
                     <motion.img
                       src={poolSun}
