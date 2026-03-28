@@ -2,15 +2,10 @@ import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { motion } from "framer-motion";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import welcomeBottle from "@/assets/Welcome-Party-Bottle.png";
 import welcomeCup from "@/assets/Welcome-Party-Cup.png";
-import weddingIcon from "@/assets/Wedding-1.png";
+import weddingIcon from "@/assets/Wedding_1.png";
 import poolUmbrella from "@/assets/Pool-Party-Umbrella.png";
 import poolChairs from "@/assets/Pool-Party-Chairs.png";
 import poolSun from "@/assets/Pool-Party-Sun.png";
@@ -37,8 +32,7 @@ const itinerary = [
   {
     day: "Friday, September 18",
     title: "La Dolce Far Niente Pool Party",
-    description:
-      "The art of doing nothing. Recover by the pool with lunch, drinks, and sunshine.",
+    description: "The art of doing nothing. Recover by the pool with lunch, drinks, and sunshine.",
     attire: "Vintage Resort Wear",
     icon: null,
   },
@@ -89,23 +83,21 @@ const TheWeekend = () => (
         <div className="space-y-20">
           {itinerary.map((event, i) => (
             <FadeIn key={event.title} delay={i * 150}>
-              <div className={`relative pl-16 ${i === 2 ? 'mt-1' : ''}`}>
+              <div className={`relative pl-16 ${i === 2 ? "mt-1" : ""}`}>
                 {/* Timeline marker — aligned with the date */}
-                <div className={`absolute left-3.5 w-5 h-5 rounded-full border-2 border-primary/40 bg-background flex items-center justify-center ${i === 2 ? 'top-2' : 'top-1'}`}>
+                <div
+                  className={`absolute left-3.5 w-5 h-5 rounded-full border-2 border-primary/40 bg-background flex items-center justify-center ${i === 2 ? "top-2" : "top-1"}`}
+                >
                   <div className="w-2 h-2 rounded-full bg-primary" />
                 </div>
 
-                <p className={`heading-sub text-foreground mb-2 ${i === 2 ? 'pt-1' : ''}`}>{event.day}</p>
+                <p className={`heading-sub text-foreground mb-2 ${i === 2 ? "pt-1" : ""}`}>{event.day}</p>
 
                 {/* Icon */}
                 {i === 0 ? (
                   <div className="relative w-28 h-20 mb-1 mt-0.5">
                     {/* Glass — stays still */}
-                    <img
-                      src={welcomeCup}
-                      alt="Glass"
-                      className="absolute bottom-0 left-0 w-12 h-12 object-contain"
-                    />
+                    <img src={welcomeCup} alt="Glass" className="absolute bottom-0 left-0 w-12 h-12 object-contain" />
                     {/* Bottle — pours */}
                     <motion.img
                       src={welcomeBottle}
@@ -152,13 +144,13 @@ const TheWeekend = () => (
                   />
                 )}
 
-                <h2 className={`font-serif text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-4 ${i === 1 ? '-mt-3.5' : i === 2 ? '-mt-1' : ''}`}>
+                <h2
+                  className={`font-serif text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-4 ${i === 1 ? "-mt-3.5" : i === 2 ? "-mt-1" : ""}`}
+                >
                   {event.title}
                 </h2>
                 <p className="body-editorial mb-4">{event.description}</p>
-                <p className="font-body text-sm text-muted-foreground italic">
-                  Attire: {event.attire}
-                </p>
+                <p className="font-body text-sm text-muted-foreground italic">Attire: {event.attire}</p>
               </div>
             </FadeIn>
           ))}
@@ -175,11 +167,7 @@ const TheWeekend = () => (
       <FadeIn delay={150}>
         <Accordion type="single" collapsible className="space-y-2">
           {faqs.map((faq, i) => (
-            <AccordionItem
-              key={i}
-              value={`faq-${i}`}
-              className="border-b border-border/50 px-0"
-            >
+            <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 px-0">
               <AccordionTrigger className="font-serif text-xl md:text-2xl text-foreground font-light py-6 hover:no-underline text-left">
                 {faq.q}
               </AccordionTrigger>
