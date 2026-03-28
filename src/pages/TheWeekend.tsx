@@ -45,11 +45,11 @@ const faqs = [
   },
   {
     q: "What shoes should I wear?",
-    a: "The estate features cobblestone paths and grass so please keep this in mind when selecting your shoes. Block heels or wedges are strongly recommended across all three days, and especially for the ceremony on Thursday. Refer to each day's attire description for full guidance.",
+    a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
   },
   {
     q: "Are kids welcome?",
-    a: "This celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
+    a: "We love your kids, we really do. However, this celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
   },
   {
     q: "Can I bring a date?",
@@ -57,7 +57,7 @@ const faqs = [
   },
   {
     q: "Are gifts expected?",
-    a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we will put together a registry.",
+    a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we will have a registry linked soon.",
   },
 ];
 
@@ -117,7 +117,7 @@ const TheWeekend = () => (
                     />
                   </div>
                 ) : i === 2 ? (
-                  <div className="relative w-32 h-24 -mb-2 -mt-1">
+                  <div className="relative w-32 h-24 -mb-2 -mt-2.5">
                     {/* Sun — twirling rise */}
                     <motion.img
                       src={poolSun}
@@ -140,7 +140,7 @@ const TheWeekend = () => (
                     <img
                       src={poolChairs}
                       alt="Chairs"
-                      className="absolute bottom-0 left-0 w-28 h-12 object-contain z-[5]"
+                      className="absolute bottom-[-14px] left-0 w-28 h-12 object-contain z-[5]"
                     />
                   </div>
                 ) : (
@@ -154,7 +154,7 @@ const TheWeekend = () => (
                 )}
 
                 <h2
-                  className={`font-serif text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-4 ${i === 1 ? "-mt-3.5" : i === 2 ? "-mt-1" : ""}`}
+                  className={`font-serif text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-4 ${i === 1 ? "-mt-3.5" : i === 2 ? "mt-2.5" : ""}`}
                 >
                   {event.title}
                 </h2>
