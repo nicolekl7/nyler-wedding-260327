@@ -65,13 +65,11 @@ const Travel = () => (
             <strong className="text-foreground font-medium">Important:</strong> Italy requires your passport to be valid for at least six months beyond your planned date of departure. Please check your passport expiration date today! If it expires before March 2027, you will need to renew it before booking your flights.
           </p>
           <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light mt-4">
-            Also, don't forget to pack Type C or Type L travel adapters.
-            <br />
-            <br />
-            If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip.
-            <br />
-            <br />
-            Also worth knowing: Italy has ZTL zones (Zona Traffico Limitato) in most historic city centers which are restricted areas cameras enforce automatically with steep fines. Navigation apps like Waze will help you avoid them. When in doubt, park outside the city walls and walk in.
+              If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip. Note that Italy has ZTL zones (Zona Traffico Limitato) in most historic city centers which are restricted areas cameras enforce automatically with steep fines. Navigation apps like Waze will help you avoid them. When in doubt, park outside the city walls and walk in.
+              <br />
+              <br />
+              <br />
+              Also, don't forget to pack Type C or Type L travel adapters.
           </p>
         </div>
       </FadeIn>
