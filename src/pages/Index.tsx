@@ -42,19 +42,21 @@ const Index = () => {
       </section>
 
       {/* Welcome */}
-      <section className="page-section pt-6 sm:pt-8 md:pt-12 w-[80%] max-w-[950px] mx-auto text-center">
+      <section className="page-section pt-6 sm:pt-8 md:pt-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
           
           <p className="body-editorial mx-auto text-balance">
             We're getting married in Tuscany on September 17, 2026, and we would absolutely love for
-            you to be there. We've planned a long weekend at Borgo Laticastelli—a private estate in
-            Rapolano Terme—with a welcome party on Wednesday evening, the ceremony and reception on
-            Thursday, and a pool day on Friday to help us recover (physically and emotionally).
-          </p>
-          <p className="body-editorial mx-auto mt-6">
-            We know Italy is a long way to travel, and we mean it when we say there is no pressure.
-            Please let us know if you are able to join us by submitting your official RSVP below.
-            For those who can make it, we promise a weekend that is worth every mile.
+            you to be there. There will be three days of festivities at Borgo Laticastelli—a private
+            estate in the hills of Rapolano Terme—with a welcome party on Wednesday evening, the
+            wedding ceremony and reception on Thursday, and a relaxed <em>la dolce far niente</em> day by the
+            pool on Friday.
+            <br />
+            <br />
+            We know Italy is a long way to travel, so we mean it: no pressure. But for those who make
+            the trip, we promise every day will be worth it. Our guest list is small and the estate is
+            intimate—please <strong>RSVP by June 16th</strong> so we can plan accordingly and ensure your spot is
+            reserved.
           </p>
           <Link
             to="/rsvp-v2"
@@ -67,7 +69,7 @@ const Index = () => {
 
 
       {/* Countdown — days only */}
-      <section className="page-section pt-0 pb-0 mt-0 sm:-mt-16 w-[90%] max-w-[1000px] mx-auto text-center">
+      <section className="page-section pt-0 pb-0 mt-0 sm:-mt-16 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
           <p className="heading-sub mb-10">Countdown to Tuscany</p>
           <span className="font-serif text-5xl sm:text-6xl md:text-8xl font-light text-foreground">
