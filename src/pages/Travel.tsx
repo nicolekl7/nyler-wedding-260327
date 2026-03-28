@@ -11,7 +11,8 @@ const sections = [
     subtitle: "INTERNATIONAL & DOMESTIC FLIGHTS",
     image: airImg,
     alt: "Aerial view of Florence at golden hour",
-    body: "For the most direct route, we recommend flying into Florence Airport (FLR), which is a 1 hour and 15 minute drive to the estate. Pisa Airport (PSA) is another excellent Tuscan option, located about 1 hour and 50 minutes away. If you are flying internationally, Rome Fiumicino (FCO) is a fantastic choice. While slightly further at a 2.5 hour drive, it offers direct flights and a beautiful journey through the Italian countryside.",
+    body: "Borgo Laticastelli is reachable from several airports:\n\n• Florence (FLR) — 1 hour\n• Perugia (PEG) — 1 hour\n• Pisa (PSA) — 2 hours\n• Rome (FCO) — 2.5 hours\n\nFor international flights, Rome offers the most direct options. For the easiest overall journey, Florence is your best bet.",
+    extra: "If you're traveling solo and would like to coordinate a shared drive or train with other guests, just let us know and we'll connect you!",
   },
   {
     title: "By Train & Transfers",
@@ -20,7 +21,7 @@ const sections = [
     alt: "Italian train winding through Tuscan countryside",
     body: "Italy's train system is an experience in itself. If you fly into Rome or Milan, you can take a high-speed train directly to Florence Santa Maria Novella, Siena, or Rapolano Terme.",
     extra:
-      "If you choose to take the train into Siena or Rapolano Terme, please let us know your arrival time! We will happily coordinate and cover the cost of your private transfer or shuttle from those stations directly to the castle gates. (Please note: Transfers from airports or other cities will need to be arranged independently).",
+      "If you plan to train into Siena, we will be offering a group transfer from Siena to the estate at 2:00 PM on Wednesday, September 16th. To reserve your spot, please let Nicole or Tyler know by August 1st — after that, transfers will need to be arranged independently.",
   },
   {
     title: "By Car",
@@ -60,11 +61,17 @@ const Travel = () => (
       <FadeIn>
         <div className="border border-border bg-stone-light/40 px-8 py-8 md:px-12 md:py-10">
           <p className="heading-sub text-primary mb-4">Things to Know</p>
-          <p className="font-body text-base leading-[1.9] text-muted-foreground font-light">
+          <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light">
             <strong className="text-foreground font-medium">Important:</strong> Italy requires your passport to be valid for at least six months beyond your planned date of departure. Please check your passport expiration date today! If it expires before March 2027, you will need to renew it before booking your flights.
           </p>
-          <p className="font-body text-base leading-[1.9] text-muted-foreground font-light mt-4">
-            Also, don't forget to pack Type C or Type L travel adapters, and we recommend carrying a little bit of Euro for small cafes or taxis.
+          <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light mt-4">
+            Also, don't forget to pack Type C or Type L travel adapters.
+            <br />
+            <br />
+            If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip.
+            <br />
+            <br />
+            Also worth knowing: Italy has ZTL zones (Zona Traffico Limitato) in most historic city centers which are restricted areas cameras enforce automatically with steep fines. Navigation apps like Waze will help you avoid them. When in doubt, park outside the city walls and walk in.
           </p>
         </div>
       </FadeIn>
@@ -98,11 +105,11 @@ const Travel = () => (
                   {s.title}
                 </h2>
                 <div className="w-10 h-px bg-primary" />
-                <p className="font-body text-base md:text-lg leading-[1.9] text-muted-foreground font-light">
+                <p className="font-body text-sm md:text-base leading-[1.9] text-muted-foreground font-light whitespace-pre-line">
                   {s.body}
                 </p>
                 {s.extra && (
-                  <p className="font-body text-base md:text-lg leading-[1.9] text-muted-foreground font-light">
+                  <p className="font-body text-sm md:text-base leading-[1.9] text-muted-foreground font-light">
                     {s.extra}
                   </p>
                 )}
