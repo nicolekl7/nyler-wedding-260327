@@ -8,12 +8,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import welcomeBottle from "@/assets/Welcome_Party-Bottle.png";
-import welcomeCup from "@/assets/Welcome_Party-Cup.png";
-import weddingIcon from "@/assets/Wedding_1.png";
-import poolUmbrella from "@/assets/Pool_Party-Umbrella.png";
-import poolChairs from "@/assets/Pool_Party-Chairs.png";
-import poolSun from "@/assets/Pool_Party-Sun.png";
+import welcomeBottle from "@/assets/Welcome-Party-Bottle.png";
+import welcomeCup from "@/assets/Welcome-Party-Cup.png";
+import weddingIcon from "@/assets/Wedding-1.png";
+import poolUmbrella from "@/assets/Pool-Party-Umbrella.png";
+import poolChairs from "@/assets/Pool-Party-Chairs.png";
+import poolSun from "@/assets/Pool-Party-Sun.png";
 
 const itinerary = [
   {
