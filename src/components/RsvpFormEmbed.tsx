@@ -91,7 +91,12 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setEventRsvps(loadedState.eventRsvps);
     setDietary(loadedState.dietary);
     setNotes(loadedState.notes);
-    setAccommodation(loadedState.accommodation);
+    // Only overwrite accommodation if the user hasn't already selected one via room cards
+    if (!externalAccommodation && loadedState.accommodation) {
+      setAccommodation(loadedState.accommodation);
+    } else if (!externalAccommodation && !loadedState.accommodation) {
+      // no prior selection, leave empty
+    }
     setGuestNames(loadedState.guestNames);
     setAttendingCount(Math.min(found.max_guests, loadedState.attendingCount));
 
@@ -218,7 +223,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setEventRsvps(loadedState.eventRsvps);
     setDietary(loadedState.dietary);
     setNotes(loadedState.notes);
-    setAccommodation(loadedState.accommodation);
+    if (!externalAccommodation && loadedState.accommodation) {
+      setAccommodation(loadedState.accommodation);
+    }
     setGuestNames(loadedState.guestNames);
     setAttendingCount(Math.min(found.max_guests, loadedState.attendingCount));
 
