@@ -11,7 +11,7 @@ const sections = [
     subtitle: "INTERNATIONAL & DOMESTIC FLIGHTS",
     image: airImg,
     alt: "Aerial view of Florence at golden hour",
-    body: "Borgo Laticastelli is reachable from several airports:\n\n• Florence (FLR) — 1 hour\n• Perugia (PEG) — 1 hour\n• Pisa (PSA) — 2 hours\n• Rome (FCO) — 2.5 hours\n\nFor international flights, Rome offers the most direct options. For the easiest overall journey, Florence is your best bet.",
+    body: "Borgo Laticastelli is reachable from several airports:\n\n• Florence (FLR) — 1 hour\n• Pisa (PSA) — 2 hours\n• Rome (FCO) — 2.5 hours\n\nFor international flights, Rome offers the most direct options. For the easiest overall journey, Florence is your best bet.",
     extra: "If you're traveling solo and would like to coordinate a shared drive or train with other guests, just let us know and we'll connect you!",
   },
   {
@@ -19,16 +19,15 @@ const sections = [
     subtitle: "HIGH-SPEED ITALIAN RAIL",
     image: trainImg,
     alt: "Italian train winding through Tuscan countryside",
-    body: "Italy's train system is an experience in itself. If you fly into Rome or Milan, you can take a high-speed train directly to Florence Santa Maria Novella, Siena, or Rapolano Terme.",
-    extra:
-      "If you plan to train into Siena, we will be offering a group transfer from Siena to the estate at 2:00 PM on Wednesday, September 16th. To reserve your spot, please let Nicole or Tyler know by August 1st — after that, transfers will need to be arranged independently.",
+    body: "Italy has a fantastic high-speed train system across the country. You can use Google Maps to plan out your route based on where you fly in.",
+    extra: (<>If you plan to train into Siena, we will be offering a group transfer from Siena to the estate at 2 PM on Wednesday, September 16th. To reserve your spot, please let Nicole or Tyler know by <strong className="text-foreground font-medium">August 1st</strong>—after that, transfers will need to be arranged independently.</>),
   },
   {
     title: "By Car",
     subtitle: "DRIVERS & CAR RENTALS",
     image: carImg,
     alt: "Winding cypress-lined road through Tuscan hills",
-    body: "While you will not need a car for the 3 days of wedding events on the estate, renting a car is highly recommended if you plan to extend your trip and explore the Chianti region.",
+    body: "While you will not need a car for the 3 days of wedding events on the estate, renting a car is highly recommended if you plan to extend your trip or be able to explore freely. \n\nNote that Italy has ZTL zones in most historic city centers which are restricted areas cameras enforce automatically with steep fines. Navigation apps like Waze will help you avoid them. When in doubt, park outside the city walls and walk in.",
     address: true,
   },
 ];
@@ -65,12 +64,10 @@ const Travel = () => (
             <strong className="text-foreground font-medium">Important:</strong> Italy requires your passport to be valid for at least six months beyond your planned date of departure. Please check your passport expiration date today! If it expires before March 2027, you will need to renew it before booking your flights.
           </p>
           <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light mt-4">
-              If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip. Note that Italy has ZTL zones (Zona Traffico Limitato) in most historic city centers which are restricted areas cameras enforce automatically with steep fines. Navigation apps like Waze will help you avoid them. When in doubt, park outside the city walls and walk in.
+              If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip.
               <br />
-              <br />
-              <br />
-              Also, don't forget to pack Type C or Type L travel adapters.
-          </p>
+              <strong className="text-foreground font-medium">Also, don't forget to pack Type C or Type L travel adapters.</strong>
+            </p>
         </div>
       </FadeIn>
     </section>
@@ -109,13 +106,6 @@ const Travel = () => (
                 {s.extra && (
                   <p className="font-body text-sm md:text-base leading-[1.9] text-muted-foreground font-light">
                     {s.extra}
-                  </p>
-                )}
-                {s.address && (
-                  <p className="font-serif text-lg text-foreground mt-6 italic leading-relaxed">
-                    Laticastelli Country Relais, Via Laticastelli,
-                    <br />
-                    Rapolano Terme, Province of Siena, Italy
                   </p>
                 )}
               </div>
