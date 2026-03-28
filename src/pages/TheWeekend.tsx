@@ -45,11 +45,11 @@ const faqs = [
   },
   {
     q: "What shoes should I wear?",
-    a: "Check the attire descriptions for each day for guidance. The estate features cobblestone paths and grass—stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
+    a: "The estate features cobblestone paths and grass so please keep this in mind when selecting your shoes. Block heels or wedges are strongly recommended across all three days, and especially for the ceremony on Thursday. Refer to each day's attire description for full guidance.",
   },
   {
     q: "Are kids welcome?",
-    a: "We love your kids, we really do. However, this celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
+    a: "This celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
   },
   {
     q: "Can I bring a date?",
@@ -57,7 +57,7 @@ const faqs = [
   },
   {
     q: "Are gifts expected?",
-    a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we've put together a registry.",
+    a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we will put together a registry.",
   },
 ];
 
