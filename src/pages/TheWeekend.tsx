@@ -12,9 +12,9 @@ const itinerary = [
     day: "Wednesday, September 16",
     title: "Welcome Party",
     description:
-      "Join us under the stars for wood-fired pizza, Aperol Spritzes, and a warm welcome to Tuscany.",
+      "Join us under the stars for wood-fired pizza and the best wine in the world to welcome you to Tuscany.",
     attire:
-      "La Dolce Vita Casual (Linens, summer dresses, effortless Italian style)",
+      "La Notte Bianca — All white everything: linens, summer dresses, effortless Italian style. You've spent years avoiding white at weddings. This is your night. Head to toe, linens to silk.. whatever you'd like but all white, no exceptions.",
   },
   {
     day: "Thursday, September 17",
@@ -22,7 +22,7 @@ const itinerary = [
     description:
       "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, dinner, and dancing the night away.",
     attire:
-      "Tuscan Formal (Please note the grounds feature cobblestone and grass— block heels are recommended!)",
+      "Tuscan Formal — Floor-length dresses. Suits. Rich colors and textures are encouraged. Dress up and have fun with it!\n\n\n(Please note the grounds feature cobblestone and grass—block heels are recommended)",
   },
   {
     day: "Friday, September 18",
@@ -36,11 +36,23 @@ const itinerary = [
 const faqs = [
   {
     q: "What is the weather like in September?",
-    a: "Late September in Tuscany is typically beautiful, with warm, sunny days (around 75°F / 24°C) and crisp, cool evenings (around 55°F / 13°C). We recommend bringing a light jacket, wrap, or shawl for the evening events. Don't forget a bathing suit for the pool!",
+    a: "Late September in Tuscany is typically beautiful, with warm, sunny days (around 75°F / 24°C) and crisp evenings (around 55°F / 13°C). We recommend bringing a light jacket or wrap for the evening events. Don't forget a bathing suit!",
+  },
+  {
+    q: "What shoes should I wear?",
+    a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
+  },
+  {
+    q: "Are kids welcome?",
+    a: "We love your kids, we really do. However, this celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
+  },
+  {
+    q: "Can I bring a date?",
+    a: "While we'd love to celebrate with everyone, our venue has limited capacity. We are only able to accommodate the guests specifically listed on your invitation.",
   },
   {
     q: "Are gifts expected?",
-    a: "Absolutely not. You traveling across the world to celebrate with us is the greatest gift we could ever ask for! Please, no formal gifts.",
+    a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we've put together a registry.",
   },
 ];
 
