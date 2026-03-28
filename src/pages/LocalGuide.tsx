@@ -5,36 +5,91 @@ import sienaImg from "@/assets/guide-siena.jpg";
 import valdorciaImg from "@/assets/guide-valdorcia.jpg";
 import chiantiImg from "@/assets/guide-chianti.jpg";
 
+import montalcinoImg from "@/assets/guide-montalcino.jpg";
+
 const guides = [
   {
-    tag: "Relax",
-    title: "The Thermal Baths of Rapolano",
+    title: "Rapolano Thermal Baths",
+    subtitle: "5 Minutes Away",
     image: thermalImg,
     alt: "Natural thermal baths with turquoise pools in Rapolano Terme, Tuscany",
-    body: "Rapolano Terme is famous for its natural hot springs. Terme San Giovanni and Antica Querciolaia are just minutes from the venue. They feature gorgeous travertine pools filled with naturally warm thermal water—the ultimate cure for jet lag.",
+    body: null,
+    richBody: (
+      <p className="body-editorial">
+        Rapolano Terme is famous for its natural hot springs.{" "}
+        <a href="https://share.google/hLQJwjNWHOtfJSOrm" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Terme San Giovanni</a>{" "}
+        and <a href="https://www.google.com/maps/place/antica+Querciolaia/data=!4m2!3m1!1s0x132bdbf2f9ea5175:0xdcd4979ed8ff98eb?sa=X&ved=1t:242&ictx=111" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Antica Querciolaia</a> are just minutes from the venue, featuring travertine pools filled with naturally warm thermal water. Go in the evening to see the pools when they are illuminated under the Tuscan sky.
+      </p>
+    ),
   },
   {
-    tag: "Explore",
     title: "Siena",
-    subtitle: "25 Minutes Away",
+    subtitle: "20 Minutes Away",
     image: sienaImg,
     alt: "The medieval Piazza del Campo in Siena, Italy",
-    body: "Siena is a stunning medieval city. Wander through the Piazza del Campo (one of Europe's greatest medieval squares), grab a gelato, and visit the breathtaking Duomo di Siena.",
+    body: null,
+    richBody: (
+      <>
+        <p className="body-editorial">
+          One of Italy's best-preserved medieval cities. Wander the Piazza del Campo, climb Torre del Mangia if you're up for it, and visit the Duomo before grabbing a gelato on the way out. Park outside the city walls as the historic center is car-free. We've always gotten lucky with free parking{" "}
+          <a href="https://maps.app.goo.gl/JGiDDnaTtjUMnSdy9" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">here</a>.
+        </p>
+        <p className="body-editorial mt-3 italic text-muted-foreground">
+          Fun fact: Siena is divided into 17 medieval neighborhoods called contrade, each with its own animal symbol and fierce rivalry during the Palio horse race, held in Piazza del Campo since 1482.
+        </p>
+      </>
+    ),
   },
   {
-    tag: "Wander",
     title: "Val d'Orcia & Pienza",
     subtitle: "45 Minutes Away",
     image: valdorciaImg,
     alt: "Rolling green hills with cypress trees in Val d'Orcia, Tuscany",
-    body: "Drive down to Pienza, a beautiful Renaissance town famous for its pecorino cheese and unbelievable panoramic views of classic Tuscan rolling hills and cypress trees.",
+    body: null,
+    richBody: (
+      <>
+        <p className="body-editorial">
+          A Renaissance town perched above some of the most photographed landscape in Tuscany. Famous for its pecorino cheese—stop at La Taverna del Pecorino for a tasting and stay for the views.
+        </p>
+        <p className="body-editorial mt-3 italic text-muted-foreground">
+          Fun fact: a scene from Gladiator was filmed just outside Pienza. Search "Gladiator scene" on Google Maps to find the exact spot.
+        </p>
+      </>
+    ),
   },
   {
-    tag: "Sip",
     title: "Chianti & Montepulciano",
+    subtitle: "45 Minutes Away",
     image: chiantiImg,
     alt: "Vineyards in Chianti with a rustic stone winery, Tuscany",
-    body: "Head north into the Chianti Classico region, or south to Montepulciano to taste their famous Vino Nobile. We highly recommend booking tastings in advance!",
+    body: null,
+    richBody: (
+      <>
+        <p className="body-editorial">
+          Head north into the Chianti Classico region for world-class wine tastings among the vines, or south to Montepulciano to taste their famous Vino Nobile.
+        </p>
+        <p className="body-editorial mt-3 italic">
+          Winery recommendations: Avignonesi, Contucci, Argiano, Castiglion del Bosco
+        </p>
+      </>
+    ),
+  },
+  {
+    title: "Montalcino",
+    subtitle: "1 Hour Away",
+    image: montalcinoImg,
+    alt: "Hilltop town of Montalcino with vineyards, Tuscany",
+    body: null,
+    richBody: (
+      <>
+        <p className="body-editorial">
+          Home to Brunello di Montalcino, one of Italy's most celebrated wines. Walk the fortress walls, go wine tasting, and be sure to pick up some local chestnut honey before you leave.
+        </p>
+        <p className="body-editorial mt-3 italic">
+          Winery recommendations: Corte Pavone, Podere Le Ripi, Castello Banfi
+        </p>
+      </>
+    ),
   },
 ];
 
@@ -66,14 +121,14 @@ const LocalGuide = () => (
                 />
               </div>
               <div className="md:w-1/2 space-y-3">
-                <p className="heading-sub text-primary">{g.tag}</p>
+                
                 <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-light">
                   {g.title}
                 </h2>
                 {g.subtitle && (
                   <p className="font-body text-sm text-muted-foreground">{g.subtitle}</p>
                 )}
-                <p className="body-editorial">{g.body}</p>
+                {g.body ? <p className="body-editorial">{g.body}</p> : g.richBody}
               </div>
             </div>
           </FadeIn>
