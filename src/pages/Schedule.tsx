@@ -49,7 +49,7 @@ const Schedule = () => (
               </h2>
             </FadeIn>
             {day.events.map((event, ei) => {
-              const delay = (eventIndex++) * 80 + 150;
+              const delay = eventIndex++ * 80 + 150;
               return (
                 <FadeIn key={ei} delay={delay}>
                   <div className="relative pl-12 md:pl-0 mb-8 last:mb-0 md:flex md:items-center">
@@ -59,9 +59,7 @@ const Schedule = () => (
                     </div>
 
                     <div className="md:w-1/2 md:text-right md:pr-10">
-                      <span className="font-body text-sm text-muted-foreground font-light">
-                        {event.time}
-                      </span>
+                      <span className="font-body text-sm text-muted-foreground font-light">{event.time}</span>
                     </div>
                     <div className="md:w-1/2 md:pl-10">
                       <span className="font-serif text-xl text-foreground">{event.title}</span>
