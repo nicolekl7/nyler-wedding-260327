@@ -19,6 +19,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Sonner />
+      <CatTapRipple />
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
