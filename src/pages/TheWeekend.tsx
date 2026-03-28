@@ -45,7 +45,7 @@ const faqs = [
   },
   {
     q: "What shoes should I wear?",
-    a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
+    a: "Check the attire descriptions for each day for guidance. The estate features cobblestone paths and grass—stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
   },
   {
     q: "Are kids welcome?",
