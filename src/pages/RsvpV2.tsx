@@ -1,151 +1,214 @@
-import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
-import RoomCardsDisplay from "@/components/RoomCardsDisplay";
-import RsvpFormEmbed from "@/components/RsvpFormEmbed";
-import { supabase } from "@/integrations/supabase/client";
+import { motion } from "framer-motion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import welcomeBottle from "@/assets/Welcome-Party-Bottle.png";
+import welcomeCup from "@/assets/Welcome-Party-Cup.png";
+import weddingIcon from "@/assets/Wedding-4.png";
+import poolUmbrella from "@/assets/Pool-Party-Umbrella.png";
+import poolChairs from "@/assets/Pool-Party-Chairs.png";
+import poolSun from "@/assets/Pool-Party-Sun.png";
 
-const RsvpV2 = () => {
-  const [accommodation, setAccommodation] = useState("");
-  const [submitResult, setSubmitResult] = useState<{ allDeclined: boolean; accommodation: string } | null>(null);
-  const [roomPrices, setRoomPrices] = useState<Record<string, number>>({});
-  const formRef = useRef<HTMLDivElement>(null);
+const itinerary = [
+  {
+    day: "Wednesday, September 16",
+    title: "Welcome Party",
+    description:
+      "Join us under the stars for wood-fired pizza and the best wine in the world to welcome you to Tuscany.",
+    attire:
+      "La Notte Bianca — All white everything: linens, summer dresses, effortless Italian style. You've spent years avoiding white at weddings. This is your night. Head to toe, linens to silk.. whatever you'd like but all white, no exceptions.",
+    icon: null, // handled separately
+  },
+  {
+    day: "Thursday, September 17",
+    title: "The Wedding Day",
+    description:
+      "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, dinner, and dancing the night away.",
+    attire:
+      "Tuscan Formal — Floor-length dresses. Suits. Rich colors and textures are encouraged. Dress up and have fun with it!\n\n\n(Please note the grounds feature cobblestone and grass—block heels are recommended)",
+    icon: weddingIcon,
+  },
+  {
+    day: "Friday, September 18",
+    title: "La Dolce Far Niente Pool Party",
+    description: "The art of doing nothing. Recover by the pool with lunch, drinks, and sunshine.",
+    attire: "Vintage Resort Wear",
+    icon: null,
+  },
+];
 
-  useEffect(() => {
-    const fetchPrices = async () => {
-      const { data } = await supabase.from("room_categories").select("name, price");
-      if (data) {
-        const map: Record<string, number> = {};
-        data.forEach((r) => { map[r.name] = r.price; });
-        setRoomPrices(map);
-      }
-    };
-    fetchPrices();
-  }, []);
+const faqs = [
+  {
+    q: "What is the weather like in September?",
+    a: "Late September in Tuscany is typically beautiful, with warm, sunny days (around 75°F / 24°C) and crisp evenings (around 55°F / 13°C). We recommend bringing a light jacket or wrap for the evening events. Don't forget a bathing suit!",
+  },
+  {
+    q: "What shoes should I wear?",
+    a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
+  },
+  {
+    q: "Are kids welcome?",
+    a: "We love your kids, we really do. However, this celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
+  },
+  {
+    q: "Can I bring a date?",
+    a: "While we'd love to celebrate with everyone, our venue has limited capacity. We are only able to accommodate the guests specifically listed on your invitation.",
+  },
+  {
+    q: "Are gifts expected?",
+    a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we will have a registry linked soon.",
+  },
+];
 
-  if (submitResult) {
-    const price = roomPrices[submitResult.accommodation];
-    const paypalUrl = price
-      ? `https://paypal.me/nylerwedding/${price}`
-      : "https://paypal.me/nylerwedding";
+const TheWeekend = () => (
+  <Layout>
+    {/* Header */}
+    <section className="page-section w-[90%] max-w-[1000px] mx-auto text-center">
+      <FadeIn>
+        <h1 className="heading-section mb-4">The Events</h1>
+        <div className="w-12 h-px bg-primary mx-auto mb-8" />
+        <p className="body-editorial mx-auto text-balance">
+          Three days in the Tuscan countryside. Here's what to expect.
+        </p>
+      </FadeIn>
+    </section>
 
-    const isStayingOnsite = !submitResult.allDeclined && submitResult.accommodation !== "Not Staying Onsite";
-    const isOffsite = !submitResult.allDeclined && submitResult.accommodation === "Not Staying Onsite";
-    const isDeclined = submitResult.allDeclined;
+    {/* Itinerary Timeline */}
+    <section className="w-[90%] max-w-[800px] mx-auto pb-24">
+      <div className="relative w-[90%] max-w-[900px] mx-auto">
+        {/* Vertical line */}
+        <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10" />
 
-    return (
-      <Layout>
-        <section className="page-section w-[90%] max-w-[700px] mx-auto text-center">
-          <FadeIn>
-            <h1 className="heading-section mb-4">Thank You</h1>
-            <div className="w-12 h-px bg-primary mx-auto mb-8" />
-
-            {isStayingOnsite && (
-              <>
-                <p className="body-editorial mx-auto text-balance">
-                  We can't wait to celebrate with you in Tuscany!
-                </p>
-                <p className="body-editorial mx-auto text-balance mt-6">
-                  Your room is officially on hold. To secure your spot, please send payment below via PayPal Friends &amp;&nbsp;Family to @NylerWedding within 48&nbsp;hours. In the payment note, include the names of all guests staying in your room.
-                </p>
-                <a
-                  href={paypalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mt-8 px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+        <div className="space-y-20">
+          {itinerary.map((event, i) => (
+            <FadeIn key={event.title} delay={i * 150}>
+              <div className={`relative pl-16 ${i === 2 ? "mt-1" : ""}`}>
+                {/* Timeline marker — aligned with the date */}
+                <div
+                  className={`absolute left-3.5 w-5 h-5 rounded-full border-2 border-primary/40 bg-background flex items-center justify-center ${i === 2 ? "top-2" : "top-1"}`}
                 >
-                  Pay via PayPal{price ? ` — $${price}` : ""}
-                </a>
-                <p className="font-display italic text-lg text-foreground mt-8">
-                  Ci vediamo in Italia!
-                </p>
-              </>
-            )}
+                  <div className="w-2 h-2 rounded-full bg-primary" />
+                </div>
 
-            {isOffsite && (
-              <>
-                <p className="body-editorial mx-auto text-balance">
-                  We can't wait to celebrate with you in Tuscany!
+                <p className={`heading-sub text-foreground mb-2 ${i === 2 ? "pt-1" : ""}`}>
+                  {i === 2 ? (
+                    <>
+                      <span className="block sm:inline">Friday,</span>{" "}
+                      <span className="block sm:inline">September 18</span>
+                    </>
+                  ) : (
+                    event.day
+                  )}
                 </p>
-                <p className="body-editorial mx-auto text-balance mt-6">
-                  You're all set—we've noted that you'll be joining us offsite. We're so glad you're making the trip and can't wait to see you there.
-                </p>
-                <p className="font-display italic text-lg text-foreground mt-8">
-                  Ci vediamo in Italia!
-                </p>
-              </>
-            )}
 
-            {isDeclined && (
-              <>
-                <p className="body-editorial mx-auto text-balance">
-                  Thank you so much for letting us know. It truly means a lot that you took the time to respond.
-                </p>
-                <p className="body-editorial mx-auto text-balance mt-6">
-                  You will absolutely be missed! We hope to celebrate with you soon, and we'll make sure to share all the photos so you can experience a little bit of Tuscany with us from afar.
-                </p>
-                <p className="font-display italic text-lg text-foreground mt-8">
-                  With so much love,
-                  <br />
-                  Nicole &amp; Tyler
-                </p>
-              </>
-            )}
-          </FadeIn>
-        </section>
-      </Layout>
-    );
-  }
+                {/* Icon */}
+                {i === 0 ? (
+                  <div className="relative w-28 h-20 mb-1 mt-0.5">
+                    {/* Glass — stays still */}
+                    <img src={welcomeCup} alt="Glass" className="absolute bottom-0 left-0 w-12 h-12 object-contain" />
+                    {/* Bottle — pours */}
+                    <motion.img
+                      src={welcomeBottle}
+                      alt="Bottle"
+                      className="absolute -top-[16px] left-[34px] w-16 h-16 object-contain origin-bottom-left"
+                      animate={{ rotate: [0, -15, 0, -15, 0] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.5 }}
+                    />
+                  </div>
+                ) : i === 2 ? (
+                  <div className="relative w-32 h-24 -mb-2 -mt-2.5">
+                    {/* Sun — twirling rise */}
+                    <motion.img
+                      src={poolSun}
+                      alt="Sun"
+                      className="absolute w-14 h-14 object-contain z-0"
+                      animate={{
+                        top: [17, -10, 17],
+                        right: [44, 0, 44],
+                        rotate: [0, 360, 0],
+                      }}
+                      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    {/* Umbrella */}
+                    <img
+                      src={poolUmbrella}
+                      alt="Umbrella"
+                      className="absolute top-[30px] left-[22px] w-20 h-16 object-contain z-10"
+                    />
+                    {/* Chairs */}
+                    <img
+                      src={poolChairs}
+                      alt="Chairs"
+                      className="absolute bottom-[-14px] left-0 w-28 h-12 object-contain z-[5]"
+                    />
+                  </div>
+                ) : (
+                  <motion.img
+                    src={event.icon!}
+                    alt={event.title}
+                    className="w-[100px] h-[100px] object-contain -mt-5"
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                )}
 
-  return (
-    <Layout>
-      <section className="page-section w-[90%] max-w-[1400px] mx-auto">
-        <FadeIn>
-          <h1 className="heading-section text-center mb-4">
-            Accommodations & RSVP
-          </h1>
-          <div className="w-12 h-px bg-primary mx-auto mb-12" />
-        </FadeIn>
+                <h2
+                  className={`font-serif text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-4 ${i === 1 ? "-mt-3.5" : i === 2 ? "mt-2.5" : ""}`}
+                >
+                  {event.title}
+                </h2>
+                <p className="body-editorial mb-4">{event.description}</p>
+                <p className="font-body text-sm text-muted-foreground italic">Attire: {event.attire}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
 
-        <FadeIn delay={100}>
-          <div className="max-w-[655px] mx-auto mb-16">
-            <p className="body-editorial mx-auto text-center !leading-snug">
-              We have exclusively reserved all of Borgo Laticastelli for our guests. For those opting to stay onsite, all meals and drinks throughout the full stay are on&nbsp;us.
-            </p>
-            <p className="body-editorial mx-auto text-center mt-6 !leading-snug">
-              To get started, select your room below or let us know you'll be staying offsite.
-            </p>
-            <p className="body-editorial mx-auto text-center mt-6 text-foreground font-normal !leading-snug">
-              Rooms are available on a first-come, first-served basis. Prices are based per room for the entire three-night stay. Please note that reservations not paid within 48&nbsp;hours will be released.
-            </p>
-            <p className="mt-6 text-center">
-              <a
-                href="#rsvp-form"
-                onClick={(e) => { e.preventDefault(); formRef.current?.scrollIntoView({ behavior: "smooth" }); }}
-                className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Not able to make it? Skip right to the RSVP &gt;
-              </a>
-            </p>
-          </div>
-        </FadeIn>
+    {/* Concierge FAQs */}
+    <section className="w-[90%] max-w-[800px] mx-auto pb-24">
+      <FadeIn>
+        <h2 className="heading-section text-center mb-4">Concierge FAQs</h2>
+        <div className="w-12 h-px bg-primary mx-auto mb-12" />
+      </FadeIn>
+      <FadeIn delay={150}>
+        <Accordion type="single" collapsible className="space-y-2">
+          {faqs.map((faq, i) => (
+            <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 px-0">
+              <AccordionTrigger className="font-serif text-xl md:text-2xl text-foreground font-light py-6 hover:no-underline text-left">
+                {faq.q}
+              </AccordionTrigger>
+              <AccordionContent className="pb-8">
+                <p className="body-editorial text-left">{faq.a}</p>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </FadeIn>
+    </section>
 
-        <RoomCardsDisplay
-          selectedAccommodation={accommodation}
-          onSelectAccommodation={setAccommodation}
-          formRef={formRef}
-        />
-      </section>
+    {/* Navigation buttons */}
+    <section className="w-[90%] max-w-[900px] mx-auto px-6 md:px-12 pb-24">
+      <FadeIn>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            to="/travel"
+            className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+          >
+            Travel →
+          </Link>
+          <Link
+            to="/local-guide"
+            className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+          >
+            Explore →
+          </Link>
+        </div>
+      </FadeIn>
+    </section>
+  </Layout>
+);
 
-      <section ref={formRef} className="page-section w-[90%] max-w-[700px] mx-auto scroll-mt-24">
-        <RsvpFormEmbed
-          accommodation={accommodation}
-          onAccommodationChange={setAccommodation}
-          onSubmitSuccess={(allDeclined, acc) => setSubmitResult({ allDeclined, accommodation: acc })}
-        />
-      </section>
-    </Layout>
-  );
-};
-
-export default RsvpV2;
+export default TheWeekend;
