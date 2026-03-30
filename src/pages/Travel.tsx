@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
-import { MapPin } from "lucide-react";
 import airImg from "@/assets/travel-by-air.avif";
 import trainImg from "@/assets/travel-by-train.jpg";
 import carImg from "@/assets/travel-by-car.jpg";
@@ -64,10 +64,10 @@ const Travel = () => (
             <strong className="text-foreground font-medium">Important:</strong> Italy requires your passport to be valid for at least six months beyond your planned date of departure. Please check your passport expiration date today! If it expires before March 2027, you will need to renew it before booking your flights.
           </p>
           <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light mt-4">
-              If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip.
-              <br />
-              <strong className="text-foreground font-medium">Also, don't forget to pack Type C or Type L travel adapters.</strong>
-            </p>
+            If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip.
+            <br />
+            <strong className="text-foreground font-medium">Also, don't forget to pack Type C or Type L travel adapters.</strong>
+          </p>
         </div>
       </FadeIn>
     </section>
@@ -114,6 +114,26 @@ const Travel = () => (
         </section>
       ))}
     </div>
+
+    {/* Navigation buttons */}
+    <section className="w-[90%] max-w-[900px] mx-auto px-6 md:px-12 pb-24">
+      <FadeIn>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            to="/the-weekend"
+            className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+          >
+            Events →
+          </Link>
+          <Link
+            to="/local-guide"
+            className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+          >
+            Explore →
+          </Link>
+        </div>
+      </FadeIn>
+    </section>
   </Layout>
 );
 
