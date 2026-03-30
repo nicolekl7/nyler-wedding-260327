@@ -26,7 +26,7 @@ const itinerary = [
     description:
       "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, dinner, and dancing the night away.",
     attire:
-      "Tuscan Formal — Floor-length dresses. Suits. Rich colors and textures are encouraged. Dress up and have fun with it!\n\n\n(Please note the grounds feature cobblestone and grass—block heels are recommended)",
+      "Tuscan Formal — Floor-length dresses. Suits. Rich colors and textures are encouraged. Dress up and have fun with it!\n\n\n(Please note the grounds feature cobblestone and grass so block heels are recommended)",
     icon: weddingIcon,
   },
   {
