@@ -11,6 +11,7 @@ import BookingSuccess from "./pages/BookingSuccess";
 import Travel from "./pages/Travel";
 import RsvpV2 from "./pages/RsvpV2";
 import LocalGuide from "./pages/LocalGuide";
+import OurStory from "./pages/OurStory";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/travel" element={<Travel />} />
           <Route path="/rsvp-v2" element={<RsvpV2 />} />
           <Route path="/local-guide" element={<LocalGuide />} />
+          <Route path="/our-story" element={<OurStory />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
