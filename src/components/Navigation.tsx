@@ -8,6 +8,7 @@ const navItems = [
   { path: "/the-weekend", label: "Events" },
   { path: "/travel", label: "Travel" },
   { path: "/local-guide", label: "Explore" },
+  { path: "https://withjoy.com/nyler/registry", label: "Registry", external: true },
   { path: "/rsvp-v2", label: "RSVP", cta: true },
 ];
 
@@ -24,23 +25,35 @@ const Navigation = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={
-                item.cta
-                  ? "font-body text-xs uppercase tracking-[0.2em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-                  : `nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
-                      location.pathname === item.path
-                        ? "text-foreground after:w-full"
-                        : "after:w-0 hover:after:w-full"
-                    }`
-              }
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) =>
+            item.external ? (
+              <a
+                key={item.path}
+                href={item.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 after:w-0 hover:after:w-full"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={
+                  item.cta
+                    ? "font-body text-xs uppercase tracking-[0.2em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                    : `nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
+                        location.pathname === item.path
+                          ? "text-foreground after:w-full"
+                          : "after:w-0 hover:after:w-full"
+                      }`
+                }
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -60,16 +73,29 @@ const Navigation = () => {
         }`}
       >
         <div className="bg-background border-b border-border px-6 pb-6 flex flex-col gap-4">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={() => setOpen(false)}
-              className={`nav-link ${location.pathname === item.path ? "text-foreground" : ""}`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) =>
+            item.external ? (
+              <a
+                key={item.path}
+                href={item.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="nav-link"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setOpen(false)}
+                className={`nav-link ${location.pathname === item.path ? "text-foreground" : ""}`}
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </div>
       </div>
     </nav>
