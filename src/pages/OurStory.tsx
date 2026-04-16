@@ -197,9 +197,6 @@ const OurStory = () => {
                 {/* Year anchor */}
                 <FadeIn delay={0}>
                   <div className="relative pl-16 pt-14 pb-1">
-                    <div className="absolute left-[11px] top-[3.5rem] w-[23px] h-[23px] rounded-full bg-background border-2 border-primary/25 flex items-center justify-center">
-                      <div className="w-[7px] h-[7px] rounded-full bg-primary/50" />
-                    </div>
                     <p
                       className="font-serif font-light leading-none select-none"
                       style={{
