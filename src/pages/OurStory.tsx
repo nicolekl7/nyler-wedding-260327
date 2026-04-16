@@ -10,8 +10,8 @@ const timelineData = [
     entries: [
       {
         month: "December 2016",
-        title: "The Beginning",
-        text: "Add your story here — how you first met, what you remember about that moment, what you were both thinking. This is your space to tell it in your own words.",
+        title: "New York",
+        text: "It was New Year's Eve. Nicole was visiting her college friend in Stony Point, NY and Tyler had just gotten back from Air Force basic training. They met, started talking, and couldn't stop. By the end of the night they were texting each other's parents to let them know they'd be getting married one day. If it didn't work out? Embarrassing. Since it did? Well, it's when you know, you know.",
         photos: 2,
       },
     ],
@@ -21,14 +21,14 @@ const timelineData = [
     entries: [
       {
         month: "Spring 2017",
-        title: "First Trip Together",
-        text: "Add your story here — what those early months looked like, the places you went, the things you discovered about each other.",
-        photos: 1,
+        title: "Dating?",
+        text: "Tyler visited their mutual friend at University of South Carolina and ended up spending the whole trip with Nicole. Who saw that coming? Suddenly they were planning trips to see each other almost every month. After some not-so-careful consideration, Nicole brought Tyler to meet her whole family at her brother Pat's 30th birthday slash gender reveal. (Spoiler: it's a girl! Hi Luna!) If you were there, you know how it went.",
+        photos: 2,
       },
       {
-        month: "Fall 2017",
-        title: "Making It Official",
-        text: "Add your story here — a milestone, a conversation, a moment that shifted everything and made this feel real.",
+        month: "August 2017",
+        title: "Study Abroad",
+        text: "Nicole studied abroad in Florence and tried (and failed) to break up with Tyler. She knew they'd end up together forever and didn't want to resent him for holding her back in Italy. Also, Nicole is known for telling her friends to break up with their boyfriends and she had a reputation to uphold. Before she left, she left him a note for every single day she'd be gone. Two months in, Tyler drove five hours and took two layovers to fly to Europe to see her. Neither of them were very good at this.",
         photos: 2,
       },
     ],
@@ -37,15 +37,15 @@ const timelineData = [
     year: "2018",
     entries: [
       {
-        month: "Spring 2018",
-        title: "New Beginnings",
-        text: "Add your story here — what this season brought, where you went, what changed between you.",
-        photos: 2,
+        month: "June 2018",
+        title: "Cat #1",
+        text: "Nicole and Tyler moved in together for the summer as a test run. Two weeks in, they went to \"just look\" at cats at a shelter and — shocker — went home with one. No carrier, no plan. The shelter worker handed them a box and told them she was in high demand. They took her. Purrcocet has been with them ever since.",
+        photos: 1,
       },
       {
-        month: "Winter 2018",
-        title: "The Holidays",
-        text: "Add your story here — the first holidays together, what that felt like, the small things you still remember.",
+        month: "September 2018",
+        title: "Deployment",
+        text: "Tyler deployed to Qatar. Nicole took Purrc to college with her. It was a rough four months after they'd managed to see each other almost every month since they met — but they survived. Lots of care packages to Tyler and surprise Uber Eats Chick-fil-A deliveries to Nicole.",
         photos: 1,
       },
     ],
@@ -54,15 +54,9 @@ const timelineData = [
     year: "2019",
     entries: [
       {
-        month: "Summer 2019",
-        title: "A Summer to Remember",
-        text: "Add your story here — the adventures, the places you explored, the memories that became your favorites.",
-        photos: 2,
-      },
-      {
-        month: "Fall 2019",
-        title: "The Next Step",
-        text: "Add your story here — a big decision, a new chapter, something that brought you even closer.",
+        month: "November 2019",
+        title: "Cat #2",
+        text: "Tyler, who had never owned a cat and would have told you he wasn't a cat person when he first met Nicole, adopted two sisters from the same litter with his roommate. Into their lives comes Mango. His roommate got Beans.",
         photos: 1,
       },
     ],
@@ -71,16 +65,10 @@ const timelineData = [
     year: "2020",
     entries: [
       {
-        month: "Spring 2020",
-        title: "Together Through Everything",
-        text: "Add your story here — what this year taught you, how you leaned on each other, what you built when the world slowed down.",
+        month: "February 2020",
+        title: "Kansas",
+        text: "Nicole and Tyler finally officially move in together — no roommates, their own apartment. So exciting! A few weeks later: COVID-19. Well, it's a good thing they like each other. It's too bad they had no friends yet. It was a big test. Don't worry — they pass.",
         photos: 2,
-      },
-      {
-        month: "Late 2020",
-        title: "Finding Our Rhythm",
-        text: "Add your story here — the routines, the rituals, the little things that became your own.",
-        photos: 1,
       },
     ],
   },
@@ -88,15 +76,9 @@ const timelineData = [
     year: "2021",
     entries: [
       {
-        month: "Spring 2021",
-        title: "Opening Up Again",
-        text: "Add your story here — the first trips back, the things you did with newfound appreciation, the adventures you finally had.",
-        photos: 1,
-      },
-      {
-        month: "Fall 2021",
-        title: "New Adventures",
-        text: "Add your story here — a place you went, something you tried, a memory that stands out from this time.",
+        month: "January 2021",
+        title: "The House",
+        text: "Bored and realizing their lease was ending, Tyler and Nicole put some feelers out on houses with their realtor friend. Rough market, not expecting much — they hadn't even told anyone they were looking yet. They found a house they liked and put an offer in, but the seller had a cash offer above asking. Tyler and Nicole refused to go higher, because if it's meant to be, it's meant to be. The sellers chose them anyway, based entirely on vibes. They are still not entirely sure how they own a home.",
         photos: 2,
       },
     ],
@@ -105,32 +87,9 @@ const timelineData = [
     year: "2022",
     entries: [
       {
-        month: "Summer 2022",
-        title: "Our Favorite Summer",
-        text: "Add your story here — what made this summer special, where you were, what you were loving about life together.",
-        photos: 2,
-      },
-      {
-        month: "Winter 2022",
-        title: "A New Home",
-        text: "Add your story here — a milestone, a move, or a moment that marked this chapter of your lives.",
-        photos: 1,
-      },
-    ],
-  },
-  {
-    year: "2023",
-    entries: [
-      {
-        month: "Spring 2023",
-        title: "Growing Together",
-        text: "Add your story here — how you had grown, what felt different, what felt more like you than ever.",
-        photos: 2,
-      },
-      {
-        month: "Fall 2023",
-        title: "A Moment to Remember",
-        text: "Add your story here — something that shifted, a trip, a decision, a night you still talk about.",
+        month: "July 2022",
+        title: "CT Bound",
+        text: "Tyler and Nicole moved to the Northeast to be closer to their families, since they both work remote. They got a sublease in Stamford to figure out their next move. Spoiler: they are still in the same city. Whoops.",
         photos: 1,
       },
     ],
@@ -139,16 +98,10 @@ const timelineData = [
     year: "2024",
     entries: [
       {
-        month: "Summer 2024",
-        title: "The Question",
-        text: "Add your story here — how it happened, what you said, what you felt, and everything that followed.",
+        month: "July 2024",
+        title: "Babcia's Birthday",
+        text: "The whole family flew to Poland for Babcia's 90th birthday — her 89th, actually, because Nicole's mom did the math wrong. At some point during the trip, Babcia pulled Tyler aside and told him he had one year to propose. Thankfully, Tyler and Nicole had already talked about getting married — but if Babcia asks, it was because of her.",
         photos: 2,
-      },
-      {
-        month: "Winter 2024",
-        title: "Planning Begins",
-        text: "Add your story here — the excitement of planning, the decisions you made together, the joy of looking forward.",
-        photos: 1,
       },
     ],
   },
@@ -157,16 +110,27 @@ const timelineData = [
     entries: [
       {
         month: "May 2025",
-        title: "Forever Begins",
-        text: "Add your story here — the engagement, the celebration, the moment you knew with everything in you that this was it.",
+        title: "The Proposal",
+        text: "Under the guise of visiting his sister, Tyler planned an entire weekend at a resort in Amelia Island — a stunning town off the coast of Jacksonville. He set up the proposal while Nicole was getting ready for dinner. For those who know her, this gave him ample time. He filled their hotel suite's patio with dozens of photos from their life together and said a bunch of cute stuff. We don't know exactly what because his phone ran out of storage right as Nicole came into view. As we were saying — she takes a while. Anyway, she said yes.",
         photos: 2,
+      },
+    ],
+  },
+  {
+    year: "2026",
+    entries: [
+      {
+        month: "September 2026",
+        title: "Tuscany",
+        text: "Everyone they love, in the most beautiful country in the world. Let's do it.",
+        photos: 0,
       },
     ],
   },
 ];
 
 const PhotoPlaceholder = ({ index }: { index: number }) => (
-  <div className="aspect-[3/2] bg-stone-light/50 border border-border/40 flex flex-col items-center justify-center gap-2 group">
+  <div className="aspect-[3/2] bg-stone-light/50 border border-border/40 flex flex-col items-center justify-center gap-2">
     <svg
       width="24"
       height="24"
@@ -202,13 +166,12 @@ const OurStory = () => {
       <section className="page-section w-[90%] max-w-[1000px] mx-auto text-center">
         <FadeIn>
           <p className="heading-sub text-muted-foreground mb-4">
-            December 2016 &mdash; May 2025
+            December 2016 &mdash; September 2026
           </p>
           <h1 className="heading-section mb-4">Our Love Story</h1>
           <div className="w-12 h-px bg-primary mx-auto mb-8" />
           <p className="body-editorial mx-auto max-w-xl text-balance">
-            Eight years of adventures, laughter, and growing together —
-            every chapter leading us here.
+            Ten years of adventures, two cats, one house, and a whole lot of care packages — every chapter leading us here.
           </p>
         </FadeIn>
       </section>
@@ -229,12 +192,11 @@ const OurStory = () => {
           />
 
           <div className="space-y-0">
-            {timelineData.map((group, groupIndex) => (
+            {timelineData.map((group) => (
               <div key={group.year}>
                 {/* Year anchor */}
                 <FadeIn delay={0}>
                   <div className="relative pl-16 pt-14 pb-1">
-                    {/* Larger year dot */}
                     <div className="absolute left-[11px] top-[3.5rem] w-[23px] h-[23px] rounded-full bg-background border-2 border-primary/25 flex items-center justify-center">
                       <div className="w-[7px] h-[7px] rounded-full bg-primary/50" />
                     </div>
@@ -274,11 +236,12 @@ const OurStory = () => {
                       </p>
 
                       {/* Photos */}
-                      {entry.photos === 1 ? (
+                      {entry.photos === 1 && (
                         <div className="max-w-[380px]">
                           <PhotoPlaceholder index={0} />
                         </div>
-                      ) : (
+                      )}
+                      {entry.photos === 2 && (
                         <div className="grid grid-cols-2 gap-3 max-w-[480px]">
                           <PhotoPlaceholder index={0} />
                           <PhotoPlaceholder index={1} />
@@ -290,18 +253,6 @@ const OurStory = () => {
               </div>
             ))}
           </div>
-
-          {/* End cap */}
-          <FadeIn delay={0}>
-            <div className="relative pl-16 pt-4 pb-2">
-              <div className="absolute left-[9px] top-[1.2rem] w-[27px] h-[27px] rounded-full bg-stone-light/60 border border-primary/25 flex items-center justify-center">
-                <div className="w-[10px] h-[10px] rounded-full bg-primary/40" />
-              </div>
-              <p className="font-serif text-lg italic text-muted-foreground/60 mt-1">
-                and the story continues…
-              </p>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
