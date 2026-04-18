@@ -55,51 +55,75 @@ const ScatteredPolaroids = ({
   const n = photos.length;
   if (n === 0) return null;
 
-  const photoSize = n === 1 ? 200 : n === 2 ? 175 : n <= 5 ? 148 : 128;
-  const frameW = photoSize + 20;
-  const negMargin = n > 2 ? -Math.round(frameW * 0.2) : 0;
+  const PS = n === 1 ? 200 : 120; // inner image px
+  const PW = PS + 20;              // frame width
+  const PH = PS + 46;              // frame height (10px top + image + 36px bottom)
 
-  const getItemProps = (i: number) => {
-    const h1 = ((seed * (i + 3) * 17) % 97) / 97;
-    const h2 = ((seed * (i + 3) * 31) % 83) / 83;
-    const h3 = ((seed * (i + 3) * 13) % 79) / 79;
-    const xShift = (h1 * 2 - 1) * (n > 2 ? 10 : 6);
-    const yShift = (h2 * 2 - 1) * (n > 2 ? 18 : 10);
-    const rot = i % 2 === 0 ? -(h3 * 2.2 + 1.0) : h3 * 1.9 + 0.7;
-    return { xShift, yShift, rot };
+  if (n === 1) {
+    const h = ((seed * 13) % 79) / 79;
+    return (
+      <div className="py-4">
+        <motion.div
+          className="inline-block bg-white select-none"
+          style={{
+            rotate: (h * 2 - 1) * 4,
+            padding: 10,
+            paddingBottom: 36,
+            boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08)",
+          }}
+          whileHover={{ rotate: 0, scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 280, damping: 22 }}
+        >
+          <img
+            src={photos[0]}
+            alt=""
+            style={{ width: PS, height: PS, objectFit: "cover", display: "block" }}
+          />
+        </motion.div>
+      </div>
+    );
+  }
+
+  // True 2D scatter with absolute positioning
+  const CW = Math.round(PW * (0.8 + n * 0.45));
+  const CH = Math.round(PH * (0.8 + n * 0.38));
+
+  const getPos = (i: number) => {
+    const h1 = ((seed * (i + 5) * 17 + i * 53) % 97) / 97;
+    const h2 = ((seed * (i + 5) * 31 + i * 71) % 83) / 83;
+    const h3 = ((seed * (i + 5) * 13 + i * 29) % 79) / 79;
+    return {
+      x: h1 * Math.max(0, CW - PW),
+      y: h2 * Math.max(0, CH - PH),
+      rot: (h3 * 2 - 1) * 28,
+    };
   };
 
   return (
-    <div className="flex flex-wrap overflow-visible py-6" style={{ rowGap: "28px" }}>
+    <div className="relative my-6" style={{ width: CW, height: CH }}>
       {photos.map((src, i) => {
-        const { xShift, yShift, rot } = getItemProps(i);
+        const { x, y, rot } = getPos(i);
         return (
           <motion.div
             key={i}
-            className="bg-white select-none flex-shrink-0"
+            className="absolute bg-white select-none"
             style={{
+              left: x,
+              top: y,
               rotate: rot,
-              x: xShift,
-              y: yShift,
-              padding: "10px",
-              paddingBottom: "32px",
-              boxShadow: "0 4px 16px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08)",
-              width: frameW,
+              padding: 10,
+              paddingBottom: 36,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.10)",
+              width: PW,
               zIndex: i + 1,
-              marginLeft: i > 0 ? negMargin : 0,
             }}
-            whileHover={{ rotate: 0, x: 0, y: 0, scale: 1.08, zIndex: 20 }}
-            transition={{ type: "spring", stiffness: 280, damping: 22 }}
+            whileHover={{ rotate: 0, scale: 1.1, zIndex: 20 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
             <img
               src={src}
               alt=""
-              style={{
-                width: photoSize,
-                height: photoSize,
-                objectFit: "cover",
-                display: "block",
-              }}
+              style={{ width: PS, height: PS, objectFit: "cover", display: "block" }}
             />
           </motion.div>
         );
