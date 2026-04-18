@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 
-// Pick up any photo matching the naming convention from assets
 const allPhotos = import.meta.glob("../assets/*.{jpg,jpeg,png,webp}", {
   eager: true,
   query: "?url",
@@ -19,31 +18,110 @@ const getPhotoSrc = (key: string, num: number): string | null => {
   return null;
 };
 
-// Collect up to `count` photos from an ordered list of keys
-const getEntryPhotos = (keys: string[], count: number): (string | null)[] => {
-  const result: (string | null)[] = [];
-  for (const key of keys) {
-    let num = 1;
-    while (result.length < count) {
+type PhotoKeySpec = string | { key: string; startNum?: number; maxCount?: number };
+
+const collectPhotos = (specs: PhotoKeySpec[], hardMax = 8): string[] => {
+  const result: string[] = [];
+  for (const spec of specs) {
+    if (result.length >= hardMax) break;
+    const key = typeof spec === "string" ? spec : spec.key;
+    const startNum = typeof spec === "string" ? 1 : (spec.startNum ?? 1);
+    const maxCount = typeof spec === "string" ? hardMax : (spec.maxCount ?? hardMax);
+    let num = startNum;
+    let count = 0;
+    while (count < maxCount && result.length < hardMax) {
       const src = getPhotoSrc(key, num);
       if (!src) break;
       result.push(src);
       num++;
+      count++;
     }
-    if (result.length >= count) break;
   }
-  while (result.length < count) result.push(null);
   return result;
 };
 
-// Deterministic rotation: photo 1 always tilts left, photo 2 always tilts right
-const getRotation = (photoKey: string, photoNum: number): number => {
-  const seed = photoKey.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-  const t = ((seed * photoNum * 13) % 97) / 97;
-  return photoNum === 1 ? -(t * 1.6 + 1.2) : t * 1.6 + 0.9;
+const seedFromKey = (spec: PhotoKeySpec): number => {
+  const k = typeof spec === "string" ? spec : spec.key;
+  return k.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
 };
 
-const timelineData = [
+const ScatteredPolaroids = ({
+  photos,
+  seed,
+}: {
+  photos: string[];
+  seed: number;
+}) => {
+  const n = photos.length;
+  if (n === 0) return null;
+
+  const photoSize = n === 1 ? 200 : n === 2 ? 175 : n <= 5 ? 148 : 128;
+  const frameW = photoSize + 20;
+  const negMargin = n > 2 ? -Math.round(frameW * 0.2) : 0;
+
+  const getItemProps = (i: number) => {
+    const h1 = ((seed * (i + 3) * 17) % 97) / 97;
+    const h2 = ((seed * (i + 3) * 31) % 83) / 83;
+    const h3 = ((seed * (i + 3) * 13) % 79) / 79;
+    const xShift = (h1 * 2 - 1) * (n > 2 ? 10 : 6);
+    const yShift = (h2 * 2 - 1) * (n > 2 ? 18 : 10);
+    const rot = i % 2 === 0 ? -(h3 * 2.2 + 1.0) : h3 * 1.9 + 0.7;
+    return { xShift, yShift, rot };
+  };
+
+  return (
+    <div className="flex flex-wrap overflow-visible py-6" style={{ rowGap: "28px" }}>
+      {photos.map((src, i) => {
+        const { xShift, yShift, rot } = getItemProps(i);
+        return (
+          <motion.div
+            key={i}
+            className="bg-white select-none flex-shrink-0"
+            style={{
+              rotate: rot,
+              x: xShift,
+              y: yShift,
+              padding: "10px",
+              paddingBottom: "32px",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08)",
+              width: frameW,
+              zIndex: i + 1,
+              marginLeft: i > 0 ? negMargin : 0,
+            }}
+            whileHover={{ rotate: 0, x: 0, y: 0, scale: 1.08, zIndex: 20 }}
+            transition={{ type: "spring", stiffness: 280, damping: 22 }}
+          >
+            <img
+              src={src}
+              alt=""
+              style={{
+                width: photoSize,
+                height: photoSize,
+                objectFit: "cover",
+                display: "block",
+              }}
+            />
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+};
+
+interface EntryBlock {
+  text: string;
+  photoKeys: PhotoKeySpec[];
+}
+
+interface TimelineEntry {
+  month: string;
+  title: string;
+  text?: string;
+  photoKeys?: PhotoKeySpec[];
+  blocks?: EntryBlock[];
+}
+
+const timelineData: Array<{ year: string; entries: TimelineEntry[] }> = [
   {
     year: "2016",
     entries: [
@@ -51,7 +129,6 @@ const timelineData = [
         month: "December 2016",
         title: "New York",
         text: "It was New Year's Eve. Nicole was visiting her college friend in Stony Point, NY and Tyler had just gotten back from Air Force basic training. They met, started talking, and couldn't stop. By the end of the night they were texting each other's parents to let them know they'd be getting married one day. If it didn't work out? Embarrassing. Since it did? Well, it's when you know, you know.",
-        photos: 2,
         photoKeys: ["2016-12"],
       },
     ],
@@ -62,15 +139,21 @@ const timelineData = [
       {
         month: "Spring 2017",
         title: "Dating?",
-        text: "Tyler visited their mutual friend at University of South Carolina and ended up spending the whole trip with Nicole. Who saw that coming? Suddenly they were planning trips to see each other almost every month. After some not-so-careful consideration, Nicole brought Tyler to meet her whole family at her brother Pat's 30th birthday slash gender reveal. (Spoiler: it's a girl! Hi Luna!) If you were there, you know how it went.",
-        photos: 2,
-        photoKeys: ["2017-3", "2017-5"],
+        blocks: [
+          {
+            text: "Tyler visited their mutual friend at University of South Carolina and ended up spending the whole trip with Nicole. Who saw that coming? Suddenly they were planning trips to see each other almost every month.",
+            photoKeys: ["2017-3", { key: "2017-5", maxCount: 1 }],
+          },
+          {
+            text: "After some not-so-careful consideration, Nicole brought Tyler to meet her whole family at her brother Pat's 30th birthday slash gender reveal. (Spoiler: it's a girl! Hi Luna!) If you were there, you know how it went.",
+            photoKeys: [{ key: "2017-5", startNum: 2 }],
+          },
+        ],
       },
       {
         month: "August 2017",
         title: "Study Abroad",
         text: "Nicole studied abroad in Florence and tried (and failed) to break up with Tyler. She knew they'd end up together forever and didn't want to resent him for holding her back in Italy. Also, Nicole is known for telling her friends to break up with their boyfriends and she had a reputation to uphold. Before she left, she left him a note for every single day she'd be gone. Two months in, Tyler drove five hours and took two layovers to fly to Europe to see her. Neither of them were very good at this.",
-        photos: 2,
         photoKeys: ["2017-8", "2017-11"],
       },
     ],
@@ -82,14 +165,12 @@ const timelineData = [
         month: "June 2018",
         title: "Cat #1",
         text: "Nicole and Tyler moved in together for the summer as a test run. Two weeks in, they went to \"just look\" at cats at a shelter and — shocker — went home with one. No carrier, no plan. The shelter worker handed them a box and told them she was in high demand. They took her. Purrcocet has been with them ever since.",
-        photos: 1,
         photoKeys: ["2018-06"],
       },
       {
         month: "September 2018",
         title: "Deployment",
         text: "Tyler deployed to Qatar. Nicole took Purrc to college with her. It was a rough four months after they'd managed to see each other almost every month since they met — but they survived. Lots of care packages to Tyler and surprise Uber Eats Chick-fil-A deliveries to Nicole.",
-        photos: 1,
         photoKeys: ["2018-09"],
       },
     ],
@@ -101,7 +182,6 @@ const timelineData = [
         month: "November 2019",
         title: "Cat #2",
         text: "Tyler, who had never owned a cat and would have told you he wasn't a cat person when he first met Nicole, adopted two sisters from the same litter with his roommate. Into their lives comes Mango. His roommate got Beans.",
-        photos: 1,
         photoKeys: ["2019-11"],
       },
     ],
@@ -113,7 +193,6 @@ const timelineData = [
         month: "February 2020",
         title: "Kansas",
         text: "Nicole and Tyler finally officially move in together — no roommates, their own apartment. So exciting! A few weeks later: COVID-19. Well, it's a good thing they like each other. It's too bad they had no friends yet. It was a big test. Don't worry — they pass.",
-        photos: 2,
         photoKeys: ["2020-02"],
       },
     ],
@@ -125,7 +204,6 @@ const timelineData = [
         month: "January 2021",
         title: "The House",
         text: "Bored and realizing their lease was ending, Tyler and Nicole put some feelers out on houses with their realtor friend. Rough market, not expecting much — they hadn't even told anyone they were looking yet. They found a house they liked and put an offer in, but the seller had a cash offer above asking. Tyler and Nicole refused to go higher, because if it's meant to be, it's meant to be. The sellers chose them anyway, based entirely on vibes. They are still not entirely sure how they own a home.",
-        photos: 2,
         photoKeys: ["2021-01"],
       },
     ],
@@ -137,7 +215,6 @@ const timelineData = [
         month: "July 2022",
         title: "CT Bound",
         text: "Tyler and Nicole moved to the Northeast to be closer to their families, since they both work remote. They got a sublease in Stamford to figure out their next move. Spoiler: they are still in the same city. Whoops.",
-        photos: 1,
         photoKeys: ["2022-07"],
       },
     ],
@@ -149,7 +226,6 @@ const timelineData = [
         month: "July 2024",
         title: "Babcia's Birthday",
         text: "The whole family flew to Poland for Babcia's 90th birthday — her 89th, actually, because Nicole's mom did the math wrong. At some point during the trip, Babcia pulled Tyler aside and told him he had one year to propose. Thankfully, Tyler and Nicole had already talked about getting married — but if Babcia asks, it was because of her.",
-        photos: 2,
         photoKeys: ["2024-07"],
       },
     ],
@@ -161,7 +237,6 @@ const timelineData = [
         month: "May 2025",
         title: "The Proposal",
         text: "Under the guise of visiting his sister, Tyler planned an entire weekend at a resort in Amelia Island — a stunning town off the coast of Jacksonville. He set up the proposal while Nicole was getting ready for dinner. For those who know her, this gave him ample time. He filled their hotel suite's patio with dozens of photos from their life together and said a bunch of cute stuff. We don't know exactly what because his phone ran out of storage right as Nicole came into view. As we were saying — she takes a while. Anyway, she said yes.",
-        photos: 2,
         photoKeys: ["2025-05"],
       },
     ],
@@ -173,56 +248,11 @@ const timelineData = [
         month: "September 2026",
         title: "Tuscany",
         text: "Everyone they love, in the most beautiful country in the world. Let's do it.",
-        photos: 0,
-        photoKeys: ["2026-09"],
+        photoKeys: [],
       },
     ],
   },
 ];
-
-const Polaroid = ({
-  src,
-  rotation,
-}: {
-  src: string | null;
-  rotation: number;
-}) => (
-  <motion.div
-    className="bg-white select-none"
-    style={{
-      rotate: rotation,
-      padding: "10px",
-      paddingBottom: "38px",
-      boxShadow: "0 4px 16px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08)",
-    }}
-    whileHover={{ rotate: 0, scale: 1.05, zIndex: 20 }}
-    transition={{ type: "spring", stiffness: 280, damping: 22 }}
-  >
-    {src ? (
-      <img
-        src={src}
-        alt=""
-        className="block w-full aspect-[3/2] object-cover"
-      />
-    ) : (
-      <div className="w-full aspect-[3/2] bg-stone-light/70 flex items-center justify-center">
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          className="text-primary/20"
-        >
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <circle cx="12" cy="12" r="3" />
-          <path d="M8 5l1.5-2h5L16 5" />
-        </svg>
-      </div>
-    )}
-  </motion.div>
-);
 
 const OurStory = () => {
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -287,11 +317,15 @@ const OurStory = () => {
 
                 {/* Entries */}
                 {group.entries.map((entry, entryIndex) => {
-                  const photos = getEntryPhotos(entry.photoKeys, entry.photos);
-                  const photo1 = photos[0] ?? null;
-                  const photo2 = photos[1] ?? null;
-                  const rot1 = getRotation(entry.photoKeys[0], 1);
-                  const rot2 = getRotation(entry.photoKeys[0], 2);
+                  const keySpecs = entry.photoKeys ?? [];
+                  const simplePhotos =
+                    !entry.blocks && keySpecs.length > 0
+                      ? collectPhotos(keySpecs)
+                      : [];
+                  const simpleSeed =
+                    !entry.blocks && keySpecs.length > 0
+                      ? seedFromKey(keySpecs[0])
+                      : 0;
 
                   return (
                     <FadeIn
@@ -310,27 +344,35 @@ const OurStory = () => {
                         <h2 className="font-serif text-2xl sm:text-3xl md:text-[2.1rem] font-light text-foreground mb-4 leading-snug">
                           {entry.title}
                         </h2>
-                        <p className="body-editorial text-muted-foreground mb-7 max-w-prose">
-                          {entry.text}
-                        </p>
 
-                        {/* Polaroid photos */}
-                        {entry.photos === 2 && (
-                          <div className="flex gap-4 sm:gap-6 items-start py-2">
-                            <div className="w-[45%] sm:w-[200px] md:w-[220px] flex-shrink-0">
-                              <Polaroid src={photo1} rotation={rot1} />
-                            </div>
-                            <div className="w-[45%] sm:w-[200px] md:w-[220px] flex-shrink-0 mt-6">
-                              <Polaroid src={photo2} rotation={rot2} />
-                            </div>
-                          </div>
-                        )}
-                        {entry.photos === 1 && (
-                          <div className="py-2">
-                            <div className="w-[55%] sm:w-[220px] md:w-[240px]">
-                              <Polaroid src={photo1} rotation={rot1} />
-                            </div>
-                          </div>
+                        {entry.blocks ? (
+                          entry.blocks.map((block, bi) => {
+                            const photos = collectPhotos(block.photoKeys);
+                            const seed =
+                              block.photoKeys.length > 0
+                                ? seedFromKey(block.photoKeys[0])
+                                : 0;
+                            return (
+                              <div key={bi} className={bi > 0 ? "mt-8" : ""}>
+                                <p className="body-editorial text-muted-foreground mb-4 max-w-prose">
+                                  {block.text}
+                                </p>
+                                <ScatteredPolaroids photos={photos} seed={seed} />
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <>
+                            <p className="body-editorial text-muted-foreground mb-7 max-w-prose">
+                              {entry.text}
+                            </p>
+                            {simplePhotos.length > 0 && (
+                              <ScatteredPolaroids
+                                photos={simplePhotos}
+                                seed={simpleSeed}
+                              />
+                            )}
+                          </>
                         )}
                       </div>
                     </FadeIn>
