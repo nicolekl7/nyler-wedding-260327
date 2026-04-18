@@ -19,6 +19,23 @@ const getPhotoSrc = (key: string, num: number): string | null => {
   return null;
 };
 
+// Collect up to `count` photos from an ordered list of keys
+const getEntryPhotos = (keys: string[], count: number): (string | null)[] => {
+  const result: (string | null)[] = [];
+  for (const key of keys) {
+    let num = 1;
+    while (result.length < count) {
+      const src = getPhotoSrc(key, num);
+      if (!src) break;
+      result.push(src);
+      num++;
+    }
+    if (result.length >= count) break;
+  }
+  while (result.length < count) result.push(null);
+  return result;
+};
+
 // Deterministic rotation: photo 1 always tilts left, photo 2 always tilts right
 const getRotation = (photoKey: string, photoNum: number): number => {
   const seed = photoKey.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -35,7 +52,7 @@ const timelineData = [
         title: "New York",
         text: "It was New Year's Eve. Nicole was visiting her college friend in Stony Point, NY and Tyler had just gotten back from Air Force basic training. They met, started talking, and couldn't stop. By the end of the night they were texting each other's parents to let them know they'd be getting married one day. If it didn't work out? Embarrassing. Since it did? Well, it's when you know, you know.",
         photos: 2,
-        photoKey: "2016-12",
+        photoKeys: ["2016-12"],
       },
     ],
   },
@@ -47,14 +64,14 @@ const timelineData = [
         title: "Dating?",
         text: "Tyler visited their mutual friend at University of South Carolina and ended up spending the whole trip with Nicole. Who saw that coming? Suddenly they were planning trips to see each other almost every month. After some not-so-careful consideration, Nicole brought Tyler to meet her whole family at her brother Pat's 30th birthday slash gender reveal. (Spoiler: it's a girl! Hi Luna!) If you were there, you know how it went.",
         photos: 2,
-        photoKey: "2017-04",
+        photoKeys: ["2017-3", "2017-5"],
       },
       {
         month: "August 2017",
         title: "Study Abroad",
         text: "Nicole studied abroad in Florence and tried (and failed) to break up with Tyler. She knew they'd end up together forever and didn't want to resent him for holding her back in Italy. Also, Nicole is known for telling her friends to break up with their boyfriends and she had a reputation to uphold. Before she left, she left him a note for every single day she'd be gone. Two months in, Tyler drove five hours and took two layovers to fly to Europe to see her. Neither of them were very good at this.",
         photos: 2,
-        photoKey: "2017-08",
+        photoKeys: ["2017-8", "2017-11"],
       },
     ],
   },
@@ -66,14 +83,14 @@ const timelineData = [
         title: "Cat #1",
         text: "Nicole and Tyler moved in together for the summer as a test run. Two weeks in, they went to \"just look\" at cats at a shelter and \u2014 shocker \u2014 went home with one. No carrier, no plan. The shelter worker handed them a box and told them she was in high demand. They took her. Purrcocet has been with them ever since.",
         photos: 1,
-        photoKey: "2018-06",
+        photoKeys: ["2018-06"],
       },
       {
         month: "September 2018",
         title: "Deployment",
         text: "Tyler deployed to Qatar. Nicole took Purrc to college with her. It was a rough four months after they'd managed to see each other almost every month since they met \u2014 but they survived. Lots of care packages to Tyler and surprise Uber Eats Chick-fil-A deliveries to Nicole.",
         photos: 1,
-        photoKey: "2018-09",
+        photoKeys: ["2018-09"],
       },
     ],
   },
@@ -85,7 +102,7 @@ const timelineData = [
         title: "Cat #2",
         text: "Tyler, who had never owned a cat and would have told you he wasn't a cat person when he first met Nicole, adopted two sisters from the same litter with his roommate. Into their lives comes Mango. His roommate got Beans.",
         photos: 1,
-        photoKey: "2019-11",
+        photoKeys: ["2019-11"],
       },
     ],
   },
@@ -97,7 +114,7 @@ const timelineData = [
         title: "Kansas",
         text: "Nicole and Tyler finally officially move in together \u2014 no roommates, their own apartment. So exciting! A few weeks later: COVID-19. Well, it's a good thing they like each other. It's too bad they had no friends yet. It was a big test. Don't worry \u2014 they pass.",
         photos: 2,
-        photoKey: "2020-02",
+        photoKeys: ["2020-02"],
       },
     ],
   },
@@ -109,7 +126,7 @@ const timelineData = [
         title: "The House",
         text: "Bored and realizing their lease was ending, Tyler and Nicole put some feelers out on houses with their realtor friend. Rough market, not expecting much \u2014 they hadn't even told anyone they were looking yet. They found a house they liked and put an offer in, but the seller had a cash offer above asking. Tyler and Nicole refused to go higher, because if it's meant to be, it's meant to be. The sellers chose them anyway, based entirely on vibes. They are still not entirely sure how they own a home.",
         photos: 2,
-        photoKey: "2021-01",
+        photoKeys: ["2021-01"],
       },
     ],
   },
@@ -121,7 +138,7 @@ const timelineData = [
         title: "CT Bound",
         text: "Tyler and Nicole moved to the Northeast to be closer to their families, since they both work remote. They got a sublease in Stamford to figure out their next move. Spoiler: they are still in the same city. Whoops.",
         photos: 1,
-        photoKey: "2022-07",
+        photoKeys: ["2022-07"],
       },
     ],
   },
@@ -133,7 +150,7 @@ const timelineData = [
         title: "Babcia's Birthday",
         text: "The whole family flew to Poland for Babcia's 90th birthday \u2014 her 89th, actually, because Nicole's mom did the math wrong. At some point during the trip, Babcia pulled Tyler aside and told him he had one year to propose. Thankfully, Tyler and Nicole had already talked about getting married \u2014 but if Babcia asks, it was because of her.",
         photos: 2,
-        photoKey: "2024-07",
+        photoKeys: ["2024-07"],
       },
     ],
   },
@@ -145,7 +162,7 @@ const timelineData = [
         title: "The Proposal",
         text: "Under the guise of visiting his sister, Tyler planned an entire weekend at a resort in Amelia Island \u2014 a stunning town off the coast of Jacksonville. He set up the proposal while Nicole was getting ready for dinner. For those who know her, this gave him ample time. He filled their hotel suite's patio with dozens of photos from their life together and said a bunch of cute stuff. We don't know exactly what because his phone ran out of storage right as Nicole came into view. As we were saying \u2014 she takes a while. Anyway, she said yes.",
         photos: 2,
-        photoKey: "2025-05",
+        photoKeys: ["2025-05"],
       },
     ],
   },
@@ -157,7 +174,7 @@ const timelineData = [
         title: "Tuscany",
         text: "Everyone they love, in the most beautiful country in the world. Let's do it.",
         photos: 0,
-        photoKey: "2026-09",
+        photoKeys: ["2026-09"],
       },
     ],
   },
@@ -270,10 +287,11 @@ const OurStory = () => {
 
                 {/* Entries */}
                 {group.entries.map((entry, entryIndex) => {
-                  const photo1 = getPhotoSrc(entry.photoKey, 1);
-                  const photo2 = getPhotoSrc(entry.photoKey, 2);
-                  const rot1 = getRotation(entry.photoKey, 1);
-                  const rot2 = getRotation(entry.photoKey, 2);
+                  const photos = getEntryPhotos(entry.photoKeys, entry.photos);
+                  const photo1 = photos[0] ?? null;
+                  const photo2 = photos[1] ?? null;
+                  const rot1 = getRotation(entry.photoKeys[0], 1);
+                  const rot2 = getRotation(entry.photoKeys[0], 2);
 
                   return (
                     <FadeIn
