@@ -110,7 +110,7 @@ const RsvpV2 = () => {
         <FadeIn delay={100}>
           <div className="max-w-[655px] mx-auto mb-16">
             <p className="body-editorial mx-auto text-center !leading-snug">
-              We have exclusively reserved all of Borgo Laticastelli for our guests. For those opting to stay onsite, all meals and drinks throughout the full stay are on&nbsp;us.
+              We have exclusively reserved all of Borgo Laticastelli for our guests. For guests staying onsite, breakfast, dinners, and drinks at all events are included in your stay.
             </p>
             <p className="body-editorial mx-auto text-center mt-6 !leading-snug">
               To get started, select your room below or let us know you'll be staying offsite.
