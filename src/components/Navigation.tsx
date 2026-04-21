@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 
 const navItems = [
   { path: "/", label: "Home" },
-  { path: "/our-story", label: "Our Story" },
+  { path: "/our-story", label: "Our Story", hidden: true },
   { path: "/the-weekend", label: "Events" },
   { path: "/travel", label: "Travel" },
   { path: "/local-guide", label: "Explore" },
@@ -25,7 +25,7 @@ const Navigation = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.map((item) =>
+          {navItems.filter((item) => !item.hidden).map((item) =>
             item.external ? (
               <a
                 key={item.path}
@@ -73,7 +73,7 @@ const Navigation = () => {
         }`}
       >
         <div className="bg-background border-b border-border px-6 pb-6 flex flex-col gap-4">
-          {navItems.map((item) =>
+          {navItems.filter((item) => !item.hidden).map((item) =>
             item.external ? (
               <a
                 key={item.path}
