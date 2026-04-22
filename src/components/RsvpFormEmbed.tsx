@@ -16,7 +16,7 @@ const accommodationOptions = [
   "Solo Guest Estate Pass",
   "Classic Estate Room",
   "Superior Room",
-  "Garden Suite",
+  "Deluxe Garden Suite",
   "Luxury Suite",
   "Junior Suite",
   "Not Staying Onsite",
