@@ -336,7 +336,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
           <div className="space-y-12">
             <div className="text-center">
               <p className="body-editorial mx-auto mb-2">
-                Welcome, <span className="font-medium text-foreground">{guest.party_name}</span>!
+                Welcome, <span className="font-medium text-foreground">{guest.first_name}</span>!
               </p>
               <p className="font-body text-sm text-muted-foreground">
                 You may RSVP for up to {guest.max_guests} guest{guest.max_guests > 1 ? "s" : ""}.
