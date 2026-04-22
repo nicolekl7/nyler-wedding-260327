@@ -73,14 +73,18 @@ export const loadPartyRsvpState = async (
   }
 
   if (!responder) {
+    const partyMembers = await fetchPartyMembers(found.party_name);
+    const guestNames = partyMembers.length
+      ? partyMembers.map((m) => `${m.first_name} ${m.last_name}`.trim()).filter(Boolean)
+      : [`${found.first_name} ${found.last_name}`];
     return {
       previouslyResponded: false,
       eventRsvps: {},
       dietary: "",
       notes: "",
       accommodation: "",
-      guestNames: [`${found.first_name} ${found.last_name}`],
-      attendingCount: 1,
+      guestNames,
+      attendingCount: guestNames.length,
     };
   }
 
