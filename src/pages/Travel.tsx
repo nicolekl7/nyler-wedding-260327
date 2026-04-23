@@ -43,7 +43,7 @@ const Travel = () => (
         </p>
         <div className="mt-8 flex justify-center">
           <a
-            href="https://www.google.com/maps/place/Laticastelli+Country+Relais/data=!4m2!3m1!1s0x0:ce0b4890bdc26bce?sa=X&ved=1t:2428&ictx=111"
+            href="https://maps.app.goo.gl/4P2Z6mjKSBRC4FGG9?g_st=ic"
             target="_blank"
             rel="noopener noreferrer"
             className="font-serif text-base md:text-lg text-foreground italic hover:text-primary transition-colors underline underline-offset-4 decoration-primary/40"
