@@ -140,16 +140,16 @@ const LocalGuide = () => (
       <FadeIn>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            to="/the-weekend"
-            className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-          >
-            Events →
-          </Link>
-          <Link
             to="/travel"
             className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
           >
             Travel →
+          </Link>
+          <Link
+            to="/rsvp-v2"
+            className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+          >
+            RSVP →
           </Link>
         </div>
       </FadeIn>
