@@ -49,8 +49,6 @@ const Travel = () => (
             className="font-serif text-base md:text-lg text-foreground italic hover:text-primary transition-colors underline underline-offset-4 decoration-primary/40"
           >
             Laticastelli Country Relais
-            <br />
-            Via Laticastelli, Rapolano Terme, Province of Siena, Italy
           </a>
         </div>
       </FadeIn>
