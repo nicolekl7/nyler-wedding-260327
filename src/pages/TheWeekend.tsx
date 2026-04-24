@@ -31,7 +31,7 @@ const itinerary = [
   },
   {
     day: "Friday, September 18",
-    title: "La Dolce Far Niente Pool Party",
+    title: "Il Dolce Far Niente Pool Party",
     description: "The art of doing nothing. Recover by the pool with lunch, drinks, and sunshine.",
     attire: "Vintage Resort Wear",
     icon: null,
