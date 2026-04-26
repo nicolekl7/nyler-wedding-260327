@@ -116,8 +116,8 @@ const RsvpV2 = () => {
               To get started, select your room below or let us know you'll be staying offsite.
             </p>
             <p className="body-editorial mx-auto text-center mt-6 text-foreground font-normal !leading-snug">
-              Rooms are available on a first-come, first-served basis. Prices are based per room for the entire three-night stay.
-              <span className="block mt-3 md:inline md:mt-0"> Please note that reservations not paid within 48&nbsp;hours will be released.</span>
+              <strong>Prices are per room for the entire three-night stay (September 16–19).</strong>
+              <span className="block mt-3">Rooms are available on a first-come, first-served basis. Reservations not paid within 48&nbsp;hours will be released.</span>
             </p>
             <p className="mt-6 text-center">
               <a
