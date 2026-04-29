@@ -41,6 +41,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [dietary, setDietary] = useState("");
   const [notes, setNotes] = useState("");
   const [internalAccommodation, setInternalAccommodation] = useState("");
+  const [email, setEmail] = useState("");
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
 
@@ -172,6 +173,21 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         notes,
         accommodation,
       });
+
+      if (email.trim()) {
+        supabase.functions
+          .invoke("send-rsvp-confirmation", {
+            body: {
+              email: email.trim(),
+              guestNames: cleanedNames,
+              eventRsvps,
+              accommodation,
+              dietary: dietary.trim(),
+              notes: notes.trim(),
+            },
+          })
+          .catch((err) => console.error("Confirmation email failed:", err));
+      }
 
       localStorage.setItem("hasRSVPd", "true");
       localStorage.setItem("rsvpName", `${guest?.first_name} ${guest?.last_name}`);
@@ -447,6 +463,18 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 rows={1}
                 className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors resize-none"
                 maxLength={1000}
+              />
+            </div>
+
+            <div>
+              <label className="heading-sub block mb-2">Email <span className="font-body text-xs normal-case tracking-normal text-muted-foreground">(optional — receive a copy of your RSVP)</span></label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
+                maxLength={320}
               />
             </div>
 
