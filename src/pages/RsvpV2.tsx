@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import RoomCardsDisplay from "@/components/RoomCardsDisplay";
@@ -144,12 +143,12 @@ const RsvpV2 = () => {
                 </a>
               </p>
               <p>
-                <Link
-                  to="/payment"
+                <a
+                  href="https://www.nicoleandtylerswedding.com/payment"
                   className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Already RSVP'd and picked a room? Skip right to the payment &gt;
-                </Link>
+                </a>
               </p>
             </div>
           </div>
