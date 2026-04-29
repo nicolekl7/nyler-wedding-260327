@@ -27,7 +27,7 @@ const itinerary = [
     description:
       "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, dinner, and dancing the night away.",
     attire:
-      "Tuscan Formal — Floor-length dresses. Suits. An excuse to dress up. Rich colors and textures are encouraged. Have fun with it!",
+      "Tuscan Formal — An excuse to dress up. Floor-length dresses. Suits. Rich colors and textures are encouraged. Have fun with it!",
     icon: weddingIcon,
   },
   {
@@ -164,7 +164,7 @@ const TheWeekend = () => (
                 {i === 1 && (
                   <div className="mt-6">
                     <p className="font-body text-sm text-muted-foreground italic mb-4">
-                      A few colors to inspire but wear whatever makes you feel good.
+                      Here are a few colors to inspire but wear whatever makes you feel good.
                     </p>
                     <img
                       src={attireGraphic}
