@@ -15,7 +15,7 @@ const HomeV2 = () => {
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % photos.length), 7000);
+    const t = setInterval(() => setIdx((i) => (i + 1) % photos.length), 5000);
     return () => clearInterval(t);
   }, []);
 
@@ -56,7 +56,7 @@ const HomeV2 = () => {
                   />
                 </div>
 
-                <h1 className="font-serif font-normal text-foreground tracking-tight leading-none text-[30vw] sm:text-[14vw] w-full sm:w-auto text-center -translate-y-[12px] -translate-x-[6px] sm:flex-1 sm:flex sm:items-end sm:justify-start sm:translate-y-0 sm:translate-x-0">
+                <h1 className="font-serif font-normal text-foreground tracking-tight leading-none text-[30vw] sm:text-[14vw] w-full sm:w-auto text-center -translate-y-[12px] -translate-x-[16px] sm:flex-1 sm:flex sm:items-end sm:justify-start sm:translate-y-0 sm:translate-x-0">
                   T<span className="tracking-[0.04em]"></span>YLER
                 </h1>
               </div>
