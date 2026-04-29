@@ -28,6 +28,9 @@ const RsvpV2 = () => {
     const paypalUrl = price
       ? `https://paypal.me/nylerwedding/${price}`
       : "https://paypal.me/nylerwedding";
+    const venmoUrl = price
+      ? `https://venmo.com/tylermagee?txn=pay&amount=${price}&note=${encodeURIComponent("Wedding accommodation")}`
+      : `https://venmo.com/tylermagee?txn=pay&note=${encodeURIComponent("Wedding accommodation")}`;
 
     const isStayingOnsite = !submitResult.allDeclined && submitResult.accommodation !== "Not Staying Onsite";
     const isOffsite = !submitResult.allDeclined && submitResult.accommodation === "Not Staying Onsite";
@@ -48,14 +51,24 @@ const RsvpV2 = () => {
                 <p className="body-editorial mx-auto text-balance mt-6">
                   Your room is officially on hold. To secure your spot, please send payment below via PayPal Friends &amp;&nbsp;Family to @NylerWedding within 48&nbsp;hours. In the payment note, include the names of all guests staying in your room.
                 </p>
-                <a
-                  href={paypalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mt-8 px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
-                >
-                  Pay via PayPal{price ? ` — $${price}` : ""}
-                </a>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
+                  <a
+                    href={paypalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+                  >
+                    Pay with PayPal{price ? ` — $${price.toLocaleString()}` : ""}
+                  </a>
+                  <a
+                    href={venmoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-10 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    Pay with Venmo{price ? ` — $${price.toLocaleString()}` : ""}
+                  </a>
+                </div>
                 <p className="font-display italic text-lg text-foreground mt-8">
                   Ci vediamo in Italia!
                 </p>
@@ -119,15 +132,26 @@ const RsvpV2 = () => {
               <strong>Prices are per room for the entire three-night stay (September 16–19).</strong>
               <span className="block mt-3">Rooms are available on a first-come, first-served basis. Reservations not paid within 48&nbsp;hours will be released.</span>
             </p>
-            <p className="mt-6 text-center">
-              <a
-                href="#rsvp-form"
-                onClick={(e) => { e.preventDefault(); formRef.current?.scrollIntoView({ behavior: "smooth" }); }}
-                className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Not able to make it? Skip right to the RSVP &gt;
-              </a>
-            </p>
+            <div className="mt-6 text-center space-y-2">
+              <p>
+                <a
+                  href="#rsvp-form"
+                  onClick={(e) => { e.preventDefault(); formRef.current?.scrollIntoView({ behavior: "smooth" }); }}
+                  className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Not able to make it? Skip right to the RSVP &gt;
+                </a>
+              </p>
+              <p>
+                <a
+                  href="#rsvp-form"
+                  onClick={(e) => { e.preventDefault(); formRef.current?.scrollIntoView({ behavior: "smooth" }); }}
+                  className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Already RSVP'd and picked a room? Skip right to the payment &gt;
+                </a>
+              </p>
+            </div>
           </div>
         </FadeIn>
 
