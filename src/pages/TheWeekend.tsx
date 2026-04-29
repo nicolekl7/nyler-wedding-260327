@@ -9,6 +9,7 @@ import weddingIcon from "@/assets/Wedding-4.png";
 import poolUmbrella from "@/assets/Pool-Party-Umbrella.png";
 import poolChairs from "@/assets/Pool-Party-Chairs.png";
 import poolSun from "@/assets/Pool-Party-Sun.png";
+import attireGraphic from "@/assets/Wedding-1.png";
 
 const itinerary = [
   {
@@ -26,7 +27,7 @@ const itinerary = [
     description:
       "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, dinner, and dancing the night away.",
     attire:
-      "Tuscan Formal — Floor-length dresses. Suits. Rich colors and textures are encouraged. Dress up and have fun with it!\n\n\n(Please note the grounds feature cobblestone and grass so block heels are recommended)",
+      "Tuscan Formal — Think rich textures, deep autumn tones, and an excuse to dress up properly. Floor-length dresses, elegant suits. The Tuscan hills are your backdrop — do it justice. (Block heels recommended for cobblestone and grass.)",
     icon: weddingIcon,
   },
   {
@@ -160,6 +161,18 @@ const TheWeekend = () => (
                 </h2>
                 <p className="body-editorial mb-4">{event.description}</p>
                 <p className="font-body text-sm text-muted-foreground italic">Attire: {event.attire}</p>
+                {i === 1 && (
+                  <div className="mt-6">
+                    <p className="font-body text-sm text-muted-foreground italic mb-4">
+                      A few colors that feel right for the occasion — wear what you love.
+                    </p>
+                    <img
+                      src={attireGraphic}
+                      alt="Wedding attire color palette illustration"
+                      className="w-full max-w-xl"
+                    />
+                  </div>
+                )}
               </div>
             </FadeIn>
           ))}
