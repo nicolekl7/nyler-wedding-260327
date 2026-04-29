@@ -139,12 +139,14 @@ export const savePartyRsvpState = async ({
   dietary,
   notes,
   accommodation,
+  email,
 }: {
   guestNames: string[];
   eventRsvps: EventRsvpMap;
   dietary: string;
   notes: string;
   accommodation: string;
+  email?: string;
 }) => {
   const submittedAt = new Date().toISOString();
   const submissionGroupId = crypto.randomUUID();
