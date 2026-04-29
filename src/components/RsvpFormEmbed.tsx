@@ -40,8 +40,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [eventRsvps, setEventRsvps] = useState<Record<string, string>>({});
   const [dietary, setDietary] = useState("");
   const [notes, setNotes] = useState("");
-  const [internalAccommodation, setInternalAccommodation] = useState("");
   const [email, setEmail] = useState("");
+  const [internalAccommodation, setInternalAccommodation] = useState("");
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
 
@@ -134,6 +134,12 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       setLoading(false);
       return;
     }
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      toast.error("Please enter a valid email address so we can send your receipt");
+      setLoading(false);
+      return;
+    }
 
     const declined = events.every((ev) => eventRsvps[ev.key] === "decline");
 
@@ -148,6 +154,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         const formData = new URLSearchParams();
         formData.append("First Name", firstName);
         formData.append("Last Name", lastName);
+        formData.append("Email", trimmedEmail);
         formData.append("Wednesday Welcome Party", eventRsvps.welcome_party_rsvp === "accept" ? "Accept" : "Decline");
         formData.append("Thursday Wedding", eventRsvps.wedding_day_rsvp === "accept" ? "Accept" : "Decline");
         formData.append("Friday Recovery Day", eventRsvps.pool_day_rsvp === "accept" ? "Accept" : "Decline");
@@ -172,22 +179,28 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         dietary,
         notes,
         accommodation,
+        email: trimmedEmail,
       });
 
-      if (email.trim()) {
-        supabase.functions
-          .invoke("send-rsvp-confirmation", {
-            body: {
-              email: email.trim(),
-              guestNames: cleanedNames,
-              eventRsvps,
-              accommodation,
-              dietary: dietary.trim(),
-              notes: notes.trim(),
-            },
-          })
-          .catch((err) => console.error("Confirmation email failed:", err));
-      }
+      // Send receipt email via separate Apps Script (fire-and-forget)
+      const RECEIPT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFgCJ1oSr8uUtfbfCGOUL1gvvaOHT5YvIXOwuFlWfsZIg-jshku9QAoG7cDojcItBU/exec";
+      const receiptForm = new URLSearchParams();
+      receiptForm.append("email", trimmedEmail);
+      receiptForm.append("guestNames", cleanedNames.join("|"));
+      receiptForm.append("welcome_party_rsvp", eventRsvps.welcome_party_rsvp || "");
+      receiptForm.append("wedding_day_rsvp", eventRsvps.wedding_day_rsvp || "");
+      receiptForm.append("pool_day_rsvp", eventRsvps.pool_day_rsvp || "");
+      receiptForm.append("accommodation", accommodation);
+      receiptForm.append("dietary", dietary.trim());
+      receiptForm.append("notes", notes.trim());
+      receiptForm.append("allDeclined", declined ? "true" : "false");
+
+      fetch(RECEIPT_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: receiptForm.toString(),
+      }).catch((err) => console.error("Receipt email failed:", err));
 
       localStorage.setItem("hasRSVPd", "true");
       localStorage.setItem("rsvpName", `${guest?.first_name} ${guest?.last_name}`);
@@ -467,14 +480,15 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>
 
             <div>
-              <label className="heading-sub block mb-2">Email <span className="font-body text-xs normal-case tracking-normal text-muted-foreground">(optional — receive a copy of your RSVP)</span></label>
+              <label className="heading-sub block mb-2">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                placeholder="So we can send your RSVP receipt"
+                autoComplete="email"
                 className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
-                maxLength={320}
+                maxLength={255}
               />
             </div>
 
