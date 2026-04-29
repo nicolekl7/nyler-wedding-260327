@@ -5,8 +5,8 @@ import { Menu, X } from "lucide-react";
 const navItems = [
   { path: "/", label: "Home" },
   { path: "/our-story", label: "Our Story", hidden: true },
-  { path: "/the-weekend", label: "Events" },
   { path: "/travel", label: "Travel" },
+  { path: "/the-weekend", label: "Events" },
   { path: "/local-guide", label: "Explore" },
   { path: "https://www.zola.com/registry/nicoleandtylersregistry", label: "Registry", external: true },
   { path: "/rsvp-v2", label: "RSVP", cta: true },
