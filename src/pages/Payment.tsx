@@ -23,7 +23,7 @@ const Payment = () => {
               href="https://paypal.me/nylerwedding"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+              className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               Pay with PayPal
             </a>
@@ -31,7 +31,7 @@ const Payment = () => {
               href={`https://venmo.com/tylermagee?txn=pay&note=${encodeURIComponent("Wedding accommodation")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-10 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+              className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               Pay with Venmo
             </a>
