@@ -323,14 +323,24 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               <p className="font-body text-sm text-muted-foreground mt-6">
                 Please note: your room is not reserved until payment is received.
               </p>
-              <a
-                href="https://paypal.me/nylerwedding"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-6 px-8 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
-              >
-                Pay Here
-              </a>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+                <a
+                  href="https://paypal.me/nylerwedding"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+                >
+                  Pay with PayPal
+                </a>
+                <a
+                  href={`https://venmo.com/tylermagee?txn=pay&note=${encodeURIComponent("Wedding accommodation")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+                >
+                  Pay with Venmo
+                </a>
+              </div>
             </>
           )}
         </FadeIn>
