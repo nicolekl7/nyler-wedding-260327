@@ -9,7 +9,7 @@ import weddingIcon from "@/assets/Wedding-4.png";
 import poolUmbrella from "@/assets/Pool-Party-Umbrella.png";
 import poolChairs from "@/assets/Pool-Party-Chairs.png";
 import poolSun from "@/assets/Pool-Party-Sun.png";
-import attireGraphic from "@/assets/attire.jpg";
+import attireGraphic from "@/assets/attire.png";
 
 const itinerary = [
   {
