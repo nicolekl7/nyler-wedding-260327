@@ -5,6 +5,8 @@ import CatTapRipple from "./components/CatTapRipple";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
+import IndexV2 from "./pages/IndexV2";
+import OurStory from "./pages/OurStory";
 import TheWeekend from "./pages/TheWeekend";
 import AccommodationsV2 from "./pages/AccommodationsV2";
 import BookingSuccess from "./pages/BookingSuccess";
