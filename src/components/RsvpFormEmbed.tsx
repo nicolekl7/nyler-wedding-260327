@@ -44,6 +44,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [internalAccommodation, setInternalAccommodation] = useState("");
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
+  const [rsvpFirstName, setRsvpFirstName] = useState("");
 
   const accommodation = externalAccommodation !== undefined ? externalAccommodation : internalAccommodation;
   const setAccommodation = (val: string) => {
@@ -54,6 +55,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   useEffect(() => {
     if (localStorage.getItem("hasRSVPd") === "true") {
       setAlreadyRsvpd(true);
+      const savedName = localStorage.getItem("rsvpName") || "";
+      setRsvpFirstName(savedName.split(" ")[0] || "");
     }
   }, []);
 
@@ -268,8 +271,33 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
           <h2 className="heading-section mb-4">RSVP</h2>
           <div className="w-12 h-px bg-primary mx-auto mb-8" />
           <p className="body-editorial mx-auto mb-10">
-            We have received your RSVP. Thank you!
+            We have received your RSVP{rsvpFirstName ? `, ${rsvpFirstName}` : ""}. Thank you!
           </p>
+
+          <div className="mb-8">
+            <p className="font-body text-sm text-muted-foreground mb-4">
+              Staying onsite? Complete your room payment below.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href="https://paypal.me/nylerwedding"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-8 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+              >
+                Pay with PayPal
+              </a>
+              <a
+                href={`https://venmo.com/tylermagee?txn=pay&note=${encodeURIComponent("Wedding accommodation")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-8 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                Pay with Venmo
+              </a>
+            </div>
+          </div>
+
           <button
             type="button"
             onClick={handleEditRsvp}
@@ -284,6 +312,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 localStorage.removeItem("hasRSVPd");
                 localStorage.removeItem("rsvpName");
                 setAlreadyRsvpd(false);
+                setRsvpFirstName("");
                 setGuest(null);
                 setSearchName("");
                 setSearched(false);
