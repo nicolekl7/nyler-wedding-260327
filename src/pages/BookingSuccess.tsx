@@ -32,14 +32,26 @@ const BookingSuccess = () => {
           payment note! (Select Friends &amp;&nbsp;Family to avoid fees.)
         </p>
 
-        <a
-          href="https://paypal.me/nylerwedding"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
-        >
-          Pay via PayPal
-        </a>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href={state?.price ? `https://paypal.me/nylerwedding/${state.price}` : "https://paypal.me/nylerwedding"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+          >
+            Pay with PayPal{state?.price ? ` — $${state.price.toLocaleString()}` : ""}
+          </a>
+          <a
+            href={state?.price
+              ? `https://venmo.com/tylermagee?txn=pay&amount=${state.price}&note=${encodeURIComponent("Wedding accommodation")}`
+              : "https://venmo.com/u/tylermagee"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-10 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+          >
+            Pay with Venmo{state?.price ? ` — $${state.price.toLocaleString()}` : ""}
+          </a>
+        </div>
       </section>
     </Layout>
   );
