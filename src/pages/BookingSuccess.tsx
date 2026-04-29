@@ -11,15 +11,17 @@ const BookingSuccess = () => {
   return (
     <Layout>
       <section className="page-section max-w-xl mx-auto text-center">
-        <h1 className="heading-section mb-4">Success!</h1>
-        <div className="w-12 h-px bg-primary mx-auto mb-10" />
+        <h1 className="heading-section mb-4">Thank You</h1>
+        <div className="w-12 h-px bg-primary mx-auto mb-6" />
+
+        <p className="body-editorial mx-auto text-balance mb-8">
+          We can't wait to celebrate with you in Tuscany!
+        </p>
 
         <p className="body-editorial mx-auto text-balance mb-6">
           Your room is officially on hold
-          {state?.roomName ? ` (${state.roomName})` : ""}. To finalize your booking, please send
-          your total room amount
-          {state?.price ? ` of $${state.price.toLocaleString()} USD` : ""} via PayPal Friends
-          &amp;&nbsp;Family to{" "}
+          {state?.roomName ? ` (${state.roomName})` : ""}. To secure your spot, please send
+          payment below via PayPal Friends &amp;&nbsp;Family or Venmo to{" "}
           <a
             href="https://paypal.me/nylerwedding"
             target="_blank"
@@ -28,8 +30,8 @@ const BookingSuccess = () => {
           >
             @NylerWedding
           </a>{" "}
-          within 48&nbsp;hours. Please include your room type and the names of your guests in the
-          payment note! (Select Friends &amp;&nbsp;Family to avoid fees.)
+          within 48&nbsp;hours. In the payment note, include the names of all guests staying in
+          your room.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -37,7 +39,7 @@ const BookingSuccess = () => {
             href={state?.price ? `https://paypal.me/nylerwedding/${state.price}` : "https://paypal.me/nylerwedding"}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+            className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
           >
             Pay with PayPal{state?.price ? ` — $${state.price.toLocaleString()}` : ""}
           </a>
@@ -47,7 +49,7 @@ const BookingSuccess = () => {
               : "https://venmo.com/u/tylermagee"}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-10 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
           >
             Pay with Venmo{state?.price ? ` — $${state.price.toLocaleString()}` : ""}
           </a>
