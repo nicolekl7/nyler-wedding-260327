@@ -183,7 +183,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       });
 
       // Send receipt email via separate Apps Script (fire-and-forget)
-      const RECEIPT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFgCJ1oSr8uUtfbfCGOUL1gvvaOHT5YvIXOwuFlWfsZIg-jshku9QAoG7cDojcItBU/exec";
+      const RECEIPT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNmaFh0PpuYkB2nxshXCuFv2Vxvnv_QFxSl67g1qdE8--Sd2r_l0rhbiW0NprZJqsR/exec";
       const receiptForm = new URLSearchParams();
       receiptForm.append("email", trimmedEmail);
       receiptForm.append("guestNames", cleanedNames.join("|"));
