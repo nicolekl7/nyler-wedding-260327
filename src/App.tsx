@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index";
 import IndexV2 from "./pages/IndexV2";
+import HomeV2 from "./pages/HomeV2";
 import OurStory from "./pages/OurStory";
 import TheWeekend from "./pages/TheWeekend";
 import AccommodationsV2 from "./pages/AccommodationsV2";
@@ -13,7 +14,6 @@ import BookingSuccess from "./pages/BookingSuccess";
 import Travel from "./pages/Travel";
 import RsvpV2 from "./pages/RsvpV2";
 import LocalGuide from "./pages/LocalGuide";
-import OurStory from "./pages/OurStory";
 import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
 
@@ -35,6 +35,8 @@ const App = () => (
           <Route path="/rsvp-v2" element={<RsvpV2 />} />
           <Route path="/local-guide" element={<LocalGuide />} />
           <Route path="/our-story" element={<OurStory />} />
+          <Route path="/home-v2" element={<HomeV2 />} />
+          <Route path="/home" element={<HomeV2 />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
