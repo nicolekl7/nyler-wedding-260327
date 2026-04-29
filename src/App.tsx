@@ -12,6 +12,7 @@ import Travel from "./pages/Travel";
 import RsvpV2 from "./pages/RsvpV2";
 import LocalGuide from "./pages/LocalGuide";
 import OurStory from "./pages/OurStory";
+import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/rsvp-v2" element={<RsvpV2 />} />
           <Route path="/local-guide" element={<LocalGuide />} />
           <Route path="/our-story" element={<OurStory />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import RoomCardsDisplay from "@/components/RoomCardsDisplay";
@@ -143,13 +144,12 @@ const RsvpV2 = () => {
                 </a>
               </p>
               <p>
-                <a
-                  href="#rsvp-form"
-                  onClick={(e) => { e.preventDefault(); formRef.current?.scrollIntoView({ behavior: "smooth" }); }}
+                <Link
+                  to="/payment"
                   className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Already RSVP'd and picked a room? Skip right to the payment &gt;
-                </a>
+                </Link>
               </p>
             </div>
           </div>

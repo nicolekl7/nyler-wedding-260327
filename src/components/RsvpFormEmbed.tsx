@@ -207,6 +207,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
       localStorage.setItem("hasRSVPd", "true");
       localStorage.setItem("rsvpName", `${guest?.first_name} ${guest?.last_name}`);
+      localStorage.setItem("rsvpEmail", trimmedEmail);
       setAllDeclined(declined);
       setSubmitted(true);
       onSubmitSuccess?.(declined, accommodation);
@@ -260,6 +261,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     }
     setGuestNames(loadedState.guestNames);
     setAttendingCount(Math.min(found.max_guests, loadedState.attendingCount));
+    setEmail(localStorage.getItem("rsvpEmail") || "");
 
     setLoading(false);
   };
@@ -311,6 +313,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               onClick={() => {
                 localStorage.removeItem("hasRSVPd");
                 localStorage.removeItem("rsvpName");
+                localStorage.removeItem("rsvpEmail");
                 setAlreadyRsvpd(false);
                 setRsvpFirstName("");
                 setGuest(null);
