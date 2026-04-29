@@ -33,7 +33,7 @@ const sections = [
 ];
 
 const Travel = () => (
-  <Layout>
+  <Layout dark>
     <section className="page-section w-[90%] max-w-[1000px] mx-auto text-center">
       <FadeIn>
         <h1 className="heading-section mb-4">Getting to Borgo Laticastelli</h1>

@@ -94,7 +94,7 @@ const guides = [
 ];
 
 const LocalGuide = () => (
-  <Layout>
+  <Layout dark>
     <section className="page-section w-[90%] max-w-[1400px] mx-auto">
       <FadeIn>
         <h1 className="heading-section text-center mb-4">Local Guide</h1>

@@ -59,6 +59,29 @@
     --sidebar-border: 63 42% 35%;
     --sidebar-ring: 55 41% 23%;
   }
+
+  .dark-page {
+    --background: 55 38% 20%;
+    --foreground: 40 60% 93%;
+    --card: 55 35% 24%;
+    --card-foreground: 40 60% 93%;
+    --popover: 55 35% 24%;
+    --popover-foreground: 40 60% 93%;
+    --primary: 40 60% 93%;
+    --primary-foreground: 55 38% 20%;
+    --secondary: 55 30% 28%;
+    --secondary-foreground: 40 60% 93%;
+    --muted: 55 28% 28%;
+    --muted-foreground: 40 25% 68%;
+    --accent: 40 60% 93%;
+    --accent-foreground: 55 38% 20%;
+    --border: 55 25% 35%;
+    --input: 55 25% 32%;
+    --ring: 40 60% 93%;
+    --stone-light: 55 28% 28%;
+    --cream: 40 60% 93%;
+    --warm-white: 40 60% 93%;
+  }
 }
 
 @layer base {
