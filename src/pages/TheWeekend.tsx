@@ -27,7 +27,7 @@ const itinerary = [
     description:
       "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, dinner, and dancing the night away.",
     attire:
-      "Tuscan Formal — Think rich textures, deep autumn tones, and an excuse to dress up properly. Floor-length dresses, elegant suits. The Tuscan hills are your backdrop — do it justice. (Block heels recommended for cobblestone and grass.)",
+      "Tuscan Formal — Floor-length dresses. Suits. An excuse to dress up. Rich colors and textures are encouraged. Have fun with it!",
     icon: weddingIcon,
   },
   {
@@ -164,7 +164,7 @@ const TheWeekend = () => (
                 {i === 1 && (
                   <div className="mt-6">
                     <p className="font-body text-sm text-muted-foreground italic mb-4">
-                      A few colors that feel right for the occasion — wear what you love.
+                      A few colors to inspire but wear whatever makes you feel good.
                     </p>
                     <img
                       src={attireGraphic}
