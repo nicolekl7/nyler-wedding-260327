@@ -4,6 +4,7 @@ import FadeIn from "@/components/FadeIn";
 import airImg from "@/assets/travel-by-air.avif";
 import trainImg from "@/assets/travel-by-train.jpg";
 import carImg from "@/assets/travel-by-car.jpg";
+import callaLily2 from "@/assets/calla-lilly-side.png";
 
 const sections = [
   {
@@ -34,7 +35,38 @@ const sections = [
 
 const Travel = () => (
   <Layout dark hideFooterImage>
-    <section className="page-section w-[90%] max-w-[1000px] mx-auto text-center">
+    <section className="relative page-section w-[90%] max-w-[1000px] mx-auto text-center">
+      {/* Decorative calla lilies flanking the hero — soft sage tint */}
+      <div
+        aria-hidden
+        className="hidden md:block pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/4 lg:-translate-x-1/3 w-40 lg:w-56 aspect-square opacity-70"
+        style={{
+          backgroundColor: "hsl(63 30% 80%)",
+          WebkitMaskImage: `url(${callaLily2})`,
+          maskImage: `url(${callaLily2})`,
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+          maskPosition: "center",
+          WebkitMaskSize: "contain",
+          maskSize: "contain",
+        }}
+      />
+      <div
+        aria-hidden
+        className="hidden md:block pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 lg:translate-x-1/3 w-40 lg:w-56 aspect-square opacity-70 scale-x-[-1]"
+        style={{
+          backgroundColor: "hsl(63 30% 80%)",
+          WebkitMaskImage: `url(${callaLily2})`,
+          maskImage: `url(${callaLily2})`,
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+          maskPosition: "center",
+          WebkitMaskSize: "contain",
+          maskSize: "contain",
+        }}
+      />
       <FadeIn>
         <h1 className="heading-section mb-4">Getting to Borgo Laticastelli</h1>
         <div className="w-12 h-px bg-primary mx-auto mb-8" />
