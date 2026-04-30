@@ -117,6 +117,7 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
   };
 
   const notOnsiteSelected = selectedAccommodation === "Not Staying Onsite";
+  const joiningRoomSelected = selectedAccommodation === "Joining a Reserved Room";
 
   if (loading) {
     return (
@@ -159,6 +160,33 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
         {soloCategory && renderCard(soloCategory, true, 150)}
         {categories.map((cat, i) => renderCard(cat, false, 200 + i * 60))}
       </div>
+
+      {/* Joining a Reserved Room card */}
+      <FadeIn delay={300}>
+        <button
+          type="button"
+          onClick={() => handleSelect("Joining a Reserved Room")}
+          className={`w-full text-left border p-6 transition-all duration-300 ${
+            joiningRoomSelected
+              ? "border-2 border-primary bg-primary/[0.04] shadow-lg shadow-primary/10"
+              : "border-border hover:border-primary/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 cursor-pointer"
+          }`}
+        >
+          <h3 className="font-serif text-lg text-foreground mb-1">Joining a Reserved Room</h3>
+          <p className="font-body text-sm text-muted-foreground font-light">
+            For guests who are sharing a room already reserved by someone else in your party.
+          </p>
+          <div
+            className={`mt-5 w-full py-2.5 text-center font-body text-xs uppercase tracking-[0.25em] transition-all duration-200 ${
+              joiningRoomSelected
+                ? "bg-primary text-primary-foreground"
+                : "border border-border text-muted-foreground hover:border-primary hover:text-foreground"
+            }`}
+          >
+            {joiningRoomSelected ? "Selected" : "Select"}
+          </div>
+        </button>
+      </FadeIn>
     </div>
   );
 };

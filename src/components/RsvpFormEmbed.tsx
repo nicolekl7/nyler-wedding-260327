@@ -20,7 +20,10 @@ const accommodationOptions = [
   "Luxury Suite",
   "Junior Suite",
   "Not Staying Onsite",
+  "Joining a Reserved Room",
 ];
+
+const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room"];
 
 interface RsvpFormEmbedProps {
   accommodation?: string;
@@ -350,7 +353,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               ? "We're sorry we'll miss you!"
               : "We can't wait to celebrate with you!"}
           </p>
-          {!allDeclined && accommodation !== "Not Staying Onsite" && (
+          {!allDeclined && !NO_PAYMENT_ACCOMMODATIONS.includes(accommodation) && (
             <>
               <p className="font-body text-sm text-muted-foreground mt-6">
                 Please note: your room is not reserved until payment is received.

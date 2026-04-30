@@ -24,7 +24,10 @@ const RsvpV2 = () => {
   }, []);
 
   if (submitResult) {
-    const price = roomPrices[submitResult.accommodation];
+    const noPaymentAccommodations = ["Not Staying Onsite", "Joining a Reserved Room"];
+    const price = noPaymentAccommodations.includes(submitResult.accommodation)
+      ? undefined
+      : roomPrices[submitResult.accommodation];
     const paypalUrl = price
       ? `https://paypal.me/nylerwedding/${price}`
       : "https://paypal.me/nylerwedding";
@@ -32,7 +35,8 @@ const RsvpV2 = () => {
       ? `https://venmo.com/tylermagee?txn=pay&amount=${price}&note=${encodeURIComponent("Wedding accommodation")}`
       : `https://venmo.com/tylermagee?txn=pay&note=${encodeURIComponent("Wedding accommodation")}`;
 
-    const isStayingOnsite = !submitResult.allDeclined && submitResult.accommodation !== "Not Staying Onsite";
+    const isJoiningRoom = !submitResult.allDeclined && submitResult.accommodation === "Joining a Reserved Room";
+    const isStayingOnsite = !submitResult.allDeclined && !noPaymentAccommodations.includes(submitResult.accommodation);
     const isOffsite = !submitResult.allDeclined && submitResult.accommodation === "Not Staying Onsite";
     const isDeclined = submitResult.allDeclined;
 
@@ -75,6 +79,20 @@ const RsvpV2 = () => {
                     Pay with Venmo{price ? ` — $${price.toLocaleString()}` : ""}
                   </a>
                 </div>
+                <p className="font-display italic text-lg text-foreground mt-8">
+                  Ci vediamo in Italia!
+                </p>
+              </>
+            )}
+
+            {isJoiningRoom && (
+              <>
+                <p className="body-editorial mx-auto text-balance">
+                  We can't wait to celebrate with you in Tuscany!
+                </p>
+                <p className="body-editorial mx-auto text-balance mt-6">
+                  You're all set—we've noted that you'll be joining a reserved room. No payment is needed from you; the room holder will take care of it.
+                </p>
                 <p className="font-display italic text-lg text-foreground mt-8">
                   Ci vediamo in Italia!
                 </p>
