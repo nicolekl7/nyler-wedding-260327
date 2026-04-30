@@ -111,7 +111,6 @@ const PhotoStack = ({
   };
   if (visible.length === 0) return null;
 
-  // Deterministic pseudo-random rotations
   const rot = (i: number) => {
     const v = Math.sin((seed + 1) * (i + 1) * 7.13) * 6;
     return v.toFixed(2);
@@ -120,12 +119,34 @@ const PhotoStack = ({
   if (visible.length === 1) {
     return (
       <div className={cn("flex", align === "left" ? "justify-start" : "justify-end")}>
-        <PhotoFrame photo={visible[0]} rotate={rot(0)} className="w-64 sm:w-80" />
+        <PhotoFrame photo={visible[0]} rotate={seed === 0 ? "20" : rot(0)} className="w-64 sm:w-80" />
       </div>
     );
   }
 
-  // Scattered offsets per stack size — keeps each frame at least partially clickable.
+  if (visible.length >= 6) {
+    return (
+      <div
+        className={cn(
+          "grid w-full max-w-[18rem] grid-cols-2 gap-x-4 gap-y-5 sm:max-w-[22rem] lg:max-w-[28rem] lg:grid-cols-3 lg:gap-x-5 lg:gap-y-6",
+          align === "left" ? "mr-auto" : "ml-auto"
+        )}
+      >
+        {visible.map((photo, i) => (
+          <PhotoFrame
+            key={i}
+            photo={photo}
+            rotate={seed === 0 && i === 0 ? "20" : rot(i)}
+            className="relative w-full transition-transform duration-500 hover:!rotate-0 hover:scale-105"
+            style={{ zIndex: seed === 0 && i === 0 ? stackZ(i, 30) : stackZ(i, 10 + i) }}
+            onMouseEnter={() => bring(i)}
+            onClick={() => bring(i)}
+          />
+        ))}
+      </div>
+    );
+  }
+
   const offsetsByCount: Record<number, { left: string; top: string }[]> = {
     2: [
       { left: "0%", top: "0%" },
@@ -159,7 +180,6 @@ const PhotoStack = ({
     ],
   };
 
-  // Desktop-only override for 6: 2 rows × 3 columns grid feel.
   const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {
     6: [
       { left: "0%", top: "0%" },
@@ -171,9 +191,6 @@ const PhotoStack = ({
     ],
   };
 
-  // Taller container for bigger stacks — generous so absolutely-positioned
-  // photos never spill into the next stop on mobile. Desktop 6 uses 2x3 grid
-  // so it can be shorter.
   const heightClass =
     visible.length >= 6
       ? "h-[34rem] lg:h-[24rem]"
@@ -185,8 +202,6 @@ const PhotoStack = ({
       ? "h-[22rem] sm:h-80"
       : "h-72 sm:h-80";
 
-  // Smaller frames on mobile when there are many photos. For 6 on desktop,
-  // shrink so 3 fit per row.
   const sizeClass =
     visible.length >= 6
       ? "w-32 lg:w-32"
@@ -196,7 +211,6 @@ const PhotoStack = ({
       ? "w-36 sm:w-52"
       : "w-40 sm:w-56";
 
-  // 6-photo desktop layout needs more horizontal room (3 columns).
   const containerWidthClass =
     visible.length >= 6 ? "lg:max-w-[34rem]" : "lg:max-w-[26rem]";
 
@@ -217,7 +231,7 @@ const PhotoStack = ({
           <PhotoFrame
             key={i}
             photo={photo}
-            rotate={rot(i)}
+            rotate={seed === 0 && i === 0 ? "20" : rot(i)}
             className={cn(
               "absolute transition-transform duration-500 hover:!rotate-0 hover:scale-105",
               sizeClass,
@@ -226,7 +240,7 @@ const PhotoStack = ({
             style={{
               left: offsets[i].left,
               top: offsets[i].top,
-              zIndex: stackZ(i, 10 + i),
+              zIndex: seed === 0 && i === 0 ? stackZ(i, 30) : stackZ(i, 10 + i),
               ...(dOff
                 ? ({ "--lg-left": dOff.left, "--lg-top": dOff.top } as React.CSSProperties)
                 : {}),
