@@ -79,7 +79,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Tyler who was \"not a cat person\" just had to go back to the shelter to look at cats because Nicole stole Purrc. Welcome Mango!",
-    photos: [{ src: mango1 }, { src: mango2 }, { src: mango3, nudgeX: 50 }],
+    photos: [{ src: mango1 }, { src: mango2 }, { src: mango3, nudgeY: 50 }],
   },
   {
     year: "2020",
@@ -107,10 +107,10 @@ const stops: RoadmapStopData[] = [
       "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
     photos: [
       { src: ct1 },
-      { src: ct2, nudgeX: -10, rotate: -5 },
+      { src: ct2, nudgeX: -20, rotate: -10 },
       { src: ct3 },
-      { src: ct4, nudgeX: 40, rotate: -10 },
-      { src: ct5, nudgeX: 20 },
+      { src: ct4, nudgeX: 40, rotate: -30 },
+      { src: ct5, nudgeX: 60 },
     ],
   },
   {
