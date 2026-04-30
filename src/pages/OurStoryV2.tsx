@@ -27,7 +27,6 @@ import ct2 from "@/assets/2022-2.jpeg";
 import ct3 from "@/assets/2022-3.jpeg";
 import ct4 from "@/assets/2022-4.jpeg";
 import ct5 from "@/assets/2022-5.jpeg";
-import ct6 from "@/assets/2022-6.jpeg";
 import poland1 from "@/assets/2024-1.jpeg";
 import poland2 from "@/assets/2024-2.jpeg";
 import proposal1 from "@/assets/2025-5-1.jpeg";
@@ -101,14 +100,13 @@ const stops: RoadmapStopData[] = [
     place: "Connecticut",
     headline: "",
     blurb:
-      "Temporarily moved east to be near family. Still in Stamford. Whoops.",
+      "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
     photos: [
       { src: ct1 },
       { src: ct2 },
       { src: ct3 },
       { src: ct4 },
       { src: ct5 },
-      { src: ct6 },
     ],
   },
   {
