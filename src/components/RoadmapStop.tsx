@@ -5,6 +5,10 @@ import FadeIn from "./FadeIn";
 export interface RoadmapPhoto {
   src?: string;
   alt?: string;
+  /** Per-photo vertical nudge in pixels (negative = up) */
+  nudgeY?: number;
+  /** Per-photo horizontal nudge in pixels */
+  nudgeX?: number;
 }
 
 export interface RoadmapStopData {
@@ -172,7 +176,7 @@ const PhotoStack = ({
   // w-40 ≈ 12.5, w-44 ≈ 13.75, w-48 ≈ 15, w-52 ≈ 16, w-56 ≈ 17.5.
   const heightClass =
     visible.length >= 6
-      ? "h-[26rem] sm:h-[32rem]"
+      ? "h-[22rem] sm:h-[28rem]"
       : visible.length === 5
       ? "h-[24rem] sm:h-[30rem]"
       : visible.length === 4
@@ -248,31 +252,44 @@ const PhotoFrame = ({
   style?: React.CSSProperties;
   onMouseEnter?: () => void;
   onClick?: () => void;
-}) => (
-  <figure
-    className={cn(
-      "bg-card p-2 shadow-[0_12px_32px_-16px_rgba(0,0,0,0.4)] border border-foreground/5",
-      className
-    )}
-    style={{ transform: `rotate(${rotate}deg)`, ...style }}
-    onMouseEnter={onMouseEnter}
-    onClick={onClick}
-  >
-    {photo.src ? (
-      <img
-        src={photo.src}
-        alt={photo.alt ?? ""}
-        className="block w-full h-auto bg-foreground/10"
-        loading="lazy"
-      />
-    ) : (
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-foreground/10">
-        <div className="absolute inset-0 flex items-center justify-center text-foreground/30 font-serif italic text-xs">
-          coming soon
+}) => {
+  const [isLandscape, setIsLandscape] = useState(false);
+  const nudgeX = photo.nudgeX ?? 0;
+  const nudgeY = photo.nudgeY ?? 0;
+  const scale = isLandscape ? 1.2 : 1;
+  return (
+    <figure
+      className={cn(
+        "bg-card p-2 shadow-[0_12px_32px_-16px_rgba(0,0,0,0.4)] border border-foreground/5",
+        className
+      )}
+      style={{
+        transform: `translate(${nudgeX}px, ${nudgeY}px) rotate(${rotate}deg) scale(${scale})`,
+        ...style,
+      }}
+      onMouseEnter={onMouseEnter}
+      onClick={onClick}
+    >
+      {photo.src ? (
+        <img
+          src={photo.src}
+          alt={photo.alt ?? ""}
+          className="block w-full h-auto bg-foreground/10"
+          loading="lazy"
+          onLoad={(e) => {
+            const img = e.currentTarget;
+            if (img.naturalWidth > img.naturalHeight) setIsLandscape(true);
+          }}
+        />
+      ) : (
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-foreground/10">
+          <div className="absolute inset-0 flex items-center justify-center text-foreground/30 font-serif italic text-xs">
+            coming soon
+          </div>
         </div>
-      </div>
-    )}
-  </figure>
-);
+      )}
+    </figure>
+  );
+};
 
 export default RoadmapStop;
