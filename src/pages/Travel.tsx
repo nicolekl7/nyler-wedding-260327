@@ -35,11 +35,13 @@ const sections = [
 
 const Travel = () => (
   <Layout dark hideFooterImage>
-    <section className="relative page-section w-[90%] max-w-[1000px] mx-auto text-center">
-      {/* Decorative calla lilies flanking the hero — soft sage tint */}
+    {/* Hero — same width as Things to Know so lily edges align with box border */}
+    <section className="relative page-section w-[90%] max-w-[1400px] mx-auto text-center">
+      {/* Calla lilies — left-0/right-0 anchors outer edge to the Things to Know box border.
+          Adjust max-w-[1400px] above (and on the Things to Know section) to shift both together. */}
       <div
         aria-hidden
-        className="hidden md:block pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/4 lg:-translate-x-1/3 w-40 lg:w-56 aspect-square opacity-70"
+        className="hidden md:block pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 w-40 lg:w-56 aspect-square opacity-70"
         style={{
           backgroundColor: "hsl(63 30% 80%)",
           WebkitMaskImage: `url(${callaLily2})`,
@@ -54,7 +56,7 @@ const Travel = () => (
       />
       <div
         aria-hidden
-        className="hidden md:block pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 lg:translate-x-1/3 w-40 lg:w-56 aspect-square opacity-70 scale-x-[-1]"
+        className="hidden md:block pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 w-40 lg:w-56 aspect-square opacity-70 scale-x-[-1]"
         style={{
           backgroundColor: "hsl(63 30% 80%)",
           WebkitMaskImage: `url(${callaLily2})`,
@@ -67,23 +69,25 @@ const Travel = () => (
           maskSize: "contain",
         }}
       />
-      <FadeIn>
-        <h1 className="heading-section mb-4">Getting to Borgo Laticastelli</h1>
-        <div className="w-12 h-px bg-primary mx-auto mb-8" />
-        <p className="body-editorial mx-auto text-balance">
-          The journey to Tuscany is part of the magic. Whether you fly, take the train, or rent a car, every route leads through some of the most beautiful landscape in the world.
-        </p>
-        <div className="mt-8 flex justify-center">
-          <a
-            href="https://maps.app.goo.gl/4P2Z6mjKSBRC4FGG9?g_st=ic"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-serif text-base md:text-lg text-foreground italic hover:text-primary transition-colors underline underline-offset-4 decoration-primary/40"
-          >
-            Laticastelli Country Relais
-          </a>
-        </div>
-      </FadeIn>
+      <div className="max-w-[1000px] mx-auto">
+        <FadeIn>
+          <h1 className="heading-section mb-4">Getting to Borgo Laticastelli</h1>
+          <div className="w-12 h-px bg-primary mx-auto mb-8" />
+          <p className="body-editorial mx-auto text-balance">
+            The journey to Tuscany is part of the magic. Whether you fly, take the train, or rent a car, every route leads through some of the most beautiful landscape in the world.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <a
+              href="https://maps.app.goo.gl/4P2Z6mjKSBRC4FGG9?g_st=ic"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-serif text-base md:text-lg text-foreground italic hover:text-primary transition-colors underline underline-offset-4 decoration-primary/40"
+            >
+              Laticastelli Country Relais
+            </a>
+          </div>
+        </FadeIn>
+      </div>
     </section>
 
     <section className="px-6 md:px-12 lg:px-24 pb-16 md:pb-24 w-[90%] max-w-[1400px] mx-auto">

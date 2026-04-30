@@ -63,7 +63,7 @@ const HomeV2 = () => {
             </div>
 
             {/* Subline */}
-            <p className="mt-10 sm:mt-14 font-body uppercase tracking-[0.4em] text-xs sm:text-sm text-muted-foreground">
+            <p className="mt-10 sm:mt-14 font-body uppercase tracking-[0.2em] text-xs sm:text-sm text-muted-foreground">
               September 17, 2026<span className="hidden sm:inline">&nbsp;|&nbsp;Tuscany, Italy</span><span className="block sm:hidden mt-2">Tuscany, Italy</span>
             </p>
 
