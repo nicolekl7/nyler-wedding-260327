@@ -111,6 +111,7 @@ const PhotoStack = ({
   };
   if (visible.length === 0) return null;
 
+  // Deterministic pseudo-random rotations
   const rot = (i: number) => {
     const v = Math.sin((seed + 1) * (i + 1) * 7.13) * 6;
     return v.toFixed(2);
@@ -119,34 +120,16 @@ const PhotoStack = ({
   if (visible.length === 1) {
     return (
       <div className={cn("flex", align === "left" ? "justify-start" : "justify-end")}>
-        <PhotoFrame photo={visible[0]} rotate={seed === 0 ? "20" : rot(0)} className="w-64 sm:w-80" />
+        <PhotoFrame photo={visible[0]} rotate={rot(0)} className="w-64 sm:w-80" />
       </div>
     );
   }
 
-  if (visible.length >= 6) {
-    return (
-      <div
-        className={cn(
-          "grid w-full max-w-[18rem] grid-cols-2 gap-x-4 gap-y-5 sm:max-w-[22rem] lg:max-w-[28rem] lg:grid-cols-3 lg:gap-x-5 lg:gap-y-6",
-          align === "left" ? "mr-auto" : "ml-auto"
-        )}
-      >
-        {visible.map((photo, i) => (
-          <PhotoFrame
-            key={i}
-            photo={photo}
-            rotate={seed === 0 && i === 0 ? "20" : rot(i)}
-            className="relative w-full transition-transform duration-500 hover:!rotate-0 hover:scale-105"
-            style={{ zIndex: seed === 0 && i === 0 ? stackZ(i, 30) : stackZ(i, 10 + i) }}
-            onMouseEnter={() => bring(i)}
-            onClick={() => bring(i)}
-          />
-        ))}
-      </div>
-    );
-  }
+  // Note: 6-photo layout falls through to the same scattered/overlapping
+  // collage as 2-5 photos — keeping the editorial "2020 vibe" consistent.
 
+
+  // Scattered offsets per stack size — keeps each frame at least partially clickable.
   const offsetsByCount: Record<number, { left: string; top: string }[]> = {
     2: [
       { left: "0%", top: "0%" },
@@ -172,28 +155,22 @@ const PhotoStack = ({
     ],
     6: [
       { left: "0%", top: "0%" },
-      { left: "30%", top: "4%" },
-      { left: "0%", top: "32%" },
-      { left: "32%", top: "34%" },
-      { left: "8%", top: "62%" },
-      { left: "36%", top: "64%" },
+      { left: "30%", top: "8%" },
+      { left: "10%", top: "30%" },
+      { left: "38%", top: "38%" },
+      { left: "4%", top: "60%" },
+      { left: "34%", top: "66%" },
     ],
   };
 
-  const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {
-    6: [
-      { left: "0%", top: "0%" },
-      { left: "35%", top: "4%" },
-      { left: "70%", top: "0%" },
-      { left: "0%", top: "50%" },
-      { left: "35%", top: "54%" },
-      { left: "70%", top: "50%" },
-    ],
-  };
+  // No desktop grid override — keep the scattered collage vibe at every size.
+  const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {};
 
+  // Taller container for bigger stacks — generous so absolutely-positioned
+  // photos never spill into the next stop on mobile.
   const heightClass =
     visible.length >= 6
-      ? "h-[34rem] lg:h-[24rem]"
+      ? "h-[32rem] sm:h-[38rem]"
       : visible.length === 5
       ? "h-[30rem] sm:h-[36rem]"
       : visible.length === 4
@@ -202,17 +179,17 @@ const PhotoStack = ({
       ? "h-[22rem] sm:h-80"
       : "h-72 sm:h-80";
 
+  // Smaller frames on mobile when there are many photos.
   const sizeClass =
     visible.length >= 6
-      ? "w-32 lg:w-32"
+      ? "w-32 sm:w-44"
       : visible.length === 5
       ? "w-32 sm:w-48"
       : visible.length === 4
       ? "w-36 sm:w-52"
       : "w-40 sm:w-56";
 
-  const containerWidthClass =
-    visible.length >= 6 ? "lg:max-w-[34rem]" : "lg:max-w-[26rem]";
+  const containerWidthClass = "lg:max-w-[26rem]";
 
   return (
     <div
@@ -231,7 +208,7 @@ const PhotoStack = ({
           <PhotoFrame
             key={i}
             photo={photo}
-            rotate={seed === 0 && i === 0 ? "20" : rot(i)}
+            rotate={rot(i)}
             className={cn(
               "absolute transition-transform duration-500 hover:!rotate-0 hover:scale-105",
               sizeClass,
