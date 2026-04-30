@@ -96,7 +96,7 @@ const stops: RoadmapStopData[] = [
     place: "Kansas",
     headline: "",
     blurb: "Somehow, homeowners. Still not sure how this happened.",
-    photos: [{ src: house1 }, { src: house2, nudgeX: 4 }],
+    photos: [{ src: house1 }, { src: house2, nudgeX: 10 }],
   },
   {
     year: "2022",
@@ -109,7 +109,7 @@ const stops: RoadmapStopData[] = [
       { src: ct1 },
       { src: ct2 },
       { src: ct3 },
-      { src: ct4, nudgeX: 6 },
+      { src: ct4, nudgeX: 10 },
       { src: ct5 },
     ],
   },
@@ -129,7 +129,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Tyler filled the patio with photos of us. His phone ran out of storage right as Nicole walked out so no one will ever really know what was said. But what we can share is: she did say yes.",
-    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 6 }],
+    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 10 }],
   },
 ];
 
