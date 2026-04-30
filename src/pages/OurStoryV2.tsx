@@ -4,9 +4,9 @@ import RoadmapStop, { RoadmapStopData } from "@/components/RoadmapStop";
 
 import nye1 from "@/assets/2016-12-1.jpeg";
 import nye2 from "@/assets/2016-12-2.jpeg";
-import dating1 from "@/assets/2017-3-1.jpeg";
+import dating1 from "@/assets/2017-3-5.jpeg";
 import dating2 from "@/assets/2017-3-2.jpeg";
-import dating4 from "@/assets/2017-5-1.jpeg";
+import dating4 from "@/assets/2017-5-7.jpeg";
 import florence2 from "@/assets/2017-8-2.jpeg";
 import florence3 from "@/assets/2017-11-1.jpeg";
 import florence4 from "@/assets/2017-11-2.jpeg";
