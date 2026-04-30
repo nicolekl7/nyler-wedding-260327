@@ -79,17 +79,21 @@ const PhotoStack = ({ photos, seed, align }: { photos: RoadmapPhoto[]; seed: num
 
   return (
     <div className={cn("relative w-full", heightClass, align === "left" ? "ml-0" : "lg:ml-auto max-w-[30rem]")}>
-      {visible.map((photo, i) => (
-        <PhotoFrame
-          key={i}
-          photo={photo}
-          rotate={seed === 0 && i === 0 ? "20" : (Math.sin((seed + i) * 10) * 8).toFixed(0)}
-          className={cn("absolute transition-all duration-500 hover:!rotate-0 hover:scale-105", sizeClass)}
-          style={{
-            left: currentOffsets[i]?.left,
-            top: currentOffsets[i]?.top,
-            zIndex: stackZ(i, 10 + i),
-          }}
+ {visible.map((photo, i) => (
+  <PhotoFrame
+    key={i}
+    photo={photo}
+    // Fixed: Removed the hardcoded "20" rotation check
+    rotate={(Math.sin((seed + i) * 10) * 8).toFixed(0)}
+    className={cn("absolute transition-all duration-500 hover:!rotate-0 hover:scale-105", sizeClass)}
+    style={{
+      left: currentOffsets[i]?.left,
+      top: currentOffsets[i]?.top,
+      zIndex: stackZ(i, 10 + i),
+    }}
+    onMouseEnter={() => bring(i)}
+  />
+))}
           onMouseEnter={() => bring(i)}
         />
       ))}
