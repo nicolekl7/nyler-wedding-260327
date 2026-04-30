@@ -69,7 +69,7 @@ const stops: RoadmapStopData[] = [
   photos: [
     { src: purrc1 }, 
     { src: purrc2 }, 
-    { src: purrc3, nudgeY: -10 } // Add nudgeY: -10 here to move it up
+    { src: purrc3, nudgeY: -10 }
   ],
 },
   {
