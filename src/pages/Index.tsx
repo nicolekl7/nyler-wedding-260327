@@ -35,7 +35,7 @@ const Index = () => {
           <h1 className="heading-display text-5xl md:text-8xl lg:text-9xl mb-4 text-[#fff7f0]">
             Nicole <span className="font-light italic">&</span> Tyler
           </h1>
-          <p className="heading-sub text-[0.65rem] sm:text-[0.825rem] sm:tracking-[0.132em] text-[#fff7f0] opacity-75">
+          <p className="heading-sub text-[0.65rem] sm:text-[0.99rem] sm:tracking-[0.158em] text-[#fff7f0] opacity-75">
             <span className="inline sm:hidden">September 17, 2026 &nbsp;|&nbsp; Tuscany, Italy</span>
             <span className="hidden sm:inline">September 17, 2026 &nbsp;|&nbsp; Rapolano Terme, Tuscany, Italy</span>
           </p>
