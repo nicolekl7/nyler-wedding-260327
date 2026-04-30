@@ -94,13 +94,13 @@ const guides = [
 ];
 
 const LocalGuide = () => (
-  <Layout dark>
+  <Layout dark hideFooterImage>
     <div className="relative">
       <img
         src="/images/calla-lilly-background.png"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover object-bottom opacity-50 pointer-events-none select-none"
+        className="absolute inset-0 w-full h-full object-cover object-bottom opacity-10 pointer-events-none select-none"
       />
     <section className="page-section w-[90%] max-w-[1400px] mx-auto relative z-10">
       <FadeIn>
