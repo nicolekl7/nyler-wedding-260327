@@ -58,10 +58,12 @@ const RoadmapStop = ({ stop, side, index, isLast }: Props) => {
               textFirst ? "lg:order-1 lg:text-right lg:pr-12" : "lg:order-2 lg:pl-12"
             )}
           >
+            <h3 className="font-serif text-5xl sm:text-6xl font-light text-foreground leading-none mb-3">
+              {stop.year}
+            </h3>
             <p className="font-body uppercase tracking-[0.3em] text-[0.7rem] text-muted-foreground mb-4">
               {stop.month}
               {stop.place && <span> · {stop.place}</span>}
-              <span className="ml-2">{stop.year}</span>
             </p>
             {stop.headline && (
               <h2 className="font-serif italic text-xl sm:text-2xl font-light text-foreground leading-snug mb-3 text-balance">
@@ -161,11 +163,11 @@ const PhotoStack = ({
   const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {
     6: [
       { left: "0%", top: "0%" },
-      { left: "34%", top: "4%" },
-      { left: "68%", top: "0%" },
-      { left: "0%", top: "44%" },
-      { left: "34%", top: "48%" },
-      { left: "68%", top: "44%" },
+      { left: "35%", top: "4%" },
+      { left: "70%", top: "0%" },
+      { left: "0%", top: "50%" },
+      { left: "35%", top: "54%" },
+      { left: "70%", top: "50%" },
     ],
   };
 
@@ -174,7 +176,7 @@ const PhotoStack = ({
   // so it can be shorter.
   const heightClass =
     visible.length >= 6
-      ? "h-[34rem] sm:h-[28rem]"
+      ? "h-[34rem] lg:h-[24rem]"
       : visible.length === 5
       ? "h-[30rem] sm:h-[36rem]"
       : visible.length === 4
@@ -187,17 +189,22 @@ const PhotoStack = ({
   // shrink so 3 fit per row.
   const sizeClass =
     visible.length >= 6
-      ? "w-32 sm:w-40"
+      ? "w-32 lg:w-32"
       : visible.length === 5
       ? "w-32 sm:w-48"
       : visible.length === 4
       ? "w-36 sm:w-52"
       : "w-40 sm:w-56";
 
+  // 6-photo desktop layout needs more horizontal room (3 columns).
+  const containerWidthClass =
+    visible.length >= 6 ? "lg:max-w-[34rem]" : "lg:max-w-[26rem]";
+
   return (
     <div
       className={cn(
-        "relative w-full lg:max-w-[26rem]",
+        "relative w-full",
+        containerWidthClass,
         heightClass,
         align === "left" ? "ml-0" : "ml-0 lg:ml-auto"
       )}
@@ -214,14 +221,14 @@ const PhotoStack = ({
             className={cn(
               "absolute transition-transform duration-500 hover:!rotate-0 hover:scale-105",
               sizeClass,
-              dOff && "sm:left-[var(--sm-left)] sm:top-[var(--sm-top)]"
+              dOff && "lg:left-[var(--lg-left)] lg:top-[var(--lg-top)]"
             )}
             style={{
               left: offsets[i].left,
               top: offsets[i].top,
               zIndex: stackZ(i, 10 + i),
               ...(dOff
-                ? ({ "--sm-left": dOff.left, "--sm-top": dOff.top } as React.CSSProperties)
+                ? ({ "--lg-left": dOff.left, "--lg-top": dOff.top } as React.CSSProperties)
                 : {}),
             }}
             onMouseEnter={() => bring(i)}
