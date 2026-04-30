@@ -32,10 +32,10 @@ const Index = () => {
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a2e1a]/90 via-[#1a2e1a]/20 to-transparent" />
         <FadeIn className="relative z-10 px-6 md:px-12 lg:px-24 pb-16 md:pb-24">
-          <h1 className="heading-display text-5xl md:text-8xl lg:text-9xl mb-4 text-[#fff7f0]">
+          <h1 className="heading-display mb-4 text-[#fff7f0]" style={{ fontSize: "clamp(3rem, 12vw, 9rem)" }}>
             Nicole <span className="font-light italic">&</span> Tyler
           </h1>
-          <p className="heading-sub text-[0.65rem] sm:text-[0.99rem] sm:tracking-[0.158em] text-[#fff7f0] opacity-75">
+          <p className="heading-sub tracking-[0.158em] text-[#fff7f0] opacity-75" style={{ fontSize: "clamp(0.65rem, 1.5vw, 1.1rem)" }}>
             <span className="inline sm:hidden">September 17, 2026 &nbsp;|&nbsp; Tuscany, Italy</span>
             <span className="hidden sm:inline">September 17, 2026 &nbsp;|&nbsp; Rapolano Terme, Tuscany, Italy</span>
           </p>
