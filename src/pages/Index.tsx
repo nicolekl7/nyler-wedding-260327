@@ -72,7 +72,7 @@ const Index = () => {
       {/* Countdown — days only */}
       <section className="page-section pt-0 pb-0 mt-0 sm:-mt-16 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
-          <p className="heading-sub mb-10">Countdown to Tuscany</p>
+          <p className="heading-sub mb-3">Countdown to Tuscany</p>
           <span className="font-serif text-5xl sm:text-6xl md:text-8xl font-light text-foreground">
             {daysLeft}
           </span>
