@@ -100,7 +100,7 @@ const LocalGuide = () => (
         src="/images/calla-lilly-background.png"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover object-bottom opacity-10 pointer-events-none select-none"
+        className="absolute bottom-0 left-0 w-full h-auto opacity-10 pointer-events-none select-none"
       />
     <section className="page-section w-[90%] max-w-[1400px] mx-auto relative z-10">
       <FadeIn>
