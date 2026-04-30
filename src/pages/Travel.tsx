@@ -35,7 +35,7 @@ const sections = [
 
 const Travel = () => (
   <Layout dark hideFooterImage>
-    <div className="relative">
+    <section className="relative page-section w-[90%] max-w-[1000px] mx-auto text-center">
       {/* Decorative calla lilies flanking the hero — soft sage tint */}
       <div
         aria-hidden
@@ -67,7 +67,6 @@ const Travel = () => (
           maskSize: "contain",
         }}
       />
-    <section className="page-section w-[90%] max-w-[1000px] mx-auto text-center">
       <FadeIn>
         <h1 className="heading-section mb-4">Getting to Borgo Laticastelli</h1>
         <div className="w-12 h-px bg-primary mx-auto mb-8" />
@@ -86,7 +85,6 @@ const Travel = () => (
         </div>
       </FadeIn>
     </section>
-    </div>
 
     <section className="px-6 md:px-12 lg:px-24 pb-16 md:pb-24 w-[90%] max-w-[1400px] mx-auto">
       <FadeIn>
