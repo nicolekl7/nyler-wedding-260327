@@ -95,7 +95,14 @@ const guides = [
 
 const LocalGuide = () => (
   <Layout dark>
-    <section className="page-section w-[90%] max-w-[1400px] mx-auto">
+    <div className="relative">
+      <img
+        src="/images/calla-lilly-background.png"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover object-bottom opacity-50 pointer-events-none select-none"
+      />
+    <section className="page-section w-[90%] max-w-[1400px] mx-auto relative z-10">
       <FadeIn>
         <h1 className="heading-section text-center mb-4">Local Guide</h1>
         <div className="w-12 h-px bg-primary mx-auto mb-6" />
@@ -136,7 +143,7 @@ const LocalGuide = () => (
     </section>
 
     {/* Navigation buttons */}
-    <section className="w-[90%] max-w-[900px] mx-auto px-6 md:px-12 pb-24 pt-24">
+    <section className="w-[90%] max-w-[900px] mx-auto px-6 md:px-12 pb-24 pt-24 relative z-10">
       <FadeIn>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
@@ -154,6 +161,7 @@ const LocalGuide = () => (
         </div>
       </FadeIn>
     </section>
+    </div>
   </Layout>
 );
 
