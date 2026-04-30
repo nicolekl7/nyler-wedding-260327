@@ -141,15 +141,10 @@ const OurStoryV2 = () => {
             <p className="font-body text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground mb-4">
               December 2016 &mdash; September 2026
             </p>
-            <h1 className="heading-display text-foreground">
-              The long way{" "}
-              <em className="italic font-light">here.</em>
-            </h1>
+         <h1 className="heading-section text-foreground">
+  The long way <em className="italic font-light">here.</em>
+</h1>
             <div className="w-12 h-px bg-primary/30 mx-auto mt-8 mb-6" />
-            <p className="body-editorial mx-auto max-w-md text-balance">
-              Ten years of adventures, two cats, one house, and a whole lot of
-              care packages — every chapter leading us here.
-            </p>
           </FadeIn>
         </header>
 
