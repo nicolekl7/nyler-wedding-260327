@@ -9,7 +9,7 @@ import weddingIcon from "@/assets/Wedding-4.png";
 import poolUmbrella from "@/assets/Pool-Party-Umbrella.png";
 import poolChairs from "@/assets/Pool-Party-Chairs.png";
 import poolSun from "@/assets/Pool-Party-Sun.png";
-import attireGraphic from "@/assets/attire.png";
+import attireGraphic from "@/assets/Attire Graphic v2.png";
 
 const itinerary = [
   {
@@ -166,7 +166,7 @@ const TheWeekend = () => (
                     <img
                       src={attireGraphic}
                       alt="Wedding attire color palette illustration"
-                      className="w-full max-w-xl"
+                      className="block w-full max-w-xl"
                     />
                     <p className="font-body text-sm text-muted-foreground italic mt-4">
                       Here are a few colors to inspire but wear whatever makes you feel good.
