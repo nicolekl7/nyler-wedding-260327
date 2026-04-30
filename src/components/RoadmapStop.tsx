@@ -154,30 +154,33 @@ const PhotoStack = ({
       { left: "20%", top: "62%" },
     ],
     6: [
-      { left: "0%", top: "0%" },
-      { left: "30%", top: "8%" },
-      { left: "10%", top: "30%" },
-      { left: "38%", top: "38%" },
-      { left: "4%", top: "60%" },
-      { left: "34%", top: "66%" },
+      { left: "0%",   top: "0%" },   // Top Left
+      { left: "32%",  top: "5%" },   // Top Middle (shifts up)
+      { left: "62%",  top: "2%" },   // Top Right (moved from bottom right)
+      { left: "5%",   top: "30%" },  // Mid Left (tucked under)
+      { left: "38%",  top: "35%" },  // Mid Middle
+      { left: "15%",  top: "60%" },  // Bottom Center (finishing the cluster)
     ],
   };
 
   // No desktop grid override — keep the scattered collage vibe at every size.
   const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {};
 
-  // Taller container for bigger stacks — generous so absolutely-positioned
-  // photos never spill into the next stop on mobile.
+  // Container height tuned to actual collage footprint at each size, so the
+  // gap to the next stop stays consistent (no huge empty space, no overlap).
+  // Frame heights ≈ aspect 4/5 of the width: w-32 ≈ 10rem tall, w-36 ≈ 11.25,
+  // w-40 ≈ 12.5, w-44 ≈ 13.75, w-48 ≈ 15, w-52 ≈ 16, w-56 ≈ 17.5.
   const heightClass =
     visible.length >= 6
-      ? "h-[32rem] sm:h-[38rem]"
+      ? "h-[26rem] sm:h-[32rem]"
       : visible.length === 5
-      ? "h-[30rem] sm:h-[36rem]"
+      ? "h-[24rem] sm:h-[30rem]"
       : visible.length === 4
-      ? "h-[24rem] sm:h-[26rem]"
+      ? "h-[20rem] sm:h-[24rem]"
       : visible.length === 3
-      ? "h-[22rem] sm:h-80"
-      : "h-72 sm:h-80";
+      ? "h-[18rem] sm:h-[22rem]"
+      : "h-[14rem] sm:h-[18rem]";
+
 
   // Smaller frames on mobile when there are many photos.
   const sizeClass =
