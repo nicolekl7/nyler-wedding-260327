@@ -25,7 +25,7 @@ import house2 from "@/assets/2021-2.jpeg";
 import ct1 from "@/assets/2022-1.jpeg";
 import ct2 from "@/assets/2022-5.jpeg";
 import ct3 from "@/assets/2022-3.jpeg";
-import ct4 from "@/assets/2022-4.jpeg";
+import ct4 from "@/assets/2022-6.jpeg";
 import ct5 from "@/assets/2022-2.jpeg";
 import poland1 from "@/assets/2024-1.jpeg";
 import poland2 from "@/assets/2024-2.jpeg";
@@ -109,7 +109,7 @@ const stops: RoadmapStopData[] = [
       { src: ct1 },
       { src: ct2 },
       { src: ct3 },
-      { src: ct4, nudgeX: 10 },
+      { src: ct4, nudgeX: 20 },
       { src: ct5 },
     ],
   },
@@ -129,7 +129,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Tyler filled the patio with photos of us. His phone ran out of storage right as Nicole walked out so no one will ever really know what was said. But what we can share is: she did say yes.",
-    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 10 }],
+    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 20 }],
   },
 ];
 
