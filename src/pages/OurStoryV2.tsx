@@ -45,7 +45,7 @@ const stops: RoadmapStopData[] = [
   },
   {
     year: "2017",
-    month: "March",
+    month: "Spring",
     place: "South Carolina",
     headline: "",
     blurb:
@@ -54,7 +54,7 @@ const stops: RoadmapStopData[] = [
   },
   {
     year: "2017",
-    month: "August",
+    month: "Autumn",
     place: "Italy",
     headline: "",
     blurb:
@@ -63,7 +63,7 @@ const stops: RoadmapStopData[] = [
   },
   {
     year: "2018",
-    month: "June",
+    month: "May",
     place: "Kansas",
     headline: "",
     blurb: "Went to \"just look\" at shelter cats. Welcome Purrcocet!",
@@ -89,7 +89,7 @@ const stops: RoadmapStopData[] = [
   },
   {
     year: "2021",
-    month: "January",
+    month: "March",
     place: "Kansas",
     headline: "",
     blurb: "Somehow, homeowners. Still not sure how this happened.",
@@ -97,7 +97,7 @@ const stops: RoadmapStopData[] = [
   },
   {
     year: "2022",
-    month: "July",
+    month: "Summer",
     place: "Connecticut",
     headline: "",
     blurb:
