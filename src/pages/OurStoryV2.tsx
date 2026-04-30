@@ -13,7 +13,7 @@ import florence4 from "@/assets/2017-11-2.jpeg";
 import purrc1 from "@/assets/2018-5-1.jpeg";
 import purrc2 from "@/assets/2018-5-2.jpeg";
 import purrc3 from "@/assets/2018-5-3.png";
-import mango1 from "@/assets/2019-1.jpeg";
+import mango1 from "@/assets/2019-4.jpeg";
 import mango2 from "@/assets/2019-2.jpeg";
 import mango3 from "@/assets/2019-3.jpeg";
 import ks1 from "@/assets/2020-1.jpeg";
@@ -79,7 +79,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Tyler who was \"not a cat person\" just had to go back to the shelter to look at cats because Nicole stole Purrc. Welcome Mango!",
-    photos: [{ src: mango1 }, { src: mango2 }, { src: mango3, nudgeX: 6 }],
+    photos: [{ src: mango1 }, { src: mango2 }, { src: mango3, nudgeX: 20 }],
   },
   {
     year: "2020",
@@ -88,7 +88,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Just us and really only us because there was a pandemic. First place together. Three weeks in: lockdown. We survived.",
-    photos: [{ src: ks1 }, { src: ks2 }, { src: ks3, nudgeX: 6 }, { src: ks4 }],
+    photos: [{ src: ks1 }, { src: ks2 }, { src: ks3, nudgeY: 30 }, { src: ks4 }],
   },
   {
     year: "2021",
@@ -96,7 +96,7 @@ const stops: RoadmapStopData[] = [
     place: "Kansas",
     headline: "",
     blurb: "Somehow, homeowners. Still not sure how this happened.",
-    photos: [{ src: house1 }, { src: house2, nudgeX: 10 }],
+    photos: [{ src: house1 }, { src: house2, nudgeX: 20 }],
   },
   {
     year: "2022",
@@ -109,8 +109,8 @@ const stops: RoadmapStopData[] = [
       { src: ct1 },
       { src: ct2 },
       { src: ct3 },
-      { src: ct4, nudgeX: 20 },
-      { src: ct5 },
+      { src: ct4, nudgeX: 40 },
+      { src: ct5, nudgeX: 20 },
     ],
   },
   {
@@ -129,7 +129,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Tyler filled the patio with photos of us. His phone ran out of storage right as Nicole walked out so no one will ever really know what was said. But what we can share is: she did say yes.",
-    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 20 }],
+    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 40 }],
   },
 ];
 
