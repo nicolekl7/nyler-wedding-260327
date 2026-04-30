@@ -9,6 +9,7 @@ const navItems = [
   { path: "/the-weekend", label: "Events" },
   { path: "/local-guide", label: "Explore" },
   { path: "https://www.zola.com/registry/nicoleandtylersregistry", label: "Registry", external: true },
+  { path: "/about-us", label: "Our Story" },
   { path: "/rsvp-v2", label: "RSVP", cta: true },
 ];
 
