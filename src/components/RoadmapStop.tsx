@@ -60,6 +60,13 @@ const PhotoStack = ({ photos, seed, align }: { photos: RoadmapPhoto[]; seed: num
     if (seed === 0 && i === 0 && pos === -1) return 50;
     return pos === -1 ? base : 100 + pos;
   };
+    // Deterministic pseudo-random rotations
+  const rot = (i: number) => {
+    const raw = Math.sin((seed + 1) * (i + 1) * 7.13) * 6;
+    // First photo of the very first stop stays nearly straight (max ±5°)
+    const v = seed === 0 && i === 0 ? Math.max(-5, Math.min(5, raw * 0.5)) : raw;
+    return v.toFixed(2);
+  };
 
   const offsetsByCount: Record<number, { left: string; top: string }[]> = {
     2: [{ left: "0%", top: "5%" }, { left: "35%", top: "15%" }],
