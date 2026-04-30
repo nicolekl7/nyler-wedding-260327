@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import FadeIn from "@/components/FadeIn";
+import PhotoStack from "@/components/PhotoStack";
 
 export interface RoadmapStopData {
   year: string;
@@ -17,86 +17,9 @@ interface Props {
   isLast: boolean;
 }
 
-const PhotoCluster = ({ photos, seed }: { photos: string[]; seed: number }) => {
-  if (photos.length === 0) return null;
-
-  const PS = photos.length === 1 ? 180 : 110;
-  const PW = PS + 16;
-  const PH = PS + 40;
-
-  if (photos.length === 1) {
-    const h = ((seed * 13) % 79) / 79;
-    return (
-      <div className="py-4 flex justify-center lg:justify-start">
-        <motion.div
-          className="bg-white select-none"
-          style={{
-            rotate: (h * 2 - 1) * 4,
-            padding: 10,
-            paddingBottom: 36,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08)",
-          }}
-          whileHover={{ rotate: 0, scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 280, damping: 22 }}
-        >
-          <img
-            src={photos[0]}
-            alt=""
-            style={{ width: PS, height: PS, objectFit: "cover", display: "block" }}
-          />
-        </motion.div>
-      </div>
-    );
-  }
-
-  const CW = Math.round(PW * (0.8 + photos.length * 0.42));
-  const CH = Math.round(PH * (0.8 + photos.length * 0.35));
-
-  const getPos = (i: number) => {
-    const h1 = ((seed * (i + 5) * 17 + i * 53) % 97) / 97;
-    const h2 = ((seed * (i + 5) * 31 + i * 71) % 83) / 83;
-    const h3 = ((seed * (i + 5) * 13 + i * 29) % 79) / 79;
-    return {
-      x: h1 * Math.max(0, CW - PW),
-      y: h2 * Math.max(0, CH - PH),
-      rot: (h3 * 2 - 1) * 22,
-    };
-  };
-
-  return (
-    <div className="relative my-4" style={{ width: CW, height: CH }}>
-      {photos.map((src, i) => {
-        const { x, y, rot } = getPos(i);
-        return (
-          <motion.div
-            key={i}
-            className="absolute bg-white select-none"
-            style={{
-              left: x,
-              top: y,
-              rotate: rot,
-              padding: 10,
-              paddingBottom: 36,
-              boxShadow: "0 4px 20px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.10)",
-              width: PW,
-              zIndex: i + 1,
-            }}
-            whileHover={{ rotate: 0, scale: 1.1, zIndex: 20 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          >
-            <img
-              src={src}
-              alt=""
-              style={{ width: PS, height: PS, objectFit: "cover", display: "block" }}
-            />
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-};
-
-const Meta = ({ month, year, place, headline, blurb, align }: {
+const Meta = ({
+  month, year, place, headline, blurb, align,
+}: {
   month: string; year: string; place: string; headline: string; blurb: string;
   align: "left" | "right";
 }) => (
@@ -116,8 +39,8 @@ const Meta = ({ month, year, place, headline, blurb, align }: {
 
 const RoadmapStop = ({ stop, index, side, isLast: _isLast }: Props) => {
   const photos = stop.photos.filter((p) => p.src).map((p) => p.src as string);
-  const seed =
-    stop.year.split("").reduce((a, c) => a + c.charCodeAt(0), 0) + index * 37;
+  // Stable seed from year string + index
+  const seed = stop.year.split("").reduce((a, c) => a + c.charCodeAt(0), 0) + index * 37;
 
   return (
     <FadeIn>
@@ -131,14 +54,10 @@ const RoadmapStop = ({ stop, index, side, isLast: _isLast }: Props) => {
 
         <div className="min-w-0 flex-1 pb-2">
           <Meta
-            month={stop.month}
-            year={stop.year}
-            place={stop.place}
-            headline={stop.headline}
-            blurb={stop.blurb}
-            align="left"
+            month={stop.month} year={stop.year} place={stop.place}
+            headline={stop.headline} blurb={stop.blurb} align="left"
           />
-          {photos.length > 0 && <PhotoCluster photos={photos} seed={seed} />}
+          {photos.length > 0 && <PhotoStack photos={photos} seed={seed} />}
         </div>
       </div>
 
@@ -148,17 +67,13 @@ const RoadmapStop = ({ stop, index, side, isLast: _isLast }: Props) => {
         {side === "left" ? (
           <div className="flex flex-col items-end text-right pr-4">
             <Meta
-              month={stop.month}
-              year={stop.year}
-              place={stop.place}
-              headline={stop.headline}
-              blurb={stop.blurb}
-              align="right"
+              month={stop.month} year={stop.year} place={stop.place}
+              headline={stop.headline} blurb={stop.blurb} align="right"
             />
           </div>
         ) : (
           <div className="flex justify-end pr-4">
-            {photos.length > 0 && <PhotoCluster photos={photos} seed={seed} />}
+            {photos.length > 0 && <PhotoStack photos={photos} seed={seed} />}
           </div>
         )}
 
@@ -173,17 +88,13 @@ const RoadmapStop = ({ stop, index, side, isLast: _isLast }: Props) => {
         {side === "right" ? (
           <div className="pl-4">
             <Meta
-              month={stop.month}
-              year={stop.year}
-              place={stop.place}
-              headline={stop.headline}
-              blurb={stop.blurb}
-              align="left"
+              month={stop.month} year={stop.year} place={stop.place}
+              headline={stop.headline} blurb={stop.blurb} align="left"
             />
           </div>
         ) : (
           <div className="pl-4">
-            {photos.length > 0 && <PhotoCluster photos={photos} seed={seed} />}
+            {photos.length > 0 && <PhotoStack photos={photos} seed={seed} />}
           </div>
         )}
       </div>
