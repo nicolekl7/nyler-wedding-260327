@@ -60,14 +60,18 @@ const stops: RoadmapStopData[] = [
       "Nicole suggested a break but left a letter for each day she'd be gone. Tyler agreed to break up but bought a flight to visit 3 weeks in. Neither of us were good at this.",
     photos: [{ src: florence2 }, { src: florence3 }, { src: florence4 }],
   },
-  {
-    year: "2018",
-    month: "May",
-    place: "Kansas",
-    headline: "",
-    blurb: "Went to \"just look\" at shelter cats. Welcome Purrcocet!",
-    photos: [{ src: purrc1 }, { src: purrc2 }, { src: purrc3 }],
-  },
+{
+  year: "2018",
+  month: "May",
+  place: "Kansas",
+  headline: "",
+  blurb: "Went to \"just look\" at shelter cats. Welcome Purrcocet!",
+  photos: [
+    { src: purrc1 }, 
+    { src: purrc2 }, 
+    { src: purrc3, nudgeY: -10 } // Add nudgeY: -10 here to move it up
+  ],
+},
   {
     year: "2019",
     month: "November",
