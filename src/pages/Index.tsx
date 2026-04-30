@@ -50,7 +50,7 @@ const Index = () => {
             We're getting married in Tuscany on September 17, 2026, and we would absolutely love for
             you to be there. There will be three days of festivities at Borgo Laticastelli—a private
             estate in the hills of Rapolano Terme—with a welcome party on Wednesday evening, the
-            wedding ceremony and reception on Thursday, and a relaxed <em>la dolce far niente</em> day by the
+            wedding ceremony and reception on Thursday, and a relaxed <em>il dolce far niente</em> day by the
             pool on Friday.
             <br />
             <br />
