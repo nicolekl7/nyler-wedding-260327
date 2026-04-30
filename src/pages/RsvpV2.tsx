@@ -49,7 +49,13 @@ const RsvpV2 = () => {
                   We can't wait to celebrate with you in Tuscany!
                 </p>
                 <p className="body-editorial mx-auto text-balance mt-6">
-                  Your room is officially on hold. To secure your spot, please send payment below via PayPal Friends &amp;&nbsp;Family to @NylerWedding within 48&nbsp;hours. In the payment note, include the names of all guests staying in your room.
+                  Your room is officially on hold. To secure your spot, please send payment below via PayPal Friends &amp;&nbsp;Family to{" "}
+                  <a href="https://paypal.me/nylerwedding" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium underline underline-offset-4 hover:text-primary transition-colors">@NylerWedding</a>{" "}
+                  within 48&nbsp;hours. In the payment note, include the names of all guests staying in your room.
+                </p>
+                <p className="body-editorial mx-auto text-balance mt-4">
+                  You can also pay via Venmo to{" "}
+                  <a href="https://venmo.com/u/tylermagee" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium underline underline-offset-4 hover:text-primary transition-colors">@tylermagee</a>.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
                   <a
