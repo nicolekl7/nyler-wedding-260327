@@ -88,7 +88,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Just us and really only us because there was a pandemic. First place together. Three weeks in: lockdown. We survived.",
-    photos: [{ src: ks1 }, { src: ks2 }, { src: ks3 }, { src: ks4 }],
+    photos: [{ src: ks1 }, { src: ks2 }, { src: ks3, nudgeX: 6 }, { src: ks4 }],
   },
   {
     year: "2021",
@@ -109,7 +109,7 @@ const stops: RoadmapStopData[] = [
       { src: ct1 },
       { src: ct2 },
       { src: ct3 },
-      { src: ct4 },
+      { src: ct4, , nudgeX: 6 },
       { src: ct5 },
     ],
   },
@@ -129,7 +129,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Tyler filled the patio with photos of us. His phone ran out of storage right as Nicole walked out so no one will ever really know what was said. But what we can share is: she did say yes.",
-    photos: [{ src: proposal1 }, { src: proposal2 }],
+    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 6 }],
   },
 ];
 
