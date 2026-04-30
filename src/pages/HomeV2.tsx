@@ -24,7 +24,7 @@ const HomeV2 = () => {
   }, []);
 
   return (
-    <Layout>
+    <Layout dark>
       <section className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-6 py-24 sm:py-32 overflow-x-hidden">
         <FadeIn>
           <div className="flex flex-col items-center text-center -translate-y-[20px]">
