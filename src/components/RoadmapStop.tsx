@@ -226,7 +226,7 @@ const PhotoStack = ({
             photo={photo}
             rotate={rot(i)}
             className={cn(
-              "absolute transition-transform duration-500 hover:!rotate-0 hover:scale-105",
+              "absolute transition-transform duration-500 hover:!rotate-0",
               sizeClass,
               dOff && "lg:left-[var(--lg-left)] lg:top-[var(--lg-top)]"
             )}
