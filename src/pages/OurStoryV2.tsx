@@ -97,7 +97,7 @@ const stops: RoadmapStopData[] = [
     place: "Kansas",
     headline: "",
     blurb: "Somehow, homeowners. Still not sure how this happened.",
-    photos: [{ src: house1 }, { src: house2, nudgeX: 60 },{ src: house3, rorate: -50 }],
+    photos: [{ src: house1 }, { src: house2, nudgeX: 60 },{ src: house3, rorate: 50 }],
   },
   {
     year: "2022",
