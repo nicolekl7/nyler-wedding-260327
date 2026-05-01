@@ -41,6 +41,8 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Met, talked all night, told our parents we'd get married. When you know, you know.",
+    disclaimer:
+      "(Tyler didn't want to include this iconic tweet so here's a disclaimer: He no longer talks like this nor does he typically drink for 7 days nonstop.)",
     photos: [{ src: nye1 }, { src: nye2 }],
   },
   {
@@ -97,6 +99,7 @@ const stops: RoadmapStopData[] = [
     place: "Kansas",
     headline: "",
     blurb: "Somehow, homeowners. Still not sure how this happened.",
+    tightMobile: true,
     photos: [{ src: house1 }, { src: house2, nudgeX: 60 },{ src: house3, rotate: 5 }],
   },
   {
@@ -106,6 +109,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
+    tightMobile: true,
     photos: [
       { src: ct1, nudgeX: -2 },
       { src: ct2, nudgeX: 60, rotate: -10 },
