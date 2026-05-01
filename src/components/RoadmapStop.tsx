@@ -32,22 +32,22 @@ const RoadmapStop = ({ stop, side, index, isLast }: Props) => {
 
   return (
     <div className="relative">
-      {/* Center dot (desktop) */}
-      <span
-        aria-hidden
-        className={cn(
-          "hidden lg:block absolute left-1/2 -translate-x-1/2 top-12 z-10 rounded-full bg-background border-2 border-foreground/70",
-          isLast ? "h-5 w-5 bg-foreground" : "h-3 w-3"
-        )}
-      />
-      {/* Mobile rail dot */}
-      <span
-        aria-hidden
-        className={cn(
-          "lg:hidden absolute left-[7px] top-3 z-10 rounded-full bg-background border-2 border-foreground/70",
-          isLast ? "h-4 w-4 bg-foreground" : "h-3 w-3"
-        )}
-      />
+{/* Center dot (desktop) — aligned with year baseline */}
+<span
+  aria-hidden
+  className={cn(
+    "hidden lg:block absolute left-1/2 -translate-x-1/2 top-8 z-10 rounded-full bg-background border-2 border-foreground/70",
+    isLast ? "h-5 w-5" : "h-3 w-3"
+  )}
+/>
+{/* Mobile rail dot */}
+<span
+  aria-hidden
+  className={cn(
+    "lg:hidden absolute left-[7px] top-3 z-10 rounded-full bg-background border-2 border-foreground/70",
+    isLast ? "h-4 w-4" : "h-3 w-3"
+  )}
+/>
 
       <FadeIn>
         <div
