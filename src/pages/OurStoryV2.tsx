@@ -50,7 +50,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Suddenly, monthly flights. One weekend visit and we couldn't stop planning the next.",
-    photos: [{ src: dating1 }, { src: dating2 }, { src: dating4 }],
+    photos: [{ src: dating1 }, { src: dating2 }, { src: dating4, nudgeX: 20 }],
   },
   {
     year: "2017",
@@ -59,7 +59,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Nicole suggested a break but left a letter for each day she'd be gone. Tyler agreed to break up but bought a flight to visit 3 weeks in. Neither of us were good at this.",
-    photos: [{ src: florence2 }, { src: florence3 }, { src: florence4, nudgeX: 10}],
+    photos: [{ src: florence2 }, { src: florence3 }, { src: florence4, nudgeX: 40}],
   },
 {
   year: "2018",
@@ -107,10 +107,10 @@ const stops: RoadmapStopData[] = [
     blurb:
       "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
     photos: [
-      { src: ct1 },
+      { src: ct1, nudgeX: -2 },
       { src: ct2, nudgeX: 60, rotate: -10 },
-      { src: ct3, rotate: 10},
-      { src: ct4, nudgeX: 40, rotate: -10 },
+      { src: ct3, rotate: -10},
+      { src: ct4, nudgeX: 40, rotate: 2 },
       { src: ct5, nudgeX: -40, rotate: -10 },
     ],
   },
