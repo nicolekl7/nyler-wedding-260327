@@ -80,12 +80,11 @@ const RoadmapStop = ({ stop, side, index, isLast }: Props) => {
             {stop.blurb && (
               <p className="font-body text-sm text-muted-foreground leading-relaxed text-balance max-w-sm lg:max-w-none lg:inline-block">
                 {stop.blurb}
-                {stop.disclaimer && (
-                  <>
-                    <br />
-                    <em className="italic">{stop.disclaimer}</em>
-                  </>
-                )}
+              </p>
+            )}
+            {stop.disclaimer && (
+              <p className="font-body text-xs italic text-muted-foreground/50 leading-relaxed text-balance max-w-sm lg:max-w-none mt-2">
+                {stop.disclaimer}
               </p>
             )}
           </div>
