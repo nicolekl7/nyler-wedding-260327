@@ -154,8 +154,14 @@ const RsvpV2 = () => {
             </p>
             <p className="body-editorial mx-auto text-center mt-6 text-foreground font-normal !leading-snug">
               <strong>Prices are per room for the entire three-night stay (September 16–19).</strong>
-              <span className="block mt-3">Rooms are available on a first-come, first-served basis. Reservations not paid within 48&nbsp;hours will be released.</span>
             </p>
+            <div className="mt-4 flex justify-center">
+              <div className="px-5 py-3 bg-green-100 rounded-md text-center">
+                <p className="body-editorial text-foreground font-normal !leading-snug">
+                  Rooms are available on a first-come, first-served basis.<span className="hidden sm:inline"><br /></span><span className="sm:hidden"> </span>Reservations not paid within 48&nbsp;hours will be released.
+                </p>
+              </div>
+            </div>
             <div className="mt-6 text-center space-y-2">
               <p>
                 <a
