@@ -22,7 +22,7 @@ import ks3 from "@/assets/2020-3.jpeg";
 import ks4 from "@/assets/2020-4.jpeg";
 import house1 from "@/assets/2021-1.jpeg";
 import house2 from "@/assets/2021-2.jpeg";
-import house2 from "@/assets/2021-3.jpeg";
+import house2 from "@/assets/2021-3.jpg";
 import ct1 from "@/assets/2022-1.jpeg";
 import ct2 from "@/assets/2022-5.jpeg";
 import ct3 from "@/assets/2022-3.jpeg";
