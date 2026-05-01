@@ -9,6 +9,8 @@ export interface RoadmapPhoto {
   nudgeY?: number;
   /** Per-photo horizontal nudge in pixels */
   nudgeX?: number;
+  /** Per-photo rotation in degrees (added on top of the auto jitter) */
+  rotate?: number;
 }
 
 export interface RoadmapStopData {
@@ -224,7 +226,7 @@ const PhotoStack = ({
           <PhotoFrame
             key={i}
             photo={photo}
-            rotate={rot(i)}
+            rotate={(parseFloat(rot(i)) + (photo.rotate ?? 0)).toFixed(2)}
             className={cn(
               "absolute transition-transform duration-500 hover:!rotate-0",
               sizeClass,
