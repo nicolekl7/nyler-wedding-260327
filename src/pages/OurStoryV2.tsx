@@ -107,7 +107,7 @@ const stops: RoadmapStopData[] = [
       "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
     photos: [
       { src: ct1 },
-      { src: ct2, nudgeX: -20, rotate: -10 },
+      { src: ct2, nudgeX: 60, rotate: -60 },
       { src: ct3 },
       { src: ct4, nudgeX: 40, rotate: -30 },
       { src: ct5, nudgeX: 60 },
