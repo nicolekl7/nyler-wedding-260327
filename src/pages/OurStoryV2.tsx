@@ -59,7 +59,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Nicole suggested a break but left a letter for each day she'd be gone. Tyler agreed to break up but bought a flight to visit 3 weeks in. Neither of us were good at this.",
-    photos: [{ src: florence2 }, { src: florence3 }, { src: florence4 }],
+    photos: [{ src: florence2 }, { src: florence3 }, { src: florence4, nudgeX: 10}],
   },
 {
   year: "2018",
@@ -97,7 +97,7 @@ const stops: RoadmapStopData[] = [
     place: "Kansas",
     headline: "",
     blurb: "Somehow, homeowners. Still not sure how this happened.",
-    photos: [{ src: house1 }, { src: house2, nudgeX: 60 },{ src: house3, rotate: 50 }],
+    photos: [{ src: house1 }, { src: house2, nudgeX: 60 },{ src: house3, rotate: 5 }],
   },
   {
     year: "2022",
@@ -108,10 +108,10 @@ const stops: RoadmapStopData[] = [
       "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
     photos: [
       { src: ct1 },
-      { src: ct2, nudgeX: 60, rotate: -60 },
-      { src: ct3, rotate: 180},
-      { src: ct4, nudgeX: 40, rotate: -30 },
-      { src: ct5, nudgeX: -40, rotate: -100 },
+      { src: ct2, nudgeX: 60, rotate: -10 },
+      { src: ct3, rotate: 10},
+      { src: ct4, nudgeX: 40, rotate: -10 },
+      { src: ct5, nudgeX: -40, rotate: -10 },
     ],
   },
   {
