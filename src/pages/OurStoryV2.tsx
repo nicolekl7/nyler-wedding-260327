@@ -41,6 +41,8 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Met, talked all night, told our parents we'd get married. When you know, you know.",
+    disclaimer:
+      "(Tyler didn't want to include this iconic tweet so here's a disclaimer: He no longer talks like this nor does he typically drink for 7 days nonstop.)",
     photos: [{ src: nye1 }, { src: nye2 }],
   },
   {

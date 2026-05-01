@@ -19,6 +19,7 @@ export interface RoadmapStopData {
   place?: string;
   headline: string;
   blurb?: string;
+  disclaimer?: string;
   photos: RoadmapPhoto[];
 }
 
@@ -79,6 +80,12 @@ const RoadmapStop = ({ stop, side, index, isLast }: Props) => {
             {stop.blurb && (
               <p className="font-body text-sm text-muted-foreground leading-relaxed text-balance max-w-sm lg:max-w-none lg:inline-block">
                 {stop.blurb}
+                {stop.disclaimer && (
+                  <>
+                    <br />
+                    <em className="italic">{stop.disclaimer}</em>
+                  </>
+                )}
               </p>
             )}
           </div>
@@ -258,6 +265,7 @@ const PhotoFrame = ({
   onClick?: () => void;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isHorizontal, setIsHorizontal] = useState(false);
   const nudgeX = photo.nudgeX ?? 0;
   const nudgeY = photo.nudgeY ?? 0;
   return (
@@ -267,7 +275,7 @@ const PhotoFrame = ({
         className
       )}
       style={{
-        transform: `translate(${nudgeX}px, ${nudgeY}px) rotate(${isHovered ? 0 : rotate}deg)`,
+        transform: `translate(${nudgeX}px, ${nudgeY}px) rotate(${isHovered ? 0 : rotate}deg)${isHorizontal ? " scale(1.1)" : ""}`,
         transition: "transform 500ms",
         ...style,
       }}
@@ -281,6 +289,10 @@ const PhotoFrame = ({
           alt={photo.alt ?? ""}
           className="block w-full h-auto bg-foreground/10"
           loading="lazy"
+          onLoad={(e) => {
+            const img = e.currentTarget;
+            if (img.naturalWidth > img.naturalHeight) setIsHorizontal(true);
+          }}
         />
       ) : (
         <div className="relative aspect-[4/5] w-full overflow-hidden bg-foreground/10">
