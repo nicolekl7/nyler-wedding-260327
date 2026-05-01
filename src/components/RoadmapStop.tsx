@@ -9,6 +9,8 @@ export interface RoadmapPhoto {
   nudgeY?: number;
   /** Per-photo horizontal nudge in pixels */
   nudgeX?: number;
+  /** Per-photo rotation in degrees (added on top of the auto jitter) */
+  rotate?: number;
 }
 
 export interface RoadmapStopData {
@@ -32,27 +34,27 @@ const RoadmapStop = ({ stop, side, index, isLast }: Props) => {
 
   return (
     <div className="relative">
-{/* Center dot (desktop) — aligned with year baseline */}
+{/* Center dot (desktop) — aligned with year */}
 <span
   aria-hidden
   className={cn(
-    "hidden lg:block absolute left-1/2 -translate-x-1/2 top-8 z-10 rounded-full bg-background border-2 border-foreground/70",
-    isLast ? "h-5 w-5" : "h-3 w-3"
+    "hidden lg:block absolute left-1/2 -translate-x-1/2 top-[1.875rem] z-10 h-3 w-3 rounded-full border-2 border-foreground/70",
+    isLast ? "bg-transparent" : "bg-background"
   )}
 />
 {/* Mobile rail dot */}
 <span
   aria-hidden
   className={cn(
-    "lg:hidden absolute left-[7px] top-3 z-10 rounded-full bg-background border-2 border-foreground/70",
-    isLast ? "h-4 w-4" : "h-3 w-3"
+    "lg:hidden absolute left-[7px] top-6 z-10 h-3 w-3 rounded-full border-2 border-foreground/70",
+    isLast ? "bg-transparent" : "bg-background"
   )}
 />
 
       <FadeIn>
         <div
           className={cn(
-            "grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center pl-8 lg:pl-0"
+            "grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start pl-8 lg:pl-0"
           )}
         >
           {/* Text block */}
@@ -126,7 +128,7 @@ const PhotoStack = ({
   if (visible.length === 1) {
     return (
       <div className={cn("flex", align === "left" ? "justify-start" : "justify-end")}>
-        <PhotoFrame photo={visible[0]} rotate={rot(0)} className="w-64 sm:w-80" />
+        <PhotoFrame photo={visible[0]} rotate={(parseFloat(rot(0)) + (visible[0].rotate ?? 0)).toFixed(2)} className="w-64 sm:w-80" />
       </div>
     );
   }
@@ -224,9 +226,9 @@ const PhotoStack = ({
           <PhotoFrame
             key={i}
             photo={photo}
-            rotate={rot(i)}
+            rotate={(parseFloat(rot(i)) + (photo.rotate ?? 0)).toFixed(2)}
             className={cn(
-              "absolute transition-transform duration-500 hover:!rotate-0",
+              "absolute",
               sizeClass,
               dOff && "lg:left-[var(--lg-left)] lg:top-[var(--lg-top)]"
             )}
@@ -255,10 +257,9 @@ const PhotoFrame = ({
   onMouseEnter?: () => void;
   onClick?: () => void;
 }) => {
-  const [isLandscape, setIsLandscape] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const nudgeX = photo.nudgeX ?? 0;
   const nudgeY = photo.nudgeY ?? 0;
-  const scale = isLandscape ? 1.2 : 1;
   return (
     <figure
       className={cn(
@@ -266,10 +267,12 @@ const PhotoFrame = ({
         className
       )}
       style={{
-        transform: `translate(${nudgeX}px, ${nudgeY}px) rotate(${rotate}deg) scale(${scale})`,
+        transform: `translate(${nudgeX}px, ${nudgeY}px) rotate(${isHovered ? 0 : rotate}deg)`,
+        transition: "transform 500ms",
         ...style,
       }}
-      onMouseEnter={onMouseEnter}
+      onMouseEnter={() => { setIsHovered(true); onMouseEnter?.(); }}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
     >
       {photo.src ? (
@@ -278,10 +281,6 @@ const PhotoFrame = ({
           alt={photo.alt ?? ""}
           className="block w-full h-auto bg-foreground/10"
           loading="lazy"
-          onLoad={(e) => {
-            const img = e.currentTarget;
-            if (img.naturalWidth > img.naturalHeight) setIsLandscape(true);
-          }}
         />
       ) : (
         <div className="relative aspect-[4/5] w-full overflow-hidden bg-foreground/10">
