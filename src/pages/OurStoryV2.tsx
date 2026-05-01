@@ -109,7 +109,7 @@ const stops: RoadmapStopData[] = [
     photos: [
       { src: ct1 },
       { src: ct2, nudgeX: 60, rotate: -60 },
-      { src: ct3 },
+      { src: ct3, rotate: 80},
       { src: ct4, nudgeX: 40, rotate: -30 },
       { src: ct5, nudgeX: -40 },
     ],
