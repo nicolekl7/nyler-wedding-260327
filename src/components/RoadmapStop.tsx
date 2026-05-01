@@ -151,8 +151,8 @@ const PhotoStack = ({
     ],
     3: [
       { left: "0%", top: "0%" },
-      { left: "38%", top: "8%" },
-      { left: "14%", top: "44%" },
+      { left: "22%", top: "8%" },
+      { left: "8%", top: "44%" },
     ],
     4: [
       { left: "0%", top: "0%" },
@@ -162,10 +162,10 @@ const PhotoStack = ({
     ],
     5: [
       { left: "0%", top: "2%" },
-      { left: "32%", top: "0%" },
-      { left: "6%", top: "34%" },
-      { left: "38%", top: "36%" },
-      { left: "20%", top: "62%" },
+      { left: "18%", top: "0%" },
+      { left: "4%", top: "34%" },
+      { left: "22%", top: "36%" },
+      { left: "12%", top: "62%" },
     ],
     6: [
       { left: "0%",   top: "0%" },   // Top Left
@@ -177,8 +177,21 @@ const PhotoStack = ({
     ],
   };
 
-  // No desktop grid override — keep the scattered collage vibe at every size.
-  const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {};
+  // Desktop overrides restore the wider spread (base offsets above are mobile-first/tighter).
+  const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {
+    3: [
+      { left: "0%", top: "0%" },
+      { left: "38%", top: "8%" },
+      { left: "14%", top: "44%" },
+    ],
+    5: [
+      { left: "0%", top: "2%" },
+      { left: "32%", top: "0%" },
+      { left: "6%", top: "34%" },
+      { left: "38%", top: "36%" },
+      { left: "20%", top: "62%" },
+    ],
+  };
 
   // Container height tuned to actual collage footprint at each size, so the
   // gap to the next stop stays consistent (no huge empty space, no overlap).
