@@ -99,6 +99,7 @@ const stops: RoadmapStopData[] = [
     place: "Kansas",
     headline: "",
     blurb: "Somehow, homeowners. Still not sure how this happened.",
+    tightMobile: true,
     photos: [{ src: house1 }, { src: house2, nudgeX: 60 },{ src: house3, rotate: 5 }],
   },
   {
@@ -108,6 +109,7 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb:
       "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
+    tightMobile: true,
     photos: [
       { src: ct1, nudgeX: -2 },
       { src: ct2, nudgeX: 60, rotate: -10 },

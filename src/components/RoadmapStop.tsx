@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import FadeIn from "./FadeIn";
 
@@ -20,6 +21,7 @@ export interface RoadmapStopData {
   headline: string;
   blurb?: string;
   disclaimer?: string;
+  tightMobile?: boolean;
   photos: RoadmapPhoto[];
 }
 
@@ -96,7 +98,7 @@ const RoadmapStop = ({ stop, side, index, isLast }: Props) => {
               textFirst ? "lg:order-2 lg:pl-12" : "lg:order-1 lg:pr-12"
             )}
           >
-            <PhotoStack photos={stop.photos} seed={index} align={textFirst ? "left" : "right"} />
+            <PhotoStack photos={stop.photos} seed={index} align={textFirst ? "left" : "right"} tightMobile={stop.tightMobile} />
           </div>
         </div>
       </FadeIn>
@@ -108,11 +110,14 @@ const PhotoStack = ({
   photos,
   seed,
   align,
+  tightMobile,
 }: {
   photos: RoadmapPhoto[];
   seed: number;
   align: "left" | "right";
+  tightMobile?: boolean;
 }) => {
+  const isMobile = useIsMobile();
   const visible = photos.slice(0, 6);
   const [order, setOrder] = useState<number[]>([]);
   const bring = (i: number) =>
@@ -151,8 +156,8 @@ const PhotoStack = ({
     ],
     3: [
       { left: "0%", top: "0%" },
-      { left: "22%", top: "8%" },
-      { left: "8%", top: "44%" },
+      { left: "38%", top: "8%" },
+      { left: "14%", top: "44%" },
     ],
     4: [
       { left: "0%", top: "0%" },
@@ -162,36 +167,43 @@ const PhotoStack = ({
     ],
     5: [
       { left: "0%", top: "2%" },
-      { left: "18%", top: "0%" },
-      { left: "4%", top: "34%" },
-      { left: "22%", top: "36%" },
-      { left: "12%", top: "62%" },
-    ],
-    6: [
-      { left: "0%",   top: "0%" },   // Top Left
-      { left: "32%",  top: "5%" },   // Top Middle (shifts up)
-      { left: "62%",  top: "2%" },   // Top Right (moved from bottom right)
-      { left: "5%",   top: "30%" },  // Mid Left (tucked under)
-      { left: "38%",  top: "35%" },  // Mid Middle
-      { left: "15%",  top: "60%" },  // Bottom Center (finishing the cluster)
-    ],
-  };
-
-  // Desktop overrides restore the wider spread (base offsets above are mobile-first/tighter).
-  const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {
-    3: [
-      { left: "0%", top: "0%" },
-      { left: "38%", top: "8%" },
-      { left: "14%", top: "44%" },
-    ],
-    5: [
-      { left: "0%", top: "2%" },
       { left: "32%", top: "0%" },
       { left: "6%", top: "34%" },
       { left: "38%", top: "36%" },
       { left: "20%", top: "62%" },
     ],
+    6: [
+      { left: "0%",   top: "0%" },
+      { left: "32%",  top: "5%" },
+      { left: "62%",  top: "2%" },
+      { left: "5%",   top: "30%" },
+      { left: "38%",  top: "35%" },
+      { left: "15%",  top: "60%" },
+    ],
   };
+
+  // Tighter offsets used only on mobile for stops marked tightMobile.
+  const tightMobileOffsetsByCount: Record<number, { left: string; top: string }[]> = {
+    3: [
+      { left: "0%", top: "0%" },
+      { left: "22%", top: "8%" },
+      { left: "8%", top: "44%" },
+    ],
+    5: [
+      { left: "0%", top: "2%" },
+      { left: "18%", top: "0%" },
+      { left: "4%", top: "34%" },
+      { left: "22%", top: "36%" },
+      { left: "12%", top: "62%" },
+    ],
+  };
+
+  const activeOffsets = (tightMobile && isMobile)
+    ? { ...offsetsByCount, ...tightMobileOffsetsByCount }
+    : offsetsByCount;
+
+  // No desktop grid override needed.
+  const desktopOffsetsByCount: Record<number, { left: string; top: string }[]> = {};
 
   // Container height tuned to actual collage footprint at each size, so the
   // gap to the next stop stays consistent (no huge empty space, no overlap).
@@ -231,7 +243,7 @@ const PhotoStack = ({
       )}
     >
       {visible.map((photo, i) => {
-        const offsets = offsetsByCount[visible.length] ?? offsetsByCount[3];
+        const offsets = activeOffsets[visible.length] ?? activeOffsets[3];
         const desktopOffsets = desktopOffsetsByCount[visible.length];
         const dOff = desktopOffsets?.[i];
         const frameStyle: React.CSSProperties = {
