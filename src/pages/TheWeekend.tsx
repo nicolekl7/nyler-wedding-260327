@@ -169,9 +169,6 @@ const TheWeekend = () => (
                       alt="Welcome party attire color palette illustration"
                       className="block w-full max-w-xl"
                     />
-                    <p className="font-body text-sm text-muted-foreground italic mt-4">
-                      Here are a few colors to inspire but wear whatever makes you feel good.
-                    </p>
                   </div>
                 )}
                 {i === 1 && (
