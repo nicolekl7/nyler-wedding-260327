@@ -317,12 +317,21 @@ const AdminReservations = () => {
               Manage room bookings and payment status
             </p>
           </div>
-          <button
-            onClick={logOut}
-            className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Log out
-          </button>
+          <div className="flex items-center gap-5">
+            <button
+              onClick={loadData}
+              disabled={loading}
+              className="font-body text-xs uppercase tracking-[0.2em] text-foreground hover:text-primary transition-colors disabled:opacity-50"
+            >
+              {loading ? "Refreshing…" : "Refresh"}
+            </button>
+            <button
+              onClick={logOut}
+              className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Log out
+            </button>
+          </div>
         </div>
 
         {/* Inventory snapshot */}
