@@ -1,34 +1,21 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const navLabels = {
-  en: {
-    home: "Home",
-    travel: "Travel",
-    events: "Events",
-    explore: "Explore",
-    registry: "Registry",
-    ourStory: "Our Story",
-    rsvp: "RSVP",
-  },
-  pl: {
-    home: "Strona główna",
-    travel: "Podróż",
-    events: "Imprezy",
-    explore: "Odkrywaj",
-    registry: "Prezenty",
-    ourStory: "Nasza historia",
-    rsvp: "RSVP",
-  },
+  home: "Home",
+  travel: "Travel",
+  events: "Events",
+  explore: "Explore",
+  registry: "Registry",
+  ourStory: "Our Story",
+  rsvp: "RSVP",
 };
 
 const Navigation = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
-  const { language, setLanguage } = useLanguage();
-  const labels = navLabels[language];
+  const labels = navLabels;
 
   const navItems = [
     { path: "/", label: labels.home },
@@ -80,26 +67,6 @@ const Navigation = () => {
             )
           )}
 
-          {/* Language switcher — desktop */}
-          <div className="flex items-center gap-1 font-body text-xs tracking-widest">
-            <button
-              onClick={() => setLanguage("pl")}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
-              aria-label="Switch to Polish"
-            >
-              <span>🇵🇱</span>
-              <span>PL</span>
-            </button>
-            <span className="text-muted-foreground/50">|</span>
-            <button
-              onClick={() => setLanguage("en")}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "en" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
-              aria-label="Switch to English"
-            >
-              <span>🇺🇸</span>
-              <span>EN</span>
-            </button>
-          </div>
         </div>
 
         {/* Mobile toggle */}
@@ -143,26 +110,6 @@ const Navigation = () => {
             )
           )}
 
-          {/* Language switcher — mobile */}
-          <div className="flex items-center gap-2 pt-2 border-t border-border/30 font-body text-xs tracking-widest">
-            <button
-              onClick={() => { setLanguage("pl"); setOpen(false); }}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40"}`}
-              aria-label="Switch to Polish"
-            >
-              <span>🇵🇱</span>
-              <span>POLSKI</span>
-            </button>
-            <span className="text-muted-foreground/50">|</span>
-            <button
-              onClick={() => { setLanguage("en"); setOpen(false); }}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "en" ? "opacity-100 font-medium" : "opacity-40"}`}
-              aria-label="Switch to English"
-            >
-              <span>🇺🇸</span>
-              <span>ENGLISH</span>
-            </button>
-          </div>
         </div>
       </div>
     </nav>

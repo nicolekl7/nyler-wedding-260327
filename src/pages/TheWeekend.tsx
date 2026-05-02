@@ -69,61 +69,6 @@ const pageContent = {
       },
     ],
   },
-  pl: {
-    heading: "Uroczystości",
-    intro: "Trzy dni w toskańskiej wsi. Oto czego się spodziewać.",
-    faqHeading: "Często zadawane pytania",
-    attireLabel: "Strój:",
-    colorsNote: "Oto kilka kolorów dla inspiracji, ale przede wszystkim noś to, w czym czujesz się dobrze.",
-    navTravel: "Podróż →",
-    navExplore: "Odkrywaj →",
-    itinerary: [
-      {
-        day: "Środa, 16 września",
-        title: "Przyjęcie powitalne",
-        description:
-          "Dołącz do nas pod gwiazdami na pizzę z pieca opalanego drewnem i najlepsze wino na świecie, aby powitać Cię w Toskanii.",
-        attire:
-          "La Notte Bianca — Wszystko w bieli: ubrania lniane, letnie sukienki, beztroski włoski styl. Przez lata unikałeś bieli na weselach. Ta noc jest dla Ciebie. Od stóp do głów — len, jedwab — cokolwiek zechcesz, ale wyłącznie w bieli, bez wyjątków.",
-      },
-      {
-        day: "Czwartek, 17 września",
-        title: "Dzień ślubu",
-        description:
-          "Ceremonia z widokiem na toskańskie wzgórza, a następnie wieczór aperitivo, kolacja i taniec do białego rana.",
-        attire:
-          "Toskański styl formalny — Idealny pretekst do eleganckiego ubioru. Suknie do ziemi. Garnitury. Zachęcamy do bogatych kolorów i faktur. Bawcie się!",
-      },
-      {
-        day: "Piątek, 18 września",
-        title: "Il Dolce Far Niente — Impreza przy basenie",
-        description: "Sztuka nierobienia niczego. Odpocznij przy basenie z lunchem, drinkami i słońcem.",
-        attire: "Styl Vintage Resort",
-      },
-    ],
-    faqs: [
-      {
-        q: "Jaka jest pogoda we wrześniu?",
-        a: "Późny wrzesień w Toskanii jest zazwyczaj piękny — ciepłe, słoneczne dni (ok. 24°C) i chłodne wieczory (ok. 13°C). Polecamy zabrać lekką kurtkę lub szal na wieczorne uroczystości. Nie zapomnij kostiumu kąpielowego!",
-      },
-      {
-        q: "Jakie buty wybrać?",
-        a: "Posiadłość ma brukowane ścieżki i trawnik — szpilki nie będą Twoją przyjaciółką. Zdecydowanie polecamy obcasy słupkowe, koturny lub eleganckie baleriny na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
-      },
-      {
-        q: "Czy dzieci są mile widziane?",
-        a: "Kochamy Wasze dzieci, naprawdę. Jednak ta uroczystość jest tylko dla dorosłych. Wśród gości jest kilkoro dzieci z najbliższej rodziny. Dziękujemy za zrozumienie!",
-      },
-      {
-        q: "Czy mogę przyjść z partnerem/partnerką?",
-        a: "Chętnie świętowalibyśmy ze wszystkimi, ale nasze miejsce ma ograniczoną pojemność. Możemy przyjąć wyłącznie gości wymienionych na zaproszeniu.",
-      },
-      {
-        q: "Czy prezenty są oczekiwane?",
-        a: "Nie! Największym prezentem, jaki możecie nam dać, jest Wasza obecność. Dla tych, którzy chcieliby coś podarować lub uczcić ten dzień z daleka, niebawem pojawi się link do naszej listy ślubnej.",
-      },
-    ],
-  },
 };
 
 const TheWeekend = () => {
@@ -164,8 +109,8 @@ const TheWeekend = () => {
                   <p className={`heading-sub text-foreground mb-2 ${i === 2 ? "pt-1" : ""}`}>
                     {i === 2 ? (
                       <>
-                        <span className="block sm:inline">{language === "pl" ? "Piątek," : "Friday,"}</span>{" "}
-                        <span className="block sm:inline">{language === "pl" ? "18 września" : "September 18"}</span>
+                        <span className="block sm:inline">Friday,</span>{" "}
+                        <span className="block sm:inline">September 18</span>
                       </>
                     ) : (
                       event.day

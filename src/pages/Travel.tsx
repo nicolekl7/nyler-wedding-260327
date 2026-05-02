@@ -53,51 +53,6 @@ const pageContent = {
       },
     ],
   },
-  pl: {
-    heading: "Jak dotrzeć do Borgo Laticastelli",
-    intro: "Podróż do Toskanii jest częścią magii. Niezależnie od tego, czy lecisz samolotem, jedziesz pociągiem, czy wynajmujesz samochód, każda trasa prowadzi przez jedne z najpiękniejszych krajobrazów na świecie.",
-    thingsTitle: "Ważne informacje",
-    thingsP1: (
-      <>
-        <strong className="text-foreground font-medium">Ważne:</strong> Włochy wymagają, aby paszport był ważny przez co najmniej sześć miesięcy po planowanej dacie powrotu. Sprawdź dziś datę ważności swojego paszportu! Jeśli wygasa przed marcem 2027 roku, musisz go odnowić przed zakupem biletów.
-      </>
-    ),
-    thingsP2: (
-      <>
-        Jeśli planujesz wynajem samochodu, będziesz potrzebować Międzynarodowego Prawa Jazdy (IDP)—wymaganego przez włoskie prawo. Można je uzyskać przez AAA za ok. 20 USD przed wyjazdem.
-        <br />
-        <strong className="text-foreground font-medium">Nie zapomnij też spakować adapterów podróżnych Type C lub Type L.</strong>
-      </>
-    ),
-    navEvents: "Imprezy →",
-    navExplore: "Odkrywaj →",
-    sections: [
-      {
-        title: "Samolotem",
-        subtitle: "LOTY KRAJOWE I ZAGRANICZNE",
-        image: airImg,
-        alt: "Aerial view of Florence at golden hour",
-        body: "Do Borgo Laticastelli można dotrzeć z kilku lotnisk:\n\n• Florencja (FLR) — 1 godzina\n• Piza (PSA) — 2 godziny\n• Rzym (FCO) — 2,5 godziny\n\nNa loty międzynarodowe Rzym oferuje najwygodniejsze połączenia bezpośrednie. Dla najłatwiejszej podróży Florencja to najlepszy wybór.",
-        extra: "Jeśli podróżujesz solo i chciałbyś/chciałabyś skoordynować wspólną podróż samochodem lub pociągiem z innymi gośćmi, daj nam znać, a połączymy Cię z nimi!",
-      },
-      {
-        title: "Pociągiem i transfery",
-        subtitle: "SZYBKIE WŁOSKIE KOLEJE",
-        image: trainImg,
-        alt: "Italian train winding through Tuscan countryside",
-        body: "Włochy mają fantastyczną sieć szybkich pociągów w całym kraju. Możesz użyć Google Maps, aby zaplanować trasę w zależności od lotniska przylotu.",
-        extra: (<>Jeśli planujesz dotrzeć pociągiem do Sieny, oferujemy grupowy transfer z Sieny do posiadłości o godz. 14:00 w środę, 16 września. Aby zarezerwować miejsce, skontaktuj się z Nicole lub Tylerem do <strong className="text-foreground font-medium">1 sierpnia</strong>—po tym terminie transfery będą musiały być zorganizowane samodzielnie.</>),
-      },
-      {
-        title: "Samochodem",
-        subtitle: "WYNAJEM SAMOCHODÓW I KIEROWCY",
-        image: carImg,
-        alt: "Winding cypress-lined road through Tuscan hills",
-        body: "Chociaż samochód nie jest niezbędny na 3 dni uroczystości na terenie posiadłości, wynajem samochodu jest wysoce zalecany, jeśli planujesz przedłużyć pobyt lub swobodnie zwiedzać okolicę.\n\nPamiętaj, że Włochy mają strefy ZTL w większości historycznych centrów miast — obszary z ograniczonym dostępem, egzekwowane automatycznie przez kamery z wysokimi mandatami. Aplikacje nawigacyjne jak Waze pomogą Ci ich uniknąć. W razie wątpliwości parkuj poza murami miasta i wejdź pieszo.",
-        extra: null,
-      },
-    ],
-  },
 };
 
 const Travel = () => {

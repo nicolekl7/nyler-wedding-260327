@@ -133,104 +133,6 @@ const stopsEN: RoadmapStopData[] = [
   },
 ];
 
-const stopsPL: RoadmapStopData[] = [
-  {
-    year: "2016",
-    month: "Grudzień",
-    place: "Nowy Jork",
-    headline: "",
-    blurb: "Poznaliśmy się, rozmawialiśmy całą noc, powiedzieliśmy rodzicom, że się pobierzemy. Gdy wiesz, to wiesz.",
-    disclaimer:
-      "(Tyler nie chciał zamieszczać tego słynnego tweeta, więc oto zastrzeżenie: Nie mówi już w ten sposób i zazwyczaj nie pije przez 7 dni z rzędu.)",
-    photos: [{ src: nye1 }, { src: nye2 }],
-  },
-  {
-    year: "2017",
-    month: "Wiosna",
-    place: "Karolina Południowa",
-    headline: "",
-    blurb: "Nagle miesięczne loty. Jeden weekendowy wypad i nie mogliśmy przestać planować kolejnego. Nicole studiowała w Karolinie Południowej, a Tyler stacjonował w bazie lotniczej w Kansas — ale odległość nie była w stanie zatrzymać tego połączenia.",
-    photos: [{ src: dating1 }, { src: dating2 }, { src: dating4, nudgeX: 20 }],
-  },
-  {
-    year: "2017",
-    month: "Jesień",
-    place: "Włochy",
-    headline: "",
-    blurb:
-      "Nicole zaproponowała przerwę, ale zostawiła list na każdy dzień swojej nieobecności. Tyler zgodził się na rozstanie, ale kupił bilet i odwiedził ją 3 tygodnie później. Żadne z nas nie było dobre w tej zabawie.",
-    photos: [{ src: florence2 }, { src: florence3 }, { src: florence4, nudgeX: 40 }],
-  },
-  {
-    year: "2018",
-    month: "Maj",
-    place: "Kansas",
-    headline: "",
-    blurb: `Poszliśmy „tylko popatrzeć" na schroniskowe koty. Witaj, Purrcocet!`,
-    photos: [{ src: purrc1 }, { src: purrc2 }, { src: purrc3, nudgeY: -10 }],
-  },
-  {
-    year: "2019",
-    month: "Listopad",
-    place: "Kansas",
-    headline: "",
-    blurb:
-      `Tyler, który „nie był kocim człowiekiem", musiał wrócić do schroniska, bo Nicole ukradła Purrc. Witaj, Mango!`,
-    photos: [{ src: mango1 }, { src: mango2 }, { src: mango3, nudgeY: 50 }],
-  },
-  {
-    year: "2020",
-    month: "Luty",
-    place: "Kansas",
-    headline: "",
-    blurb:
-      "Tylko my i naprawdę tylko my, bo była pandemia. Pierwsze wspólne mieszkanie. Trzy tygodnie później: lockdown. Przeżyliśmy.",
-    photos: [{ src: ks1 }, { src: ks2 }, { src: ks3, nudgeY: 30 }, { src: ks4 }],
-  },
-  {
-    year: "2021",
-    month: "Marzec",
-    place: "Kansas",
-    headline: "",
-    blurb: "Jakoś staliśmy się właścicielami domu. Nadal nie wiemy, jak to się stało.",
-    tightMobile: true,
-    photos: [{ src: house1 }, { src: house2, nudgeX: 60 }, { src: house3, rotate: 5 }],
-  },
-  {
-    year: "2022",
-    month: "Lato",
-    place: "Connecticut",
-    headline: "",
-    blurb: "Tymczasowo przenieśliśmy się na wschodnie wybrzeże, żeby być bliżej rodziny. Nadal jesteśmy w Stamford. Ups.",
-    tightMobile: true,
-    photos: [
-      { src: ct1, nudgeX: -2 },
-      { src: ct2, nudgeX: 60, rotate: -10 },
-      { src: ct3, rotate: -10 },
-      { src: ct4, nudgeX: 40, rotate: 2 },
-      { src: ct5, nudgeX: -40, rotate: 1 },
-    ],
-  },
-  {
-    year: "2024",
-    month: "Lipiec",
-    place: "Polska",
-    headline: "",
-    blurb:
-      "Babcia wzięła Tylera na bok i dała mu dokładnie rok na oświadczyny. Wcześniej rozmawialiśmy już o ślubie — ale jeśli Babcia pyta, to był wyłącznie jej pomysł.",
-    photos: [{ src: poland1 }, { src: poland2 }],
-  },
-  {
-    year: "2025",
-    month: "Maj",
-    place: "Amelia Island",
-    headline: "",
-    blurb:
-      "Tyler wypełnił taras naszymi zdjęciami. Jego telefon skończył pamięć dokładnie w chwili, gdy Nicole wychodziła, więc nikt naprawdę nie wie, co zostało powiedziane. Ale możemy zdradzić: powiedziała tak.",
-    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 40 }],
-  },
-];
-
 const pageStrings = {
   en: {
     eyebrow: "December 2016 — September 2026",
@@ -240,19 +142,11 @@ const pageStrings = {
     footerBody: "Everyone we love, in the most beautiful country in the world.",
     footerClose: "See you in Tuscany.",
   },
-  pl: {
-    eyebrow: "Grudzień 2016 — Wrzesień 2026",
-    headline: <>Nasza długa droga <em className="italic font-light">tutaj.</em></>,
-    footerEyebrow: "Wrzesień · Toskania · 2026",
-    footerHeadline: "Teraz czas na Was!",
-    footerBody: "Wszyscy, których kochamy, w najpiękniejszym kraju na świecie.",
-    footerClose: "Do zobaczenia w Toskanii.",
-  },
 };
 
 const OurStoryV2 = () => {
   const { language } = useLanguage();
-  const stops = language === "pl" ? stopsPL : stopsEN;
+  const stops = stopsEN;
   const t = pageStrings[language];
 
   return (

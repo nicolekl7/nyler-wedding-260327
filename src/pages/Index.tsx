@@ -29,27 +29,6 @@ const content = {
     countdown: "Countdown to Tuscany",
     days: "Days",
   },
-  pl: {
-    dateLine: "17 września 2026 | Toskania, Włochy",
-    dateLineLong: "17 września 2026 | Rapolano Terme, Toskania, Włochy",
-    welcome: (
-      <>
-        Bierzemy ślub w Toskanii 17 września 2026 roku i będziemy szczęśliwi, mogąc Was tam mieć.
-        Czekają nas trzy dni uroczystości w Borgo Laticastelli—prywatnej posiadłości w wzgórzach
-        Rapolano Terme—z przyjęciem powitalnym w środę wieczorem, ceremonią ślubną i weselem w
-        czwartek oraz relaksującym dniem <em>il dolce far niente</em> przy basenie w piątek.
-        <br />
-        <br />
-        Wiemy, że Włochy to daleka podróż i mówimy poważnie: bez presji. Ale dla tych, którzy
-        zdecydują się przyjechać, obiecujemy, że każdy dzień będzie tego wart. Nasza lista gości
-        jest kameralna—prosimy o <strong>RSVP do 16 czerwca</strong>, abyśmy mogli odpowiednio
-        zaplanować i zarezerwować Wasze miejsca.
-      </>
-    ),
-    rsvpBtn: "Odpowiedz tutaj",
-    countdown: "Odliczanie do Toskanii",
-    days: "Dni",
-  },
 };
 
 const Index = () => {
