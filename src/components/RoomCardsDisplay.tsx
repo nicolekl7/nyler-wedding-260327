@@ -46,6 +46,19 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
     return `Sleeps up to ${cat.capacity} Guests`;
   };
 
+  const capacityNote = (cat: RoomCategory) => {
+    if (cat.capacity === 3) {
+      return "An additional bed may be available upon request, accommodating up to 3 guests. Please reach out to confirm availability for your specific room.";
+    }
+    if (cat.name === "Luxury Suite") {
+      return "Includes a sofa bed accommodating up to 2 additional guests.";
+    }
+    if (cat.name === "Junior Suite") {
+      return "Includes a sofa bed or two additional single beds accommodating up to 2 additional guests.";
+    }
+    return null;
+  };
+
   const handleSelect = (name: string) => {
     onSelectAccommodation(name);
     if (formRef?.current) {
@@ -72,7 +85,7 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
             isSelected
               ? "border-2 border-primary bg-primary/[0.04] shadow-lg shadow-primary/10"
               : soldOut
-              ? "opacity-40 border-border bg-muted cursor-not-allowed"
+              ? "opacity-50 grayscale border-border bg-muted cursor-not-allowed"
               : "border-border hover:border-primary/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 cursor-pointer"
           }`}
         >
@@ -80,13 +93,19 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
             <div className="flex items-start justify-between mb-1">
               <h3 className="font-serif text-lg text-foreground">{cat.name}</h3>
               {!isSolo && (
-                <span
-                  className={`text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 ${
-                    soldOut ? "text-muted-foreground" : "text-primary"
-                  }`}
-                >
-                  {soldOut ? "Sold Out" : `${cat.inventory_count} left`}
-                </span>
+                soldOut ? (
+                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-muted-foreground">
+                    Sold Out
+                  </span>
+                ) : cat.inventory_count <= 3 ? (
+                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300">
+                    ! Only {cat.inventory_count} Left
+                  </span>
+                ) : (
+                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-primary">
+                    {cat.inventory_count} left
+                  </span>
+                )
               )}
             </div>
             {cat.description && (
@@ -95,6 +114,11 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
               </p>
             )}
             <p className="font-body text-sm text-muted-foreground">{capacityLabel(cat)}</p>
+            {capacityNote(cat) && (
+              <p className="font-body text-xs text-muted-foreground/70 mt-1 italic">
+                {capacityNote(cat)}
+              </p>
+            )}
             <p className="font-serif text-lg text-foreground mt-3">
               ${cat.price.toLocaleString()} USD
             </p>
@@ -161,8 +185,8 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
         {categories.map((cat, i) => renderCard(cat, false, 200 + i * 60))}
       </div>
 
-      {/* Joining a Reserved Room card */}
-      <FadeIn delay={300}>
+      {/* Joining a Reserved Room card — placed last as it's a rare/edge case */}
+      <FadeIn delay={250}>
         <button
           type="button"
           onClick={() => handleSelect("Joining a Reserved Room")}
@@ -174,7 +198,7 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
         >
           <h3 className="font-serif text-lg text-foreground mb-1">Joining a Reserved Room</h3>
           <p className="font-body text-sm text-muted-foreground font-light">
-            For guests who are sharing a room already reserved by someone else in your party.
+            Only choose this if a friend or family member has already reserved and paid for the room you'll be staying in. No payment needed.
           </p>
           <div
             className={`mt-5 w-full py-2.5 text-center font-body text-xs uppercase tracking-[0.25em] transition-all duration-200 ${
