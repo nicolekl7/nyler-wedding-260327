@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/Layout";
@@ -79,12 +79,25 @@ const AccommodationsV2 = () => {
   const [guestNames, setGuestNames] = useState("");
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
   const navigate = useNavigate();
   const { language } = useLanguage();
   const t = strings[language];
 
   useEffect(() => {
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("room-categories-realtime")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "room_categories" },
+        () => { fetchCategories(); }
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const fetchCategories = async () => {
@@ -108,6 +121,8 @@ const AccommodationsV2 = () => {
       return;
     }
 
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setSubmitting(true);
 
     const { data: check } = await supabase
@@ -120,6 +135,7 @@ const AccommodationsV2 = () => {
       toast.error(t.errorSoldOut);
       await fetchCategories();
       setSelected(null);
+      submittingRef.current = false;
       setSubmitting(false);
       return;
     }
@@ -131,6 +147,7 @@ const AccommodationsV2 = () => {
 
     if (updateError) {
       toast.error(t.errorGeneric);
+      submittingRef.current = false;
       setSubmitting(false);
       return;
     }
@@ -144,6 +161,7 @@ const AccommodationsV2 = () => {
         has_children: false,
       });
 
+    submittingRef.current = false;
     setSubmitting(false);
 
     if (bookingError) {
@@ -183,13 +201,19 @@ const AccommodationsV2 = () => {
             <div className="flex items-start justify-between mb-1">
               <h3 className="font-serif text-lg text-foreground">{cat.name}</h3>
               {cat.name !== "Solo Guest Estate Pass" && (
-                <span
-                  className={`text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 ${
-                    soldOut ? "text-muted-foreground" : "text-primary"
-                  }`}
-                >
-                  {soldOut ? t.soldOut : t.left(cat.inventory_count)}
-                </span>
+                soldOut ? (
+                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-muted-foreground">
+                    {t.soldOut}
+                  </span>
+                ) : cat.inventory_count <= 3 ? (
+                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-amber-600">
+                    ! Only {cat.inventory_count} Left
+                  </span>
+                ) : (
+                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-primary">
+                    {t.left(cat.inventory_count)}
+                  </span>
+                )
               )}
             </div>
             {cat.description && (
