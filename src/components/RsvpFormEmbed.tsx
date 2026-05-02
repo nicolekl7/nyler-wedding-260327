@@ -356,6 +356,29 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
           >
             Need to edit your RSVP?
           </button>
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("hasRSVPd");
+                localStorage.removeItem("rsvpName");
+                setAlreadyRsvpd(false);
+                setGuest(null);
+                setSearchName("");
+                setSearched(false);
+                setGuestNames([""]);
+                setEventRsvps({});
+                setDietary("");
+                setNotes("");
+                setEmail("");
+                setAccommodation("");
+                setAttendingCount(1);
+              }}
+              className="font-body text-xs uppercase tracking-[0.25em] text-muted-foreground underline underline-offset-4 hover:opacity-70 transition-opacity"
+            >
+              Not you?
+            </button>
+          </div>
         </FadeIn>
       </div>
     );
