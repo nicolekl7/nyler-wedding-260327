@@ -166,7 +166,7 @@ const stopsPL: RoadmapStopData[] = [
     month: "Maj",
     place: "Kansas",
     headline: "",
-    blurb: "Poszliśmy „tylko popatrzeć" na schroniskowe koty. Witaj, Purrcocet!",
+    blurb: `Poszliśmy „tylko popatrzeć" na schroniskowe koty. Witaj, Purrcocet!`,
     photos: [{ src: purrc1 }, { src: purrc2 }, { src: purrc3, nudgeY: -10 }],
   },
   {
@@ -175,7 +175,7 @@ const stopsPL: RoadmapStopData[] = [
     place: "Kansas",
     headline: "",
     blurb:
-      "Tyler, który „nie był kocim człowiekiem", musiał wrócić do schroniska, bo Nicole ukradła Purrc. Witaj, Mango!",
+      `Tyler, który „nie był kocim człowiekiem", musiał wrócić do schroniska, bo Nicole ukradła Purrc. Witaj, Mango!`,
     photos: [{ src: mango1 }, { src: mango2 }, { src: mango3, nudgeY: 50 }],
   },
   {
