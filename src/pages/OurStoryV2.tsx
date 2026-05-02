@@ -51,7 +51,7 @@ const stops: RoadmapStopData[] = [
     place: "South Carolina",
     headline: "",
     blurb:
-      "Suddenly, monthly flights. One weekend visit and we couldn't stop planning the next.",
+      "Suddenly, monthly flights. One weekend visit and we couldn't stop planning the next. Nicole was in school in South Carolina and Tyler was stationed at a Kansas AirForce base but distance couldn’t stop this connection.",
     photos: [{ src: dating1 }, { src: dating2 }, { src: dating4, nudgeX: 20 }],
   },
   {
@@ -124,7 +124,7 @@ const stops: RoadmapStopData[] = [
     place: "Poland",
     headline: "",
     blurb:
-      "Babcia pulled Tyler aside and gave him exactly one year to propose. We had already discussed getting married soon — but if Babcia asks, it was entirely her idea.",
+      "Family trip to Poland for Babcia's birthday. Babcia pulled Tyler aside and gave him exactly one year to propose. We had already discussed getting married soon.. but if Babcia asks, it was entirely her idea.",
     photos: [{ src: poland1 }, { src: poland2 }],
   },
   {
@@ -133,7 +133,7 @@ const stops: RoadmapStopData[] = [
     place: "Amelia Island",
     headline: "",
     blurb:
-      "Tyler filled the patio with photos of us. His phone ran out of storage right as Nicole walked out so no one will ever really know what was said. But what we can share is: she did say yes.",
+      "Tyler filled the patio with photos of us from over the years. His phone ran out of storage right as Nicole walked out so no one will ever really know what was said. But what we can share is: she did say yes.",
     photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 40 }],
   },
 ];
