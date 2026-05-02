@@ -41,7 +41,7 @@ const pageContent = {
       },
       {
         day: "Friday, September 18",
-        title: "La Dolce Far Niente Pool Party",
+        title: "Il Dolce Far Niente Pool Party",
         description: "The art of doing nothing. Recover by the pool with lunch, drinks, and sunshine.",
         attire: "Vintage Resort Wear",
       },
@@ -65,7 +65,7 @@ const pageContent = {
       },
       {
         q: "Are gifts expected?",
-        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we will have a registry linked soon.",
+        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola.",
       },
     ],
   },
@@ -96,7 +96,7 @@ const pageContent = {
       },
       {
         day: "Piątek, 18 września",
-        title: "La Dolce Far Niente — Impreza przy basenie",
+        title: "Il Dolce Far Niente — Impreza przy basenie",
         description: "Sztuka nierobienia niczego. Odpocznij przy basenie z lunchem, drinkami i słońcem.",
         attire: "Styl Vintage Resort",
       },
