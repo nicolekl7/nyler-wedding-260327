@@ -2,11 +2,60 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const weddingDate = new Date("2026-09-17T16:30:00+02:00");
 
+const content = {
+  en: {
+    dateLine: "September 17, 2026 | Tuscany, Italy",
+    dateLineLong: "September 17, 2026 | Rapolano Terme, Tuscany, Italy",
+    welcome: (
+      <>
+        We're getting married in Tuscany on September 17, 2026, and we would absolutely love for
+        you to be there. There will be three days of festivities at Borgo Laticastelli—a private
+        estate in the hills of Rapolano Terme—with a welcome party on Wednesday evening, the
+        wedding ceremony and reception on Thursday, and a relaxed <em>il dolce far niente</em> day by the
+        pool on Friday.
+        <br />
+        <br />
+        We know Italy is a long way to travel, so we mean it: no pressure. But for those who make
+        the trip, we promise every day will be worth it. Our guest list is small and the estate is
+        intimate—please <strong>RSVP by June 16th</strong> so we can plan accordingly and ensure your spot is
+        reserved.
+      </>
+    ),
+    rsvpBtn: "RSVP Here",
+    countdown: "Countdown to Tuscany",
+    days: "Days",
+  },
+  pl: {
+    dateLine: "17 września 2026 | Toskania, Włochy",
+    dateLineLong: "17 września 2026 | Rapolano Terme, Toskania, Włochy",
+    welcome: (
+      <>
+        Bierzemy ślub w Toskanii 17 września 2026 roku i będziemy szczęśliwi, mogąc Was tam mieć.
+        Czekają nas trzy dni uroczystości w Borgo Laticastelli—prywatnej posiadłości w wzgórzach
+        Rapolano Terme—z przyjęciem powitalnym w środę wieczorem, ceremonią ślubną i weselem w
+        czwartek oraz relaksującym dniem <em>il dolce far niente</em> przy basenie w piątek.
+        <br />
+        <br />
+        Wiemy, że Włochy to daleka podróż i mówimy poważnie: bez presji. Ale dla tych, którzy
+        zdecydują się przyjechać, obiecujemy, że każdy dzień będzie tego wart. Nasza lista gości
+        jest kameralna—prosimy o <strong>RSVP do 16 czerwca</strong>, abyśmy mogli odpowiednio
+        zaplanować i zarezerwować Wasze miejsca.
+      </>
+    ),
+    rsvpBtn: "Odpowiedz tutaj",
+    countdown: "Odliczanie do Toskanii",
+    days: "Dni",
+  },
+};
+
 const Index = () => {
   const [daysLeft, setDaysLeft] = useState(getDaysLeft());
+  const { language } = useLanguage();
+  const t = content[language];
 
   useEffect(() => {
     const timer = setInterval(() => setDaysLeft(getDaysLeft()), 60000);
@@ -36,8 +85,8 @@ const Index = () => {
             Nicole <span className="font-light italic">&</span> Tyler
           </h1>
           <p className="heading-sub tracking-[0.158em] text-[#fff7f0] opacity-75" style={{ fontSize: "clamp(0.65rem, 1.5vw, 1.1rem)" }}>
-            <span className="inline sm:hidden">September 17, 2026 &nbsp;|&nbsp; Tuscany, Italy</span>
-            <span className="hidden sm:inline">September 17, 2026 &nbsp;|&nbsp; Rapolano Terme, Tuscany, Italy</span>
+            <span className="inline sm:hidden">{t.dateLine}</span>
+            <span className="hidden sm:inline">{t.dateLineLong}</span>
           </p>
         </FadeIn>
       </section>
@@ -45,38 +94,26 @@ const Index = () => {
       {/* Welcome */}
       <section className="page-section pt-6 sm:pt-8 md:pt-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
-          
           <p className="body-editorial mx-auto text-balance">
-            We're getting married in Tuscany on September 17, 2026, and we would absolutely love for
-            you to be there. There will be three days of festivities at Borgo Laticastelli—a private
-            estate in the hills of Rapolano Terme—with a welcome party on Wednesday evening, the
-            wedding ceremony and reception on Thursday, and a relaxed <em>il dolce far niente</em> day by the
-            pool on Friday.
-            <br />
-            <br />
-            We know Italy is a long way to travel, so we mean it: no pressure. But for those who make
-            the trip, we promise every day will be worth it. Our guest list is small and the estate is
-            intimate—please <strong>RSVP by June 16th</strong> so we can plan accordingly and ensure your spot is
-            reserved.
+            {t.welcome}
           </p>
           <Link
             to="/rsvp-v2"
             className="inline-block mt-10 border border-foreground rounded-full px-8 py-3 font-serif text-sm tracking-widest uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
           >
-            RSVP Here
+            {t.rsvpBtn}
           </Link>
         </FadeIn>
       </section>
 
-
       {/* Countdown — days only */}
       <section className="page-section pt-0 pb-0 mt-8 sm:mt-2 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
-          <p className="heading-sub mb-3">Countdown to Tuscany</p>
+          <p className="heading-sub mb-3">{t.countdown}</p>
           <span className="font-serif text-5xl sm:text-6xl md:text-8xl font-light text-foreground">
             {daysLeft}
           </span>
-          <p className="heading-sub mt-4 mb-0">Days</p>
+          <p className="heading-sub mt-4 mb-0">{t.days}</p>
         </FadeIn>
       </section>
     </Layout>

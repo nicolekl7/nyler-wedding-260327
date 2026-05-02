@@ -5,6 +5,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import CatTapRipple from "./components/CatTapRipple";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import Index from "./pages/Index";
 import IndexV2 from "./pages/IndexV2";
 import HomeV2 from "./pages/HomeV2";
@@ -23,6 +24,7 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <LanguageProvider>
     <TooltipProvider>
       <Sonner />
       <CatTapRipple />
@@ -46,6 +48,7 @@ const App = () => (
       </BrowserRouter>
       <Analytics />
     </TooltipProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 
