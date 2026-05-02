@@ -1,21 +1,45 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const navItems = [
-  { path: "/", label: "Home" },
-  { path: "/our-story", label: "Our Story", hidden: true },
-  { path: "/travel", label: "Travel" },
-  { path: "/the-weekend", label: "Events" },
-  { path: "/local-guide", label: "Explore" },
-  { path: "https://www.zola.com/registry/nicoleandtylersregistry", label: "Registry", external: true },
-  { path: "/about-us", label: "Our Story" },
-  { path: "/rsvp-v2", label: "RSVP", cta: true },
-];
+const navLabels = {
+  en: {
+    home: "Home",
+    travel: "Travel",
+    events: "Events",
+    explore: "Explore",
+    registry: "Registry",
+    ourStory: "Our Story",
+    rsvp: "RSVP",
+  },
+  pl: {
+    home: "Strona główna",
+    travel: "Podróż",
+    events: "Imprezy",
+    explore: "Odkrywaj",
+    registry: "Prezenty",
+    ourStory: "Nasza historia",
+    rsvp: "RSVP",
+  },
+};
 
 const Navigation = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const { language, setLanguage } = useLanguage();
+  const labels = navLabels[language];
+
+  const navItems = [
+    { path: "/", label: labels.home },
+    { path: "/our-story", label: labels.ourStory, hidden: true },
+    { path: "/travel", label: labels.travel },
+    { path: "/the-weekend", label: labels.events },
+    { path: "/local-guide", label: labels.explore },
+    { path: "https://www.zola.com/registry/nicoleandtylersregistry", label: labels.registry, external: true },
+    { path: "/about-us", label: labels.ourStory },
+    { path: "/rsvp-v2", label: labels.rsvp, cta: true },
+  ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border/50" style={{ WebkitTransform: 'translateZ(0)' }}>
@@ -55,6 +79,27 @@ const Navigation = () => {
               </Link>
             )
           )}
+
+          {/* Language switcher — desktop */}
+          <div className="flex items-center gap-1 font-body text-xs tracking-widest">
+            <button
+              onClick={() => setLanguage("pl")}
+              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
+              aria-label="Switch to Polish"
+            >
+              <span>🇵🇱</span>
+              <span>PL</span>
+            </button>
+            <span className="text-muted-foreground/50">|</span>
+            <button
+              onClick={() => setLanguage("en")}
+              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "en" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
+              aria-label="Switch to English"
+            >
+              <span>🇺🇸</span>
+              <span>EN</span>
+            </button>
+          </div>
         </div>
 
         {/* Mobile toggle */}
@@ -70,7 +115,7 @@ const Navigation = () => {
       {/* Mobile dropdown */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          open ? "max-h-[28rem] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="bg-background border-b border-border px-6 pb-6 flex flex-col gap-4">
@@ -97,6 +142,27 @@ const Navigation = () => {
               </Link>
             )
           )}
+
+          {/* Language switcher — mobile */}
+          <div className="flex items-center gap-2 pt-2 border-t border-border/30 font-body text-xs tracking-widest">
+            <button
+              onClick={() => { setLanguage("pl"); setOpen(false); }}
+              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40"}`}
+              aria-label="Switch to Polish"
+            >
+              <span>🇵🇱</span>
+              <span>POLSKI</span>
+            </button>
+            <span className="text-muted-foreground/50">|</span>
+            <button
+              onClick={() => { setLanguage("en"); setOpen(false); }}
+              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "en" ? "opacity-100 font-medium" : "opacity-40"}`}
+              aria-label="Switch to English"
+            >
+              <span>🇺🇸</span>
+              <span>ENGLISH</span>
+            </button>
+          </div>
         </div>
       </div>
     </nav>

@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import RoadmapStop, { RoadmapStopData } from "@/components/RoadmapStop";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 import nye1 from "@/assets/2016-12-1.jpeg";
 import nye2 from "@/assets/2016-12-2.jpeg";
@@ -33,14 +34,13 @@ import poland2 from "@/assets/2024-2.jpeg";
 import proposal1 from "@/assets/2025-5-1.jpeg";
 import proposal2 from "@/assets/2025-5-2.jpeg";
 
-const stops: RoadmapStopData[] = [
+const stopsEN: RoadmapStopData[] = [
   {
     year: "2016",
     month: "December",
     place: "New York",
     headline: "",
-    blurb:
-      "Met, talked all night, told our parents we'd get married. When you know, you know.",
+    blurb: "Met, talked all night, told our parents we'd get married. When you know, you know.",
     disclaimer:
       "(Tyler didn't want to include this iconic tweet so here's a disclaimer: He no longer talks like this nor does he typically drink for 7 days nonstop.)",
     photos: [{ src: nye1 }, { src: nye2 }],
@@ -50,8 +50,7 @@ const stops: RoadmapStopData[] = [
     month: "Spring",
     place: "South Carolina",
     headline: "",
-    blurb:
-      "Suddenly, monthly flights. One weekend visit and we couldn't stop planning the next.",
+    blurb: "Suddenly, monthly flights. One weekend visit and we couldn't stop planning the next.",
     photos: [{ src: dating1 }, { src: dating2 }, { src: dating4, nudgeX: 20 }],
   },
   {
@@ -63,18 +62,14 @@ const stops: RoadmapStopData[] = [
       "Nicole suggested a break but left a letter for each day she'd be gone. Tyler agreed to break up but bought a flight to visit 3 weeks in. Neither of us were good at this.",
     photos: [{ src: florence2 }, { src: florence3 }, { src: florence4, nudgeX: 40 }],
   },
-{
-  year: "2018",
-  month: "May",
-  place: "Kansas",
-  headline: "",
-  blurb: "Went to \"just look\" at shelter cats. Welcome Purrcocet!",
-  photos: [
-    { src: purrc1 }, 
-    { src: purrc2 }, 
-    { src: purrc3, nudgeY: -10 }
-  ],
-},
+  {
+    year: "2018",
+    month: "May",
+    place: "Kansas",
+    headline: "",
+    blurb: "Went to \"just look\" at shelter cats. Welcome Purrcocet!",
+    photos: [{ src: purrc1 }, { src: purrc2 }, { src: purrc3, nudgeY: -10 }],
+  },
   {
     year: "2019",
     month: "November",
@@ -100,20 +95,19 @@ const stops: RoadmapStopData[] = [
     headline: "",
     blurb: "Somehow, homeowners. Still not sure how this happened.",
     tightMobile: true,
-    photos: [{ src: house1 }, { src: house2, nudgeX: 60 },{ src: house3, rotate: 5 }],
+    photos: [{ src: house1 }, { src: house2, nudgeX: 60 }, { src: house3, rotate: 5 }],
   },
   {
     year: "2022",
     month: "Summer",
     place: "Connecticut",
     headline: "",
-    blurb:
-      "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
+    blurb: "Temporarily moved to the east coast to be near family. Still in Stamford. Whoops.",
     tightMobile: true,
     photos: [
       { src: ct1, nudgeX: -2 },
       { src: ct2, nudgeX: 60, rotate: -10 },
-      { src: ct3, rotate: -10},
+      { src: ct3, rotate: -10 },
       { src: ct4, nudgeX: 40, rotate: 2 },
       { src: ct5, nudgeX: -40, rotate: 1 },
     ],
@@ -138,7 +132,128 @@ const stops: RoadmapStopData[] = [
   },
 ];
 
+const stopsPL: RoadmapStopData[] = [
+  {
+    year: "2016",
+    month: "Grudzień",
+    place: "Nowy Jork",
+    headline: "",
+    blurb: "Poznaliśmy się, rozmawialiśmy całą noc, powiedzieliśmy rodzicom, że się pobierzemy. Gdy wiesz, to wiesz.",
+    disclaimer:
+      "(Tyler nie chciał zamieszczać tego słynnego tweeta, więc oto zastrzeżenie: Nie mówi już w ten sposób i zazwyczaj nie pije przez 7 dni z rzędu.)",
+    photos: [{ src: nye1 }, { src: nye2 }],
+  },
+  {
+    year: "2017",
+    month: "Wiosna",
+    place: "Karolina Południowa",
+    headline: "",
+    blurb: "Nagle miesięczne loty. Jeden weekendowy wypad i nie mogliśmy przestać planować kolejnego.",
+    photos: [{ src: dating1 }, { src: dating2 }, { src: dating4, nudgeX: 20 }],
+  },
+  {
+    year: "2017",
+    month: "Jesień",
+    place: "Włochy",
+    headline: "",
+    blurb:
+      "Nicole zaproponowała przerwę, ale zostawiła list na każdy dzień swojej nieobecności. Tyler zgodził się na rozstanie, ale kupił bilet i odwiedził ją 3 tygodnie później. Żadne z nas nie było dobre w tej zabawie.",
+    photos: [{ src: florence2 }, { src: florence3 }, { src: florence4, nudgeX: 40 }],
+  },
+  {
+    year: "2018",
+    month: "Maj",
+    place: "Kansas",
+    headline: "",
+    blurb: "Poszliśmy „tylko popatrzeć" na schroniskowe koty. Witaj, Purrcocet!",
+    photos: [{ src: purrc1 }, { src: purrc2 }, { src: purrc3, nudgeY: -10 }],
+  },
+  {
+    year: "2019",
+    month: "Listopad",
+    place: "Kansas",
+    headline: "",
+    blurb:
+      "Tyler, który „nie był kocim człowiekiem", musiał wrócić do schroniska, bo Nicole ukradła Purrc. Witaj, Mango!",
+    photos: [{ src: mango1 }, { src: mango2 }, { src: mango3, nudgeY: 50 }],
+  },
+  {
+    year: "2020",
+    month: "Luty",
+    place: "Kansas",
+    headline: "",
+    blurb:
+      "Tylko my i naprawdę tylko my, bo była pandemia. Pierwsze wspólne mieszkanie. Trzy tygodnie później: lockdown. Przeżyliśmy.",
+    photos: [{ src: ks1 }, { src: ks2 }, { src: ks3, nudgeY: 30 }, { src: ks4 }],
+  },
+  {
+    year: "2021",
+    month: "Marzec",
+    place: "Kansas",
+    headline: "",
+    blurb: "Jakoś staliśmy się właścicielami domu. Nadal nie wiemy, jak to się stało.",
+    tightMobile: true,
+    photos: [{ src: house1 }, { src: house2, nudgeX: 60 }, { src: house3, rotate: 5 }],
+  },
+  {
+    year: "2022",
+    month: "Lato",
+    place: "Connecticut",
+    headline: "",
+    blurb: "Tymczasowo przenieśliśmy się na wschodnie wybrzeże, żeby być bliżej rodziny. Nadal jesteśmy w Stamford. Ups.",
+    tightMobile: true,
+    photos: [
+      { src: ct1, nudgeX: -2 },
+      { src: ct2, nudgeX: 60, rotate: -10 },
+      { src: ct3, rotate: -10 },
+      { src: ct4, nudgeX: 40, rotate: 2 },
+      { src: ct5, nudgeX: -40, rotate: 1 },
+    ],
+  },
+  {
+    year: "2024",
+    month: "Lipiec",
+    place: "Polska",
+    headline: "",
+    blurb:
+      "Babcia wzięła Tylera na bok i dała mu dokładnie rok na oświadczyny. Wcześniej rozmawialiśmy już o ślubie — ale jeśli Babcia pyta, to był wyłącznie jej pomysł.",
+    photos: [{ src: poland1 }, { src: poland2 }],
+  },
+  {
+    year: "2025",
+    month: "Maj",
+    place: "Amelia Island",
+    headline: "",
+    blurb:
+      "Tyler wypełnił taras naszymi zdjęciami. Jego telefon skończył pamięć dokładnie w chwili, gdy Nicole wychodziła, więc nikt naprawdę nie wie, co zostało powiedziane. Ale możemy zdradzić: powiedziała tak.",
+    photos: [{ src: proposal1 }, { src: proposal2, nudgeX: 40 }],
+  },
+];
+
+const pageStrings = {
+  en: {
+    eyebrow: "December 2016 — September 2026",
+    headline: <>The long way <em className="italic font-light">here.</em></>,
+    footerEyebrow: "September · Tuscany · 2026",
+    footerHeadline: "Next up, you!",
+    footerBody: "Everyone we love, in the most beautiful country in the world.",
+    footerClose: "See you in Tuscany.",
+  },
+  pl: {
+    eyebrow: "Grudzień 2016 — Wrzesień 2026",
+    headline: <>Nasza długa droga <em className="italic font-light">tutaj.</em></>,
+    footerEyebrow: "Wrzesień · Toskania · 2026",
+    footerHeadline: "Teraz czas na Was!",
+    footerBody: "Wszyscy, których kochamy, w najpiękniejszym kraju na świecie.",
+    footerClose: "Do zobaczenia w Toskanii.",
+  },
+};
+
 const OurStoryV2 = () => {
+  const { language } = useLanguage();
+  const stops = language === "pl" ? stopsPL : stopsEN;
+  const t = pageStrings[language];
+
   return (
     <Layout>
       <article className="bg-background">
@@ -146,11 +261,11 @@ const OurStoryV2 = () => {
         <header className="w-[90%] mx-auto max-w-4xl pt-20 sm:pt-28 pb-16 text-center">
           <FadeIn>
             <p className="font-body text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground mb-4">
-              December 2016 &mdash; September 2026
+              {t.eyebrow}
             </p>
-         <h1 className="heading-section text-foreground">
-  The long way <em className="italic font-light">here.</em>
-</h1>
+            <h1 className="heading-section text-foreground">
+              {t.headline}
+            </h1>
             <div className="w-12 h-px bg-primary/30 mx-auto mt-8 mb-6" />
           </FadeIn>
         </header>
@@ -192,21 +307,21 @@ const OurStoryV2 = () => {
           </ol>
         </section>
 
-        {/* Outro — olive band, cream lettering */}
+        {/* Outro */}
         <footer className="bg-foreground text-cream">
           <div className="w-[90%] mx-auto max-w-2xl py-28 sm:py-32 text-center">
             <FadeIn>
               <p className="font-body uppercase tracking-[0.3em] text-[0.65rem] text-cream/70 mb-3">
-                September · Tuscany · 2026
+                {t.footerEyebrow}
               </p>
               <h2 className="font-serif italic text-3xl sm:text-4xl font-light text-cream leading-tight mb-4 text-balance">
-                Next up, you!
+                {t.footerHeadline}
               </h2>
               <p className="font-body text-sm sm:text-base text-cream/80 leading-relaxed text-balance max-w-md mx-auto mb-8">
-                Everyone we love, in the most beautiful country in the world.
+                {t.footerBody}
               </p>
               <p className="font-serif italic text-2xl sm:text-3xl font-light text-cream/90 text-balance">
-                See you in Tuscany.
+                {t.footerClose}
               </p>
             </FadeIn>
           </div>

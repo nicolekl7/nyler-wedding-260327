@@ -6,163 +6,262 @@ import sienaImg from "@/assets/guide-siena.jpg";
 import valdorciaImg from "@/assets/guide-valdorcia.jpg";
 import chiantiImg from "@/assets/guide-chianti.jpg";
 import montalcinoImg from "@/assets/guide-montalcino.jpg";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const guides = [
-  {
-    title: "Rapolano Thermal Baths",
-    subtitle: "5 Minutes Away",
-    image: thermalImg,
-    alt: "Natural thermal baths with turquoise pools in Rapolano Terme, Tuscany",
-    body: null,
-    richBody: (
-      <p className="body-editorial">
-        Rapolano Terme is famous for its natural hot springs.{" "}
-        <a href="https://share.google/hLQJwjNWHOtfJSOrm" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Terme San Giovanni</a>{" "}
-        and <a href="https://www.google.com/maps/place/antica+Querciolaia/data=!4m2!3m1!1s0x132bdbf2f9ea5175:0xdcd4979ed8ff98eb?sa=X&ved=1t:242&ictx=111" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Antica Querciolaia</a> are just minutes from the venue, featuring travertine pools filled with naturally warm thermal water. Go in the evening to see the pools when they are illuminated under the Tuscan sky.
-      </p>
-    ),
-  },
-  {
-    title: "Siena",
-    subtitle: "20 Minutes Away",
-    image: sienaImg,
-    alt: "The medieval Piazza del Campo in Siena, Italy",
-    body: null,
-    richBody: (
-      <>
+const guidesContent = {
+  en: [
+    {
+      title: "Rapolano Thermal Baths",
+      subtitle: "5 Minutes Away",
+      image: thermalImg,
+      alt: "Natural thermal baths with turquoise pools in Rapolano Terme, Tuscany",
+      richBody: (
         <p className="body-editorial">
-          One of Italy's best-preserved medieval cities. Wander the Piazza del Campo, climb Torre del Mangia if you're up for it, and visit the Duomo before grabbing a gelato on the way out. Park outside the city walls as the historic center is car-free. We've always gotten lucky with free parking{" "}
-          <a href="https://maps.app.goo.gl/JGiDDnaTtjUMnSdy9" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">here</a>.
+          Rapolano Terme is famous for its natural hot springs.{" "}
+          <a href="https://share.google/hLQJwjNWHOtfJSOrm" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Terme San Giovanni</a>{" "}
+          and <a href="https://www.google.com/maps/place/antica+Querciolaia/data=!4m2!3m1!1s0x132bdbf2f9ea5175:0xdcd4979ed8ff98eb?sa=X&ved=1t:242&ictx=111" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Antica Querciolaia</a> are just minutes from the venue, featuring travertine pools filled with naturally warm thermal water. Go in the evening to see the pools when they are illuminated under the Tuscan sky.
         </p>
-        <p className="body-editorial mt-3 italic text-muted-foreground">
-          Fun fact: Siena is divided into 17 medieval neighborhoods called contrade, each with its own animal symbol and fierce rivalry during the Palio horse race, held in Piazza del Campo since 1482.
-        </p>
-      </>
-    ),
-  },
-  {
-    title: "Val d'Orcia & Pienza",
-    subtitle: "45 Minutes Away",
-    image: valdorciaImg,
-    alt: "Rolling green hills with cypress trees in Val d'Orcia, Tuscany",
-    body: null,
-    richBody: (
-      <>
+      ),
+    },
+    {
+      title: "Siena",
+      subtitle: "20 Minutes Away",
+      image: sienaImg,
+      alt: "The medieval Piazza del Campo in Siena, Italy",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            One of Italy's best-preserved medieval cities. Wander the Piazza del Campo, climb Torre del Mangia if you're up for it, and visit the Duomo before grabbing a gelato on the way out. Park outside the city walls as the historic center is car-free. We've always gotten lucky with free parking{" "}
+            <a href="https://maps.app.goo.gl/JGiDDnaTtjUMnSdy9" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">here</a>.
+          </p>
+          <p className="body-editorial mt-3 italic text-muted-foreground">
+            Fun fact: Siena is divided into 17 medieval neighborhoods called contrade, each with its own animal symbol and fierce rivalry during the Palio horse race, held in Piazza del Campo since 1482.
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Val d'Orcia & Pienza",
+      subtitle: "45 Minutes Away",
+      image: valdorciaImg,
+      alt: "Rolling green hills with cypress trees in Val d'Orcia, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            A Renaissance town perched above some of the most photographed landscape in Tuscany. Famous for its pecorino cheese—stop at La Taverna del Pecorino for a tasting and stay for the views.
+          </p>
+          <p className="body-editorial mt-3 italic text-muted-foreground">
+            Fun fact: a scene from Gladiator was filmed just outside Pienza. Search "Gladiator scene" on Google Maps to find the exact spot.
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Chianti & Montepulciano",
+      subtitle: "45 Minutes Away",
+      image: chiantiImg,
+      alt: "Vineyards in Chianti with a rustic stone winery, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Head north into the Chianti Classico region for world-class wine tastings among the vines, or south to Montepulciano to taste their famous Vino Nobile.
+          </p>
+          <p className="body-editorial mt-3 italic">
+            Winery recommendations: Avignonesi, Contucci, Argiano, Castiglion del Bosco
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Montalcino",
+      subtitle: "1 Hour Away",
+      image: montalcinoImg,
+      alt: "Hilltop town of Montalcino with vineyards, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Home to Brunello di Montalcino, one of Italy's most celebrated wines. Walk the fortress walls, go wine tasting, and be sure to pick up some local chestnut honey before you leave.
+          </p>
+          <p className="body-editorial mt-3 italic">
+            Winery recommendations: Corte Pavone, Podere Le Ripi, Castello Banfi
+          </p>
+        </>
+      ),
+    },
+  ],
+  pl: [
+    {
+      title: "Termy Rapolano",
+      subtitle: "5 minut drogi",
+      image: thermalImg,
+      alt: "Natural thermal baths with turquoise pools in Rapolano Terme, Tuscany",
+      richBody: (
         <p className="body-editorial">
-          A Renaissance town perched above some of the most photographed landscape in Tuscany. Famous for its pecorino cheese—stop at La Taverna del Pecorino for a tasting and stay for the views.
+          Rapolano Terme słynie z naturalnych gorących źródeł.{" "}
+          <a href="https://share.google/hLQJwjNWHOtfJSOrm" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Terme San Giovanni</a>{" "}
+          i <a href="https://www.google.com/maps/place/antica+Querciolaia/data=!4m2!3m1!1s0x132bdbf2f9ea5175:0xdcd4979ed8ff98eb?sa=X&ved=1t:242&ictx=111" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Antica Querciolaia</a> są zaledwie kilka minut od posiadłości — z basenami trawertynowymi wypełnionymi naturalnie ciepłą wodą termalną. Wybierz się wieczorem, aby zobaczyć baseny oświetlone pod toskańskim niebem.
         </p>
-        <p className="body-editorial mt-3 italic text-muted-foreground">
-          Fun fact: a scene from Gladiator was filmed just outside Pienza. Search "Gladiator scene" on Google Maps to find the exact spot.
-        </p>
-      </>
-    ),
-  },
-  {
-    title: "Chianti & Montepulciano",
-    subtitle: "45 Minutes Away",
-    image: chiantiImg,
-    alt: "Vineyards in Chianti with a rustic stone winery, Tuscany",
-    body: null,
-    richBody: (
-      <>
-        <p className="body-editorial">
-          Head north into the Chianti Classico region for world-class wine tastings among the vines, or south to Montepulciano to taste their famous Vino Nobile.
-        </p>
-        <p className="body-editorial mt-3 italic">
-          Winery recommendations: Avignonesi, Contucci, Argiano, Castiglion del Bosco
-        </p>
-      </>
-    ),
-  },
-  {
-    title: "Montalcino",
-    subtitle: "1 Hour Away",
-    image: montalcinoImg,
-    alt: "Hilltop town of Montalcino with vineyards, Tuscany",
-    body: null,
-    richBody: (
-      <>
-        <p className="body-editorial">
-          Home to Brunello di Montalcino, one of Italy's most celebrated wines. Walk the fortress walls, go wine tasting, and be sure to pick up some local chestnut honey before you leave.
-        </p>
-        <p className="body-editorial mt-3 italic">
-          Winery recommendations: Corte Pavone, Podere Le Ripi, Castello Banfi
-        </p>
-      </>
-    ),
-  },
-];
+      ),
+    },
+    {
+      title: "Siena",
+      subtitle: "20 minut drogi",
+      image: sienaImg,
+      alt: "The medieval Piazza del Campo in Siena, Italy",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Jedno z najlepiej zachowanych średniowiecznych miast Włoch. Przejdź się po Piazza del Campo, wdrap się na Torre del Mangia, odwiedź katedrę i zjedz lody w drodze powrotnej. Parkuj poza murami, bo historyczne centrum jest zamknięte dla samochodów. My zawsze mamy szczęście z darmowym parkingiem{" "}
+            <a href="https://maps.app.goo.gl/JGiDDnaTtjUMnSdy9" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">tutaj</a>.
+          </p>
+          <p className="body-editorial mt-3 italic text-muted-foreground">
+            Ciekawostka: Siena jest podzielona na 17 średniowiecznych dzielnic zwanych contrade, każda z własnym symbolem zwierzęcia i zaciętą rywalizacją podczas wyścigu konnego Palio na Piazza del Campo, odbywającego się od 1482 roku.
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Val d'Orcia & Pienza",
+      subtitle: "45 minut drogi",
+      image: valdorciaImg,
+      alt: "Rolling green hills with cypress trees in Val d'Orcia, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Renesansowe miasto na wzgórzu z widokiem na jedne z najbardziej fotografowanych krajobrazów Toskanii. Słynie z sera pecorino — zatrzymaj się w La Taverna del Pecorino na degustację i zostań dla widoków.
+          </p>
+          <p className="body-editorial mt-3 italic text-muted-foreground">
+            Ciekawostka: scena z Gladiatora była kręcona tuż poza Pienzą. Wyszukaj "Gladiator scene" na Google Maps, aby znaleźć dokładne miejsce.
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Chianti & Montepulciano",
+      subtitle: "45 minut drogi",
+      image: chiantiImg,
+      alt: "Vineyards in Chianti with a rustic stone winery, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Jedź na północ w rejon Chianti Classico na degustacje światowej klasy win wśród winorośli, lub na południe do Montepulciano, aby skosztować słynnego Vino Nobile.
+          </p>
+          <p className="body-editorial mt-3 italic">
+            Polecane winnice: Avignonesi, Contucci, Argiano, Castiglion del Bosco
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Montalcino",
+      subtitle: "1 godzina drogi",
+      image: montalcinoImg,
+      alt: "Hilltop town of Montalcino with vineyards, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Ojczyzna Brunello di Montalcino — jednego z najbardziej cenionych win Włoch. Spaceruj po murach twierdzy, degustuj wina i koniecznie kup lokalny miód kasztanowy przed wyjazdem.
+          </p>
+          <p className="body-editorial mt-3 italic">
+            Polecane winnice: Corte Pavone, Podere Le Ripi, Castello Banfi
+          </p>
+        </>
+      ),
+    },
+  ],
+};
 
-const LocalGuide = () => (
-  <Layout dark hideFooterImage>
-    <div className="relative">
-      <img
-        src="/images/calla-lilly-background.png"
-        alt=""
-        aria-hidden="true"
-        className="absolute bottom-0 left-0 w-full h-auto opacity-10 pointer-events-none select-none"
-      />
-    <section className="page-section w-[90%] max-w-[1400px] mx-auto relative z-10">
-      <FadeIn>
-        <h1 className="heading-section text-center mb-4">Local Guide</h1>
-        <div className="w-12 h-px bg-primary mx-auto mb-6" />
-        <p className="body-editorial text-center mx-auto mb-16">
-          Extending your trip? Here are some of our favorite Tuscan highlights near the venue.
-        </p>
-      </FadeIn>
+const pageStrings = {
+  en: {
+    heading: "Local Guide",
+    intro: "Extending your trip? Here are some of our favorite Tuscan highlights near the venue.",
+    navTravel: "Travel →",
+    navRsvp: "RSVP →",
+  },
+  pl: {
+    heading: "Przewodnik",
+    intro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii w pobliżu posiadłości.",
+    navTravel: "Podróż →",
+    navRsvp: "RSVP →",
+  },
+};
 
-      <div className="space-y-24">
-        {guides.map((g, i) => (
-          <FadeIn key={g.title} delay={i * 120}>
-            <div
-              className={`flex flex-col ${i % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"} gap-8 md:gap-14 items-center`}
-            >
-              <div className="md:w-1/2 overflow-hidden">
-                <img
-                  src={g.image}
-                  alt={g.alt}
-                  loading="lazy"
-                  width={1024}
-                  height={768}
-                  className="w-full h-64 md:h-80 object-cover transition-transform duration-500 hover:scale-105"
-                />
+const LocalGuide = () => {
+  const { language } = useLanguage();
+  const guides = guidesContent[language];
+  const t = pageStrings[language];
+
+  return (
+    <Layout dark hideFooterImage>
+      <div className="relative">
+        <img
+          src="/images/calla-lilly-background.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 w-full h-auto opacity-10 pointer-events-none select-none"
+        />
+      <section className="page-section w-[90%] max-w-[1400px] mx-auto relative z-10">
+        <FadeIn>
+          <h1 className="heading-section text-center mb-4">{t.heading}</h1>
+          <div className="w-12 h-px bg-primary mx-auto mb-6" />
+          <p className="body-editorial text-center mx-auto mb-16">
+            {t.intro}
+          </p>
+        </FadeIn>
+
+        <div className="space-y-24">
+          {guides.map((g, i) => (
+            <FadeIn key={g.title} delay={i * 120}>
+              <div
+                className={`flex flex-col ${i % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"} gap-8 md:gap-14 items-center`}
+              >
+                <div className="md:w-1/2 overflow-hidden">
+                  <img
+                    src={g.image}
+                    alt={g.alt}
+                    loading="lazy"
+                    width={1024}
+                    height={768}
+                    className="w-full h-64 md:h-80 object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div className="md:w-1/2 space-y-3">
+                  <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-light">
+                    {g.title}
+                  </h2>
+                  {g.subtitle && (
+                    <p className="font-body text-sm text-muted-foreground">{g.subtitle}</p>
+                  )}
+                  {g.richBody}
+                </div>
               </div>
-              <div className="md:w-1/2 space-y-3">
-                <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-light">
-                  {g.title}
-                </h2>
-                {g.subtitle && (
-                  <p className="font-body text-sm text-muted-foreground">{g.subtitle}</p>
-                )}
-                {g.body ? <p className="body-editorial">{g.body}</p> : g.richBody}
-              </div>
-            </div>
-          </FadeIn>
-        ))}
-      </div>
-    </section>
-
-    {/* Navigation buttons */}
-    <section className="w-[90%] max-w-[900px] mx-auto px-6 md:px-12 pb-24 pt-24 relative z-10">
-      <FadeIn>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/travel"
-            className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-          >
-            Travel →
-          </Link>
-          <Link
-            to="/rsvp-v2"
-            className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-          >
-            RSVP →
-          </Link>
+            </FadeIn>
+          ))}
         </div>
-      </FadeIn>
-    </section>
-    </div>
-  </Layout>
-);
+      </section>
+
+      {/* Navigation buttons */}
+      <section className="w-[90%] max-w-[900px] mx-auto px-6 md:px-12 pb-24 pt-24 relative z-10">
+        <FadeIn>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/travel"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+            >
+              {t.navTravel}
+            </Link>
+            <Link
+              to="/rsvp-v2"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+            >
+              {t.navRsvp}
+            </Link>
+          </div>
+        </FadeIn>
+      </section>
+      </div>
+    </Layout>
+  );
+};
 
 export default LocalGuide;

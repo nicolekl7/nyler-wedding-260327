@@ -5,12 +5,20 @@ import EventRsvpButton from "@/components/EventRsvpButton";
 import { toast } from "sonner";
 import { Search } from "lucide-react";
 import { loadPartyRsvpState, savePartyRsvpState, type GuestRecord } from "@/lib/rsvp";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const events = [
-  { key: "welcome_party_rsvp" as const, label: "Welcome Pizza Party", sub: "Wednesday, Sept 16 · 6:30 PM" },
-  { key: "wedding_day_rsvp" as const, label: "The Wedding Day", sub: "Thursday, Sept 17 · 4:30 PM" },
-  { key: "pool_day_rsvp" as const, label: "Recovery Pool Day", sub: "Friday, Sept 18 · 12:00 PM" },
-];
+const eventsContent = {
+  en: [
+    { key: "welcome_party_rsvp" as const, label: "Welcome Pizza Party", sub: "Wednesday, Sept 16 · 6:30 PM" },
+    { key: "wedding_day_rsvp" as const, label: "The Wedding Day", sub: "Thursday, Sept 17 · 4:30 PM" },
+    { key: "pool_day_rsvp" as const, label: "Recovery Pool Day", sub: "Friday, Sept 18 · 12:00 PM" },
+  ],
+  pl: [
+    { key: "welcome_party_rsvp" as const, label: "Przyjęcie powitalne", sub: "Środa, 16 września · 18:30" },
+    { key: "wedding_day_rsvp" as const, label: "Dzień ślubu", sub: "Czwartek, 17 września · 16:30" },
+    { key: "pool_day_rsvp" as const, label: "Relaks przy basenie", sub: "Piątek, 18 września · 12:00" },
+  ],
+};
 
 const accommodationOptions = [
   "Solo Guest Estate Pass",
@@ -24,6 +32,93 @@ const accommodationOptions = [
 ];
 
 const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room"];
+
+const strings = {
+  en: {
+    heading: "RSVP",
+    alreadyRsvpdMsg: (name: string) => `We have received your RSVP${name ? `, ${name}` : ""}. Thank you!`,
+    stayingOnsite: "Staying onsite? Complete your room payment below.",
+    payPaypal: "Pay with PayPal",
+    payVenmo: "Pay with Venmo",
+    editRsvp: "Need to edit your RSVP?",
+    notYou: "Not you?",
+    thankYou: "Thank You",
+    recorded: "Your RSVP has been recorded.",
+    sorryMiss: "We're sorry we'll miss you!",
+    cantWait: "We can't wait to celebrate with you!",
+    roomNotReserved: "Please note: your room is not reserved until payment is received.",
+    findInvite: "Please enter your first and last name to find your invitation.",
+    namePlaceholder: "First & Last Name",
+    searching: "Searching...",
+    findBtn: "Find My Invitation",
+    notFound: (email: string) => <>We couldn't find that name. Please try again or contact us at{" "}<a href={`mailto:${email}`} className="text-primary underline">{email}</a></>,
+    welcome: (name: string) => <>Welcome, <span className="font-medium text-foreground">{name}</span>!</>,
+    maxGuests: (n: number) => `You may RSVP for up to ${n} guest${n > 1 ? "s" : ""}.`,
+    previouslyRsvpd: "Your party has already been RSVPd — your previous selections are loaded below. Feel free to update them.",
+    numGuests: "Number of Guests",
+    guestNames: (plural: boolean) => `Guest Name${plural ? "s" : ""}`,
+    guestPlaceholder: (i: number) => `Guest ${i + 1} — First & Last Name`,
+    accommodations: "On-Site Accommodations",
+    selectOption: "Select an option...",
+    dietary: "Dietary Restrictions",
+    dietaryPlaceholder: "Allergies, vegetarian, etc.",
+    comments: "Comments",
+    commentsPlaceholder: "Anything else we should know?",
+    email: "Email Address",
+    emailPlaceholder: "So we can send your RSVP receipt",
+    submitting: "Submitting...",
+    updateRsvp: "Update RSVP",
+    submitRsvp: "Submit RSVP",
+    errFirstLast: "Please enter your first and last name",
+    errEvent: (label: string) => `Please select Accept or Decline for ${label}`,
+    errGuestName: (i: number) => `Please enter the name for guest ${i + 1}`,
+    errAccommodation: "Please select your accommodation preference",
+    errEmail: "Please enter a valid email address so we can send your receipt",
+    errGeneric: "Something went wrong. Please try again.",
+  },
+  pl: {
+    heading: "RSVP",
+    alreadyRsvpdMsg: (name: string) => `Otrzymaliśmy Twoje RSVP${name ? `, ${name}` : ""}. Dziękujemy!`,
+    stayingOnsite: "Nocujesz na miejscu? Dokonaj płatności za pokój poniżej.",
+    payPaypal: "Zapłać przez PayPal",
+    payVenmo: "Zapłać przez Venmo",
+    editRsvp: "Chcesz edytować swoje RSVP?",
+    notYou: "To nie Ty?",
+    thankYou: "Dziękujemy",
+    recorded: "Twoje RSVP zostało zarejestrowane.",
+    sorryMiss: "Szkoda, że Cię nie będzie!",
+    cantWait: "Nie możemy się doczekać świętowania razem z Wami!",
+    roomNotReserved: "Uwaga: pokój jest zarezerwowany dopiero po otrzymaniu płatności.",
+    findInvite: "Wpisz swoje imię i nazwisko, aby znaleźć zaproszenie.",
+    namePlaceholder: "Imię i Nazwisko",
+    searching: "Szukam...",
+    findBtn: "Znajdź moje zaproszenie",
+    notFound: (email: string) => <>Nie znaleźliśmy tego imienia. Spróbuj ponownie lub skontaktuj się z nami pod adresem{" "}<a href={`mailto:${email}`} className="text-primary underline">{email}</a></>,
+    welcome: (name: string) => <>Witaj, <span className="font-medium text-foreground">{name}</span>!</>,
+    maxGuests: (n: number) => `Możesz potwierdzić RSVP dla maksymalnie ${n} gościa${n > 1 ? "/gości" : ""}.`,
+    previouslyRsvpd: "Twoja rezerwacja została już wcześniej przesłana — poprzednie wybory są załadowane poniżej. Możesz je zaktualizować.",
+    numGuests: "Liczba gości",
+    guestNames: (plural: boolean) => `Imię${plural ? "/imiona" : ""} gości`,
+    guestPlaceholder: (i: number) => `Gość ${i + 1} — Imię i Nazwisko`,
+    accommodations: "Zakwaterowanie na miejscu",
+    selectOption: "Wybierz opcję...",
+    dietary: "Ograniczenia dietetyczne",
+    dietaryPlaceholder: "Alergie, wegetarianin, itp.",
+    comments: "Uwagi",
+    commentsPlaceholder: "Coś jeszcze, co powinniśmy wiedzieć?",
+    email: "Adres e-mail",
+    emailPlaceholder: "Abyśmy mogli przesłać potwierdzenie RSVP",
+    submitting: "Przesyłam...",
+    updateRsvp: "Zaktualizuj RSVP",
+    submitRsvp: "Wyślij RSVP",
+    errFirstLast: "Proszę podać imię i nazwisko",
+    errEvent: (label: string) => `Proszę wybrać Akceptuję lub Odrzucam dla: ${label}`,
+    errGuestName: (i: number) => `Proszę podać imię gościa ${i + 1}`,
+    errAccommodation: "Proszę wybrać preferencje zakwaterowania",
+    errEmail: "Proszę podać prawidłowy adres e-mail, abyśmy mogli przesłać potwierdzenie",
+    errGeneric: "Coś poszło nie tak. Spróbuj ponownie.",
+  },
+};
 
 interface RsvpFormEmbedProps {
   accommodation?: string;
@@ -49,6 +144,10 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
   const [rsvpFirstName, setRsvpFirstName] = useState("");
 
+  const { language } = useLanguage();
+  const t = strings[language];
+  const events = eventsContent[language];
+
   const accommodation = externalAccommodation !== undefined ? externalAccommodation : internalAccommodation;
   const setAccommodation = (val: string) => {
     if (onAccommodationChange) onAccommodationChange(val);
@@ -67,7 +166,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     e.preventDefault();
     const parts = searchName.trim().split(/\s+/);
     if (parts.length < 2) {
-      toast.error("Please enter your first and last name");
+      toast.error(t.errFirstLast);
       return;
     }
 
@@ -98,7 +197,6 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setEventRsvps(loadedState.eventRsvps);
     setDietary(loadedState.dietary);
     setNotes(loadedState.notes);
-    // Only overwrite accommodation if the user hasn't already selected one via room cards
     if (!externalAccommodation && loadedState.accommodation) {
       setAccommodation(loadedState.accommodation);
     } else if (!externalAccommodation && !loadedState.accommodation) {
@@ -123,26 +221,26 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setLoading(true);
     for (const ev of events) {
       if (!eventRsvps[ev.key]) {
-        toast.error(`Please select Accept or Decline for ${ev.label}`);
+        toast.error(t.errEvent(ev.label));
         setLoading(false);
         return;
       }
     }
     for (let i = 0; i < attendingCount; i++) {
       if (!guestNames[i]?.trim()) {
-        toast.error(`Please enter the name for guest ${i + 1}`);
+        toast.error(t.errGuestName(i));
         setLoading(false);
         return;
       }
     }
     if (!accommodation) {
-      toast.error("Please select your accommodation preference");
+      toast.error(t.errAccommodation);
       setLoading(false);
       return;
     }
     const trimmedEmail = email.trim();
     if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      toast.error("Please enter a valid email address so we can send your receipt");
+      toast.error(t.errEmail);
       setLoading(false);
       return;
     }
@@ -215,7 +313,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       setSubmitted(true);
       onSubmitSuccess?.(declined, accommodation);
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t.errGeneric);
     }
 
     setLoading(false);
@@ -273,15 +371,15 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     return (
       <div className="text-center">
         <FadeIn>
-          <h2 className="heading-section mb-4">RSVP</h2>
+          <h2 className="heading-section mb-4">{t.heading}</h2>
           <div className="w-12 h-px bg-primary mx-auto mb-8" />
           <p className="body-editorial mx-auto mb-10">
-            We have received your RSVP{rsvpFirstName ? `, ${rsvpFirstName}` : ""}. Thank you!
+            {t.alreadyRsvpdMsg(rsvpFirstName)}
           </p>
 
           <div className="mb-8">
             <p className="font-body text-sm text-muted-foreground mb-4">
-              Staying onsite? Complete your room payment below.
+              {t.stayingOnsite}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
@@ -290,7 +388,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 rel="noopener noreferrer"
                 className="inline-block px-8 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
               >
-                Pay with PayPal
+                {t.payPaypal}
               </a>
               <a
                 href={`https://venmo.com/tylermagee?txn=pay&note=${encodeURIComponent("Wedding accommodation")}`}
@@ -298,7 +396,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 rel="noopener noreferrer"
                 className="inline-block px-8 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
               >
-                Pay with Venmo
+                {t.payVenmo}
               </a>
             </div>
           </div>
@@ -308,7 +406,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             onClick={handleEditRsvp}
             className="font-body text-xs uppercase tracking-[0.25em] text-primary underline underline-offset-4 hover:opacity-70 transition-opacity"
           >
-            Need to edit your RSVP?
+            {t.editRsvp}
           </button>
           <div className="mt-4">
             <button
@@ -332,7 +430,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               }}
               className="font-body text-xs uppercase tracking-[0.25em] text-muted-foreground underline underline-offset-4 hover:opacity-70 transition-opacity"
             >
-              Not you?
+              {t.notYou}
             </button>
           </div>
         </FadeIn>
@@ -344,19 +442,17 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     return (
       <div className="text-center">
         <FadeIn>
-          <h2 className="heading-section mb-4">Thank You</h2>
+          <h2 className="heading-section mb-4">{t.thankYou}</h2>
           <div className="w-12 h-px bg-primary mx-auto mb-8" />
           <p className="body-editorial mx-auto">
-            Your RSVP has been recorded.
+            {t.recorded}
             <br />
-            {allDeclined
-              ? "We're sorry we'll miss you!"
-              : "We can't wait to celebrate with you!"}
+            {allDeclined ? t.sorryMiss : t.cantWait}
           </p>
           {!allDeclined && !NO_PAYMENT_ACCOMMODATIONS.includes(accommodation) && (
             <>
               <p className="font-body text-sm text-muted-foreground mt-6">
-                Please note: your room is not reserved until payment is received.
+                {t.roomNotReserved}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
                 <a
@@ -365,7 +461,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   rel="noopener noreferrer"
                   className="inline-block px-8 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
                 >
-                  Pay with PayPal
+                  {t.payPaypal}
                 </a>
                 <a
                   href={`https://venmo.com/tylermagee?txn=pay&note=${encodeURIComponent("Wedding accommodation")}`}
@@ -373,7 +469,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   rel="noopener noreferrer"
                   className="inline-block px-8 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
-                  Pay with Venmo
+                  {t.payVenmo}
                 </a>
               </div>
             </>
@@ -385,16 +481,15 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
   return (
     <div>
-      
       <FadeIn>
-        <h2 className="heading-section text-center mb-4">RSVP</h2>
+        <h2 className="heading-section text-center mb-4">{t.heading}</h2>
         <div className="w-12 h-px bg-primary mx-auto mb-12" />
       </FadeIn>
 
       {!guest && (
         <FadeIn delay={150}>
           <p className="body-editorial text-center mx-auto mb-10">
-            Please enter your first and last name to find your invitation.
+            {t.findInvite}
           </p>
           <form onSubmit={handleSearch} className="space-y-6">
             <div className="relative">
@@ -403,7 +498,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 type="text"
                 value={searchName}
                 onChange={(e) => setSearchName(e.target.value)}
-                placeholder="First & Last Name"
+                placeholder={t.namePlaceholder}
                 className="w-full bg-transparent border-b border-border py-3 pl-7 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
                 maxLength={200}
               />
@@ -413,16 +508,13 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               disabled={loading}
               className="w-full py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {loading ? "Searching..." : "Find My Invitation"}
+              {loading ? t.searching : t.findBtn}
             </button>
           </form>
 
           {searched && !loading && !guest && (
             <p className="body-editorial text-center mt-8 mx-auto">
-              We couldn't find that name. Please try again or contact us at{" "}
-              <a href="mailto:nicoleandtylersitalianwedding@gmail.com" className="text-primary underline">
-                nicoleandtylersitalianwedding@gmail.com
-              </a>
+              {t.notFound("nicoleandtylersitalianwedding@gmail.com")}
             </p>
           )}
         </FadeIn>
@@ -433,21 +525,21 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
           <div className="space-y-12">
             <div className="text-center">
               <p className="body-editorial mx-auto mb-2">
-                Welcome, <span className="font-medium text-foreground">{guest.first_name}</span>!
+                {t.welcome(guest.first_name)}
               </p>
               <p className="font-body text-sm text-muted-foreground">
-                You may RSVP for up to {guest.max_guests} guest{guest.max_guests > 1 ? "s" : ""}.
+                {t.maxGuests(guest.max_guests)}
               </p>
               {previouslyResponded && (
                 <p className="font-body text-xs text-primary mt-2 italic">
-                  Your party has already been RSVPd — your previous selections are loaded below. Feel free to update them.
+                  {t.previouslyRsvpd}
                 </p>
               )}
             </div>
 
             {guest.max_guests > 1 && (
               <div className="space-y-3">
-                <label className="heading-sub block">Number of Guests</label>
+                <label className="heading-sub block">{t.numGuests}</label>
                 <div className="flex gap-3">
                   {Array.from({ length: guest.max_guests }, (_, i) => i + 1).map((num) => (
                     <button
@@ -468,7 +560,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             )}
 
             <div className="space-y-4">
-              <label className="heading-sub block">Guest Name{attendingCount > 1 ? "s" : ""}</label>
+              <label className="heading-sub block">{t.guestNames(attendingCount > 1)}</label>
               {guestNames.slice(0, attendingCount).map((name, i) => (
                 <input
                   key={i}
@@ -479,7 +571,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                     updated[i] = e.target.value;
                     setGuestNames(updated);
                   }}
-                  placeholder={`Guest ${i + 1} — First & Last Name`}
+                  placeholder={t.guestPlaceholder(i)}
                   className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
                   maxLength={200}
                 />
@@ -508,13 +600,13 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             {/* Accommodation dropdown */}
             <div className="space-y-3">
-              <label className="heading-sub block">On-Site Accommodations</label>
+              <label className="heading-sub block">{t.accommodations}</label>
               <select
                 value={accommodation}
                 onChange={(e) => setAccommodation(e.target.value)}
                 className="w-full bg-transparent border-b border-border py-3 font-body text-foreground focus:outline-none focus:border-primary transition-colors appearance-none cursor-pointer"
               >
-                <option value="" className="bg-background">Select an option...</option>
+                <option value="" className="bg-background">{t.selectOption}</option>
                 {accommodationOptions.map((opt) => (
                   <option key={opt} value={opt} className="bg-background">
                     {opt}
@@ -524,23 +616,23 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>
 
             <div>
-              <label className="heading-sub block mb-2">Dietary Restrictions</label>
+              <label className="heading-sub block mb-2">{t.dietary}</label>
               <input
                 type="text"
                 value={dietary}
                 onChange={(e) => setDietary(e.target.value)}
-                placeholder="Allergies, vegetarian, etc."
+                placeholder={t.dietaryPlaceholder}
                 className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
                 maxLength={500}
               />
             </div>
 
             <div>
-              <label className="heading-sub block mb-2">Comments</label>
+              <label className="heading-sub block mb-2">{t.comments}</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Anything else we should know?"
+                placeholder={t.commentsPlaceholder}
                 rows={1}
                 className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors resize-none"
                 maxLength={1000}
@@ -548,12 +640,12 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>
 
             <div>
-              <label className="heading-sub block mb-2">Email Address</label>
+              <label className="heading-sub block mb-2">{t.email}</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="So we can send your RSVP receipt"
+                placeholder={t.emailPlaceholder}
                 autoComplete="email"
                 className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
                 maxLength={255}
@@ -573,7 +665,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 />
               )}
               <span className={`relative z-10 ${loading ? 'text-white' : 'text-primary-foreground'}`}>
-                {loading ? "Submitting..." : previouslyResponded ? "Update RSVP" : "Submit RSVP"}
+                {loading ? t.submitting : previouslyResponded ? t.updateRsvp : t.submitRsvp}
               </span>
               {!loading && <div className="absolute inset-0 bg-primary -z-0" />}
             </button>
