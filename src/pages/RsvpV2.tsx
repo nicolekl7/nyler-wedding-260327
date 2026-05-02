@@ -171,7 +171,7 @@ const RsvpV2 = () => {
               {t.intro3}
             </p>
             <div className="mt-4 flex justify-center">
-              <div className="px-5 py-3 bg-green-100 rounded-md text-center">
+              <div className="px-5 py-3 bg-sage-light rounded-md text-center">
                 <p className="body-editorial text-foreground font-normal !leading-snug">
                   {t.firstComeNote}
                 </p>
