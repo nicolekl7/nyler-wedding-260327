@@ -60,7 +60,7 @@ const stops: RoadmapStopData[] = [
     place: "Italy",
     headline: "",
     blurb:
-      "Nicole suggested a break but left a letter for each day she'd be gone. Tyler agreed to break up but bought a flight to visit 3 weeks in. Neither of us were good at this.",
+      "Nicole suggested a break but left a letter for each day she'd be gone during her semester abroad. Tyler agreed to break up but bought a flight to visit 3 weeks in. Neither of us were good at this.",
     photos: [{ src: florence2 }, { src: florence3 }, { src: florence4, nudgeX: 40 }],
   },
 {
