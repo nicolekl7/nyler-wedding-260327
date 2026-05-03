@@ -175,7 +175,7 @@ const TheWeekend = () => {
                       <img
                         src={attireGraphicWelcomeParty}
                         alt="Welcome party attire color palette illustration"
-                        className="block w-full max-w-xl"
+                        className="block w-full max-w-[39.6rem]"
                       />
                     </div>
                   )}
