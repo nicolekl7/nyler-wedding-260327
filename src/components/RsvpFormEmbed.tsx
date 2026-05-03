@@ -97,7 +97,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setEventRsvps(loadedState.eventRsvps);
     setDietary(loadedState.dietary);
     setNotes(loadedState.notes);
-    setEmail((loadedState as any).email ?? "");
+    setEmail(loadedState.email ?? "");
     if (!externalAccommodation && loadedState.accommodation) {
       setAccommodation(loadedState.accommodation);
     } else if (!externalAccommodation && !loadedState.accommodation) {
@@ -330,7 +330,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setEventRsvps(loadedState.eventRsvps);
     setDietary(loadedState.dietary);
     setNotes(loadedState.notes);
-    setEmail((loadedState as any).email ?? "");
+    setEmail(loadedState.email ?? "");
     if (!externalAccommodation && loadedState.accommodation) {
       setAccommodation(loadedState.accommodation);
     }

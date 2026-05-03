@@ -45,6 +45,7 @@ export type Database = {
         Row: {
           created_at: string
           dietary_restrictions: string | null
+          email: string | null
           first_name: string
           group_id: string
           has_responded: boolean
@@ -60,6 +61,7 @@ export type Database = {
         Insert: {
           created_at?: string
           dietary_restrictions?: string | null
+          email?: string | null
           first_name: string
           group_id?: string
           has_responded?: boolean
@@ -75,6 +77,7 @@ export type Database = {
         Update: {
           created_at?: string
           dietary_restrictions?: string | null
+          email?: string | null
           first_name?: string
           group_id?: string
           has_responded?: boolean

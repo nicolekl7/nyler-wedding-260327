@@ -128,6 +128,7 @@ export const loadPartyRsvpState = async (
     dietary: responder.dietary_restrictions ?? "",
     notes: responder.notes ?? "",
     accommodation: responder.room_preference ?? "",
+    email: responder.email ?? "",
     guestNames: guestNames.length ? guestNames : [`${found.first_name} ${found.last_name}`],
     attendingCount: guestNames.length || 1,
   };
@@ -164,6 +165,7 @@ export const savePartyRsvpState = async ({
       dietary_restrictions: dietary.trim() || null,
       notes: notes.trim() || null,
       room_preference: accommodation || null,
+      email: email?.trim() || null,
       has_responded: true,
       submitted_at: submittedAt,
       group_id: submissionGroupId,
