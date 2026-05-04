@@ -516,7 +516,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               </p>
               {previouslyResponded && (
                 <p className="font-body text-xs text-primary mt-2 italic">
-                  Your party has already been RSVPd — your previous selections are loaded below. Feel free to update them.
+                  Your party has already RSVPd — your previous selections are loaded below. You are able to update your RSVP until June 16, 2026.
                 </p>
               )}
             </div>
