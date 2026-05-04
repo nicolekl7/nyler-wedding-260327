@@ -164,7 +164,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         : groupTransfer === "not_sure"
         ? "Not sure yet"
         : ownTransport === "rent_a_car"
-        ? "Own transport — Rent a car"
+        ? "Own transport — Renting a car"
         : ownTransport === "private_transfer"
         ? "Own transport — Private transfer"
         : ownTransport === "joining_car"
@@ -601,9 +601,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             {/* Transport question */}
             <div className="space-y-3">
-              <label className="heading-sub block">Transport to the Venue</label>
+              <label className="heading-sub block">Transportation</label>
               <p className="font-body text-xs text-muted-foreground">
-                We're arranging a group transfer from Siena on the wedding day. Will you join?
+                We're arranging a group transfer from the Siena train station on Wednesday, September 16th. Let us know if you'll need a spot.
               </p>
               <div className="space-y-2">
                 {[
@@ -633,9 +633,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               {groupTransfer === "no" && (
                 <div className="pl-5 space-y-2 mt-2">
                   {[
-                    { value: "rent_a_car", label: "Rent a car" },
-                    { value: "private_transfer", label: "Private transfer" },
+                    { value: "rent_a_car", label: "Renting a car" },
                     { value: "joining_car", label: "Joining someone's car" },
+                    { value: "private_transfer", label: "Private transfer" },
                     { value: "not_sure", label: "Not sure yet" },
                   ].map(({ value, label }) => (
                     <label key={value} className="flex items-center gap-3 cursor-pointer group">
