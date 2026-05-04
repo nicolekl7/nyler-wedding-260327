@@ -99,7 +99,7 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
                   </span>
                 ) : cat.inventory_count <= 3 ? (
                   <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300">
-                    ! Only {cat.inventory_count} Left
+                    Only {cat.inventory_count} Left
                   </span>
                 ) : (
                   <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-primary">

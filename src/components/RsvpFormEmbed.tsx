@@ -606,8 +606,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               <div className="space-y-2">
                 {[
                   { value: "yes", label: "Yes, I'll take the group transfer" },
-                  { value: "no", label: "No, I'm arranging my own transport" },
                   { value: "not_sure", label: "Not sure yet" },
+                  { value: "no", label: "No, I'm arranging my own transport" },
                 ].map(({ value, label }) => (
                   <label key={value} className="flex items-center gap-3 cursor-pointer group">
                     <input
