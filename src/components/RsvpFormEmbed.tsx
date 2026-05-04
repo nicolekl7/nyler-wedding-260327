@@ -45,6 +45,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [notes, setNotes] = useState("");
   const [email, setEmail] = useState("");
   const [internalAccommodation, setInternalAccommodation] = useState("");
+  const [groupTransfer, setGroupTransfer] = useState("");
+  const [ownTransport, setOwnTransport] = useState("");
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [previousAccommodation, setPreviousAccommodation] = useState("");
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
@@ -145,6 +147,27 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       setLoading(false);
       return;
     }
+    if (!groupTransfer) {
+      toast.error("Please select your transport option");
+      setLoading(false);
+      return;
+    }
+    if (groupTransfer === "no" && !ownTransport) {
+      toast.error("Please select how you're arranging your own transport");
+      setLoading(false);
+      return;
+    }
+
+    const combinedTransferValue =
+      groupTransfer === "yes"
+        ? "Group transfer from Siena"
+        : groupTransfer === "not_sure"
+        ? "Not sure yet"
+        : ownTransport === "rent_a_car"
+        ? "Own transport — Rent a car"
+        : ownTransport === "private_transfer"
+        ? "Own transport — Private transfer"
+        : "Own transport — Not sure yet";
 
     const declined = events.every((ev) => eventRsvps[ev.key] === "decline");
 
@@ -166,6 +189,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         formData.append("Room Preference", accommodation || "");
         formData.append("Dietary Restrictions", dietary.trim() || "None");
         formData.append("Notes", notes.trim() || "");
+        formData.append("groupTransfer", combinedTransferValue);
 
         await fetch(
           "https://script.google.com/macros/s/AKfycbzySKusxkZbLJ1GqBWn9wmloYSN7aAT_O7qx-Qy2qEY3zHRDc8FMCJzBQAaA7Naf33a/exec",
@@ -178,11 +202,15 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         );
       }
 
+      const notesWithTransfer = [notes.trim(), `Transport: ${combinedTransferValue}`]
+        .filter(Boolean)
+        .join(" | ");
+
       await savePartyRsvpState({
         guestNames: guestNames.slice(0, attendingCount),
         eventRsvps,
         dietary,
-        notes,
+        notes: notesWithTransfer,
         accommodation,
         email: trimmedEmail,
       });
@@ -372,6 +400,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 setNotes("");
                 setEmail("");
                 setAccommodation("");
+                setGroupTransfer("");
+                setOwnTransport("");
                 setAttendingCount(1);
               }}
               className="font-body text-xs uppercase tracking-[0.25em] text-muted-foreground underline underline-offset-4 hover:opacity-70 transition-opacity"
@@ -565,6 +595,62 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Transport question */}
+            <div className="space-y-3">
+              <label className="heading-sub block">Transport to the Venue</label>
+              <p className="font-body text-xs text-muted-foreground">
+                We're arranging a group transfer from Siena on the wedding day. Will you join?
+              </p>
+              <div className="space-y-2">
+                {[
+                  { value: "yes", label: "Yes, I'll take the group transfer" },
+                  { value: "no", label: "No, I'm arranging my own transport" },
+                  { value: "not_sure", label: "Not sure yet" },
+                ].map(({ value, label }) => (
+                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                    <input
+                      type="radio"
+                      name="groupTransfer"
+                      value={value}
+                      checked={groupTransfer === value}
+                      onChange={() => {
+                        setGroupTransfer(value);
+                        if (value !== "no") setOwnTransport("");
+                      }}
+                      className="accent-primary"
+                    />
+                    <span className="font-body text-sm text-foreground group-hover:text-primary transition-colors">
+                      {label}
+                    </span>
+                  </label>
+                ))}
+              </div>
+
+              {groupTransfer === "no" && (
+                <div className="pl-5 space-y-2 mt-2">
+                  {[
+                    { value: "rent_a_car", label: "Rent a car" },
+                    { value: "private_transfer", label: "Private transfer" },
+                    { value: "not_sure", label: "Not sure yet" },
+                  ].map(({ value, label }) => (
+                    <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="ownTransport"
+                        value={value}
+                        checked={ownTransport === value}
+                        onChange={() => setOwnTransport(value)}
+                        className="accent-primary"
+                      />
+                      <span className="font-body text-sm text-foreground group-hover:text-primary transition-colors">
+                        {label}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div>
