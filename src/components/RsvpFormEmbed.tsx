@@ -189,7 +189,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         formData.append("Room Preference", accommodation || "");
         formData.append("Dietary Restrictions", dietary.trim() || "None");
         formData.append("Notes", notes.trim() || "");
-        formData.append("groupTransfer", combinedTransferValue);
+        formData.append("Transportation", combinedTransferValue);
 
         await fetch(
           "https://script.google.com/macros/s/AKfycbzySKusxkZbLJ1GqBWn9wmloYSN7aAT_O7qx-Qy2qEY3zHRDc8FMCJzBQAaA7Naf33a/exec",
