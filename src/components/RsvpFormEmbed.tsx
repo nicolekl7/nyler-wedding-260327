@@ -167,6 +167,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         ? "Own transport — Rent a car"
         : ownTransport === "private_transfer"
         ? "Own transport — Private transfer"
+        : ownTransport === "joining_car"
+        ? "Own transport — Joining someone's car"
         : "Own transport — Not sure yet";
 
     const declined = events.every((ev) => eventRsvps[ev.key] === "decline");
@@ -633,6 +635,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   {[
                     { value: "rent_a_car", label: "Rent a car" },
                     { value: "private_transfer", label: "Private transfer" },
+                    { value: "joining_car", label: "Joining someone's car" },
                     { value: "not_sure", label: "Not sure yet" },
                   ].map(({ value, label }) => (
                     <label key={value} className="flex items-center gap-3 cursor-pointer group">
