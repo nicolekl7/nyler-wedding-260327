@@ -126,7 +126,7 @@ export const loadPartyRsvpState = async (
     previouslyResponded: true,
     eventRsvps,
     dietary: responder.dietary_restrictions ?? "",
-    notes: responder.notes ?? "",
+    notes: (responder.notes ?? "").replace(/(\s*\|\s*)?Transport:[^|]*/gi, "").trim(),
     accommodation: responder.room_preference ?? "",
     email: responder.email ?? "",
     guestNames: guestNames.length ? guestNames : [`${found.first_name} ${found.last_name}`],
