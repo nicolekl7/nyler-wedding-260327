@@ -147,19 +147,23 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       setLoading(false);
       return;
     }
-    if (!groupTransfer) {
-      toast.error("Please select your transport option");
-      setLoading(false);
-      return;
-    }
-    if (groupTransfer === "no" && !ownTransport) {
-      toast.error("Please select how you're arranging your own transport");
-      setLoading(false);
-      return;
+    const attendingWeddingDay = eventRsvps.wedding_day_rsvp === "accept";
+    if (attendingWeddingDay) {
+      if (!groupTransfer) {
+        toast.error("Please select your transport option");
+        setLoading(false);
+        return;
+      }
+      if (groupTransfer === "no" && !ownTransport) {
+        toast.error("Please select how you're arranging your own transport");
+        setLoading(false);
+        return;
+      }
     }
 
-    const combinedTransferValue =
-      groupTransfer === "yes"
+    const combinedTransferValue = !attendingWeddingDay
+      ? "N/A"
+      : groupTransfer === "yes"
         ? "Group transfer from Siena"
         : groupTransfer === "not_sure"
         ? "Not sure yet"
@@ -599,8 +603,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               </select>
             </div>
 
-            {/* Transport question */}
-            <div className="space-y-3">
+            {/* Transport question — only shown when attending the wedding day */}
+            {eventRsvps.wedding_day_rsvp === "accept" && <div className="space-y-3">
               <label className="heading-sub block">Transportation</label>
               <p className="font-body text-xs text-muted-foreground">
                 We're arranging a group transfer from the Siena train station on Wednesday, September 16th. Let us know if you'll need a spot.
@@ -654,7 +658,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   ))}
                 </div>
               )}
-            </div>
+            </div>}
 
             <div>
               <label className="heading-sub block mb-2">Dietary Restrictions</label>
