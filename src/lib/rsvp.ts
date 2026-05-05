@@ -54,39 +54,23 @@ export const loadPartyRsvpState = async (
   searchFirstName: string,
   searchLastName: string
 ) => {
-  let responder = await fetchRespondedRow(searchFirstName, searchLastName);
+  const personalResponder = await fetchRespondedRow(searchFirstName, searchLastName);
 
-  if (!responder) {
-    const partyMembers = await fetchPartyMembers(found.party_name);
-
-    for (const member of partyMembers) {
-      if (
-        member.first_name.toLowerCase() === searchFirstName.toLowerCase() &&
-        member.last_name.toLowerCase() === searchLastName.toLowerCase()
-      ) {
-        continue;
-      }
-
-      responder = await fetchRespondedRow(member.first_name, member.last_name);
-      if (responder) break;
-    }
-  }
-
-  if (!responder) {
-    const partyMembers = await fetchPartyMembers(found.party_name);
-    const guestNames = partyMembers.length
-      ? partyMembers.map((m) => `${m.first_name} ${m.last_name}`.trim()).filter(Boolean)
-      : [`${found.first_name} ${found.last_name}`];
+  // If this person hasn't personally responded yet, give them a fresh form for themselves only —
+  // even if another party member has already RSVPd for part of the group.
+  if (!personalResponder) {
     return {
       previouslyResponded: false,
       eventRsvps: {},
       dietary: "",
       notes: "",
       accommodation: "",
-      guestNames,
-      attendingCount: guestNames.length,
+      guestNames: [`${found.first_name} ${found.last_name}`],
+      attendingCount: 1,
     };
   }
+
+  let responder = personalResponder;
 
   let partyRows: any[] = [responder];
 
@@ -104,15 +88,6 @@ export const loadPartyRsvpState = async (
       .eq("group_id", responder.group_id);
 
     if (data?.length) partyRows = data as any[];
-  }
-
-  if (partyRows.length <= 1) {
-    const partyMembers = await fetchPartyMembers(found.party_name);
-    const memberRows = await Promise.all(
-      partyMembers.map((member) => fetchRespondedRow(member.first_name, member.last_name))
-    );
-    const validRows = memberRows.filter(Boolean) as any[];
-    if (validRows.length) partyRows = validRows;
   }
 
   const eventRsvps: EventRsvpMap = {};
