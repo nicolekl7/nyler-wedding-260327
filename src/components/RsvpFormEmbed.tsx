@@ -216,7 +216,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         guestNames: guestNames.slice(0, attendingCount),
         eventRsvps,
         dietary,
-        notes: notesWithTransfer,
+        notes: notes.trim(),
         accommodation,
         email: trimmedEmail,
       });
