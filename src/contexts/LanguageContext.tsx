@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export type Language = "en";
+export type Language = "en" | "pl";
 
 interface LanguageContextType {
   language: Language;
@@ -13,10 +13,17 @@ const LanguageContext = createContext<LanguageContextType>({
 });
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language] = useState<Language>("en");
+  const [language, setLanguage] = useState<Language>(() => {
+    return (localStorage.getItem("nyler-lang") as Language) || "en";
+  });
+
+  const handleSetLanguage = (lang: Language) => {
+    localStorage.setItem("nyler-lang", lang);
+    setLanguage(lang);
+  };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: () => {} }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

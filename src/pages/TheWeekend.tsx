@@ -69,6 +69,61 @@ const pageContent = {
       },
     ],
   },
+  pl: {
+    heading: "Uroczystości",
+    intro: "Trzy dni w toskańskiej scenerii. Oto, co na Was czeka.",
+    faqHeading: "Najczęstsze pytania",
+    attireLabel: "Strój:",
+    colorsNote: "Kilka kolorów dla inspiracji, ale przede wszystkim ubierz to, w czym czujesz się najlepiej.",
+    navTravel: "Podróż →",
+    navExplore: "Odkryj →",
+    itinerary: [
+      {
+        day: "Środa, 16 września",
+        title: "Przyjęcie powitalne",
+        description:
+          "Czeka na Was wieczór pod gwiazdami — pizza z pieca, toskańskie wino i pierwsze wspólne chwile przed wielkim dniem.",
+        attire:
+          "La Notte Bianca — biel od stóp do głów! Lniane tkaniny, letnie sukienki, nonszalancki włoski szyk. Przez lata omijałeś/omijałaś biel na weselach szerokim łukiem — ta noc jest Twoja. Len, jedwab, cokolwiek chcesz — byleby białe. Zero wyjątków. Serio.",
+      },
+      {
+        day: "Czwartek, 17 września",
+        title: "Dzień ślubu",
+        description:
+          "Ceremonia z widokiem na toskańskie wzgórza, a potem wieczór pełen aperitivo, kolacji i tańców do białego rana.",
+        attire:
+          "Toskańska elegancja — doskonały powód, żeby się wystroić. Suknie do ziemi. Garnitury. Głębokie kolory i wyraziste tkaniny jak najbardziej wskazane. Poszalej sobie!",
+      },
+      {
+        day: "Piątek, 18 września",
+        title: "La Dolce Far Niente — Przyjęcie przy basenie",
+        description: "Sztuka nierobienia niczego. Odpoczywaj przy basenie przy lunchu, drinkach i słońcu.",
+        attire: "Styl vintage resort",
+      },
+    ],
+    faqs: [
+      {
+        q: "Jaka jest pogoda we wrześniu?",
+        a: "Koniec września w Toskanii jest zazwyczaj piękny — ciepłe, słoneczne dni (około 24°C) i rześkie wieczory (około 13°C). Polecamy zabrać lekką kurtkę lub szal na wieczorne imprezy. I nie zapomnijcie o stroju kąpielowym!",
+      },
+      {
+        q: "Jakie buty powinnam/powinienem włożyć?",
+        a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
+      },
+      {
+        q: "Czy dzieci są mile widziane?",
+        a: "Naprawdę kochamy Wasze dzieci. Jednak to świętowanie jest tylko dla dorosłych. Na uroczystości będzie obecna niewielka liczba dzieci z najbliższej rodziny. Dziękujemy za zrozumienie!",
+      },
+      {
+        q: "Czy mogę przyjść z osobą towarzyszącą?",
+        a: "Z całego serca chcielibyśmy zaprosić wszystkich, ale liczba miejsc jest ograniczona. Prosimy o przybycie wyłącznie osób wskazanych na zaproszeniu.",
+      },
+      {
+        q: "Czy oczekujemy prezentów?",
+        a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — lista prezentów pojawi się wkrótce.",
+      },
+    ],
+  },
 };
 
 const TheWeekend = () => {
@@ -109,8 +164,8 @@ const TheWeekend = () => {
                   <p className={`heading-sub text-foreground mb-2 ${i === 2 ? "pt-1" : ""}`}>
                     {i === 2 ? (
                       <>
-                        <span className="block sm:inline">Friday,</span>{" "}
-                        <span className="block sm:inline">September 18</span>
+                        <span className="block sm:inline">{event.day.split(", ")[0]},</span>{" "}
+                        <span className="block sm:inline">{event.day.split(", ")[1]}</span>
                       </>
                     ) : (
                       event.day

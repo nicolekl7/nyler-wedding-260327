@@ -89,6 +89,86 @@ const guidesContent = {
       ),
     },
   ],
+  pl: [
+    {
+      title: "Termy w Rapolano",
+      subtitle: "5 minut drogi",
+      image: thermalImg,
+      alt: "Natural thermal baths with turquoise pools in Rapolano Terme, Tuscany",
+      richBody: (
+        <p className="body-editorial">
+          Rapolano Terme słynie ze swoich naturalnych gorących źródeł.{" "}
+          <a href="https://share.google/hLQJwjNWHOtfJSOrm" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Terme San Giovanni</a>{" "}
+          i <a href="https://www.google.com/maps/place/antica+Querciolaia/data=!4m2!3m1!1s0x132bdbf2f9ea5175:0xdcd4979ed8ff98eb?sa=X&ved=1t:242&ictx=111" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">Antica Querciolaia</a> są zaledwie kilka minut od posiadłości — z trawertynowymi basenami wypełnionymi naturalnie ciepłą wodą termalną. Wybierz się wieczorem, żeby zobaczyć oświetlone baseny pod toskańskim niebem.
+        </p>
+      ),
+    },
+    {
+      title: "Siena",
+      subtitle: "20 minut drogi",
+      image: sienaImg,
+      alt: "The medieval Piazza del Campo in Siena, Italy",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Jedno z najlepiej zachowanych średniowiecznych miast Włoch. Przejdź się po Piazza del Campo, wejdź na Torre del Mangia, jeśli masz ochotę, i odwiedź Duomo przed wyjściem — koniecznie z gelato w ręku. Parkuj poza murami miejskimi, bo historyczne centrum jest strefą tylko dla pieszych. Nam zawsze udawało się tu znaleźć bezpłatne miejsce{" "}
+            <a href="https://maps.app.goo.gl/JGiDDnaTtjUMnSdy9" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-primary transition-colors">tutaj</a>.
+          </p>
+          <p className="body-editorial mt-3 italic text-muted-foreground">
+            Ciekawostka: Siena podzielona jest na 17 średniowiecznych dzielnic zwanych contrade, z których każda ma swój symbol zwierzęcy i zaciekle rywalizuje podczas wyścigu konnego Palio, organizowanego na Piazza del Campo od 1482 roku.
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Val d'Orcia i Pienza",
+      subtitle: "45 minut drogi",
+      image: valdorciaImg,
+      alt: "Rolling green hills with cypress trees in Val d'Orcia, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Renesansowe miasteczko wzniesione ponad jednym z najczęściej fotografowanych krajobrazów Toskanii. Słynące z sera pecorino — wstąp do La Taverna del Pecorino na degustację i zostań dla widoków.
+          </p>
+          <p className="body-editorial mt-3 italic text-muted-foreground">
+            Ciekawostka: scena z filmu Gladiator była kręcona tuż za Pienzą. Wyszukaj "Gladiator scene" w Google Maps, żeby znaleźć dokładne miejsce.
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Chianti i Montepulciano",
+      subtitle: "45 minut drogi",
+      image: chiantiImg,
+      alt: "Vineyards in Chianti with a rustic stone winery, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Jedź na północ do regionu Chianti Classico na degustacje światowej klasy win wśród winnic, lub na południe do Montepulciano, żeby spróbować słynnego Vino Nobile.
+          </p>
+          <p className="body-editorial mt-3 italic">
+            Polecane winnice: Avignonesi, Contucci, Argiano, Castiglion del Bosco
+          </p>
+        </>
+      ),
+    },
+    {
+      title: "Montalcino",
+      subtitle: "1 godzina drogi",
+      image: montalcinoImg,
+      alt: "Hilltop town of Montalcino with vineyards, Tuscany",
+      richBody: (
+        <>
+          <p className="body-editorial">
+            Ojczyzna Brunello di Montalcino — jednego z najbardziej cenionych włoskich win. Przejdź się po murach twierdzy, wybierz się na degustację wina i koniecznie kup trochę lokalnego miodu kasztanowego przed wyjazdem.
+          </p>
+          <p className="body-editorial mt-3 italic">
+            Polecane winnice: Corte Pavone, Podere Le Ripi, Castello Banfi
+          </p>
+        </>
+      ),
+    },
+  ],
 };
 
 const pageStrings = {
@@ -96,6 +176,12 @@ const pageStrings = {
     heading: "Local Guide",
     intro: "Extending your trip? Here are some of our favorite Tuscan highlights near the venue.",
     navTravel: "Travel →",
+    navRsvp: "RSVP →",
+  },
+  pl: {
+    heading: "Przewodnik lokalny",
+    intro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
+    navTravel: "Podróż →",
     navRsvp: "RSVP →",
   },
 };
