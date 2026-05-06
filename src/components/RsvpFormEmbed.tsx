@@ -73,6 +73,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     else setInternalAccommodation(val);
   };
 
+  const allEventsDeclined = events.length > 0 && events.every((ev) => eventRsvps[ev.key] === "decline");
+
   useEffect(() => {
     if (localStorage.getItem("hasRSVPd") === "true") {
       setAlreadyRsvpd(true);
@@ -239,7 +241,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         return;
       }
     }
-    if (!accommodation) {
+    const declined = events.every((ev) => eventRsvps[ev.key] === "decline");
+
+    if (!declined && !accommodation) {
       toast.error("Please select your accommodation preference");
       setLoading(false);
       return;
@@ -250,12 +254,12 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       setLoading(false);
       return;
     }
-    if (!groupTransfer) {
+    if (!declined && !groupTransfer) {
       toast.error("Please select your transport option");
       setLoading(false);
       return;
     }
-    if (groupTransfer === "no" && !ownTransport) {
+    if (!declined && groupTransfer === "no" && !ownTransport) {
       toast.error("Please select how you're arranging your own transport");
       setLoading(false);
       return;
@@ -273,8 +277,6 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         : ownTransport === "joining_car"
         ? "Own transport — Joining someone's car"
         : "Own transport — Not sure yet";
-
-    const declined = events.every((ev) => eventRsvps[ev.key] === "decline");
 
     const cleanedNames = guestNames.slice(0, attendingCount).map(n => n.trim()).filter(Boolean);
 
@@ -690,7 +692,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             ))}
 
             {/* Accommodation dropdown */}
-            <div className="space-y-3">
+            {!allEventsDeclined && <div className="space-y-3">
               <label className="heading-sub block">On-Site Accommodations</label>
               <select
                 value={accommodation}
@@ -704,10 +706,10 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   </option>
                 ))}
               </select>
-            </div>
+            </div>}
 
             {/* Transport question */}
-            <div className="space-y-3">
+            {!allEventsDeclined && <div className="space-y-3">
               <label className="heading-sub block">Transportation</label>
               <p className="font-body text-xs text-muted-foreground">
                 We're arranging a group transfer from the Siena train station on Wednesday, September 16th. Let us know if you'll need a spot.
@@ -761,7 +763,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   ))}
                 </div>
               )}
-            </div>
+            </div>}
 
             <div>
               <label className="heading-sub block mb-2">Dietary Restrictions</label>
