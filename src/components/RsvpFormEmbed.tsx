@@ -65,7 +65,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [previousAccommodation, setPreviousAccommodation] = useState("");
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
-  const [respondedPartyMembers, setRespondedPartyMembers] = useState<Array<{ name: string; rsvps: Record<string, string> }>>([]);
+  const [respondedPartyMembers, setRespondedPartyMembers] = useState<Array<{ name: string; fullName: string; rsvps: Record<string, string> }>>([]);
   const [unrespondedCount, setUnrespondedCount] = useState(0);
 
   const accommodation = externalAccommodation !== undefined ? externalAccommodation : internalAccommodation;
@@ -146,7 +146,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       )
     );
 
-    const others: Array<{ name: string; rsvps: Record<string, string> }> = [];
+    const others: Array<{ name: string; fullName: string; rsvps: Record<string, string> }> = [];
     let unresponded = 0;
 
     for (const { member, row } of results) {
@@ -158,6 +158,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         if (!isCurrent) {
           others.push({
             name: member.first_name,
+            fullName: `${member.first_name} ${member.last_name}`.trim(),
             rsvps: {
               welcome_party_rsvp: row.welcome_party_rsvp ?? "decline",
               wedding_day_rsvp: row.wedding_day_rsvp ?? "decline",
@@ -233,14 +234,21 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const handleCountChange = async (count: number) => {
     setAttendingCount(count);
 
-    if (guest && count === guest.max_guests) {
+    if (guest) {
       const members = await fetchPartyMembers(guest.party_name);
       if (members.length > 0) {
-        const searchedName = `${guest.first_name} ${guest.last_name}`.trim().toLowerCase();
-        const sorted = [
-          ...members.filter(m => `${m.first_name} ${m.last_name}`.trim().toLowerCase() === searchedName),
-          ...members.filter(m => `${m.first_name} ${m.last_name}`.trim().toLowerCase() !== searchedName),
-        ];
+        const searchedNorm = normalizeStr(`${guest.first_name} ${guest.last_name}`);
+        const respondedNorms = new Set(respondedPartyMembers.map(r => normalizeStr(r.fullName)));
+        const current = members.filter(m => normalizeStr(`${m.first_name} ${m.last_name}`) === searchedNorm);
+        const unresponded = members.filter(m => {
+          const norm = normalizeStr(`${m.first_name} ${m.last_name}`);
+          return norm !== searchedNorm && !respondedNorms.has(norm);
+        });
+        const responded = members.filter(m => {
+          const norm = normalizeStr(`${m.first_name} ${m.last_name}`);
+          return norm !== searchedNorm && respondedNorms.has(norm);
+        });
+        const sorted = [...current, ...unresponded, ...responded];
         const names = sorted.slice(0, count).map(m => `${m.first_name} ${m.last_name}`.trim());
         while (names.length < count) names.push("");
         setGuestNames(names);
@@ -710,19 +718,35 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             <div className="space-y-4">
               <label className="font-serif text-lg md:text-xl font-light text-foreground block">Guest Name{attendingCount > 1 ? "s" : ""}</label>
               {guestNames.slice(0, attendingCount).map((name, i) => (
-                <input
-                  key={i}
-                  type="text"
-                  value={name}
-                  onChange={(e) => {
-                    const updated = [...guestNames];
-                    updated[i] = e.target.value;
-                    setGuestNames(updated);
-                  }}
-                  placeholder={`Guest ${i + 1} — First & Last Name`}
-                  className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
-                  maxLength={200}
-                />
+                <div key={i} className="flex items-center gap-2 border-b border-border">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => {
+                      const updated = [...guestNames];
+                      updated[i] = e.target.value;
+                      setGuestNames(updated);
+                    }}
+                    placeholder={`Guest ${i + 1} — First & Last Name`}
+                    className="flex-1 bg-transparent py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+                    maxLength={200}
+                  />
+                  {i > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = [...guestNames];
+                        updated.splice(i, 1);
+                        setGuestNames(updated);
+                        setAttendingCount((c) => c - 1);
+                      }}
+                      className="text-muted-foreground/40 hover:text-muted-foreground transition-colors px-1 py-3 font-body text-sm leading-none"
+                      aria-label="Remove guest"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
 
