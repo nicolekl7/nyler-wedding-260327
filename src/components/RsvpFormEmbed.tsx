@@ -4,7 +4,7 @@ import FadeIn from "@/components/FadeIn";
 import EventRsvpButton from "@/components/EventRsvpButton";
 import { toast } from "sonner";
 import { Search } from "lucide-react";
-import { loadPartyRsvpState, savePartyRsvpState, fetchPartyMembers, type GuestRecord } from "@/lib/rsvp";
+import { loadPartyRsvpState, savePartyRsvpState, fetchPartyMembers, normalizeStr, type GuestRecord } from "@/lib/rsvp";
 
 const events = [
   { key: "welcome_party_rsvp" as const, label: "Welcome Pizza Party", sub: "Wednesday, Sept 16 · 6:30 PM" },
@@ -41,6 +41,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [attendingCount, setAttendingCount] = useState(1);
   const [guestNames, setGuestNames] = useState<string[]>([""]);
   const [eventRsvps, setEventRsvps] = useState<Record<string, string>>({});
+  const [perPersonOverrides, setPerPersonOverrides] = useState<Record<number, Record<string, string>>>({});
+  const [showOverrides, setShowOverrides] = useState(false);
   const [dietary, setDietary] = useState("");
   const [notes, setNotes] = useState("");
   const [email, setEmail] = useState("");
@@ -57,11 +59,57 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     else setInternalAccommodation(val);
   };
 
+  // Returns the effective RSVP for person i and event key:
+  // per-person override takes priority, falls back to the group selection.
+  const getEffectiveRsvp = (i: number, key: string): string =>
+    perPersonOverrides[i]?.[key] ?? eventRsvps[key] ?? "";
+
   useEffect(() => {
     if (localStorage.getItem("hasRSVPd") === "true") {
       setAlreadyRsvpd(true);
     }
   }, []);
+
+  // Accent-insensitive guest lookup: try exact ilike first, fall back to
+  // fetching all guests and comparing normalized strings client-side.
+  const findGuest = async (firstName: string, lastName: string): Promise<GuestRecord | null> => {
+    const { data: match } = await supabase
+      .from("guests")
+      .select("*")
+      .ilike("first_name", firstName)
+      .ilike("last_name", lastName)
+      .limit(1);
+
+    if (match && match.length > 0) return match[0] as GuestRecord;
+
+    const { data: all } = await supabase.from("guests").select("*");
+    const found = all?.find(
+      (g) =>
+        normalizeStr(g.first_name) === normalizeStr(firstName) &&
+        normalizeStr(g.last_name) === normalizeStr(lastName)
+    );
+    return (found as GuestRecord) ?? null;
+  };
+
+  const loadStateForGuest = async (found: GuestRecord) => {
+    const loadedState = await loadPartyRsvpState(found, found.first_name, found.last_name);
+    const count = Math.min(found.max_guests, loadedState.attendingCount);
+    setPreviouslyResponded(loadedState.previouslyResponded);
+    setPreviousAccommodation(loadedState.accommodation || "");
+    setEventRsvps(loadedState.eventRsvps);
+    setPerPersonOverrides({});
+    setShowOverrides(false);
+    setDietary(loadedState.dietary);
+    setNotes(loadedState.notes);
+    setEmail((loadedState as any).email ?? "");
+    if (!externalAccommodation && loadedState.accommodation) {
+      setAccommodation(loadedState.accommodation);
+    } else if (!externalAccommodation && !loadedState.accommodation) {
+      // no prior selection, leave empty
+    }
+    setGuestNames(loadedState.guestNames);
+    setAttendingCount(count);
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,37 +125,16 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     const firstName = parts[0];
     const lastName = parts.slice(1).join(" ");
 
-    const { data: match } = await supabase
-      .from("guests")
-      .select("*")
-      .ilike("first_name", firstName)
-      .ilike("last_name", lastName)
-      .limit(1);
+    const found = await findGuest(firstName, lastName);
 
-    if (!match || match.length === 0) {
+    if (!found) {
       setGuest(null);
       setLoading(false);
       return;
     }
 
-    const found = match[0] as GuestRecord;
     setGuest(found);
-
-    const loadedState = await loadPartyRsvpState(found, firstName, lastName);
-    setPreviouslyResponded(loadedState.previouslyResponded);
-    setPreviousAccommodation(loadedState.accommodation || "");
-    setEventRsvps(loadedState.eventRsvps);
-    setDietary(loadedState.dietary);
-    setNotes(loadedState.notes);
-    setEmail((loadedState as any).email ?? "");
-    if (!externalAccommodation && loadedState.accommodation) {
-      setAccommodation(loadedState.accommodation);
-    } else if (!externalAccommodation && !loadedState.accommodation) {
-      // no prior selection, leave empty
-    }
-    setGuestNames(loadedState.guestNames);
-    setAttendingCount(Math.min(found.max_guests, loadedState.attendingCount));
-
+    await loadStateForGuest(found);
     setLoading(false);
   };
 
@@ -187,12 +214,15 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         ? "Own transport — Joining someone's car"
         : "Own transport — Not sure yet";
 
-    const declined = events.every((ev) => eventRsvps[ev.key] === "decline");
+    const declined = guestNames
+      .slice(0, attendingCount)
+      .every((_, i) => events.every(ev => getEffectiveRsvp(i, ev.key) === "decline"));
 
     const cleanedNames = guestNames.slice(0, attendingCount).map(n => n.trim()).filter(Boolean);
 
     try {
-      for (const fullName of cleanedNames) {
+      for (let idx = 0; idx < cleanedNames.length; idx++) {
+        const fullName = cleanedNames[idx];
         const nameParts = fullName.split(/\s+/);
         const firstName = nameParts[0] || "";
         const lastName = nameParts.slice(1).join(" ") || "";
@@ -201,9 +231,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         formData.append("First Name", firstName);
         formData.append("Last Name", lastName);
         formData.append("Email", trimmedEmail);
-        formData.append("Wednesday Welcome Party", eventRsvps.welcome_party_rsvp === "accept" ? "Accept" : "Decline");
-        formData.append("Thursday Wedding", eventRsvps.wedding_day_rsvp === "accept" ? "Accept" : "Decline");
-        formData.append("Friday Recovery Day", eventRsvps.pool_day_rsvp === "accept" ? "Accept" : "Decline");
+        formData.append("Wednesday Welcome Party", getEffectiveRsvp(idx, "welcome_party_rsvp") === "accept" ? "Accept" : "Decline");
+        formData.append("Thursday Wedding", getEffectiveRsvp(idx, "wedding_day_rsvp") === "accept" ? "Accept" : "Decline");
+        formData.append("Friday Recovery Day", getEffectiveRsvp(idx, "pool_day_rsvp") === "accept" ? "Accept" : "Decline");
         formData.append("Room Preference", accommodation || "");
         formData.append("Dietary Restrictions", dietary.trim() || "None");
         formData.append("Notes", notes.trim() || "");
@@ -224,9 +254,18 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         .filter(Boolean)
         .join(" | ");
 
+      const effectivePerPersonRsvps: Record<number, Record<string, string>> = {};
+      for (let i = 0; i < attendingCount; i++) {
+        effectivePerPersonRsvps[i] = {
+          welcome_party_rsvp: getEffectiveRsvp(i, "welcome_party_rsvp"),
+          wedding_day_rsvp: getEffectiveRsvp(i, "wedding_day_rsvp"),
+          pool_day_rsvp: getEffectiveRsvp(i, "pool_day_rsvp"),
+        };
+      }
+
       await savePartyRsvpState({
         guestNames: guestNames.slice(0, attendingCount),
-        eventRsvps,
+        perPersonRsvps: effectivePerPersonRsvps,
         dietary,
         notes: notesWithTransfer,
         accommodation,
@@ -292,15 +331,14 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         }
       }
 
-
       // Send receipt email via Apps Script (fire-and-forget; no-cors so we can't read the response)
       const RECEIPT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyNmaFh0PpuYkB2nxshXCuFv2Vxvnv_QFxSl67g1qdE8--Sd2r_l0rhbiW0NprZJqsR/exec";
       const receiptForm = new URLSearchParams();
       receiptForm.append("email", trimmedEmail);
       receiptForm.append("guestNames", cleanedNames.join("|"));
-      receiptForm.append("welcome_party_rsvp", eventRsvps.welcome_party_rsvp || "");
-      receiptForm.append("wedding_day_rsvp", eventRsvps.wedding_day_rsvp || "");
-      receiptForm.append("pool_day_rsvp", eventRsvps.pool_day_rsvp || "");
+      receiptForm.append("welcome_party_rsvp", getEffectiveRsvp(0, "welcome_party_rsvp"));
+      receiptForm.append("wedding_day_rsvp", getEffectiveRsvp(0, "wedding_day_rsvp"));
+      receiptForm.append("pool_day_rsvp", getEffectiveRsvp(0, "pool_day_rsvp"));
       receiptForm.append("accommodation", accommodation);
       receiptForm.append("roomPrice", String(roomPrice));
       receiptForm.append("roomPriceFormatted", roomPriceFormatted);
@@ -354,35 +392,16 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     const firstName = parts[0];
     const lastName = parts.slice(1).join(" ");
 
-    const { data: match } = await supabase
-      .from("guests")
-      .select("*")
-      .ilike("first_name", firstName)
-      .ilike("last_name", lastName)
-      .limit(1);
+    const found = await findGuest(firstName, lastName);
 
-    if (!match || match.length === 0) {
+    if (!found) {
       setGuest(null);
       setLoading(false);
       return;
     }
 
-    const found = match[0] as GuestRecord;
     setGuest(found);
-
-    const loadedState = await loadPartyRsvpState(found, firstName, lastName);
-    setPreviouslyResponded(loadedState.previouslyResponded);
-    setPreviousAccommodation(loadedState.accommodation || "");
-    setEventRsvps(loadedState.eventRsvps);
-    setDietary(loadedState.dietary);
-    setNotes(loadedState.notes);
-    setEmail((loadedState as any).email ?? "");
-    if (!externalAccommodation && loadedState.accommodation) {
-      setAccommodation(loadedState.accommodation);
-    }
-    setGuestNames(loadedState.guestNames);
-    setAttendingCount(Math.min(found.max_guests, loadedState.attendingCount));
-
+    await loadStateForGuest(found);
     setLoading(false);
   };
 
@@ -414,6 +433,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 setSearched(false);
                 setGuestNames([""]);
                 setEventRsvps({});
+                setPerPersonOverrides({});
+                setShowOverrides(false);
                 setDietary("");
                 setNotes("");
                 setEmail("");
@@ -477,7 +498,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
   return (
     <div>
-      
+
       <FadeIn>
         <h2 className="heading-section text-center mb-4">RSVP</h2>
         <div className="w-12 h-px bg-primary mx-auto mb-12" />
@@ -597,6 +618,53 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 </div>
               </div>
             ))}
+
+            {/* Per-person overrides — only relevant when multiple guests */}
+            {attendingCount > 1 && (
+              <div className="space-y-4">
+                <button
+                  type="button"
+                  onClick={() => setShowOverrides(v => !v)}
+                  className="font-body text-xs text-primary underline underline-offset-4 hover:opacity-70 transition-opacity"
+                >
+                  Someone in your party has different plans?
+                </button>
+
+                {showOverrides && (
+                  <div className="space-y-8 pt-4 border-t border-border">
+                    {guestNames.slice(0, attendingCount).map((name, i) => (
+                      <div key={i} className="space-y-3">
+                        <p className="heading-sub">{name || `Guest ${i + 1}`}</p>
+                        {events.map(ev => (
+                          <div key={ev.key} className="flex items-center gap-4">
+                            <span className="font-body text-xs text-muted-foreground flex-1">{ev.label}</span>
+                            <div className="flex gap-2">
+                              {(["accept", "decline"] as const).map(val => (
+                                <button
+                                  key={val}
+                                  type="button"
+                                  onClick={() => setPerPersonOverrides(prev => ({
+                                    ...prev,
+                                    [i]: { ...(prev[i] ?? {}), [ev.key]: val },
+                                  }))}
+                                  className={`px-3 py-1 text-xs font-body border transition-all ${
+                                    getEffectiveRsvp(i, ev.key) === val
+                                      ? "border-primary bg-primary/5 text-foreground"
+                                      : "border-border text-muted-foreground hover:border-primary/40"
+                                  }`}
+                                >
+                                  {val === "accept" ? "Accept" : "Decline"}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Accommodation dropdown */}
             <div className="space-y-3">
