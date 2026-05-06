@@ -61,6 +61,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [internalAccommodation, setInternalAccommodation] = useState("");
   const [groupTransfer, setGroupTransfer] = useState("");
   const [ownTransport, setOwnTransport] = useState("");
+  const [matchOptions, setMatchOptions] = useState<GuestRecord[]>([]);
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [previousAccommodation, setPreviousAccommodation] = useState("");
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
@@ -173,6 +174,14 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setUnrespondedCount(unresponded);
   };
 
+  const loadGuest = async (found: GuestRecord) => {
+    setLoading(true);
+    setMatchOptions([]);
+    setGuest(found);
+    await Promise.all([loadStateForGuest(found), loadPartyContext(found)]);
+    setLoading(false);
+  };
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const parts = searchName.trim().split(/\s+/);
@@ -183,21 +192,42 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
     setLoading(true);
     setSearched(true);
+    setMatchOptions([]);
 
     const firstName = parts[0];
     const lastName = parts.slice(1).join(" ");
 
-    const found = await findGuest(firstName, lastName);
+    const { data: match } = await supabase
+      .from("guests")
+      .select("*")
+      .ilike("first_name", firstName)
+      .ilike("last_name", lastName);
 
-    if (!found) {
+    if (!match || match.length === 0) {
+      // Accent-insensitive fallback: fetch all and compare normalized
+      const { data: all } = await supabase.from("guests").select("*");
+      const found = all?.find(
+        (g) =>
+          normalizeStr(g.first_name) === normalizeStr(firstName) &&
+          normalizeStr(g.last_name) === normalizeStr(lastName)
+      );
+      if (found) {
+        await loadGuest(found as GuestRecord);
+      } else {
+        setGuest(null);
+        setLoading(false);
+      }
+      return;
+    }
+
+    if (match.length > 1) {
+      setMatchOptions(match as GuestRecord[]);
       setGuest(null);
       setLoading(false);
       return;
     }
 
-    setGuest(found);
-    await Promise.all([loadStateForGuest(found), loadPartyContext(found)]);
-    setLoading(false);
+    await loadGuest(match[0] as GuestRecord);
   };
 
   const handleCountChange = async (count: number) => {
@@ -581,13 +611,38 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </button>
           </form>
 
-          {searched && !loading && !guest && (
+          {searched && !loading && !guest && matchOptions.length === 0 && (
             <p className="body-editorial text-center mt-8 mx-auto">
               We couldn't find that name. Please try again or contact us at{" "}
               <a href="mailto:nicoleandtylersitalianwedding@gmail.com" className="text-primary underline">
                 nicoleandtylersitalianwedding@gmail.com
               </a>
             </p>
+          )}
+
+          {matchOptions.length > 1 && (
+            <div className="mt-10 space-y-4">
+              <p className="body-editorial text-center mx-auto">
+                We found a few guests with that name. Which party are you in?
+              </p>
+              <div className="flex flex-col gap-3">
+                {matchOptions.map((opt) => (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    onClick={() => loadGuest(opt)}
+                    className="w-full px-5 py-4 border border-border text-left font-body text-sm text-foreground hover:border-primary hover:bg-primary/5 transition-colors"
+                  >
+                    <span className="font-serif text-lg block">
+                      {opt.first_name} {opt.last_name}
+                    </span>
+                    <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-1 block">
+                      {opt.party_name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
           )}
         </FadeIn>
       )}
