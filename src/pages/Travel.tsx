@@ -19,13 +19,11 @@ const pageContent = {
     ),
     thingsP2: (
       <>
-        If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip.
-        <br />
-        <strong className="text-foreground font-medium">Also, don't forget to pack Type C or Type L travel adapters.</strong>
+        If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip. <strong className="text-foreground font-medium">Don't forget to pack Type C or Type L travel adapters.</strong>
       </>
     ),
-    navEvents: "Events →",
-    navExplore: "Explore →",
+    navEvents: "EVENTS",
+    navExplore: "EXPLORE",
     sections: [
       {
         title: "By Air",
@@ -64,13 +62,11 @@ const pageContent = {
     ),
     thingsP2: (
       <>
-        Jeśli planujesz wynająć samochód, będziesz potrzebować Międzynarodowego Prawa Jazdy (IDP) — wymaganego przez włoskie prawo. Możesz je uzyskać przez AAA za około 20 dolarów przed wyjazdem.
-        <br />
-        <strong className="text-foreground font-medium">Nie zapomnij też spakować adapterów podróżnych typu C lub L.</strong>
+        Jeśli planujesz wynająć samochód, będziesz potrzebować Międzynarodowego Prawa Jazdy (IDP) — wymaganego przez włoskie prawo. Możesz je uzyskać przez AAA za około 20 dolarów przed wyjazdem. <strong className="text-foreground font-medium">Nie zapomnij spakować adapterów podróżnych typu C lub L.</strong>
       </>
     ),
-    navEvents: "Program →",
-    navExplore: "Odkryj okolice →",
+    navEvents: "EVENTS",
+    navExplore: "EXPLORE",
     sections: [
       {
         title: "Samolotem",
