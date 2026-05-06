@@ -18,7 +18,7 @@ const splitFullName = (fullName: string) => {
   };
 };
 
-const fetchPartyMembers = async (partyName: string) => {
+export const fetchPartyMembers = async (partyName: string) => {
   const { data } = await supabase
     .from("guests")
     .select("first_name, last_name")

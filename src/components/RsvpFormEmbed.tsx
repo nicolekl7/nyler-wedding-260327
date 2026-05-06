@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import FadeIn from "@/components/FadeIn";
 import { toast } from "sonner";
 import { Search } from "lucide-react";
-import { loadPartyRsvpState, savePartyRsvpState, type GuestRecord } from "@/lib/rsvp";
+import { loadPartyRsvpState, savePartyRsvpState, fetchPartyMembers, type GuestRecord } from "@/lib/rsvp";
 
 const events = [
   { key: "welcome_party_rsvp" as const, label: "Welcome Pizza Party", sub: "Wednesday, Sept 16 · 6:30 PM" },
@@ -131,8 +131,24 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setLoading(false);
   };
 
-  const handleCountChange = (count: number) => {
+  const handleCountChange = async (count: number) => {
     setAttendingCount(count);
+
+    if (guest && count === guest.max_guests) {
+      const members = await fetchPartyMembers(guest.party_name);
+      if (members.length > 0) {
+        const searchedName = `${guest.first_name} ${guest.last_name}`.trim().toLowerCase();
+        const sorted = [
+          ...members.filter(m => `${m.first_name} ${m.last_name}`.trim().toLowerCase() === searchedName),
+          ...members.filter(m => `${m.first_name} ${m.last_name}`.trim().toLowerCase() !== searchedName),
+        ];
+        const names = sorted.slice(0, count).map(m => `${m.first_name} ${m.last_name}`.trim());
+        while (names.length < count) names.push("");
+        setGuestNames(names);
+        return;
+      }
+    }
+
     setGuestNames((prev) => {
       const updated = [...prev];
       while (updated.length < count) updated.push("");
