@@ -114,14 +114,14 @@ export const loadPartyRsvpState = async (
 
 export const savePartyRsvpState = async ({
   guestNames,
-  perPersonRsvps,
+  eventRsvps,
   dietary,
   notes,
   accommodation,
   email,
 }: {
   guestNames: string[];
-  perPersonRsvps: Record<number, EventRsvpMap>;
+  eventRsvps: EventRsvpMap;
   dietary: string;
   notes: string;
   accommodation: string;
@@ -131,18 +131,16 @@ export const savePartyRsvpState = async ({
   const submissionGroupId = crypto.randomUUID();
   const cleanedGuestNames = guestNames.map((name) => name.trim()).filter(Boolean);
 
-  for (let idx = 0; idx < cleanedGuestNames.length; idx++) {
-    const guestName = cleanedGuestNames[idx];
+  for (const guestName of cleanedGuestNames) {
     const { firstName, lastName } = splitFullName(guestName);
-    const personRsvps = perPersonRsvps[idx] ?? {};
 
     const rowData: any = {
       first_name: firstName,
       last_name: lastName,
       email: email?.trim() || null,
-      welcome_party_rsvp: personRsvps.welcome_party_rsvp || null,
-      wedding_day_rsvp: personRsvps.wedding_day_rsvp || null,
-      pool_day_rsvp: personRsvps.pool_day_rsvp || null,
+      welcome_party_rsvp: eventRsvps.welcome_party_rsvp || null,
+      wedding_day_rsvp: eventRsvps.wedding_day_rsvp || null,
+      pool_day_rsvp: eventRsvps.pool_day_rsvp || null,
       dietary_restrictions: dietary.trim() || null,
       notes: notes.trim() || null,
       room_preference: accommodation || null,
