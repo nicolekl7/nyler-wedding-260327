@@ -613,7 +613,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             {respondedPartyMembers.length > 0 && (
               <div className="bg-muted/40 rounded-md px-5 py-4 space-y-2">
                 <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground mb-3">
-                  Others in your party have already responded.
+                  Others in your party have already responded:
                 </p>
                 {respondedPartyMembers.map(({ name, rsvps }) => (
                   <p key={name} className="font-body text-sm text-foreground">
