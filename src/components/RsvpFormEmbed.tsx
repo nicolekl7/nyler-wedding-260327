@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import FadeIn from "@/components/FadeIn";
+import EventRsvpButton from "@/components/EventRsvpButton";
 import { toast } from "sonner";
 import { Search } from "lucide-react";
-import { loadPartyRsvpState, savePartyRsvpState, type GuestRecord } from "@/lib/rsvp";
+import { loadPartyRsvpState, savePartyRsvpState, fetchPartyMembers, normalizeStr, type GuestRecord } from "@/lib/rsvp";
 
 const events = [
   { key: "welcome_party_rsvp" as const, label: "Welcome Pizza Party", sub: "Wednesday, Sept 16 · 6:30 PM" },
@@ -24,6 +25,20 @@ const accommodationOptions = [
 
 const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room"];
 
+const EVENT_LABELS: Record<string, string> = {
+  welcome_party_rsvp: "Welcome Party",
+  wedding_day_rsvp: "Wedding Day",
+  pool_day_rsvp: "Pool Day",
+};
+
+const describeAttendance = (firstName: string, rsvps: Record<string, string>): string => {
+  const attending = Object.keys(EVENT_LABELS).filter(k => rsvps[k] === "accept").map(k => EVENT_LABELS[k]);
+  if (attending.length === 3) return `${firstName} is attending all three events.`;
+  if (attending.length === 2) return `${firstName} is attending the ${attending[0]} and ${attending[1]}.`;
+  if (attending.length === 1) return `${firstName} is attending the ${attending[0]} only.`;
+  return `${firstName} is not attending.`;
+};
+
 interface RsvpFormEmbedProps {
   accommodation?: string;
   onAccommodationChange?: (val: string) => void;
@@ -39,17 +54,19 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [allDeclined, setAllDeclined] = useState(false);
   const [attendingCount, setAttendingCount] = useState(1);
   const [guestNames, setGuestNames] = useState<string[]>([""]);
-  const [perPersonRsvps, setPerPersonRsvps] = useState<Record<number, Record<string, string>>>({});
-  const [showOverrides, setShowOverrides] = useState(false);
+  const [eventRsvps, setEventRsvps] = useState<Record<string, string>>({});
   const [dietary, setDietary] = useState("");
   const [notes, setNotes] = useState("");
   const [email, setEmail] = useState("");
   const [internalAccommodation, setInternalAccommodation] = useState("");
   const [groupTransfer, setGroupTransfer] = useState("");
   const [ownTransport, setOwnTransport] = useState("");
+  const [matchOptions, setMatchOptions] = useState<GuestRecord[]>([]);
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [previousAccommodation, setPreviousAccommodation] = useState("");
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
+  const [respondedPartyMembers, setRespondedPartyMembers] = useState<Array<{ name: string; fullName: string; rsvps: Record<string, string> }>>([]);
+  const [unrespondedCount, setUnrespondedCount] = useState(0);
 
   const accommodation = externalAccommodation !== undefined ? externalAccommodation : internalAccommodation;
   const setAccommodation = (val: string) => {
@@ -57,13 +74,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     else setInternalAccommodation(val);
   };
 
-  // Default: all events accepted. perPersonRsvps only stores explicit overrides.
-  const getPersonRsvp = (i: number, key: string): string => perPersonRsvps[i]?.[key] ?? "accept";
-
-  // True if any guest attending the wedding day (used to gate transport question)
-  const attendingWeddingDay = guestNames
-    .slice(0, attendingCount)
-    .some((_, i) => getPersonRsvp(i, "wedding_day_rsvp") === "accept");
+  const allEventsDeclined = events.length > 0 && events.every((ev) => eventRsvps[ev.key] === "decline");
 
   useEffect(() => {
     if (localStorage.getItem("hasRSVPd") === "true") {
@@ -71,15 +82,105 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     }
   }, []);
 
-  const initPerPersonRsvps = (loadedEventRsvps: Record<string, string>, count: number) => {
-    const initial: Record<number, Record<string, string>> = {};
-    if (Object.keys(loadedEventRsvps).length > 0) {
-      for (let i = 0; i < count; i++) {
-        initial[i] = { ...loadedEventRsvps };
+  // Accent-insensitive guest lookup: try exact ilike first, fall back to
+  // fetching all guests and comparing normalized strings client-side.
+  const findGuest = async (firstName: string, lastName: string): Promise<GuestRecord | null> => {
+    const { data: match } = await supabase
+      .from("guests")
+      .select("*")
+      .ilike("first_name", firstName)
+      .ilike("last_name", lastName)
+      .limit(1);
+
+    if (match && match.length > 0) return match[0] as GuestRecord;
+
+    const { data: all } = await supabase.from("guests").select("*");
+    const found = all?.find(
+      (g) =>
+        normalizeStr(g.first_name) === normalizeStr(firstName) &&
+        normalizeStr(g.last_name) === normalizeStr(lastName)
+    );
+    return (found as GuestRecord) ?? null;
+  };
+
+  const loadStateForGuest = async (found: GuestRecord) => {
+    const loadedState = await loadPartyRsvpState(found, found.first_name, found.last_name);
+    const count = Math.min(found.max_guests, loadedState.attendingCount);
+    setPreviouslyResponded(loadedState.previouslyResponded);
+    setPreviousAccommodation(loadedState.accommodation || "");
+    setEventRsvps(loadedState.eventRsvps);
+    setDietary(loadedState.dietary);
+    setNotes(loadedState.notes);
+    setEmail((loadedState as any).email ?? "");
+    if (!externalAccommodation && loadedState.accommodation) {
+      setAccommodation(loadedState.accommodation);
+    } else if (!externalAccommodation && !loadedState.accommodation) {
+      // no prior selection, leave empty
+    }
+    setGuestNames(loadedState.guestNames);
+    setAttendingCount(count);
+  };
+
+  const loadPartyContext = async (found: GuestRecord) => {
+    const { data: allMembers } = await supabase
+      .from("guests")
+      .select("first_name, last_name")
+      .eq("party_name", found.party_name);
+
+    if (!allMembers || allMembers.length <= 1) {
+      setRespondedPartyMembers([]);
+      setUnrespondedCount(allMembers?.length === 1 ? 1 : 0);
+      return;
+    }
+
+    const results = await Promise.all(
+      allMembers.map(m =>
+        supabase
+          .from("invited_guests")
+          .select("first_name, welcome_party_rsvp, wedding_day_rsvp, pool_day_rsvp")
+          .ilike("first_name", m.first_name)
+          .ilike("last_name", m.last_name)
+          .eq("has_responded", true)
+          .limit(1)
+          .then(r => ({ member: m, row: r.data?.[0] ?? null }))
+      )
+    );
+
+    const others: Array<{ name: string; fullName: string; rsvps: Record<string, string> }> = [];
+    let unresponded = 0;
+
+    for (const { member, row } of results) {
+      const isCurrent =
+        normalizeStr(member.first_name) === normalizeStr(found.first_name) &&
+        normalizeStr(member.last_name) === normalizeStr(found.last_name);
+
+      if (row) {
+        if (!isCurrent) {
+          others.push({
+            name: member.first_name,
+            fullName: `${member.first_name} ${member.last_name}`.trim(),
+            rsvps: {
+              welcome_party_rsvp: row.welcome_party_rsvp ?? "decline",
+              wedding_day_rsvp: row.wedding_day_rsvp ?? "decline",
+              pool_day_rsvp: row.pool_day_rsvp ?? "decline",
+            },
+          });
+        }
+      } else {
+        unresponded++;
       }
     }
-    setPerPersonRsvps(initial);
-    setShowOverrides(Object.values(loadedEventRsvps).some(v => v === "decline"));
+
+    setRespondedPartyMembers(others);
+    setUnrespondedCount(unresponded);
+  };
+
+  const loadGuest = async (found: GuestRecord) => {
+    setLoading(true);
+    setMatchOptions([]);
+    setGuest(found);
+    await Promise.all([loadStateForGuest(found), loadPartyContext(found)]);
+    setLoading(false);
   };
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -92,6 +193,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
     setLoading(true);
     setSearched(true);
+    setMatchOptions([]);
 
     const firstName = parts[0];
     const lastName = parts.slice(1).join(" ");
@@ -100,39 +202,60 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       .from("guests")
       .select("*")
       .ilike("first_name", firstName)
-      .ilike("last_name", lastName)
-      .limit(1);
+      .ilike("last_name", lastName);
 
     if (!match || match.length === 0) {
+      // Accent-insensitive fallback: fetch all and compare normalized
+      const { data: all } = await supabase.from("guests").select("*");
+      const found = all?.find(
+        (g) =>
+          normalizeStr(g.first_name) === normalizeStr(firstName) &&
+          normalizeStr(g.last_name) === normalizeStr(lastName)
+      );
+      if (found) {
+        await loadGuest(found as GuestRecord);
+      } else {
+        setGuest(null);
+        setLoading(false);
+      }
+      return;
+    }
+
+    if (match.length > 1) {
+      setMatchOptions(match as GuestRecord[]);
       setGuest(null);
       setLoading(false);
       return;
     }
 
-    const found = match[0] as GuestRecord;
-    setGuest(found);
-
-    const loadedState = await loadPartyRsvpState(found, firstName, lastName);
-    const count = Math.min(found.max_guests, loadedState.attendingCount);
-    setPreviouslyResponded(loadedState.previouslyResponded);
-    setPreviousAccommodation(loadedState.accommodation || "");
-    initPerPersonRsvps(loadedState.eventRsvps, count);
-    setDietary(loadedState.dietary);
-    setNotes(loadedState.notes);
-    setEmail((loadedState as any).email ?? "");
-    if (!externalAccommodation && loadedState.accommodation) {
-      setAccommodation(loadedState.accommodation);
-    } else if (!externalAccommodation && !loadedState.accommodation) {
-      // no prior selection, leave empty
-    }
-    setGuestNames(loadedState.guestNames);
-    setAttendingCount(count);
-
-    setLoading(false);
+    await loadGuest(match[0] as GuestRecord);
   };
 
-  const handleCountChange = (count: number) => {
+  const handleCountChange = async (count: number) => {
     setAttendingCount(count);
+
+    if (guest) {
+      const members = await fetchPartyMembers(guest.party_name);
+      if (members.length > 0) {
+        const searchedNorm = normalizeStr(`${guest.first_name} ${guest.last_name}`);
+        const respondedNorms = new Set(respondedPartyMembers.map(r => normalizeStr(r.fullName)));
+        const current = members.filter(m => normalizeStr(`${m.first_name} ${m.last_name}`) === searchedNorm);
+        const unresponded = members.filter(m => {
+          const norm = normalizeStr(`${m.first_name} ${m.last_name}`);
+          return norm !== searchedNorm && !respondedNorms.has(norm);
+        });
+        const responded = members.filter(m => {
+          const norm = normalizeStr(`${m.first_name} ${m.last_name}`);
+          return norm !== searchedNorm && respondedNorms.has(norm);
+        });
+        const sorted = [...current, ...unresponded, ...responded];
+        const names = sorted.slice(0, count).map(m => `${m.first_name} ${m.last_name}`.trim());
+        while (names.length < count) names.push("");
+        setGuestNames(names);
+        return;
+      }
+    }
+
     setGuestNames((prev) => {
       const updated = [...prev];
       while (updated.length < count) updated.push("");
@@ -142,6 +265,13 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
   const handleSubmit = async () => {
     setLoading(true);
+    for (const ev of events) {
+      if (!eventRsvps[ev.key]) {
+        toast.error(`Please select Accept or Decline for ${ev.label}`);
+        setLoading(false);
+        return;
+      }
+    }
     for (let i = 0; i < attendingCount; i++) {
       if (!guestNames[i]?.trim()) {
         toast.error(`Please enter the name for guest ${i + 1}`);
@@ -149,7 +279,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         return;
       }
     }
-    if (!accommodation) {
+    const declined = events.every((ev) => eventRsvps[ev.key] === "decline");
+
+    if (!declined && !accommodation) {
       toast.error("Please select your accommodation preference");
       setLoading(false);
       return;
@@ -160,36 +292,29 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       setLoading(false);
       return;
     }
-    if (attendingWeddingDay) {
-      if (!groupTransfer) {
-        toast.error("Please select your transport option");
-        setLoading(false);
-        return;
-      }
-      if (groupTransfer === "no" && !ownTransport) {
-        toast.error("Please select how you're arranging your own transport");
-        setLoading(false);
-        return;
-      }
+    if (!declined && !groupTransfer) {
+      toast.error("Please select your transport option");
+      setLoading(false);
+      return;
+    }
+    if (!declined && groupTransfer === "no" && !ownTransport) {
+      toast.error("Please select how you're arranging your own transport");
+      setLoading(false);
+      return;
     }
 
-    const combinedTransferValue = !attendingWeddingDay
-      ? "N/A"
-      : groupTransfer === "yes"
-      ? "Group transfer from Siena"
-      : groupTransfer === "not_sure"
-      ? "Not sure yet"
-      : ownTransport === "rent_a_car"
-      ? "Own transport — Renting a car"
-      : ownTransport === "private_transfer"
-      ? "Own transport — Private transfer"
-      : ownTransport === "joining_car"
-      ? "Own transport — Joining someone's car"
-      : "Own transport — Not sure yet";
-
-    const declined = guestNames
-      .slice(0, attendingCount)
-      .every((_, i) => events.every(ev => getPersonRsvp(i, ev.key) === "decline"));
+    const combinedTransferValue =
+      groupTransfer === "yes"
+        ? "Group transfer from Siena"
+        : groupTransfer === "not_sure"
+        ? "Not sure yet"
+        : ownTransport === "rent_a_car"
+        ? "Own transport — Renting a car"
+        : ownTransport === "private_transfer"
+        ? "Own transport — Private transfer"
+        : ownTransport === "joining_car"
+        ? "Own transport — Joining someone's car"
+        : "Own transport — Not sure yet";
 
     const cleanedNames = guestNames.slice(0, attendingCount).map(n => n.trim()).filter(Boolean);
 
@@ -204,9 +329,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         formData.append("First Name", firstName);
         formData.append("Last Name", lastName);
         formData.append("Email", trimmedEmail);
-        formData.append("Wednesday Welcome Party", getPersonRsvp(idx, "welcome_party_rsvp") === "accept" ? "Accept" : "Decline");
-        formData.append("Thursday Wedding", getPersonRsvp(idx, "wedding_day_rsvp") === "accept" ? "Accept" : "Decline");
-        formData.append("Friday Recovery Day", getPersonRsvp(idx, "pool_day_rsvp") === "accept" ? "Accept" : "Decline");
+        formData.append("Wednesday Welcome Party", eventRsvps.welcome_party_rsvp === "accept" ? "Accept" : "Decline");
+        formData.append("Thursday Wedding", eventRsvps.wedding_day_rsvp === "accept" ? "Accept" : "Decline");
+        formData.append("Friday Recovery Day", eventRsvps.pool_day_rsvp === "accept" ? "Accept" : "Decline");
         formData.append("Room Preference", accommodation || "");
         formData.append("Dietary Restrictions", dietary.trim() || "None");
         formData.append("Notes", notes.trim() || "");
@@ -223,11 +348,15 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         );
       }
 
+      const notesWithTransfer = [notes.trim(), `Transport: ${combinedTransferValue}`]
+        .filter(Boolean)
+        .join(" | ");
+
       await savePartyRsvpState({
         guestNames: guestNames.slice(0, attendingCount),
-        perPersonRsvps,
+        eventRsvps,
         dietary,
-        notes: notes.trim(),
+        notes: notesWithTransfer,
         accommodation,
         email: trimmedEmail,
       });
@@ -296,9 +425,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       const receiptForm = new URLSearchParams();
       receiptForm.append("email", trimmedEmail);
       receiptForm.append("guestNames", cleanedNames.join("|"));
-      receiptForm.append("welcome_party_rsvp", getPersonRsvp(0, "welcome_party_rsvp"));
-      receiptForm.append("wedding_day_rsvp", getPersonRsvp(0, "wedding_day_rsvp"));
-      receiptForm.append("pool_day_rsvp", getPersonRsvp(0, "pool_day_rsvp"));
+      receiptForm.append("welcome_party_rsvp", eventRsvps.welcome_party_rsvp || "");
+      receiptForm.append("wedding_day_rsvp", eventRsvps.wedding_day_rsvp || "");
+      receiptForm.append("pool_day_rsvp", eventRsvps.pool_day_rsvp || "");
       receiptForm.append("accommodation", accommodation);
       receiptForm.append("roomPrice", String(roomPrice));
       receiptForm.append("roomPriceFormatted", roomPriceFormatted);
@@ -352,36 +481,16 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     const firstName = parts[0];
     const lastName = parts.slice(1).join(" ");
 
-    const { data: match } = await supabase
-      .from("guests")
-      .select("*")
-      .ilike("first_name", firstName)
-      .ilike("last_name", lastName)
-      .limit(1);
+    const found = await findGuest(firstName, lastName);
 
-    if (!match || match.length === 0) {
+    if (!found) {
       setGuest(null);
       setLoading(false);
       return;
     }
 
-    const found = match[0] as GuestRecord;
     setGuest(found);
-
-    const loadedState = await loadPartyRsvpState(found, firstName, lastName);
-    const count = Math.min(found.max_guests, loadedState.attendingCount);
-    setPreviouslyResponded(loadedState.previouslyResponded);
-    setPreviousAccommodation(loadedState.accommodation || "");
-    initPerPersonRsvps(loadedState.eventRsvps, count);
-    setDietary(loadedState.dietary);
-    setNotes(loadedState.notes);
-    setEmail((loadedState as any).email ?? "");
-    if (!externalAccommodation && loadedState.accommodation) {
-      setAccommodation(loadedState.accommodation);
-    }
-    setGuestNames(loadedState.guestNames);
-    setAttendingCount(count);
-
+    await Promise.all([loadStateForGuest(found), loadPartyContext(found)]);
     setLoading(false);
   };
 
@@ -412,8 +521,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 setSearchName("");
                 setSearched(false);
                 setGuestNames([""]);
-                setPerPersonRsvps({});
-                setShowOverrides(false);
+                setEventRsvps({});
+                setRespondedPartyMembers([]);
+                setUnrespondedCount(0);
                 setDietary("");
                 setNotes("");
                 setEmail("");
@@ -509,13 +619,38 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </button>
           </form>
 
-          {searched && !loading && !guest && (
+          {searched && !loading && !guest && matchOptions.length === 0 && (
             <p className="body-editorial text-center mt-8 mx-auto">
               We couldn't find that name. Please try again or contact us at{" "}
               <a href="mailto:nicoleandtylersitalianwedding@gmail.com" className="text-primary underline">
                 nicoleandtylersitalianwedding@gmail.com
               </a>
             </p>
+          )}
+
+          {matchOptions.length > 1 && (
+            <div className="mt-10 space-y-4">
+              <p className="body-editorial text-center mx-auto">
+                We found a few guests with that name. Which party are you in?
+              </p>
+              <div className="flex flex-col gap-3">
+                {matchOptions.map((opt) => (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    onClick={() => loadGuest(opt)}
+                    className="w-full px-5 py-4 border border-border text-left font-body text-sm text-foreground hover:border-primary hover:bg-primary/5 transition-colors"
+                  >
+                    <span className="font-serif text-lg block">
+                      {opt.first_name} {opt.last_name}
+                    </span>
+                    <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-1 block">
+                      {opt.party_name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
           )}
         </FadeIn>
       )}
@@ -537,9 +672,30 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               )}
             </div>
 
+            {/* Summary card: other party members who have already responded */}
+            {respondedPartyMembers.length > 0 && (
+              <div className="bg-muted/40 rounded-md px-5 py-4 space-y-2">
+                <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground mb-3">
+                  Others in your party have already responded:
+                </p>
+                {respondedPartyMembers.map(({ name, rsvps }) => (
+                  <p key={name} className="font-body text-sm text-foreground">
+                    {describeAttendance(name, rsvps)}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {/* Note: shown when more than one party member has not yet responded */}
+            {unrespondedCount > 1 && (
+              <p className="font-body text-sm text-muted-foreground">
+                Plans differ within your party? Just RSVP for yourself or whoever you're going with.
+              </p>
+            )}
+
             {guest.max_guests > 1 && (
               <div className="space-y-3">
-                <label className="heading-sub block">Number of Guests</label>
+                <label className="font-serif text-lg md:text-xl font-light text-foreground block">Number of Guests</label>
                 <div className="flex gap-3">
                   {Array.from({ length: guest.max_guests }, (_, i) => i + 1).map((num) => (
                     <button
@@ -560,72 +716,63 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             )}
 
             <div className="space-y-4">
-              <label className="heading-sub block">Guest Name{attendingCount > 1 ? "s" : ""}</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block">Guest Name{attendingCount > 1 ? "s" : ""}</label>
               {guestNames.slice(0, attendingCount).map((name, i) => (
-                <input
-                  key={i}
-                  type="text"
-                  value={name}
-                  onChange={(e) => {
-                    const updated = [...guestNames];
-                    updated[i] = e.target.value;
-                    setGuestNames(updated);
-                  }}
-                  placeholder={`Guest ${i + 1} — First & Last Name`}
-                  className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
-                  maxLength={200}
-                />
+                <div key={i} className="flex items-center gap-2 border-b border-border">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => {
+                      const updated = [...guestNames];
+                      updated[i] = e.target.value;
+                      setGuestNames(updated);
+                    }}
+                    placeholder={`Guest ${i + 1} — First & Last Name`}
+                    className="flex-1 bg-transparent py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+                    maxLength={200}
+                  />
+                  {i > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = [...guestNames];
+                        updated.splice(i, 1);
+                        setGuestNames(updated);
+                        setAttendingCount((c) => c - 1);
+                      }}
+                      className="text-muted-foreground/40 hover:text-muted-foreground transition-colors px-1 py-3 font-body text-sm leading-none"
+                      aria-label="Remove guest"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
 
-            {/* Attendance: all guests default to accepting all events */}
-            <div className="space-y-4">
-              <button
-                type="button"
-                onClick={() => setShowOverrides(v => !v)}
-                className="font-body text-xs text-primary underline underline-offset-4 hover:opacity-70 transition-opacity"
-              >
-                Someone in your party has different plans?
-              </button>
-
-              {showOverrides && (
-                <div className="space-y-8 pt-2 border-t border-border">
-                  {guestNames.slice(0, attendingCount).map((name, i) => (
-                    <div key={i} className="space-y-3">
-                      <p className="heading-sub">{name || `Guest ${i + 1}`}</p>
-                      {events.map(ev => (
-                        <div key={ev.key} className="flex items-center gap-4">
-                          <span className="font-body text-xs text-muted-foreground flex-1">{ev.label}</span>
-                          <div className="flex gap-2">
-                            {(["accept", "decline"] as const).map(val => (
-                              <button
-                                key={val}
-                                type="button"
-                                onClick={() => setPerPersonRsvps(prev => ({
-                                  ...prev,
-                                  [i]: { ...(prev[i] ?? {}), [ev.key]: val },
-                                }))}
-                                className={`px-3 py-1 text-xs font-body border transition-all ${
-                                  getPersonRsvp(i, ev.key) === val
-                                    ? "border-primary bg-primary/5 text-foreground"
-                                    : "border-border text-muted-foreground hover:border-primary/40"
-                                }`}
-                              >
-                                {val === "accept" ? "Accept" : "Decline"}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+            {events.map((ev) => (
+              <div key={ev.key} className="space-y-3">
+                <div>
+                  <p className="font-serif text-lg md:text-xl font-light text-foreground mb-1">{ev.label}</p>
+                  <p className="font-body text-xs text-muted-foreground">{ev.sub}</p>
+                </div>
+                <div className="flex gap-3">
+                  {["accept", "decline"].map((val) => (
+                    <EventRsvpButton
+                      key={val}
+                      eventKey={ev.key}
+                      value={val}
+                      isSelected={eventRsvps[ev.key] === val}
+                      onSelect={() => setEventRsvps((prev) => ({ ...prev, [ev.key]: val }))}
+                    />
                   ))}
                 </div>
-              )}
-            </div>
+              </div>
+            ))}
 
             {/* Accommodation dropdown */}
-            <div className="space-y-3">
-              <label className="heading-sub block">On-Site Accommodations</label>
+            {!allEventsDeclined && <div className="space-y-3">
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block">On-Site Accommodations</label>
               <select
                 value={accommodation}
                 onChange={(e) => setAccommodation(e.target.value)}
@@ -638,69 +785,75 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   </option>
                 ))}
               </select>
-            </div>
+            </div>}
 
-            {/* Transport question — only shown when at least one guest is attending the wedding day */}
-            {attendingWeddingDay && (
-              <div className="space-y-3">
-                <label className="heading-sub block">Transportation</label>
-                <p className="font-body text-xs text-muted-foreground">
-                  We're arranging a group transfer from the Siena train station on Wednesday, September 16th. Let us know if you'll need a spot.
-                </p>
-                <div className="space-y-2">
+            {/* Transport question */}
+            {!allEventsDeclined && <div className="space-y-3">
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block">Transportation</label>
+              <p className="font-body text-xs text-muted-foreground">
+                We're arranging a group transfer from the Siena train station on Wednesday, September 16th. Let us know if you'll need a spot.
+              </p>
+              <div className="space-y-2">
+                {[
+                  { value: "yes", label: "Yes, I'll take the group transfer" },
+                  { value: "not_sure", label: "Not sure yet" },
+                  { value: "no", label: "No, I'm arranging my own transport" },
+                ].map(({ value, label }) => (
+                  <label key={value} className={`flex items-center gap-3 py-3 px-4 border cursor-pointer transition-all duration-200 ${
+                    groupTransfer === value
+                      ? "border-primary bg-primary/5 text-foreground"
+                      : "border-border text-muted-foreground hover:border-primary/40"
+                  }`}>
+                    <input
+                      type="radio"
+                      name="groupTransfer"
+                      value={value}
+                      checked={groupTransfer === value}
+                      onChange={() => {
+                        setGroupTransfer(value);
+                        if (value !== "no") setOwnTransport("");
+                      }}
+                      className="accent-primary"
+                    />
+                    <span className="font-body text-sm">
+                      {label}
+                    </span>
+                  </label>
+                ))}
+              </div>
+
+              {groupTransfer === "no" && (
+                <div className="pl-4 border-l border-border space-y-2 mt-2">
                   {[
-                    { value: "yes", label: "Yes, I'll take the group transfer" },
+                    { value: "rent_a_car", label: "Renting a car" },
+                    { value: "joining_car", label: "Joining someone's car" },
+                    { value: "private_transfer", label: "Private transfer" },
                     { value: "not_sure", label: "Not sure yet" },
-                    { value: "no", label: "No, I'm arranging my own transport" },
                   ].map(({ value, label }) => (
-                    <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                    <label key={value} className={`flex items-center gap-3 py-3 px-4 border cursor-pointer transition-all duration-200 ${
+                      ownTransport === value
+                        ? "border-primary bg-primary/5 text-foreground"
+                        : "border-border text-muted-foreground hover:border-primary/40"
+                    }`}>
                       <input
                         type="radio"
-                        name="groupTransfer"
+                        name="ownTransport"
                         value={value}
-                        checked={groupTransfer === value}
-                        onChange={() => {
-                          setGroupTransfer(value);
-                          if (value !== "no") setOwnTransport("");
-                        }}
+                        checked={ownTransport === value}
+                        onChange={() => setOwnTransport(value)}
                         className="accent-primary"
                       />
-                      <span className="font-body text-sm text-foreground group-hover:text-primary transition-colors">
+                      <span className="font-body text-sm">
                         {label}
                       </span>
                     </label>
                   ))}
                 </div>
-
-                {groupTransfer === "no" && (
-                  <div className="pl-5 space-y-2 mt-2">
-                    {[
-                      { value: "rent_a_car", label: "Renting a car" },
-                      { value: "joining_car", label: "Joining someone's car" },
-                      { value: "private_transfer", label: "Private transfer" },
-                      { value: "not_sure", label: "Not sure yet" },
-                    ].map(({ value, label }) => (
-                      <label key={value} className="flex items-center gap-3 cursor-pointer group">
-                        <input
-                          type="radio"
-                          name="ownTransport"
-                          value={value}
-                          checked={ownTransport === value}
-                          onChange={() => setOwnTransport(value)}
-                          className="accent-primary"
-                        />
-                        <span className="font-body text-sm text-foreground group-hover:text-primary transition-colors">
-                          {label}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+              )}
+            </div>}
 
             <div>
-              <label className="heading-sub block mb-2">Dietary Restrictions</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Dietary Restrictions</label>
               <input
                 type="text"
                 value={dietary}
@@ -712,7 +865,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>
 
             <div>
-              <label className="heading-sub block mb-2">Comments</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Comments</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -724,7 +877,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>
 
             <div>
-              <label className="heading-sub block mb-2">Email Address</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Email Address</label>
               <input
                 type="email"
                 value={email}

@@ -175,14 +175,14 @@ const pageStrings = {
   en: {
     heading: "Local Guide",
     intro: "Extending your trip? Here are some of our favorite Tuscan highlights near the venue.",
-    navTravel: "Travel →",
-    navRsvp: "RSVP →",
+    navEvents: "EVENTS",
+    navRsvp: "RSVP",
   },
   pl: {
     heading: "Przewodnik lokalny",
     intro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
-    navTravel: "Podróż →",
-    navRsvp: "RSVP →",
+    navEvents: "EVENTS",
+    navRsvp: "RSVP",
   },
 };
 
@@ -245,10 +245,10 @@ const LocalGuide = () => {
         <FadeIn>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/travel"
+              to="/the-weekend"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
-              {t.navTravel}
+              {t.navEvents}
             </Link>
             <Link
               to="/rsvp-v2"

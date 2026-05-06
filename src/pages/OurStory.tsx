@@ -424,6 +424,12 @@ const OurStory = () => {
             >
               The Events →
             </Link>
+            <Link
+              to="/rsvp-v2"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+            >
+              RSVP
+            </Link>
           </div>
         </FadeIn>
       </section>
