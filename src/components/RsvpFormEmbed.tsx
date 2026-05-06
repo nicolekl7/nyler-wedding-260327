@@ -25,6 +25,66 @@ const accommodationOptions = [
 
 const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room"];
 
+type PartyMemberRsvp = {
+  first_name: string;
+  last_name: string;
+  welcome_party_rsvp: string | null;
+  wedding_day_rsvp: string | null;
+  pool_day_rsvp: string | null;
+};
+
+const formatAttendance = (firstName: string, rsvp: PartyMemberRsvp): string => {
+  const attending: string[] = [];
+  if (rsvp.welcome_party_rsvp === "accept") attending.push("Welcome Party");
+  if (rsvp.wedding_day_rsvp === "accept") attending.push("Wedding Day");
+  if (rsvp.pool_day_rsvp === "accept") attending.push("Pool Day");
+
+  if (attending.length === 3) return `${firstName} is attending all three events.`;
+  if (attending.length === 2) return `${firstName} is attending the ${attending[0]} and ${attending[1]}.`;
+  if (attending.length === 1) return `${firstName} is attending the ${attending[0]} only.`;
+  return `${firstName} is not attending.`;
+};
+
+const fetchOtherPartyRsvps = async (
+  partyName: string,
+  selfFirstName: string,
+  selfLastName: string
+): Promise<PartyMemberRsvp[]> => {
+  const { data: members } = await supabase
+    .from("guests")
+    .select("first_name, last_name")
+    .eq("party_name", partyName);
+
+  if (!members || members.length === 0) return [];
+
+  const others = members.filter(
+    (m) =>
+      !(
+        m.first_name.toLowerCase() === selfFirstName.toLowerCase() &&
+        m.last_name.toLowerCase() === selfLastName.toLowerCase()
+      )
+  );
+
+  if (others.length === 0) return [];
+
+  const results: PartyMemberRsvp[] = [];
+  for (const member of others) {
+    const { data } = await supabase
+      .from("invited_guests")
+      .select("first_name, last_name, welcome_party_rsvp, wedding_day_rsvp, pool_day_rsvp")
+      .ilike("first_name", member.first_name)
+      .ilike("last_name", member.last_name)
+      .eq("has_responded", true)
+      .limit(1);
+
+    if (data && data.length > 0) {
+      results.push(data[0] as PartyMemberRsvp);
+    }
+  }
+
+  return results;
+};
+
 interface RsvpFormEmbedProps {
   accommodation?: string;
   onAccommodationChange?: (val: string) => void;
@@ -50,6 +110,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [previousAccommodation, setPreviousAccommodation] = useState("");
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
+  const [otherPartyRsvps, setOtherPartyRsvps] = useState<PartyMemberRsvp[]>([]);
 
   const accommodation = externalAccommodation !== undefined ? externalAccommodation : internalAccommodation;
   const setAccommodation = (val: string) => {
@@ -107,6 +168,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     }
     setGuestNames(loadedState.guestNames);
     setAttendingCount(Math.min(found.max_guests, loadedState.attendingCount));
+
+    const others = await fetchOtherPartyRsvps(found.party_name, firstName, lastName);
+    setOtherPartyRsvps(others);
 
     setLoading(false);
   };
@@ -383,6 +447,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setGuestNames(loadedState.guestNames);
     setAttendingCount(Math.min(found.max_guests, loadedState.attendingCount));
 
+    const others = await fetchOtherPartyRsvps(found.party_name, firstName, lastName);
+    setOtherPartyRsvps(others);
+
     setLoading(false);
   };
 
@@ -536,6 +603,21 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 </p>
               )}
             </div>
+
+            {otherPartyRsvps.length > 0 && (
+              <div className="rounded-sm bg-muted/40 px-5 py-4 space-y-2">
+                <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                  Others in your party have already responded.
+                </p>
+                <ul className="space-y-1">
+                  {otherPartyRsvps.map((r) => (
+                    <li key={`${r.first_name}-${r.last_name}`} className="font-body text-sm text-foreground/80">
+                      {formatAttendance(r.first_name, r)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {guest.max_guests > 1 && (
               <div className="space-y-3">
