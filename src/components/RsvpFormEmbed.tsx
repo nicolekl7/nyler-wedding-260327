@@ -632,7 +632,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             {guest.max_guests > 1 && (
               <div className="space-y-3">
-                <label className="heading-sub block">Number of Guests</label>
+                <label className="font-serif text-lg md:text-xl font-light text-foreground block">Number of Guests</label>
                 <div className="flex gap-3">
                   {Array.from({ length: guest.max_guests }, (_, i) => i + 1).map((num) => (
                     <button
@@ -653,7 +653,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             )}
 
             <div className="space-y-4">
-              <label className="heading-sub block">Guest Name{attendingCount > 1 ? "s" : ""}</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block">Guest Name{attendingCount > 1 ? "s" : ""}</label>
               {guestNames.slice(0, attendingCount).map((name, i) => (
                 <input
                   key={i}
@@ -674,7 +674,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             {events.map((ev) => (
               <div key={ev.key} className="space-y-3">
                 <div>
-                  <p className="heading-sub mb-1">{ev.label}</p>
+                  <p className="font-serif text-lg md:text-xl font-light text-foreground mb-1">{ev.label}</p>
                   <p className="font-body text-xs text-muted-foreground">{ev.sub}</p>
                 </div>
                 <div className="flex gap-3">
@@ -693,7 +693,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             {/* Accommodation dropdown */}
             {!allEventsDeclined && <div className="space-y-3">
-              <label className="heading-sub block">On-Site Accommodations</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block">On-Site Accommodations</label>
               <select
                 value={accommodation}
                 onChange={(e) => setAccommodation(e.target.value)}
@@ -710,7 +710,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             {/* Transport question */}
             {!allEventsDeclined && <div className="space-y-3">
-              <label className="heading-sub block">Transportation</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block">Transportation</label>
               <p className="font-body text-xs text-muted-foreground">
                 We're arranging a group transfer from the Siena train station on Wednesday, September 16th. Let us know if you'll need a spot.
               </p>
@@ -766,7 +766,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>}
 
             <div>
-              <label className="heading-sub block mb-2">Dietary Restrictions</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Dietary Restrictions</label>
               <input
                 type="text"
                 value={dietary}
@@ -778,7 +778,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>
 
             <div>
-              <label className="heading-sub block mb-2">Comments</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Comments</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -790,7 +790,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>
 
             <div>
-              <label className="heading-sub block mb-2">Email Address</label>
+              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Email Address</label>
               <input
                 type="email"
                 value={email}
