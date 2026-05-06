@@ -720,7 +720,11 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   { value: "not_sure", label: "Not sure yet" },
                   { value: "no", label: "No, I'm arranging my own transport" },
                 ].map(({ value, label }) => (
-                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                  <label key={value} className={`flex items-center gap-3 py-3 px-4 border cursor-pointer transition-all duration-200 ${
+                    groupTransfer === value
+                      ? "border-primary bg-primary/5 text-foreground"
+                      : "border-border text-muted-foreground hover:border-primary/40"
+                  }`}>
                     <input
                       type="radio"
                       name="groupTransfer"
@@ -732,7 +736,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                       }}
                       className="accent-primary"
                     />
-                    <span className="font-body text-sm text-foreground group-hover:text-primary transition-colors">
+                    <span className="font-body text-sm">
                       {label}
                     </span>
                   </label>
@@ -740,14 +744,18 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               </div>
 
               {groupTransfer === "no" && (
-                <div className="pl-5 space-y-2 mt-2">
+                <div className="pl-4 border-l border-border space-y-2 mt-2">
                   {[
                     { value: "rent_a_car", label: "Renting a car" },
                     { value: "joining_car", label: "Joining someone's car" },
                     { value: "private_transfer", label: "Private transfer" },
                     { value: "not_sure", label: "Not sure yet" },
                   ].map(({ value, label }) => (
-                    <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                    <label key={value} className={`flex items-center gap-3 py-3 px-4 border cursor-pointer transition-all duration-200 ${
+                      ownTransport === value
+                        ? "border-primary bg-primary/5 text-foreground"
+                        : "border-border text-muted-foreground hover:border-primary/40"
+                    }`}>
                       <input
                         type="radio"
                         name="ownTransport"
@@ -756,7 +764,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                         onChange={() => setOwnTransport(value)}
                         className="accent-primary"
                       />
-                      <span className="font-body text-sm text-foreground group-hover:text-primary transition-colors">
+                      <span className="font-body text-sm">
                         {label}
                       </span>
                     </label>
