@@ -25,6 +25,20 @@ const accommodationOptions = [
 
 const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room"];
 
+const EVENT_LABELS: Record<string, string> = {
+  welcome_party_rsvp: "Welcome Party",
+  wedding_day_rsvp: "Wedding Day",
+  pool_day_rsvp: "Pool Day",
+};
+
+const describeAttendance = (firstName: string, rsvps: Record<string, string>): string => {
+  const attending = Object.keys(EVENT_LABELS).filter(k => rsvps[k] === "accept").map(k => EVENT_LABELS[k]);
+  if (attending.length === 3) return `${firstName} is attending all three events.`;
+  if (attending.length === 2) return `${firstName} is attending the ${attending[0]} and ${attending[1]}.`;
+  if (attending.length === 1) return `${firstName} is attending the ${attending[0]} only.`;
+  return `${firstName} is not attending.`;
+};
+
 interface RsvpFormEmbedProps {
   accommodation?: string;
   onAccommodationChange?: (val: string) => void;
@@ -52,6 +66,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [previouslyResponded, setPreviouslyResponded] = useState(false);
   const [previousAccommodation, setPreviousAccommodation] = useState("");
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
+  const [respondedPartyMembers, setRespondedPartyMembers] = useState<Array<{ name: string; rsvps: Record<string, string> }>>([]);
+  const [unrespondedCount, setUnrespondedCount] = useState(0);
 
   const accommodation = externalAccommodation !== undefined ? externalAccommodation : internalAccommodation;
   const setAccommodation = (val: string) => {
@@ -111,6 +127,59 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setAttendingCount(count);
   };
 
+  const loadPartyContext = async (found: GuestRecord) => {
+    const { data: allMembers } = await supabase
+      .from("guests")
+      .select("first_name, last_name")
+      .eq("party_name", found.party_name);
+
+    if (!allMembers || allMembers.length <= 1) {
+      setRespondedPartyMembers([]);
+      setUnrespondedCount(allMembers?.length === 1 ? 1 : 0);
+      return;
+    }
+
+    const results = await Promise.all(
+      allMembers.map(m =>
+        supabase
+          .from("invited_guests")
+          .select("first_name, welcome_party_rsvp, wedding_day_rsvp, pool_day_rsvp")
+          .ilike("first_name", m.first_name)
+          .ilike("last_name", m.last_name)
+          .eq("has_responded", true)
+          .limit(1)
+          .then(r => ({ member: m, row: r.data?.[0] ?? null }))
+      )
+    );
+
+    const others: Array<{ name: string; rsvps: Record<string, string> }> = [];
+    let unresponded = 0;
+
+    for (const { member, row } of results) {
+      const isCurrent =
+        normalizeStr(member.first_name) === normalizeStr(found.first_name) &&
+        normalizeStr(member.last_name) === normalizeStr(found.last_name);
+
+      if (row) {
+        if (!isCurrent) {
+          others.push({
+            name: member.first_name,
+            rsvps: {
+              welcome_party_rsvp: row.welcome_party_rsvp ?? "decline",
+              wedding_day_rsvp: row.wedding_day_rsvp ?? "decline",
+              pool_day_rsvp: row.pool_day_rsvp ?? "decline",
+            },
+          });
+        }
+      } else {
+        unresponded++;
+      }
+    }
+
+    setRespondedPartyMembers(others);
+    setUnrespondedCount(unresponded);
+  };
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const parts = searchName.trim().split(/\s+/);
@@ -134,7 +203,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     }
 
     setGuest(found);
-    await loadStateForGuest(found);
+    await Promise.all([loadStateForGuest(found), loadPartyContext(found)]);
     setLoading(false);
   };
 
@@ -401,7 +470,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     }
 
     setGuest(found);
-    await loadStateForGuest(found);
+    await Promise.all([loadStateForGuest(found), loadPartyContext(found)]);
     setLoading(false);
   };
 
@@ -435,6 +504,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 setEventRsvps({});
                 setPerPersonOverrides({});
                 setShowOverrides(false);
+                setRespondedPartyMembers([]);
+                setUnrespondedCount(0);
                 setDietary("");
                 setNotes("");
                 setEmail("");
@@ -557,6 +628,27 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 </p>
               )}
             </div>
+
+            {/* Summary card: other party members who have already responded */}
+            {respondedPartyMembers.length > 0 && (
+              <div className="bg-muted/40 rounded-md px-5 py-4 space-y-2">
+                <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground mb-3">
+                  Others in your party have already responded.
+                </p>
+                {respondedPartyMembers.map(({ name, rsvps }) => (
+                  <p key={name} className="font-body text-sm text-foreground">
+                    {describeAttendance(name, rsvps)}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {/* Note: shown when more than one party member has not yet responded */}
+            {unrespondedCount > 1 && (
+              <p className="font-body text-sm text-muted-foreground">
+                Plans differ within your party? Just RSVP for yourself or whoever you're going with.
+              </p>
+            )}
 
             {guest.max_guests > 1 && (
               <div className="space-y-3">
