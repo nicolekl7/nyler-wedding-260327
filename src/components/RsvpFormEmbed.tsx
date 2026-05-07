@@ -287,8 +287,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       return;
     }
     const trimmedEmail = email.trim();
-    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      toast.error("Please enter a valid email address so we can send your receipt");
+    if (trimmedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      toast.error("Please enter a valid email address");
       setLoading(false);
       return;
     }
@@ -386,15 +386,17 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       // with that selection from a prior session).
       const isPaidRoom = accommodation && !NO_PAYMENT_ACCOMMODATIONS.includes(accommodation);
       if (isPaidRoom && roomCategoryId) {
-        const { data: existingBookings } = await supabase
-          .from("room_bookings")
-          .select("id")
-          .eq("email", trimmedEmail)
-          .eq("room_category_id", roomCategoryId)
-          .eq("is_released", false)
-          .limit(1);
-
-        const alreadyBooked = (existingBookings?.length ?? 0) > 0;
+        let alreadyBooked = false;
+        if (trimmedEmail) {
+          const { data: existingBookings } = await supabase
+            .from("room_bookings")
+            .select("id")
+            .eq("email", trimmedEmail)
+            .eq("room_category_id", roomCategoryId)
+            .eq("is_released", false)
+            .limit(1);
+          alreadyBooked = (existingBookings?.length ?? 0) > 0;
+        }
 
         if (!alreadyBooked) {
           if (roomInventory <= 0) {
@@ -435,12 +437,14 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       receiptForm.append("notes", notes.trim());
       receiptForm.append("allDeclined", declined ? "true" : "false");
 
-      fetch(RECEIPT_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: receiptForm.toString(),
-      }).catch((err) => console.error("Receipt email failed:", err));
+      if (trimmedEmail) {
+        fetch(RECEIPT_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: receiptForm.toString(),
+        }).catch((err) => console.error("Receipt email failed:", err));
+      }
 
       // Also send a copy to Nyler so they're notified of every RSVP
       const notifyForm = new URLSearchParams(receiptForm);
