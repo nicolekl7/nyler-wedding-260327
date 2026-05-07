@@ -67,6 +67,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [alreadyRsvpd, setAlreadyRsvpd] = useState(false);
   const [respondedPartyMembers, setRespondedPartyMembers] = useState<Array<{ name: string; fullName: string; rsvps: Record<string, string> }>>([]);
   const [unrespondedCount, setUnrespondedCount] = useState(0);
+  const [soldOutRooms, setSoldOutRooms] = useState<Set<string>>(new Set());
 
   const accommodation = externalAccommodation !== undefined ? externalAccommodation : internalAccommodation;
   const setAccommodation = (val: string) => {
@@ -80,6 +81,16 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     if (localStorage.getItem("hasRSVPd") === "true") {
       setAlreadyRsvpd(true);
     }
+    supabase
+      .from("room_categories")
+      .select("name, inventory_count")
+      .then(({ data }) => {
+        if (data) {
+          setSoldOutRooms(
+            new Set(data.filter((r) => Number(r.inventory_count) <= 0).map((r) => r.name))
+          );
+        }
+      });
   }, []);
 
   // Accent-insensitive guest lookup: try exact ilike first, fall back to
@@ -408,6 +419,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             .from("room_categories")
             .update({ inventory_count: roomInventory - 1 })
             .eq("id", roomCategoryId);
+          if (roomInventory - 1 <= 0) {
+            setSoldOutRooms((prev) => new Set([...prev, accommodation]));
+          }
 
           await supabase.from("room_bookings").insert({
             room_category_id: roomCategoryId,
@@ -783,11 +797,20 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 className="w-full bg-transparent border-b border-border py-3 font-body text-foreground focus:outline-none focus:border-primary transition-colors appearance-none cursor-pointer"
               >
                 <option value="" className="bg-background">Select an option...</option>
-                {accommodationOptions.map((opt) => (
-                  <option key={opt} value={opt} className="bg-background">
-                    {opt}
-                  </option>
-                ))}
+                {accommodationOptions.map((opt) => {
+                  const isSoldOut = soldOutRooms.has(opt);
+                  return (
+                    <option
+                      key={opt}
+                      value={opt}
+                      disabled={isSoldOut}
+                      className="bg-background"
+                      style={isSoldOut ? { fontStyle: "italic" } : undefined}
+                    >
+                      {isSoldOut ? `${opt} — Sold Out` : opt}
+                    </option>
+                  );
+                })}
               </select>
             </div>}
 
