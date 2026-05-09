@@ -76,7 +76,7 @@ const RsvpV2 = () => {
   }, []);
 
   if (submitResult) {
-    const noPaymentAccommodations = ["Not Staying Onsite", "Joining a Reserved Room"];
+    const noPaymentAccommodations = ["Not Staying Onsite", "Joining a Reserved Room", "Choosing Room Later"];
     const price = noPaymentAccommodations.includes(submitResult.accommodation)
       ? undefined
       : roomPrices[submitResult.accommodation];
@@ -90,6 +90,7 @@ const RsvpV2 = () => {
     const isJoiningRoom = !submitResult.allDeclined && submitResult.accommodation === "Joining a Reserved Room";
     const isStayingOnsite = !submitResult.allDeclined && !noPaymentAccommodations.includes(submitResult.accommodation);
     const isOffsite = !submitResult.allDeclined && submitResult.accommodation === "Not Staying Onsite";
+    const isChoosingLater = !submitResult.allDeclined && submitResult.accommodation === "Choosing Room Later";
     const isDeclined = submitResult.allDeclined;
 
     return (
@@ -131,6 +132,28 @@ const RsvpV2 = () => {
                 <p className="body-editorial mx-auto text-balance">{t.joiningRoomP1}</p>
                 <p className="body-editorial mx-auto text-balance mt-6">{t.joiningRoomP2}</p>
                 <p className="font-display italic text-lg text-foreground mt-8">{t.italianClose}</p>
+              </>
+            )}
+
+            {isChoosingLater && (
+              <>
+                <p className="body-editorial mx-auto text-balance">Your RSVP is in!</p>
+                <p className="body-editorial mx-auto text-balance mt-6">
+                  Just a heads-up — rooms are first-come, first-served and several are nearly full. Come back to update your RSVP and claim yours soon.
+                </p>
+                <div className="flex justify-center mt-8">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSubmitResult(null);
+                      setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
+                    }}
+                    className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+                  >
+                    Browse Rooms
+                  </button>
+                </div>
+                <p className="font-display italic text-lg text-foreground mt-8">Ci vediamo in Italia!</p>
               </>
             )}
 
