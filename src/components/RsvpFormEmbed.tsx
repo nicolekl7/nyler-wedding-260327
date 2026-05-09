@@ -20,10 +20,15 @@ const accommodationOptions = [
   "Luxury Suite",
   "Junior Suite",
   "Not Staying Onsite",
+  "Choosing Room Later",
   "Joining a Reserved Room",
 ];
 
-const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room"];
+const ACCOMMODATION_LABELS: Record<string, string> = {
+  "Choosing Room Later": "Not Ready to Pick a Room Yet",
+};
+
+const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room", "Choosing Room Later"];
 
 const EVENT_LABELS: Record<string, string> = {
   welcome_party_rsvp: "Welcome Party",
@@ -450,6 +455,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       receiptForm.append("dietary", dietary.trim());
       receiptForm.append("notes", notes.trim());
       receiptForm.append("allDeclined", declined ? "true" : "false");
+      receiptForm.append("roomReminder", accommodation === "Choosing Room Later" ? "true" : "");
 
       if (trimmedEmail) {
         fetch(RECEIPT_SCRIPT_URL, {
@@ -799,6 +805,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 <option value="" className="bg-background">Select an option...</option>
                 {accommodationOptions.map((opt) => {
                   const isSoldOut = soldOutRooms.has(opt);
+                  const label = ACCOMMODATION_LABELS[opt] ?? opt;
                   return (
                     <option
                       key={opt}
@@ -807,7 +814,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                       className="bg-background"
                       style={isSoldOut ? { fontStyle: "italic" } : undefined}
                     >
-                      {isSoldOut ? `${opt} — Sold Out` : opt}
+                      {isSoldOut ? `${label} (Sold Out)` : label}
                     </option>
                   );
                 })}
