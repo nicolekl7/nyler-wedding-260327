@@ -73,6 +73,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [respondedPartyMembers, setRespondedPartyMembers] = useState<Array<{ name: string; fullName: string; rsvps: Record<string, string> }>>([]);
   const [unrespondedCount, setUnrespondedCount] = useState(0);
   const [soldOutRooms, setSoldOutRooms] = useState<Set<string>>(new Set());
+  const [inviteNames, setInviteNames] = useState<string[]>([]);
+  const [showNameConfirmModal, setShowNameConfirmModal] = useState(false);
+  const [nameConfirmChecked, setNameConfirmChecked] = useState(false);
 
   const accommodation = externalAccommodation !== undefined ? externalAccommodation : internalAccommodation;
   const setAccommodation = (val: string) => {
@@ -196,6 +199,19 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     setMatchOptions([]);
     setGuest(found);
     await Promise.all([loadStateForGuest(found), loadPartyContext(found)]);
+
+    const members = await fetchPartyMembers(found.party_name);
+    if (members.length > 0) {
+      const searchedNorm = normalizeStr(`${found.first_name} ${found.last_name}`);
+      const sorted = [
+        ...members.filter(m => normalizeStr(`${m.first_name} ${m.last_name}`) === searchedNorm),
+        ...members.filter(m => normalizeStr(`${m.first_name} ${m.last_name}`) !== searchedNorm),
+      ];
+      setInviteNames(sorted.map(m => `${m.first_name} ${m.last_name}`.trim()));
+    } else {
+      setInviteNames([`${found.first_name} ${found.last_name}`]);
+    }
+
     setLoading(false);
   };
 
@@ -279,7 +295,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (skipNameCheck = false) => {
     setLoading(true);
     for (const ev of events) {
       if (!eventRsvps[ev.key]) {
@@ -317,6 +333,20 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       toast.error("Please select how you're arranging your own transport");
       setLoading(false);
       return;
+    }
+
+    if (!skipNameCheck && inviteNames.length > 0) {
+      const anyMismatch = guestNames.slice(0, attendingCount).some((name, i) => {
+        const invite = inviteNames[i];
+        if (!invite) return false;
+        return name.trim().toLowerCase() !== invite.toLowerCase();
+      });
+      if (anyMismatch) {
+        setLoading(false);
+        setNameConfirmChecked(false);
+        setShowNameConfirmModal(true);
+        return;
+      }
     }
 
     const combinedTransferValue =
@@ -679,6 +709,81 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         </FadeIn>
       )}
 
+      {showNameConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+          <div className="bg-background w-full max-w-md shadow-xl p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+            <div>
+              <h3 className="font-serif text-xl font-light text-foreground">Please confirm guest names</h3>
+              <p className="font-body text-sm text-muted-foreground mt-2">
+                Some names don't exactly match what we have on the invitation. Please review before submitting.
+              </p>
+            </div>
+            <div className="space-y-4">
+              {guestNames.slice(0, attendingCount).map((name, i) => {
+                const invite = inviteNames[i] ?? "";
+                const matches = !invite || name.trim().toLowerCase() === invite.toLowerCase();
+                return (
+                  <div
+                    key={i}
+                    className={`space-y-1 px-3 py-3 ${matches ? "bg-muted/30" : "bg-amber-50/60 border border-amber-200"}`}
+                  >
+                    <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                      Guest {i + 1}
+                    </p>
+                    <p className="font-body text-sm text-muted-foreground">
+                      Invitation:{" "}
+                      <span className="text-foreground">{invite || "—"}</span>
+                    </p>
+                    <p className="font-body text-sm text-muted-foreground">
+                      You entered:{" "}
+                      <span className={`${matches ? "text-foreground" : "text-foreground font-medium"}`}>
+                        {name.trim() || "—"}{" "}
+                        {matches ? (
+                          <span className="text-green-600">✓</span>
+                        ) : (
+                          <span>⚠️</span>
+                        )}
+                      </span>
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={nameConfirmChecked}
+                onChange={(e) => setNameConfirmChecked(e.target.checked)}
+                className="mt-0.5 accent-primary shrink-0"
+              />
+              <span className="font-body text-sm text-foreground">
+                I confirm these are the correct guests for this invitation.
+              </span>
+            </label>
+            <div className="flex gap-3 pt-1">
+              <button
+                type="button"
+                onClick={() => setShowNameConfirmModal(false)}
+                className="flex-1 py-3 border border-border font-body text-xs uppercase tracking-[0.25em] text-foreground hover:border-primary/40 transition-colors"
+              >
+                Go back and edit
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowNameConfirmModal(false);
+                  handleSubmit(true);
+                }}
+                disabled={!nameConfirmChecked}
+                className="flex-1 py-3 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-40 disabled:pointer-events-none"
+              >
+                Confirm and submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {guest && (
         <FadeIn delay={100}>
           <div className="space-y-12">
@@ -752,6 +857,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                       setGuestNames(updated);
                     }}
                     placeholder={`Guest ${i + 1} — First & Last Name`}
+                    autoComplete="off"
                     className="flex-1 bg-transparent py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
                     maxLength={200}
                   />
@@ -925,7 +1031,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             <button
               type="button"
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
               disabled={loading}
               className="relative w-full py-4 font-body text-xs uppercase tracking-[0.25em] transition-opacity disabled:pointer-events-none overflow-hidden border border-primary"
             >
