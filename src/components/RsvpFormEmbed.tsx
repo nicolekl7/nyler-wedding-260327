@@ -730,11 +730,11 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                     <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground">
                       Guest {i + 1}
                     </p>
-                    <p className="font-body text-xs text-muted-foreground">
+                    <p className="font-body text-sm text-muted-foreground">
                       Invitation:{" "}
                       <span className="text-foreground">{invite || "—"}</span>
                     </p>
-                    <p className="font-body text-xs text-muted-foreground">
+                    <p className="font-body text-sm text-muted-foreground">
                       You entered:{" "}
                       <span className={`${matches ? "text-foreground" : "text-foreground font-medium"}`}>
                         {name.trim() || "—"}{" "}
@@ -760,14 +760,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 I confirm these are the correct guests for this invitation.
               </span>
             </label>
-            <div className="flex gap-3 pt-1">
-              <button
-                type="button"
-                onClick={() => setShowNameConfirmModal(false)}
-                className="flex-1 py-3 border border-border font-body text-xs uppercase tracking-[0.25em] text-foreground hover:border-primary/40 transition-colors"
-              >
-                Go back and edit
-              </button>
+            <div className="flex flex-col gap-3 pt-1">
               <button
                 type="button"
                 onClick={() => {
@@ -775,9 +768,16 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   handleSubmit(true);
                 }}
                 disabled={!nameConfirmChecked}
-                className="flex-1 py-3 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-40 disabled:pointer-events-none"
+                className="w-full py-3 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-40 disabled:pointer-events-none"
               >
                 Confirm and submit
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowNameConfirmModal(false)}
+                className="w-full py-3 border border-border font-body text-xs uppercase tracking-[0.25em] text-foreground hover:border-primary/40 transition-colors"
+              >
+                Go back and edit
               </button>
             </div>
           </div>
