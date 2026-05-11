@@ -730,11 +730,11 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                     <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground">
                       Guest {i + 1}
                     </p>
-                    <p className="font-body text-sm text-muted-foreground">
+                    <p className="font-body text-xs text-muted-foreground">
                       Invitation:{" "}
                       <span className="text-foreground">{invite || "—"}</span>
                     </p>
-                    <p className="font-body text-sm text-muted-foreground">
+                    <p className="font-body text-xs text-muted-foreground">
                       You entered:{" "}
                       <span className={`${matches ? "text-foreground" : "text-foreground font-medium"}`}>
                         {name.trim() || "—"}{" "}
