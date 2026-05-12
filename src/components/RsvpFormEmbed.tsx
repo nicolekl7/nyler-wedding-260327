@@ -992,7 +992,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               )}
             </div>}
 
-            <div>
+            {!allEventsDeclined && <div>
               <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Dietary Restrictions</label>
               <input
                 type="text"
@@ -1002,7 +1002,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 className="w-full bg-transparent border-b border-border py-3 font-body text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors"
                 maxLength={500}
               />
-            </div>
+            </div>}
 
             <div>
               <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Comments</label>
