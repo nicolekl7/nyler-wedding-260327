@@ -212,9 +212,8 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {soloCategory && renderCard(soloCategory, true, 150)}
-        {categories.map((cat, i) => renderCard(cat, false, 200 + i * 60))}
-        {renderAltCard("Joining a Reserved Room", "Joining a Reserved Room", "Only choose this if a friend or family member has already reserved and paid for the room you'll be staying in. No payment needed.", 300)}
-        {renderAltCard("Choosing Room Later", "Not Ready to Pick a Room Yet", "Lock in your RSVP now and choose your room later. We'll send a friendly reminder — but rooms go fast, so don't wait too long.", 340)}
+        {renderAltCard("Request a Room", "Request a Room", "All rooms are currently full. Select this if you'd still like to stay onsite — let us know your situation in the notes and we'll be in touch.", 200)}
+        {renderAltCard("Joining a Reserved Room", "Joining a Reserved Room", "Only choose this if a friend or family member has already reserved and paid for the room you'll be staying in. No payment needed.", 260)}
       </div>
     </div>
   );
