@@ -14,21 +14,14 @@ const events = [
 
 const accommodationOptions = [
   "Solo Guest Estate Pass",
-  "Classic Estate Room",
-  "Superior Room",
-  "Garden Suite",
-  "Luxury Suite",
-  "Junior Suite",
+  "Request a Room",
   "Not Staying Onsite",
-  "Choosing Room Later",
   "Joining a Reserved Room",
 ];
 
-const ACCOMMODATION_LABELS: Record<string, string> = {
-  "Choosing Room Later": "Not Ready to Pick a Room Yet",
-};
+const ACCOMMODATION_LABELS: Record<string, string> = {};
 
-const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room", "Choosing Room Later"];
+const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room", "Request a Room"];
 
 const EVENT_LABELS: Record<string, string> = {
   welcome_party_rsvp: "Welcome Party",
@@ -485,7 +478,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       receiptForm.append("dietary", dietary.trim());
       receiptForm.append("notes", notes.trim());
       receiptForm.append("allDeclined", declined ? "true" : "false");
-      receiptForm.append("roomReminder", accommodation === "Choosing Room Later" ? "true" : "");
+      receiptForm.append("roomReminder", "");
 
       if (trimmedEmail) {
         fetch(RECEIPT_SCRIPT_URL, {
