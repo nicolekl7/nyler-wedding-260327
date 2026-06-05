@@ -110,7 +110,9 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
             </div>
             {cat.description && (
               <p className="font-body text-sm text-muted-foreground font-light mb-2">
-                {cat.description}
+                {isSolo
+                  ? "Attending solo? Reserve your spot and leave the rest to us. We'll place you with another solo guest in a spacious suite."
+                  : cat.description}
               </p>
             )}
             <p className="font-body text-sm text-muted-foreground">{capacityLabel(cat)}</p>
