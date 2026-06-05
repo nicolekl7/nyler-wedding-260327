@@ -182,37 +182,41 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-      {soloCategory && renderCard(soloCategory, false, 100)}
-      {renderAltCard("Request a Room", "Request a Room", "All rooms are currently full. Select this if you'd still like to stay onsite — let us know your situation in the notes and we'll be in touch.", 150)}
-      {renderAltCard("Joining a Reserved Room", "Joining a Reserved Room", "Only choose this if a friend or family member has already reserved and paid for the room you'll be staying in. No payment needed.", 200)}
-      <FadeIn delay={250}>
-        <button
-          type="button"
-          onClick={() => handleSelect("Not Staying Onsite")}
-          className={`w-full text-left border p-6 flex flex-col justify-between h-full transition-all duration-300 ${
-            notOnsiteSelected
-              ? "border-2 border-primary bg-primary/[0.04] shadow-lg shadow-primary/10"
-              : "border-border hover:border-primary/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 cursor-pointer"
-          }`}
-        >
-          <div>
-            <h3 className="font-serif text-lg text-foreground mb-1">Not Staying Onsite</h3>
-            <p className="font-body text-sm text-muted-foreground font-light">
-              For guests who prefer to make their own travel arrangements and stay off the estate.
-            </p>
-          </div>
-          <div
-            className={`mt-5 w-full py-2.5 text-center font-body text-xs uppercase tracking-[0.25em] transition-all duration-200 ${
+    <div className="flex flex-col gap-5">
+      <div className="grid grid-cols-1">
+        {renderAltCard("Request a Room", "Request a Room", "All rooms are currently full. Select this if you'd still like to stay onsite — let us know your situation in the notes and we'll be in touch.", 100)}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {soloCategory && renderCard(soloCategory, false, 150)}
+        {renderAltCard("Joining a Reserved Room", "Joining a Reserved Room", "Only choose this if a friend or family member has already reserved and paid for the room you'll be staying in. No payment needed.", 200)}
+        <FadeIn delay={250}>
+          <button
+            type="button"
+            onClick={() => handleSelect("Not Staying Onsite")}
+            className={`w-full text-left border p-6 flex flex-col justify-between h-full transition-all duration-300 ${
               notOnsiteSelected
-                ? "bg-primary text-primary-foreground"
-                : "border border-border text-muted-foreground hover:border-primary hover:text-foreground"
+                ? "border-2 border-primary bg-primary/[0.04] shadow-lg shadow-primary/10"
+                : "border-border hover:border-primary/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 cursor-pointer"
             }`}
           >
-            {notOnsiteSelected ? "Selected" : "Select"}
-          </div>
-        </button>
-      </FadeIn>
+            <div>
+              <h3 className="font-serif text-lg text-foreground mb-1">Not Staying Onsite</h3>
+              <p className="font-body text-sm text-muted-foreground font-light">
+                For guests who prefer to make their own travel arrangements and stay off the estate.
+              </p>
+            </div>
+            <div
+              className={`mt-5 w-full py-2.5 text-center font-body text-xs uppercase tracking-[0.25em] transition-all duration-200 ${
+                notOnsiteSelected
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-border text-muted-foreground hover:border-primary hover:text-foreground"
+              }`}
+            >
+              {notOnsiteSelected ? "Selected" : "Select"}
+            </div>
+          </button>
+        </FadeIn>
+      </div>
     </div>
   );
 };
