@@ -210,14 +210,6 @@ const RsvpV2 = () => {
                   {t.skipRsvp}
                 </a>
               </p>
-              <p>
-                <a
-                  href="https://www.nicoleandtylerswedding.com/payment"
-                  className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {t.skipPayment}
-                </a>
-              </p>
             </div>
           </div>
         </FadeIn>
