@@ -9,9 +9,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const strings = {
   en: {
     heading: "Accommodations & RSVP",
-    intro1: "We have exclusively reserved all of Borgo Laticastelli for our guests. For guests staying onsite, breakfast, dinners, and drinks at all events are included in your stay.",
-    intro2: "To get started, select your room below or let us know you'll be staying offsite.",
-    intro3: <><strong>Prices are per room for the entire three-night stay (September 16–19).</strong></>,
     firstComeNote: <>Rooms are available on a first-come, first-served basis.<span className="hidden sm:inline"><br /></span><span className="sm:hidden"> </span>Reservations not paid within 48&nbsp;hours will be released.</>,
     skipRsvp: "Not able to make it? Skip right to the RSVP >",
     skipPayment: "Already RSVP'd and picked a room? Skip right to the payment >",
@@ -32,9 +29,6 @@ const strings = {
   },
   pl: {
     heading: "Zakwaterowanie i RSVP",
-    intro1: "Zarezerwowaliśmy całe Borgo Laticastelli wyłącznie dla naszych gości. Dla gości nocujących na miejscu śniadania, kolacje i napoje na wszystkich imprezach są wliczone w pobyt.",
-    intro2: "Aby zacząć, wybierz pokój poniżej lub poinformuj nas, że będziesz nocować poza posiadłością.",
-    intro3: <><strong>Ceny podane są za pokój za cały trzydniowy pobyt (16–19 września).</strong></>,
     firstComeNote: <>Pokoje przydzielane są według kolejności zgłoszeń.<span className="hidden sm:inline"><br /></span><span className="sm:hidden"> </span>Rezerwacje nieopłacone w ciągu 48&nbsp;godzin zostaną anulowane.</>,
     skipRsvp: "Nie możesz przyjechać? Przejdź od razu do formularza RSVP >",
     skipPayment: "Potwierdziłeś/aś już obecność i wybrałeś/aś pokój? Przejdź od razu do płatności >",
@@ -188,11 +182,6 @@ const RsvpV2 = () => {
 
         <FadeIn delay={100}>
           <div className="max-w-[655px] mx-auto mb-16">
-            <p className="body-editorial mx-auto text-center !leading-snug">{t.intro1}</p>
-            <p className="body-editorial mx-auto text-center mt-6 !leading-snug">{t.intro2}</p>
-            <p className="body-editorial mx-auto text-center mt-6 text-foreground font-normal !leading-snug">
-              {t.intro3}
-            </p>
             <div className="mt-4 flex justify-center">
               <div className="px-5 py-3 bg-sage-light rounded-md text-center">
                 <p className="body-editorial text-foreground font-normal !leading-snug">
