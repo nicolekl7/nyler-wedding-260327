@@ -149,7 +149,7 @@ const Shuttle = () => {
   if (submitted) {
     return (
       <Layout>
-        <section className="page-section w-[90%] max-w-[700px] mx-auto text-center">
+        <section className="page-section w-[90%] max-w-[900px] mx-auto text-center">
           <FadeIn>
             <h1 className="heading-section mb-4">Thank You</h1>
             <div className="w-12 h-px bg-primary mx-auto mb-8" />
@@ -165,7 +165,7 @@ const Shuttle = () => {
 
   return (
     <Layout>
-      <section className="page-section w-[90%] max-w-[700px] mx-auto">
+      <section className="page-section w-[90%] max-w-[900px] mx-auto">
         <FadeIn>
           <h1 className="heading-section text-center mb-4">Shuttle Sign-Ups</h1>
           <div className="w-12 h-px bg-primary mx-auto mb-12" />
