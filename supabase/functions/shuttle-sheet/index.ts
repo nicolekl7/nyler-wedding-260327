@@ -12,6 +12,7 @@ Deno.serve(async (req) => {
     const form = new URLSearchParams();
     form.append("timestamp", new Date().toISOString());
     form.append("fullName", body.fullName ?? "");
+    form.append("email", body.email ?? "");
     form.append("partySize", String(body.partySize ?? ""));
     form.append("arrivalWave", body.arrivalWave ?? "");
     form.append("departureWave", body.departureWave ?? "");

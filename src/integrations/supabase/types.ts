@@ -219,6 +219,7 @@ export type Database = {
           arrival_wave: string
           created_at: string
           departure_wave: string
+          email: string
           full_name: string
           id: string
           party_size: number
@@ -229,6 +230,7 @@ export type Database = {
           arrival_wave: string
           created_at?: string
           departure_wave: string
+          email: string
           full_name: string
           id?: string
           party_size: number
@@ -239,6 +241,7 @@ export type Database = {
           arrival_wave?: string
           created_at?: string
           departure_wave?: string
+          email?: string
           full_name?: string
           id?: string
           party_size?: number
@@ -256,6 +259,7 @@ export type Database = {
         Args: {
           _arrival_wave: string
           _departure_wave: string
+          _email: string
           _full_name: string
           _party_size: number
           _travel_details: string | null
@@ -265,6 +269,7 @@ export type Database = {
           arrival_wave: string
           created_at: string
           departure_wave: string
+          email: string
           full_name: string
           id: string
           party_size: number

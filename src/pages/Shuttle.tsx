@@ -30,6 +30,7 @@ const NOT_ENOUGH_SPOTS_ERROR = "Please select an option that has enough spots fo
 
 const Shuttle = () => {
   const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [partySize, setPartySize] = useState("1");
   const [arrivalWave, setArrivalWave] = useState<Wave | "">("");
   const [departureWave, setDepartureWave] = useState<Wave | "">("");
@@ -80,6 +81,7 @@ const Shuttle = () => {
 
   const syncToSheet = (payload: {
     fullName: string;
+    email: string;
     partySize: number;
     arrivalWave: Wave;
     departureWave: Wave;
@@ -91,6 +93,7 @@ const Shuttle = () => {
         body: {
           timestamp: new Date().toISOString(),
           fullName: payload.fullName,
+          email: payload.email,
           partySize: payload.partySize,
           arrivalWave: payload.arrivalWave,
           departureWave: payload.departureWave,
@@ -104,7 +107,7 @@ const Shuttle = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!fullName.trim() || !arrivalWave || !departureWave || !whatsappOptin) {
+    if (!fullName.trim() || !email.trim() || !arrivalWave || !departureWave || !whatsappOptin) {
       toast.error("Please fill out all required fields.");
       return;
     }
@@ -131,6 +134,7 @@ const Shuttle = () => {
       _departure_wave: departureWave,
       _whatsapp_optin: whatsappOptin === "yes",
       _travel_details: travelDetails.trim() || null,
+      _email: email.trim(),
     });
 
     if (error) {
@@ -142,6 +146,7 @@ const Shuttle = () => {
 
     syncToSheet({
       fullName: fullName.trim(),
+      email: email.trim(),
       partySize: size,
       arrivalWave: arrivalWave as Wave,
       departureWave: departureWave as Wave,
@@ -228,6 +233,17 @@ const Shuttle = () => {
                 id="fullName"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
