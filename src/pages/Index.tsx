@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -17,7 +18,7 @@ const content = {
         Three days of festivities await at Borgo Laticastelli, a private estate in the hills of
         Rapolano Terme. We'll kick things off Wednesday evening with our La Notte Bianca welcome
         party, followed by the ceremony and reception on Thursday, and a recovery day of relaxing
-        activities on Friday. Visit the itinerary page for timing and attire, and the travel page
+        activities on Friday. Visit the itinerary page for timing and attire and the travel page
         for everything you need to get here.
         <br />
         <br />
@@ -29,6 +30,8 @@ const content = {
     ),
     countdown: "Countdown to Tuscany",
     days: "Days",
+    itineraryBtn: "Itinerary",
+    travelBtn: "Travel",
   },
   pl: {
     dateLine: "17 września 2026 | Toskania, Włochy",
@@ -42,7 +45,7 @@ const content = {
         Czekają nas trzy dni świętowania w Borgo Laticastelli — prywatnej posiadłości na wzgórzach
         Rapolano Terme. Zaczynamy w środowy wieczór przyjęciem powitalnym La Notte Bianca, w
         czwartek odbędzie się ceremonia i wesele, a piątek to dzień relaksu i lżejszych aktywności.
-        Na stronie planu znajdziesz godziny i dress code, a na stronie podróży wszystko, czego
+        Na stronie planu znajdziesz godziny i dress code i na stronie podróży wszystko, czego
         potrzebujesz, aby do nas dotrzeć.
         <br />
         <br />
@@ -54,6 +57,8 @@ const content = {
     ),
     countdown: "Odliczanie dni",
     days: "Dni",
+    itineraryBtn: "Plan",
+    travelBtn: "Podróż",
   },
 };
 
@@ -102,6 +107,20 @@ const Index = () => {
           <p className="body-editorial mx-auto text-balance">
             {t.welcome}
           </p>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/the-weekend"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+            >
+              {t.itineraryBtn}
+            </Link>
+            <Link
+              to="/travel"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+            >
+              {t.travelBtn}
+            </Link>
+          </div>
         </FadeIn>
       </section>
 
