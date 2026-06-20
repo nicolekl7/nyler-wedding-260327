@@ -7,7 +7,7 @@ const navLabels = {
   en: {
     home: "Home",
     travel: "Travel",
-    events: "Events",
+    events: "Itinerary",
     registry: "Registry",
     ourStory: "Our Story",
     rsvp: "RSVP",
@@ -15,7 +15,7 @@ const navLabels = {
   pl: {
     home: "Strona główna",
     travel: "Podróż",
-    events: "Uroczystości",
+    events: "Plan",
     registry: "Lista prezentów",
     ourStory: "Nasza historia",
     rsvp: "RSVP",

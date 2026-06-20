@@ -27,7 +27,7 @@ const pageContent = {
         If you plan to rent a car, you will need an International Driver's Permit (IDP)—required by Italian law. You can obtain one through AAA for approximately $20 before your trip. <strong className="text-foreground font-medium">Don't forget to pack Type C or Type L travel adapters.</strong>
       </>
     ),
-    navEvents: "EVENTS",
+    navEvents: "ITINERARY",
     navRsvp: "RSVP",
     exploreHeading: "Explore Tuscany",
     exploreIntro: "Extending your trip? Here are our favorite highlights near the venue.",
@@ -72,7 +72,7 @@ const pageContent = {
         Jeśli planujesz wynająć samochód, będziesz potrzebować Międzynarodowego Prawa Jazdy (IDP) — wymaganego przez włoskie prawo. Możesz je uzyskać przez AAA za około 20 dolarów przed wyjazdem. <strong className="text-foreground font-medium">Nie zapomnij spakować adapterów podróżnych typu C lub L.</strong>
       </>
     ),
-    navEvents: "EVENTS",
+    navEvents: "ITINERARY",
     navRsvp: "RSVP",
     exploreHeading: "Odkryj Toskanię",
     exploreIntro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
