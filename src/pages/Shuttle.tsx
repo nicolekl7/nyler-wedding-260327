@@ -153,7 +153,7 @@ const Shuttle = () => {
           <FadeIn>
             <h1 className="heading-section mb-4">Thank You</h1>
             <div className="w-12 h-px bg-primary mx-auto mb-8" />
-            <p className="body-editorial mx-auto text-balance">
+            <p className="body-editorial mx-auto text-balance max-w-none">
               Your shuttle sign-up is confirmed. We can't wait to see you in Tuscany!
             </p>
             <p className="font-display italic text-lg text-foreground mt-8">Ci vediamo in Italia!</p>
@@ -173,17 +173,17 @@ const Shuttle = () => {
 
         <FadeIn delay={100}>
           <div className="space-y-6 mb-16">
-            <p className="body-editorial mx-auto text-balance">
+            <p className="body-editorial mx-auto text-balance max-w-none">
               Please reserve your preferred shuttle times below. Spots are available on a first-come, first-served
               basis. Because of local venue restrictions, each shuttle has a strict capacity of 28 guests—once a time
               slot fills up, we unfortunately cannot add extra seats.
             </p>
 
             <div>
-              <p className="body-editorial mx-auto text-balance text-foreground font-normal mb-2">
+              <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal mb-2">
                 A Few Travel Tips:
               </p>
-              <ul className="body-editorial mx-auto space-y-2 list-disc pl-5">
+              <ul className="body-editorial mx-auto max-w-none space-y-2 list-disc pl-5">
                 <li>
                   Trains: If you are arriving by train, we highly recommend booking your tickets in advance as
                   popular routes sell out quickly.
@@ -200,11 +200,11 @@ const Shuttle = () => {
             </div>
 
             <div>
-              <p className="body-editorial mx-auto text-balance text-foreground font-normal mb-2">
+              <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal mb-2">
                 Pre-Wedding Get-Together:
               </p>
-              <p className="body-editorial mx-auto text-balance">
-                Tyler and I are hosting a casual get-together in Florence on Tuesday night and everyone is welcome!
+              <p className="body-editorial mx-auto text-balance max-w-none">
+                We are hosting a casual get-together in Florence on Tuesday night and everyone is welcome!
                 If you'd like to coordinate travel or meet up with other guests before the big day, opt into the
                 WhatsApp group below.
               </p>
