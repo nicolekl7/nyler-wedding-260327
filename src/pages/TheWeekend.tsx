@@ -21,7 +21,7 @@ const pageContent = {
     attireLabel: "Attire:",
     colorsNote: "Here are a few colors to inspire but wear whatever makes you feel good.",
     navTravel: "Travel →",
-    navExplore: "Explore →",
+    navRsvp: "RSVP →",
     itinerary: [
       {
         day: "Wednesday, September 16",
@@ -76,7 +76,7 @@ const pageContent = {
     attireLabel: "Strój:",
     colorsNote: "Kilka kolorów dla inspiracji, ale przede wszystkim ubierz to, w czym czujesz się najlepiej.",
     navTravel: "Podróż →",
-    navExplore: "Odkryj →",
+    navRsvp: "RSVP →",
     itinerary: [
       {
         day: "Środa, 16 września",
@@ -286,10 +286,10 @@ const TheWeekend = () => {
               {t.navTravel}
             </Link>
             <Link
-              to="/local-guide"
+              to="/rsvp-v2"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
-              {t.navExplore}
+              {t.navRsvp}
             </Link>
           </div>
         </FadeIn>
