@@ -11,7 +11,7 @@ const navLabels = {
     explore: "Explore",
     registry: "Registry",
     ourStory: "Our Story",
-    rsvp: "RSVP",
+    rsvp: "RESERVE SHUTTLE",
   },
   pl: {
     home: "Strona główna",
@@ -20,7 +20,7 @@ const navLabels = {
     explore: "Odkryj",
     registry: "Lista prezentów",
     ourStory: "Nasza historia",
-    rsvp: "RSVP",
+    rsvp: "ZAREZERWUJ SHUTTLE",
   },
 };
 
@@ -38,7 +38,7 @@ const Navigation = () => {
     { path: "/local-guide", label: labels.explore },
     { path: "https://www.zola.com/registry/nicoleandtylersregistry", label: labels.registry, external: true },
     { path: "/about-us", label: labels.ourStory },
-    { path: "/rsvp-v2", label: labels.rsvp, cta: true },
+    { path: "/shuttle", label: labels.rsvp, cta: true },
   ];
 
   return (
