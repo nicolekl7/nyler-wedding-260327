@@ -30,6 +30,7 @@ const content = {
     ),
     countdown: "Countdown to Tuscany",
     days: "Days",
+    shuttleBtn: "Book Shuttle",
     itineraryBtn: "Itinerary",
     travelBtn: "Travel",
   },
@@ -57,6 +58,7 @@ const content = {
     ),
     countdown: "Odliczanie dni",
     days: "Dni",
+    shuttleBtn: "Zarezerwuj Shuttle",
     itineraryBtn: "Plan",
     travelBtn: "Podróż",
   },
@@ -108,6 +110,12 @@ const Index = () => {
             {t.welcome}
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/shuttle"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+            >
+              {t.shuttleBtn}
+            </Link>
             <Link
               to="/the-weekend"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
