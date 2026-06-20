@@ -19,6 +19,7 @@ import RsvpV2 from "./pages/RsvpV2";
 import LocalGuide from "./pages/LocalGuide";
 import Payment from "./pages/Payment";
 import AdminReservations from "./pages/AdminReservations";
+import Shuttle from "./pages/Shuttle";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/home" element={<HomeV2 />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/admin/reservations" element={<AdminReservations />} />
+          <Route path="/shuttle" element={<Shuttle />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

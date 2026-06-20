@@ -214,12 +214,71 @@ export type Database = {
         }
         Relationships: []
       }
+      shuttle_signups: {
+        Row: {
+          arrival_wave: string
+          created_at: string
+          departure_wave: string
+          full_name: string
+          id: string
+          party_size: number
+          travel_details: string | null
+          whatsapp_optin: boolean
+        }
+        Insert: {
+          arrival_wave: string
+          created_at?: string
+          departure_wave: string
+          full_name: string
+          id?: string
+          party_size: number
+          travel_details?: string | null
+          whatsapp_optin?: boolean
+        }
+        Update: {
+          arrival_wave?: string
+          created_at?: string
+          departure_wave?: string
+          full_name?: string
+          id?: string
+          party_size?: number
+          travel_details?: string | null
+          whatsapp_optin?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_shuttle_signup: {
+        Args: {
+          p_arrival_wave: string
+          p_departure_wave: string
+          p_full_name: string
+          p_party_size: number
+          p_travel_details: string | null
+          p_whatsapp_optin: boolean
+        }
+        Returns: {
+          arrival_wave: string
+          created_at: string
+          departure_wave: string
+          full_name: string
+          id: string
+          party_size: number
+          travel_details: string | null
+          whatsapp_optin: boolean
+        }
+      }
+      shuttle_wave_seats_used: {
+        Args: {
+          p_direction: string
+          p_wave: string
+        }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
