@@ -15,13 +15,13 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const pageContent = {
   en: {
-    heading: "The Events",
+    heading: "The Itinerary",
     intro: "Three days in the Tuscan countryside. Here's what to expect.",
     faqHeading: "Concierge FAQs",
     attireLabel: "Attire:",
     colorsNote: "Here are a few colors to inspire but wear whatever makes you feel good.",
     navTravel: "Travel →",
-    navExplore: "Explore →",
+    navRsvp: "RSVP →",
     itinerary: [
       {
         day: "Wednesday, September 16",
@@ -70,13 +70,13 @@ const pageContent = {
     ],
   },
   pl: {
-    heading: "Uroczystości",
+    heading: "Plan",
     intro: "Trzy dni w toskańskiej scenerii. Oto, co na Was czeka.",
     faqHeading: "Najczęstsze pytania",
     attireLabel: "Strój:",
     colorsNote: "Kilka kolorów dla inspiracji, ale przede wszystkim ubierz to, w czym czujesz się najlepiej.",
     navTravel: "Podróż →",
-    navExplore: "Odkryj →",
+    navRsvp: "RSVP →",
     itinerary: [
       {
         day: "Środa, 16 września",
@@ -286,10 +286,10 @@ const TheWeekend = () => {
               {t.navTravel}
             </Link>
             <Link
-              to="/local-guide"
+              to="/rsvp-v2"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
-              {t.navExplore}
+              {t.navRsvp}
             </Link>
           </div>
         </FadeIn>

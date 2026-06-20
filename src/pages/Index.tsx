@@ -12,45 +12,53 @@ const content = {
     dateLineLong: "September 17, 2026 | Rapolano Terme, Tuscany, Italy",
     welcome: (
       <>
-        We're getting married in Tuscany on September 17, 2026, and we would absolutely love for
-        you to be there. There will be three days of festivities at Borgo Laticastelli—a private
-        estate in the hills of Rapolano Terme—with a welcome party on Wednesday evening, the
-        wedding ceremony and reception on Thursday, and a relaxed <em>il dolce far niente</em> day by the
-        pool on Friday.
+        We are so excited to have our friends and family join us in Tuscany for this celebration!
         <br />
         <br />
-        We know Italy is a long way to travel, so we mean it: no pressure. But for those who make
-        the trip, we promise every day will be worth it. Our guest list is small and the estate is
-        intimate—please <strong>RSVP by June 16th</strong> so we can plan accordingly and ensure your spot is
-        reserved.
+        Three days of festivities await at Borgo Laticastelli, a private estate in the hills of
+        Rapolano Terme. We'll kick things off Wednesday evening with our La Notte Bianca welcome
+        party, followed by the ceremony and reception on Thursday, and a recovery day of relaxing
+        activities on Friday. Visit the itinerary page for timing and attire and the travel page
+        for everything you need to get here.
+        <br />
+        <br />
+        See you in Tuscany. Ciao!
+        <br />
+        <br />
+        xx Tyler &amp; Nicole
       </>
     ),
-    rsvpBtn: "RSVP Here",
     countdown: "Countdown to Tuscany",
     days: "Days",
+    itineraryBtn: "Itinerary",
+    travelBtn: "Travel",
   },
   pl: {
     dateLine: "17 września 2026 | Toskania, Włochy",
     dateLineLong: "17 września 2026 | Rapolano Terme, Toskania, Włochy",
     welcome: (
       <>
-        Pobieramy się w Toskanii 17 września 2026 roku i bardzo chcielibyśmy, żebyś był/była z nami.
+        Bardzo się cieszymy, że nasi przyjaciele i rodzina dołączą do nas w Toskanii na tę
+        uroczystość!
+        <br />
+        <br />
         Czekają nas trzy dni świętowania w Borgo Laticastelli — prywatnej posiadłości na wzgórzach
-        Rapolano Terme — z przyjęciem powitalnym w środowy wieczór, ceremonią ślubną i weselem w
-        czwartek oraz leniwym dniem przy basenie w piątek, w duchu włoskiego{" "}
-        <em>dolce far niente</em>.
+        Rapolano Terme. Zaczynamy w środowy wieczór przyjęciem powitalnym La Notte Bianca, w
+        czwartek odbędzie się ceremonia i wesele, a piątek to dzień relaksu i lżejszych aktywności.
+        Na stronie planu znajdziesz godziny i dress code i na stronie podróży wszystko, czego
+        potrzebujesz, aby do nas dotrzeć.
         <br />
         <br />
-        Wiemy, że Włochy to daleka droga, więc mówimy szczerze: bez żadnej presji. Ale dla tych,
-        którzy zdecydują się przyjechać, obiecujemy, że każdy dzień będzie wart tej podróży. Lista
-        gości jest krótka, a posiadłość kameralna — prosimy o{" "}
-        <strong>potwierdzenie obecności do 16 czerwca</strong>, abyśmy mogli odpowiednio zaplanować
-        i zarezerwować dla Ciebie miejsce.
+        Do zobaczenia w Toskanii. Ciao!
+        <br />
+        <br />
+        xx Tyler i Nicole
       </>
     ),
-    rsvpBtn: "Potwierdź obecność",
     countdown: "Odliczanie dni",
     days: "Dni",
+    itineraryBtn: "Plan",
+    travelBtn: "Podróż",
   },
 };
 
@@ -99,12 +107,20 @@ const Index = () => {
           <p className="body-editorial mx-auto text-balance">
             {t.welcome}
           </p>
-          <Link
-            to="/rsvp-v2"
-            className="inline-block mt-10 border border-foreground rounded-full px-8 py-3 font-serif text-sm tracking-widest uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-          >
-            {t.rsvpBtn}
-          </Link>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/the-weekend"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+            >
+              {t.itineraryBtn}
+            </Link>
+            <Link
+              to="/travel"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+            >
+              {t.travelBtn}
+            </Link>
+          </div>
         </FadeIn>
       </section>
 

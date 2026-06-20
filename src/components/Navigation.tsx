@@ -7,8 +7,7 @@ const navLabels = {
   en: {
     home: "Home",
     travel: "Travel",
-    events: "Events",
-    explore: "Explore",
+    events: "Itinerary",
     registry: "Registry",
     ourStory: "Our Story",
     rsvp: "RSVP",
@@ -16,8 +15,7 @@ const navLabels = {
   pl: {
     home: "Strona główna",
     travel: "Podróż",
-    events: "Uroczystości",
-    explore: "Odkryj",
+    events: "Plan",
     registry: "Lista prezentów",
     ourStory: "Nasza historia",
     rsvp: "RSVP",
@@ -35,7 +33,6 @@ const Navigation = () => {
     { path: "/our-story", label: labels.ourStory, hidden: true },
     { path: "/travel", label: labels.travel },
     { path: "/the-weekend", label: labels.events },
-    { path: "/local-guide", label: labels.explore },
     { path: "https://www.zola.com/registry/nicoleandtylersregistry", label: labels.registry, external: true },
     { path: "/about-us", label: labels.ourStory },
     { path: "/rsvp-v2", label: labels.rsvp, cta: true },
