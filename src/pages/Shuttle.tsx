@@ -116,13 +116,13 @@ const Shuttle = () => {
 
     setSubmitting(true);
 
-    const { data, error } = await supabase.rpc("create_shuttle_signup", {
-      p_full_name: fullName.trim(),
-      p_party_size: size,
-      p_arrival_wave: arrivalWave,
-      p_departure_wave: departureWave,
-      p_whatsapp_optin: whatsappOptin === "yes",
-      p_travel_details: travelDetails.trim() || null,
+    const { data, error } = await supabase.rpc("book_shuttle", {
+      _full_name: fullName.trim(),
+      _party_size: size,
+      _arrival_wave: arrivalWave,
+      _departure_wave: departureWave,
+      _whatsapp_optin: whatsappOptin === "yes",
+      _travel_details: travelDetails.trim() || null,
     });
 
     if (error) {

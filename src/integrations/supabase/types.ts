@@ -252,14 +252,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      create_shuttle_signup: {
+      book_shuttle: {
         Args: {
-          p_arrival_wave: string
-          p_departure_wave: string
-          p_full_name: string
-          p_party_size: number
-          p_travel_details: string | null
-          p_whatsapp_optin: boolean
+          _arrival_wave: string
+          _departure_wave: string
+          _full_name: string
+          _party_size: number
+          _travel_details: string | null
+          _whatsapp_optin: boolean
         }
         Returns: {
           arrival_wave: string
@@ -271,13 +271,6 @@ export type Database = {
           travel_details: string | null
           whatsapp_optin: boolean
         }
-      }
-      shuttle_wave_seats_used: {
-        Args: {
-          p_direction: string
-          p_wave: string
-        }
-        Returns: number
       }
     }
     Enums: {
