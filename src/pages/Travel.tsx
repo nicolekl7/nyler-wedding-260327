@@ -29,7 +29,6 @@ const pageContent = {
     ),
     navEvents: "EVENTS",
     navRsvp: "RSVP",
-    transition: "Once you're here, the adventure begins.",
     exploreHeading: "Explore Tuscany",
     exploreIntro: "Extending your trip? Here are our favorite highlights near the venue.",
     sections: [
@@ -75,7 +74,6 @@ const pageContent = {
     ),
     navEvents: "EVENTS",
     navRsvp: "RSVP",
-    transition: "Kiedy już tu jesteś, zaczyna się przygoda.",
     exploreHeading: "Odkryj Toskanię",
     exploreIntro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
     sections: [
@@ -387,18 +385,8 @@ const Travel = () => {
         ))}
       </div>
 
-      {/* Transition divider */}
-      <section className="w-[90%] max-w-[1000px] mx-auto px-6 md:px-12 pb-16 md:pb-24 text-center">
-        <FadeIn>
-          <div className="w-12 h-px bg-primary mx-auto mb-6" />
-          <p className="font-serif text-xl md:text-2xl italic text-foreground/80">
-            {t.transition}
-          </p>
-        </FadeIn>
-      </section>
-
       {/* Explore Tuscany */}
-      <section className="page-section w-[90%] max-w-[1400px] mx-auto">
+      <section className="w-[90%] max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 pb-24 md:pb-32">
         <FadeIn>
           <h2 className="heading-section text-center mb-4">{t.exploreHeading}</h2>
           <div className="w-12 h-px bg-primary mx-auto mb-6" />
