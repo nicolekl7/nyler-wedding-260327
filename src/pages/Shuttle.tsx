@@ -26,6 +26,7 @@ const DEPARTURE_OPTIONS: { value: Wave; label: string }[] = [
 
 const FULL_SHUTTLE_ERROR = "This shuttle is full, please choose another time.";
 const ALL_FULL_ERROR = "The shuttles are full, please reach out to Nicole and Tyler.";
+const NOT_ENOUGH_SPOTS_ERROR = "Please select an option that has enough spots for your party.";
 
 const Shuttle = () => {
   const [fullName, setFullName] = useState("");
@@ -114,6 +115,13 @@ const Shuttle = () => {
       return;
     }
 
+    const arrivalShort = (arrivalWave === "wave_1" || arrivalWave === "wave_2") && size > remaining("arrival", arrivalWave);
+    const departureShort = (departureWave === "wave_1" || departureWave === "wave_2") && size > remaining("departure", departureWave);
+    if (arrivalShort || departureShort) {
+      toast.error(NOT_ENOUGH_SPOTS_ERROR);
+      return;
+    }
+
     setSubmitting(true);
 
     const { data, error } = await supabase.rpc("book_shuttle", {
@@ -126,7 +134,7 @@ const Shuttle = () => {
     });
 
     if (error) {
-      toast.error(error.message.includes("full") ? error.message : FULL_SHUTTLE_ERROR);
+      toast.error(error.message.toLowerCase().includes("full") ? error.message : NOT_ENOUGH_SPOTS_ERROR);
       setSubmitting(false);
       loadSeatsUsed();
       return;
