@@ -12,10 +12,7 @@ const content = {
     dateLineLong: "September 17, 2026 | Rapolano Terme, Tuscany, Italy",
     welcome: (
       <>
-        We are so excited to have our friends and family join us in Tuscany for this celebration!
-        <br />
-        <br />
-        Three days of festivities await at Borgo Laticastelli, a private estate in the hills of
+        We are so excited to have our friends and family join us in Tuscany for this celebration! Three days of festivities await at Borgo Laticastelli, a private estate in the hills of
         Rapolano Terme. We'll kick things off Wednesday evening with our La Notte Bianca welcome
         party, followed by the ceremony and reception on Thursday, and a recovery day of relaxing
         activities on Friday. Visit the itinerary page for timing and attire and the travel page
@@ -30,7 +27,6 @@ const content = {
     ),
     countdown: "Countdown to Tuscany",
     days: "Days",
-    shuttleBtn: "Book Shuttle",
     itineraryBtn: "Itinerary",
     travelBtn: "Travel",
   },
@@ -40,10 +36,7 @@ const content = {
     welcome: (
       <>
         Bardzo się cieszymy, że nasi przyjaciele i rodzina dołączą do nas w Toskanii na tę
-        uroczystość!
-        <br />
-        <br />
-        Czekają nas trzy dni świętowania w Borgo Laticastelli — prywatnej posiadłości na wzgórzach
+        uroczystość! Czekają nas trzy dni świętowania w Borgo Laticastelli — prywatnej posiadłości na wzgórzach
         Rapolano Terme. Zaczynamy w środowy wieczór przyjęciem powitalnym La Notte Bianca, w
         czwartek odbędzie się ceremonia i wesele, a piątek to dzień relaksu i lżejszych aktywności.
         Na stronie planu znajdziesz godziny i dress code i na stronie podróży wszystko, czego
