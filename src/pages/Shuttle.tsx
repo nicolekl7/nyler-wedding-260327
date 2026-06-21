@@ -185,7 +185,7 @@ const Shuttle = () => {
         </FadeIn>
 
         <FadeIn delay={100}>
-          <div className="space-y-6 mb-16">
+          <div className="space-y-6 mb-16 text-center">
             <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal">
               Shuttle Service (Siena Train Station ↔ Laticastelli)
             </p>
@@ -202,17 +202,14 @@ const Shuttle = () => {
               Public transit and taxis can be tough to come by in Tuscany. If your schedule doesn't align with our
               shuttle times, we highly recommend renting a car or booking a private transfer in advance.
             </p>
-
-            <div>
-              <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal mb-2">
-                Before Laticastelli
-              </p>
-              <p className="body-editorial mx-auto text-balance max-w-none">
-                We are putting something together for anyone that will be in Florence on Tuesday night (9/15). More
-                information to come but please let us know if you'll be around or are interested. Also, if you'd
-                like to coordinate travel or meet up with other please opt into the WhatsApp group below.
-              </p>
-            </div>
+            <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal">
+              Before Laticastelli
+            </p>
+            <p className="body-editorial mx-auto text-balance max-w-none">
+              We are putting something together for anyone that will be in Florence on Tuesday night (9/15). More
+              information to come but please let us know if you'll be around or are interested. Also, if you'd
+              like to coordinate travel or meet up with other please opt into the WhatsApp group below.
+            </p>
           </div>
         </FadeIn>
 
