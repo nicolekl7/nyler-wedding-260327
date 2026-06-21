@@ -9,7 +9,7 @@ import weddingIcon from "@/assets/Wedding-4.png";
 import poolUmbrella from "@/assets/Pool-Party-Umbrella.png";
 import poolChairs from "@/assets/Pool-Party-Chairs.png";
 import poolSun from "@/assets/Pool-Party-Sun.png";
-import attireGraphic from "@/assets/Attire Graphic v2.png";
+import attireGraphic from "@/assets/attire graphic_wedding.png";
 import attireGraphicWelcomeParty from "@/assets/attire graphic welcome party.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 
