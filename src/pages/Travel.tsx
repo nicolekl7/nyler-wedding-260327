@@ -59,6 +59,7 @@ const pageContent = {
     ],
     navEvents: "ITINERARY",
     navRsvp: "RSVP",
+    reserveShuttle: "Reserve Shuttle",
     exploreHeading: "Explore Tuscany",
     exploreIntro: "Extending your trip? Here are our favorite highlights near the venue.",
   },
@@ -108,6 +109,7 @@ const pageContent = {
     ],
     navEvents: "ITINERARY",
     navRsvp: "RSVP",
+    reserveShuttle: "Zarezerwuj transfer",
     exploreHeading: "Odkryj Toskanię",
     exploreIntro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
   },
@@ -319,6 +321,14 @@ const Travel = () => {
                 <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light">
                   {s.body}
                 </p>
+                {i === 1 && (
+                  <Link
+                    to="/shuttle"
+                    className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300 self-start"
+                  >
+                    {t.reserveShuttle}
+                  </Link>
+                )}
               </div>
             </FadeIn>
           ))}
