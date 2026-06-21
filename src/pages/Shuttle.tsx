@@ -333,8 +333,8 @@ const Shuttle = () => {
 
             <div className="space-y-2">
               <Label htmlFor="travelDetails">
-                If you'd like to coordinate with other guests before or after the wedding, share your rough plans
-                here (dates, cities).
+                If you'd like to coordinate with other guests before or after the wedding, feel free to share your
+                rough plans here (dates, cities, etc.)
               </Label>
               <Textarea
                 id="travelDetails"
