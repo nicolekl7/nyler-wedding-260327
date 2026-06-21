@@ -186,40 +186,31 @@ const Shuttle = () => {
 
         <FadeIn delay={100}>
           <div className="space-y-6 mb-16">
+            <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal">
+              Shuttle Service (Siena Train Station ↔ Laticastelli)
+            </p>
             <p className="body-editorial mx-auto text-balance max-w-none">
-              Please reserve your preferred shuttle times below. Spots are available on a first-come, first-served
-              basis. Because of local venue restrictions, each shuttle has a strict capacity of 28 guests—once a time
-              slot fills up, we unfortunately cannot add extra seats.
+              We have arranged a complimentary shuttle service between the Siena train station and our venue on
+              September 16th and September 18th. It is a 25-35 minute trip.
+            </p>
+            <p className="body-editorial mx-auto text-balance max-w-none">
+              Please reserve your preferred times below. There is plenty of room for everyone across the schedule but
+              once a specific time slot fills up, we unfortunately cannot add additional seats. We highly recommend
+              checking train schedules and ticket availability before booking your shuttle.
+            </p>
+            <p className="body-editorial mx-auto text-balance max-w-none">
+              Public transit and taxis can be tough to come by in Tuscany. If your schedule doesn't align with our
+              shuttle times, we highly recommend renting a car or booking a private transfer in advance.
             </p>
 
             <div>
               <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal mb-2">
-                A Few Travel Tips:
-              </p>
-              <ul className="body-editorial mx-auto max-w-none space-y-2 list-disc pl-5">
-                <li>
-                  Trains: If you are arriving by train, we highly recommend booking your tickets in advance as
-                  popular routes sell out quickly.
-                </li>
-                <li>
-                  Car Rentals: If you plan to rent a car, we suggest booking early—automatic vehicles are limited in
-                  Italy. Driving is a gorgeous way to explore the area at your own pace!
-                </li>
-                <li>
-                  Rideshare: Please note that Uber does not operate in Tuscany and local taxis are in short supply so
-                  they typically require a wait.
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal mb-2">
-                Pre-Wedding Get-Together:
+                Before Laticastelli
               </p>
               <p className="body-editorial mx-auto text-balance max-w-none">
-                We are hosting a casual get-together in Florence on Tuesday night and everyone is welcome!
-                If you'd like to coordinate travel or meet up with other guests before the big day, opt into the
-                WhatsApp group below.
+                We are putting something together for anyone that will be in Florence on Tuesday night (9/15). More
+                information to come but please let us know if you'll be around or are interested. Also, if you'd
+                like to coordinate travel or meet up with other please opt into the WhatsApp group below.
               </p>
             </div>
           </div>
