@@ -301,30 +301,24 @@ const Travel = () => {
           <h2 className="heading-section text-center mb-4">{t.gettingThereTitle}</h2>
           <div className="w-12 h-px bg-primary mx-auto mb-16" />
         </FadeIn>
-        <div className="space-y-24 md:space-y-40">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           {t.gettingThere.map((s, i) => (
             <FadeIn key={s.label} delay={i * 100}>
-              <div
-                className={`flex flex-col ${
-                  i % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"
-                } gap-10 md:gap-20 items-center`}
-              >
-                <div className="md:w-1/2 overflow-hidden">
+              <div className="flex flex-col gap-5">
+                <div className="overflow-hidden">
                   <img
                     src={s.image}
                     alt={s.alt}
                     loading="lazy"
                     width={1024}
                     height={768}
-                    className="w-full h-72 md:h-[28rem] object-cover transition-transform duration-700 hover:scale-105"
+                    className="w-full h-48 md:h-56 object-cover transition-transform duration-700 hover:scale-105"
                   />
                 </div>
 
-                <div className="md:w-1/2 space-y-5">
-                  <p className="font-body text-sm md:text-base leading-[1.9] text-muted-foreground font-light">
-                    {s.body}
-                  </p>
-                </div>
+                <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light">
+                  {s.body}
+                </p>
               </div>
             </FadeIn>
           ))}
