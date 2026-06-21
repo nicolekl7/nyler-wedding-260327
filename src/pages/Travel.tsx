@@ -58,7 +58,7 @@ const pageContent = {
       },
     ],
     navEvents: "ITINERARY",
-    navRsvp: "RSVP",
+    navRegistry: "REGISTRY",
     reserveShuttle: "Reserve Shuttle",
     exploreHeading: "Explore Tuscany",
     exploreIntro: "Extending your trip? Here are our favorite highlights near the venue.",
@@ -108,7 +108,7 @@ const pageContent = {
       },
     ],
     navEvents: "ITINERARY",
-    navRsvp: "RSVP",
+    navRegistry: "LISTA PREZENTÓW",
     reserveShuttle: "Zarezerwuj transfer",
     exploreHeading: "Odkryj Toskanię",
     exploreIntro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
@@ -321,18 +321,20 @@ const Travel = () => {
                 <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light">
                   {s.body}
                 </p>
-                {i === 1 && (
-                  <Link
-                    to="/shuttle"
-                    className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300 self-start"
-                  >
-                    {t.reserveShuttle}
-                  </Link>
-                )}
               </div>
             </FadeIn>
           ))}
         </div>
+        <FadeIn delay={100}>
+          <div className="flex justify-center mt-10">
+            <Link
+              to="/shuttle"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+            >
+              {t.reserveShuttle}
+            </Link>
+          </div>
+        </FadeIn>
       </section>
 
       {/* Explore Tuscany */}
@@ -386,12 +388,14 @@ const Travel = () => {
             >
               {t.navEvents}
             </Link>
-            <Link
-              to="/rsvp-v2"
+            <a
+              href="https://www.zola.com/registry/nicoleandtylersregistry"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
-              {t.navRsvp}
-            </Link>
+              {t.navRegistry}
+            </a>
           </div>
         </FadeIn>
       </section>
