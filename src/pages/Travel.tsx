@@ -52,7 +52,7 @@ const pageContent = {
         alt: "Winding cypress-lined road through Tuscan hills",
         body: (
           <>
-            <strong className="text-foreground font-medium">By Car:</strong> Recommended if you're extending your trip. Watch for ZTL zones (camera-enforced restricted areas in city centers) — Waze will route around them. When in doubt, park outside the walls and walk in. You won't need a car during the 3 days on the estate.
+            <strong className="text-foreground font-medium">By Car:</strong> If you feel comfortable, we highly recommend renting a car. It's great to have due to the lack of public transportation and rideshare options in Tuscany. Be sure to book quickly as automatic cars are in high demand.
           </>
         ),
       },
@@ -102,7 +102,7 @@ const pageContent = {
         alt: "Winding cypress-lined road through Tuscan hills",
         body: (
           <>
-            <strong className="text-foreground font-medium">Samochodem:</strong> Polecane, jeśli przedłużasz pobyt. Uważaj na strefy ZTL (obszary monitorowane kamerami w centrach miast) — Waze pomoże je ominąć. W razie wątpliwości zaparkuj poza murami i wejdź pieszo. Samochód nie będzie potrzebny podczas 3 dni na terenie posiadłości.
+            <strong className="text-foreground font-medium">Samochodem:</strong> Jeśli czujesz się na siłach, zdecydowanie polecamy wynajem samochodu. Przyda się ze względu na ograniczoną komunikację publiczną i niewiele opcji rideshare w Toskanii. Zarezerwuj szybko — samochody z automatyczną skrzynią biegów cieszą się dużym zainteresowaniem.
           </>
         ),
       },
@@ -240,7 +240,7 @@ const Travel = () => {
   return (
     <Layout dark hideFooterImage>
       {/* Hero */}
-      <section className="relative page-section w-[90%] max-w-[1400px] mx-auto text-center">
+      <section className="relative page-section pb-0 w-[90%] max-w-[1400px] mx-auto text-center">
         <div
           aria-hidden
           className="hidden md:block pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 w-40 lg:w-56 aspect-square opacity-70"
@@ -282,7 +282,7 @@ const Travel = () => {
         </div>
       </section>
 
-      <section className="px-6 md:px-12 lg:px-24 pb-16 md:pb-24 w-[90%] max-w-[1400px] mx-auto">
+      <section className="px-6 md:px-12 lg:px-24 pt-10 md:pt-12 pb-16 md:pb-24 w-[90%] max-w-[1400px] mx-auto">
         <FadeIn>
           <div className="border border-border bg-stone-light/40 px-8 py-8 md:px-12 md:py-10">
             <p className="heading-sub text-primary mb-4">{t.thingsTitle}</p>
