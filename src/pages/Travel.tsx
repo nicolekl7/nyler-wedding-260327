@@ -288,7 +288,7 @@ const Travel = () => {
             <p className="heading-sub text-primary mb-4">{t.thingsTitle}</p>
             <ul className="space-y-2">
               {t.beforeYouGoItems.map((item) => (
-                <li key={item} className="font-body text-sm leading-[1.9] text-muted-foreground font-light flex gap-2">
+                <li key={item} className="font-body text-xs leading-[1.8] text-muted-foreground font-light flex gap-2">
                   <span className="text-primary">•</span>
                   <span>{item}</span>
                 </li>
