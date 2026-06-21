@@ -40,9 +40,9 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue at 2 PM and 3 PM on Wednesday, September 16th, as well as shuttles back to the train station at 10 AM and 11 AM on Saturday, September 19th. Reserve your spot{" "}
+            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Reserve your spot{" "}
             <Link to="/shuttle" className="underline underline-offset-2 hover:text-primary transition-colors">here</Link>{" "}
-            as soon as possible.
+            before July 16th.
           </>
         ),
       },
@@ -90,9 +90,9 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Organizujemy transfery z dworca w Sienie do posiadłości o 14:00 i 15:00 w środę, 16 września, oraz transfery powrotne na dworzec o 10:00 i 11:00 w sobotę, 19 września. Zarezerwuj swoje miejsce{" "}
+            <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Organizujemy transfery z dworca w Sienie do posiadłości w środę, 16 września, oraz transfery powrotne na dworzec w Sienie w sobotę, 19 września. Zarezerwuj swoje miejsce{" "}
             <Link to="/shuttle" className="underline underline-offset-2 hover:text-primary transition-colors">tutaj</Link>{" "}
-            jak najszybciej.
+            przed 16 lipca.
           </>
         ),
       },
