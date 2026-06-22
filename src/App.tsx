@@ -6,6 +6,7 @@ import CatTapRipple from "./components/CatTapRipple";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import EntryGate from "./components/EntryGate";
 import Index from "./pages/Index";
 import IndexV2 from "./pages/IndexV2";
 import HomeV2 from "./pages/HomeV2";
@@ -31,23 +32,25 @@ const App = () => (
       <CatTapRipple />
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/the-weekend" element={<TheWeekend />} />
-          <Route path="/reserve-lodging" element={<AccommodationsV2 />} />
-          <Route path="/booking-success" element={<BookingSuccess />} />
-          <Route path="/travel" element={<Travel />} />
-          <Route path="/rsvp-v2" element={<RsvpV2 />} />
-          <Route path="/local-guide" element={<Navigate to="/travel" replace />} />
-          <Route path="/our-story" element={<OurStory />} />
-          <Route path="/about-us" element={<OurStoryV2 />} />
-          <Route path="/home-v2" element={<HomeV2 />} />
-          <Route path="/home" element={<HomeV2 />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/admin/reservations" element={<AdminReservations />} />
-          <Route path="/shuttle" element={<Shuttle />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <EntryGate>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/the-weekend" element={<TheWeekend />} />
+            <Route path="/reserve-lodging" element={<AccommodationsV2 />} />
+            <Route path="/booking-success" element={<BookingSuccess />} />
+            <Route path="/travel" element={<Travel />} />
+            <Route path="/rsvp-v2" element={<RsvpV2 />} />
+            <Route path="/local-guide" element={<Navigate to="/travel" replace />} />
+            <Route path="/our-story" element={<OurStory />} />
+            <Route path="/about-us" element={<OurStoryV2 />} />
+            <Route path="/home-v2" element={<HomeV2 />} />
+            <Route path="/home" element={<HomeV2 />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/admin/reservations" element={<AdminReservations />} />
+            <Route path="/shuttle" element={<Shuttle />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </EntryGate>
       </BrowserRouter>
       <Analytics />
     </TooltipProvider>
