@@ -187,28 +187,52 @@ const Shuttle = () => {
         <FadeIn delay={100}>
           <div className="space-y-6 mb-16 text-center">
             <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal">
-              Shuttle Service (Siena Train Station ↔ Laticastelli)
+              Transportation Details
             </p>
             <p className="body-editorial mx-auto text-balance max-w-none">
-              We have arranged a complimentary shuttle service between the Siena train station and our venue on
-              September 16th and September 18th. It is a 25-35 minute trip.
+              We have arranged a complimentary shuttle service between the Siena train station and Borgo
+              Laticastelli on September 16th and September 19th. The trip takes approximately 25 to 35 minutes.
             </p>
             <p className="body-editorial mx-auto text-balance max-w-none">
-              Please reserve your preferred times below. There is plenty of room for everyone across the schedule but
-              once a specific time slot fills up, we unfortunately cannot add additional seats. We highly recommend
-              checking train schedules and ticket availability before booking your shuttle.
+              Check local train schedules and purchase your tickets before reserving a shuttle spot below. Each time
+              slot is capped by vehicle size and cannot accommodate additional guests once it is filled.
+            </p>
+            <p className="body-editorial mx-auto text-balance max-w-none font-bold">
+              Timing in Italy tends to run loose so pickups and drop-offs may shift by 15 to 30 minutes. We can't
+              guarantee exact timing so give yourself a generous buffer when booking a return shuttle for a
+              departing train.
             </p>
             <p className="body-editorial mx-auto text-balance max-w-none">
-              Public transit and taxis can be tough to come by in Tuscany. If your schedule doesn't align with our
-              shuttle times, we highly recommend renting a car or booking a private transfer in advance.
+              Public transit and taxis are hard to come by in the Tuscan countryside. If your travel window doesn't
+              line up with our shuttle times, we recommend renting a car or book a private transfer in advance.
+            </p>
+            <p className="body-editorial mx-auto text-balance max-w-none">
+              You can email{" "}
+              <a href="mailto:nicoleandtylersitalianwedding@gmail.com" className="text-primary underline">
+                nicoleandtylersitalianwedding@gmail.com
+              </a>{" "}
+              to be connected with our wedding coordinator, who can share local resources or book a private transfer
+              on your behalf.
             </p>
             <p className="body-editorial mx-auto text-balance max-w-none text-foreground font-normal">
-              Before Laticastelli
+              Pre-Event Activities
             </p>
             <p className="body-editorial mx-auto text-balance max-w-none">
-              We are putting something together for anyone that will be in Florence on Tuesday night (9/15). More
-              information to come but please let us know if you'll be around or are interested. Also, if you'd
-              like to coordinate travel or meet up with other please opt into the WhatsApp group below.
+              Arriving early? We're planning an informal gathering in Florence on Tuesday night, September 15th.
+              Details are coming, but let us know if you'll be around and want to join.
+            </p>
+            <p className="body-editorial mx-auto text-balance max-w-none">
+              To coordinate travel, share rental cars, or meet other guests before the weekend, let us know your
+              plans or join our travel WhatsApp group{" "}
+              <a
+                href="https://chat.whatsapp.com/JxILxYsQ4cHEiOPRRsvXbL"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline"
+              >
+                here
+              </a>
+              .
             </p>
           </div>
         </FadeIn>
