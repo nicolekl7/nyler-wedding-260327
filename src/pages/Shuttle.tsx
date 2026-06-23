@@ -19,8 +19,8 @@ const ARRIVAL_OPTIONS: { value: Wave; label: string }[] = [
 ];
 
 const DEPARTURE_OPTIONS: { value: Wave; label: string }[] = [
-  { value: "wave_1", label: "Wave 1 — depart Borgo 10:00 AM" },
-  { value: "wave_2", label: "Wave 2 — depart Borgo 11:00 AM" },
+  { value: "wave_1", label: "Wave 1 — depart Borgo 11:00 AM" },
+  { value: "wave_2", label: "Wave 2 — depart Borgo 12:00 PM" },
   { value: "none", label: "Not taking the departure shuttle" },
 ];
 
