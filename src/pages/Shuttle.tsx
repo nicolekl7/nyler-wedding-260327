@@ -83,10 +83,8 @@ const Shuttle = () => {
       setGuestNames((prev) => {
         const currentGuests = [...prev];
         if (currentGuests.length < size - 1) {
-          // Add empty slots if party size increased
           return [...currentGuests, ...Array(size - 1 - currentGuests.length).fill("")];
         } else {
-          // Truncate slots if party size decreased
           return currentGuests.slice(0, size - 1);
         }
       });
@@ -158,7 +156,6 @@ const Shuttle = () => {
 
     setSubmitting(true);
 
-    // Build automated text block for extra guests so database schemas don't break
     const guestListText = guestNames.length > 0 
       ? `[Additional Guests: ${guestNames.map(n => n.trim()).join(", ")}]` 
       : "";
@@ -174,7 +171,7 @@ const Shuttle = () => {
       _email: email.trim(),
     });
 
-  if (error) {
+    if (error) {
       toast.error(error.message.toLowerCase().includes("full") ? error.message : NOT_ENOUGH_SPOTS_ERROR);
       setSubmitting(false);
       loadSeatsUsed();
@@ -266,6 +263,17 @@ const Shuttle = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>
               <Input
                 id="fullName"
@@ -286,17 +294,6 @@ const Shuttle = () => {
                 />
               </div>
             ))}
-
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
 
             <div className="space-y-3">
               <Label>Arrival Shuttle (Sept 17)</Label>
