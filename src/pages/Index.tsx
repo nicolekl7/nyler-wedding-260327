@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -12,14 +11,9 @@ const content = {
     dateLineLong: "September 17, 2026 | Rapolano Terme, Tuscany, Italy",
     welcome: (
       <>
-        We are so excited to have our friends and family join us in Tuscany for this celebration! Three days of festivities await at Borgo Laticastelli, a private estate in the hills of
-        Rapolano Terme. We'll kick things off Wednesday evening with our La Notte Bianca welcome
-        party, followed by the ceremony and reception on Thursday, and a recovery day of relaxing
-        activities on Friday. Visit the itinerary page for timing and attire and the travel page
-        for everything you need to get here.
-        <br />
-        <br />
-        See you in Tuscany. Ciao!
+        There is no place more beautiful and no group of people we’d rather share it with. 
+        Thank you for deciding to make the journey to celebrate with us! Details for our 
+        wedding weekend are below. Ci vediamo in Italia!
         <br />
         <br />
         xx Tyler &amp; Nicole
@@ -27,22 +21,21 @@ const content = {
     ),
     countdown: "Countdown to Tuscany",
     days: "Days",
-    itineraryBtn: "Itinerary",
+    scheduleTitle: "The Weekend Timeline",
+    wednesday: "09.16.2026",
+    thursday: "09.17.2026",
+    friday: "09.18.2026",
+    saturday: "09.19.2026",
+    moreInfo: "*More information to follow",
   },
   pl: {
     dateLine: "17 września 2026 | Toskania, Włochy",
     dateLineLong: "17 września 2026 | Rapolano Terme, Toskania, Włochy",
     welcome: (
       <>
-        Bardzo się cieszymy, że nasi przyjaciele i rodzina dołączą do nas w Toskanii na tę
-        uroczystość! Czekają nas trzy dni świętowania w Borgo Laticastelli — prywatnej posiadłości na wzgórzach
-        Rapolano Terme. Zaczynamy w środowy wieczór przyjęciem powitalnym La Notte Bianca, w
-        czwartek odbędzie się ceremonia i wesele, a piątek to dzień relaksu i lżejszych aktywności.
-        Na stronie planu znajdziesz godziny i dress code i na stronie podróży wszystko, czego
-        potrzebujesz, aby do nas dotrzeć.
-        <br />
-        <br />
-        Do zobaczenia w Toskanii. Ciao!
+        Nie ma piękniejszego miejsca i wspanialszej grupy ludzi, z którą wolelibyśmy się nim podzielić. 
+        Dziękujemy, że zdecydowaliście się na tę podróż, aby świętować razem z nami! Szczegóły 
+        dotyczące naszego weekendu weselnego znajdują się poniżej. Ci vediamo in Italia!
         <br />
         <br />
         xx Tyler i Nicole
@@ -50,7 +43,12 @@ const content = {
     ),
     countdown: "Odliczanie dni",
     days: "Dni",
-    itineraryBtn: "Plan",
+    scheduleTitle: "Harmonogram Weekendu",
+    wednesday: "16.09.2026",
+    thursday: "17.09.2026",
+    friday: "18.09.2026",
+    saturday: "19.09.2026",
+    moreInfo: "*Więcej informacji wkrótce",
   },
 };
 
@@ -94,24 +92,152 @@ const Index = () => {
       </section>
 
       {/* Welcome */}
-      <section className="page-section pt-6 sm:pt-8 md:pt-12 w-[90%] max-w-[1200px] mx-auto text-center">
+      <section className="page-section pt-16 md:pt-24 pb-6 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
-          <p className="body-editorial mx-auto max-w-3xl text-pretty">
+          <p className="font-body text-lg md:text-xl lg:text-2xl font-light tracking-wide leading-relaxed text-foreground mx-auto max-w-3xl text-pretty">
             {t.welcome}
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/the-weekend"
-              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-            >
-              {t.itineraryBtn}
-            </Link>
-          </div>
         </FadeIn>
       </section>
 
+      {/* Timeline Section */}
+      <section className="bg-[#464320] text-[#fff7f0] py-16 md:py-24 my-12 overflow-hidden">
+        <div className="w-[90%] max-w-[1000px] mx-auto">
+          <FadeIn>
+            <h2 className="heading-section italic text-center mb-16 opacity-95">
+              {t.scheduleTitle}
+            </h2>
+          </FadeIn>
+
+          <div className="space-y-12 md:space-y-16">
+            {/* Wednesday */}
+            <FadeIn delay={50}>
+              <div className="grid md:grid-cols-3 gap-4 md:gap-8 pt-6 border-t border-[#fff7f0]/20">
+                <div className="font-body tracking-wider text-xl opacity-90">{t.wednesday}</div>
+                <div className="md:col-span-2 space-y-4 font-body text-sm tracking-wide">
+                  <div>
+                    <span className="font-medium inline-block w-24">3:00 PM</span>
+                    <span className="opacity-90">Check-in</span>
+                  </div>
+                  <div>
+                    <span className="font-medium inline-block w-24">7:30 PM</span>
+                    <span className="opacity-90">Welcome Dinner</span>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Thursday */}
+            <FadeIn delay={100}>
+              <div className="grid md:grid-cols-3 gap-4 md:gap-8 pt-6 border-t border-[#fff7f0]/20">
+                <div className="font-body tracking-wider text-xl opacity-90">{t.thursday}</div>
+                <div className="md:col-span-2 space-y-4 font-body text-sm tracking-wide">
+                  <div>
+                    <span className="font-medium inline-block w-24">8:00 AM</span>
+                    <span className="opacity-90">Breakfast (until 10:00 AM)</span>
+                  </div>
+                  <div>
+                    <span className="font-medium inline-block w-24">5:00 PM</span>
+                    <span className="opacity-90">Ceremony</span>
+                  </div>
+                  <div>
+                    <span className="font-medium inline-block w-24">5:30 PM</span>
+                    <span className="opacity-90">Cocktail Hour</span>
+                  </div>
+                  <div>
+                    <span className="font-medium inline-block w-24">7:30 PM</span>
+                    <span className="opacity-90">Dinner</span>
+                  </div>
+                  <div>
+                    <span className="font-medium inline-block w-24">10:00 PM</span>
+                    <span className="opacity-90">Dancing</span>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Friday */}
+            <FadeIn delay={150}>
+              <div className="grid md:grid-cols-3 gap-4 md:gap-8 pt-6 border-t border-[#fff7f0]/20">
+                <div className="font-body tracking-wider text-xl opacity-90">{t.friday}</div>
+                <div className="md:col-span-2 space-y-6 font-body text-sm tracking-wide">
+                  <div>
+                    <span className="font-medium inline-block w-24">9:00 AM</span>
+                    <span className="opacity-90">Breakfast (until 11:00 AM)</span>
+                  </div>
+
+                  {/* Option 1 */}
+                  <div className="border-l-2 border-[#fff7f0]/30 pl-4 space-y-3">
+                    <h4 className="italic text-base text-[#fff7f0]">
+                      {language === "en" ? "Option #1: The Borgo Pool Party" : "Opcja #1: Pool Party w Borgo"}
+                    </h4>
+                    <p className="text-xs opacity-75 max-w-xl leading-relaxed">
+                      {language === "en" 
+                        ? "A lively afternoon of sun, music, and an open spritz bar by the main pool for those looking to stay on-site and keep the energy high."
+                        : "Tętniące życiem popołudnie przy głównym basenie z muzyką i otwartym barem z drinkami."}
+                    </p>
+                    <div className="text-xs space-y-2 pt-1 border-t border-[#fff7f0]/10 mt-2">
+                      <div>
+                        <span className="font-medium inline-block w-20">1:00 PM</span>
+                        <span className="opacity-90">Spritz Pool Party &amp; Lounge</span>
+                      </div>
+                      <div>
+                        <span className="font-medium inline-block w-20">7:00 PM</span>
+                        <span className="opacity-90">{language === "en" ? "Shuttle pick up for Rapolano Terme dinner" : "Transfer na kolację w Rapolano Terme"}</span>
+                      </div>
+                      <div>
+                        <span className="font-medium inline-block w-20">7:30 PM</span>
+                        <span className="opacity-90">{language === "en" ? "Dinner in Rapolano Terme" : "Kolacja w Rapolano Terme"}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Option 2 */}
+                  <div className="border-l-2 border-[#fff7f0]/30 pl-4 space-y-3">
+                    <h4 className="italic text-base text-[#fff7f0]">
+                      {language === "en" ? "Option #2: Siena & Winery Excursion" : "Opcja #2: Wycieczka do Sieny i Winnicy"}
+                    </h4>
+                    <p className="text-xs opacity-75 max-w-xl leading-relaxed">
+                      {language === "en"
+                        ? "Grazyna and Waldemar Landmesser welcome family and friends to join them on a trip to explore Tuscany. A beautiful, curated daytime tour exploring historic Siena followed by a scenic wine tasting lunch in the Tuscan hills. More information to follow."
+                        : "Grażyna i Waldemar Landmesser zapraszają rodzinę i przyjaciół do wspólnego odkrywania Toskanii. Piękna, zorganizowana wycieczka po zabytkowej Sienie, a następnie obiad z degustacją wina wśród toskańskich wzgórz. Więcej informacji wkrótce."}
+                    </p>
+                    <div className="text-xs pt-1 border-t border-[#fff7f0]/10 mt-2">
+                      <span className="font-medium inline-block w-20">12:00 PM</span>
+                      <span className="opacity-90">Shuttle pick up from Borgo</span>
+                    </div>
+                  </div>
+
+                  {/* Note at the bottom of Friday's stack */}
+                  <div className="text-xs italic opacity-65 pt-2">
+                    {t.moreInfo}
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Saturday */}
+            <FadeIn delay={200}>
+              <div className="grid md:grid-cols-3 gap-4 md:gap-8 pt-6 pb-6 border-t border-b border-[#fff7f0]/20">
+                <div className="font-body tracking-wider text-xl opacity-90">{t.saturday}</div>
+                <div className="md:col-span-2 space-y-4 font-body text-sm tracking-wide">
+                  <div>
+                    <span className="font-medium inline-block w-24">8:00 AM</span>
+                    <span className="opacity-90">Breakfast (until 10:00 AM)</span>
+                  </div>
+                  <div>
+                    <span className="font-medium inline-block w-24">12:00 PM</span>
+                    <span className="opacity-90">Check out &amp; Arrivederci</span>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
       {/* Countdown — days only */}
-      <section className="page-section pt-0 pb-0 mt-8 sm:mt-2 w-[90%] max-w-[1200px] mx-auto text-center">
+      <section className="page-section pt-4 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
           <p className="heading-sub mb-3">{t.countdown}</p>
           <span className="font-serif text-5xl sm:text-6xl md:text-8xl font-light text-foreground">
