@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 
 const CAPACITY = 28;
+const MAX_PARTY_SIZE = 6;
 
 type Wave = "wave_1" | "wave_2" | "none";
 
@@ -29,9 +30,10 @@ const ALL_FULL_ERROR = "The shuttles are full, please reach out to Nicole and Ty
 const NOT_ENOUGH_SPOTS_ERROR = "Please select an option that has enough spots for your party.";
 
 const Shuttle = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
   const [partySize, setPartySize] = useState("1");
+  const [fullName, setFullName] = useState("");
+  const [guestNames, setGuestNames] = useState<string[]>([]);
+  const [email, setEmail] = useState("");
   const [arrivalWave, setArrivalWave] = useState<Wave | "">("");
   const [departureWave, setDepartureWave] = useState<Wave | "">("");
   const [whatsappOptin, setWhatsappOptin] = useState<"yes" | "no" | "">("");
@@ -73,6 +75,34 @@ const Shuttle = () => {
     };
   }, []);
 
+  const handlePartySizeChange = (value: string) => {
+    setPartySize(value);
+    const size = parseInt(value, 10);
+    
+    if (!isNaN(size) && size >= 1 && size <= MAX_PARTY_SIZE) {
+      setGuestNames((prev) => {
+        const currentGuests = [...prev];
+        if (currentGuests.length < size - 1) {
+          // Add empty slots if party size increased
+          return [...currentGuests, ...Array(size - 1 - currentGuests.length).fill("")];
+        } else {
+          // Truncate slots if party size decreased
+          return currentGuests.slice(0, size - 1);
+        }
+      });
+    } else if (value === "") {
+      setGuestNames([]);
+    }
+  };
+
+  const handleGuestNameChange = (index: number, value: string) => {
+    setGuestNames((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+  };
+
   const remaining = (direction: "arrival" | "departure", wave: "wave_1" | "wave_2") =>
     Math.max(0, CAPACITY - (seatsUsed[`${direction}_${wave}`] ?? 0));
 
@@ -107,14 +137,15 @@ const Shuttle = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!fullName.trim() || !email.trim() || !arrivalWave || !departureWave || !whatsappOptin) {
-      toast.error("Please fill out all required fields.");
+    const size = Number(partySize);
+    if (!Number.isFinite(size) || size < 1 || size > MAX_PARTY_SIZE) {
+      toast.error(`Party size must be between 1 and ${MAX_PARTY_SIZE}.`);
       return;
     }
 
-    const size = Number(partySize);
-    if (!Number.isFinite(size) || size < 1) {
-      toast.error("Party size must be at least 1.");
+    const hasEmptyGuestNames = guestNames.some((name) => !name.trim());
+    if (!fullName.trim() || !email.trim() || !arrivalWave || !departureWave || !whatsappOptin || hasEmptyGuestNames) {
+      toast.error("Please fill out all required fields.");
       return;
     }
 
@@ -127,17 +158,23 @@ const Shuttle = () => {
 
     setSubmitting(true);
 
+    // Build automated text block for extra guests so database schemas don't break
+    const guestListText = guestNames.length > 0 
+      ? `[Additional Guests: ${guestNames.map(n => n.trim()).join(", ")}]` 
+      : "";
+    const combinedTravelDetails = `${guestListText} ${travelDetails.trim()}`.trim();
+
     const { data, error } = await supabase.rpc("book_shuttle", {
       _full_name: fullName.trim(),
       _party_size: size,
       _arrival_wave: arrivalWave,
       _departure_wave: departureWave,
       _whatsapp_optin: whatsappOptin === "yes",
-      _travel_details: travelDetails.trim() || null,
+      _travel_details: combinedTravelDetails || null,
       _email: email.trim(),
     });
 
-    if (error) {
+  if (error) {
       toast.error(error.message.toLowerCase().includes("full") ? error.message : NOT_ENOUGH_SPOTS_ERROR);
       setSubmitting(false);
       loadSeatsUsed();
@@ -151,7 +188,7 @@ const Shuttle = () => {
       arrivalWave: arrivalWave as Wave,
       departureWave: departureWave as Wave,
       whatsappOptin: whatsappOptin === "yes",
-      travelDetails: travelDetails.trim(),
+      travelDetails: combinedTravelDetails,
     });
 
     setSubmitting(false);
@@ -216,6 +253,19 @@ const Shuttle = () => {
         <FadeIn delay={150}>
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-2">
+              <Label htmlFor="partySize">Party Size</Label>
+              <Input
+                id="partySize"
+                type="number"
+                min={1}
+                max={MAX_PARTY_SIZE}
+                value={partySize}
+                onChange={(e) => handlePartySizeChange(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="fullName">Full Name</Label>
               <Input
                 id="fullName"
@@ -225,6 +275,18 @@ const Shuttle = () => {
               />
             </div>
 
+            {guestNames.map((name, index) => (
+              <div key={index} className="space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                <Label htmlFor={`guestName-${index}`}>Guest {index + 2} Full Name</Label>
+                <Input
+                  id={`guestName-${index}`}
+                  value={name}
+                  onChange={(e) => handleGuestNameChange(index, e.target.value)}
+                  required
+                />
+              </div>
+            ))}
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -232,18 +294,6 @@ const Shuttle = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="partySize">Party Size</Label>
-              <Input
-                id="partySize"
-                type="number"
-                min={1}
-                value={partySize}
-                onChange={(e) => setPartySize(e.target.value)}
                 required
               />
             </div>
