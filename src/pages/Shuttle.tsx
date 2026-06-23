@@ -311,86 +311,119 @@ const Shuttle = () => {
               </div>
             ))}
 
+            {/* Arrival Shuttle Buttons */}
             <div className="space-y-3">
-              <Label>Arrival Shuttle (Sept 17)</Label>
+              <Label className="text-base">Arrival Shuttle (Sept 17)</Label>
               {arrivalFull && (
                 <p className="text-sm text-destructive">{ALL_FULL_ERROR}</p>
               )}
               <RadioGroup
                 value={arrivalWave}
                 onValueChange={(v) => setArrivalWave(v as Wave)}
+                className="grid gap-3"
               >
                 {ARRIVAL_OPTIONS.map((opt) => {
                   const isWave = opt.value === "wave_1" || opt.value === "wave_2";
                   const left = isWave ? remaining("arrival", opt.value) : null;
                   const disabled = isWave && left === 0;
+                  const isSelected = arrivalWave === opt.value;
+
                   return (
-                    <div key={opt.value} className="flex items-center space-x-2">
-                      <RadioGroupItem value={opt.value} id={`arrival-${opt.value}`} disabled={disabled} />
-                      <Label htmlFor={`arrival-${opt.value}`} className="font-normal cursor-pointer">
-                        {opt.label}
-                        {isWave && (
-                          <span className="text-muted-foreground ml-2">
-                            {disabled ? "(Full)" : `(${left} seats left)`}
-                          </span>
-                        )}
-                      </Label>
-                    </div>
+                    <label
+                      key={opt.value}
+                      htmlFor={`arrival-${opt.value}`}
+                      className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-md cursor-pointer transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/[0.03] ring-1 ring-primary"
+                          : "border-input bg-background hover:bg-muted/50"
+                      } ${disabled ? "opacity-40 cursor-not-allowed hover:bg-background" : ""}`}
+                    >
+                      <RadioGroupItem value={opt.value} id={`arrival-${opt.value}`} disabled={disabled} className="sr-only" />
+                      <span className="font-body text-sm font-medium text-foreground">{opt.label}</span>
+                      {isWave && (
+                        <span className={`text-xs uppercase tracking-wider mt-1 sm:mt-0 ${disabled ? "text-destructive font-semibold" : "text-muted-foreground"}`}>
+                          {disabled ? "Full" : `${left} spots left`}
+                        </span>
+                      )}
+                    </label>
                   );
                 })}
               </RadioGroup>
             </div>
 
+            {/* Departure Shuttle Buttons */}
             <div className="space-y-3">
-              <Label>Departure Shuttle (Sept 19)</Label>
+              <Label className="text-base">Departure Shuttle (Sept 19)</Label>
               {departureFull && (
                 <p className="text-sm text-destructive">{ALL_FULL_ERROR}</p>
               )}
               <RadioGroup
                 value={departureWave}
                 onValueChange={(v) => setDepartureWave(v as Wave)}
+                className="grid gap-3"
               >
                 {DEPARTURE_OPTIONS.map((opt) => {
                   const isWave = opt.value === "wave_1" || opt.value === "wave_2";
                   const left = isWave ? remaining("departure", opt.value) : null;
                   const disabled = isWave && left === 0;
+                  const isSelected = departureWave === opt.value;
+
                   return (
-                    <div key={opt.value} className="flex items-center space-x-2">
-                      <RadioGroupItem value={opt.value} id={`departure-${opt.value}`} disabled={disabled} />
-                      <Label htmlFor={`departure-${opt.value}`} className="font-normal cursor-pointer">
-                        {opt.label}
-                        {isWave && (
-                          <span className="text-muted-foreground ml-2">
-                            {disabled ? "(Full)" : `(${left} seats left)`}
-                          </span>
-                        )}
-                      </Label>
-                    </div>
+                    <label
+                      key={opt.value}
+                      htmlFor={`departure-${opt.value}`}
+                      className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-md cursor-pointer transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/[0.03] ring-1 ring-primary"
+                          : "border-input bg-background hover:bg-muted/50"
+                      } ${disabled ? "opacity-40 cursor-not-allowed hover:bg-background" : ""}`}
+                    >
+                      <RadioGroupItem value={opt.value} id={`departure-${opt.value}`} disabled={disabled} className="sr-only" />
+                      <span className="font-body text-sm font-medium text-foreground">{opt.label}</span>
+                      {isWave && (
+                        <span className={`text-xs uppercase tracking-wider mt-1 sm:mt-0 ${disabled ? "text-destructive font-semibold" : "text-muted-foreground"}`}>
+                          {disabled ? "Full" : `${left} spots left`}
+                        </span>
+                      )}
+                    </label>
                   );
                 })}
               </RadioGroup>
             </div>
 
+            {/* WhatsApp Opt-in Buttons */}
             <div className="space-y-3">
-              <Label>
+              <Label className="text-base">
                 Would you like to be added to our WhatsApp group for guest communications during the trip?
               </Label>
               <RadioGroup
                 value={whatsappOptin}
                 onValueChange={(v) => setWhatsappOptin(v as "yes" | "no")}
+                className="grid grid-cols-2 gap-3"
               >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="yes" id="whatsapp-yes" />
-                  <Label htmlFor="whatsapp-yes" className="font-normal cursor-pointer">
-                    Yes
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="no" id="whatsapp-no" />
-                  <Label htmlFor="whatsapp-no" className="font-normal cursor-pointer">
-                    No
-                  </Label>
-                </div>
+                <label
+                  htmlFor="whatsapp-yes"
+                  className={`flex items-center justify-center p-4 border rounded-md cursor-pointer transition-all text-center font-body text-sm font-medium ${
+                    whatsappOptin === "yes"
+                      ? "border-primary bg-primary/[0.03] ring-1 ring-primary"
+                      : "border-input bg-background hover:bg-muted/50"
+                  }`}
+                >
+                  <RadioGroupItem value="yes" id="whatsapp-yes" className="sr-only" />
+                  Yes
+                </label>
+                
+                <label
+                  htmlFor="whatsapp-no"
+                  className={`flex items-center justify-center p-4 border rounded-md cursor-pointer transition-all text-center font-body text-sm font-medium ${
+                    whatsappOptin === "no"
+                      ? "border-primary bg-primary/[0.03] ring-1 ring-primary"
+                      : "border-input bg-background hover:bg-muted/50"
+                  }`}
+                >
+                  <RadioGroupItem value="no" id="whatsapp-no" className="sr-only" />
+                  No
+                </label>
               </RadioGroup>
             </div>
 
