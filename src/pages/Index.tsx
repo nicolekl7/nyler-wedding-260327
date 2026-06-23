@@ -102,6 +102,10 @@ const Index = () => {
             {t.welcome}
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/shuttle"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+            >
               {t.shuttleBtn}
             </Link>
             <Link
