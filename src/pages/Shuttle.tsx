@@ -161,7 +161,6 @@ const Shuttle = () => {
       : "";
     const combinedTravelDetails = `${guestListText} ${travelDetails.trim()}`.trim();
 
-    // 1. Save to Supabase (keeps group reservation atomic for seat counts)
     const { data, error } = await supabase.rpc("book_shuttle", {
       _full_name: fullName.trim(),
       _party_size: size,
@@ -179,7 +178,7 @@ const Shuttle = () => {
       return;
     }
 
-    // 2. Sync Primary Guest as an individual line to Google Sheets
+    // Sync Primary Guest to Google Sheets
     syncToSheet({
       fullName: fullName.trim(),
       email: email.trim(),
@@ -190,7 +189,7 @@ const Shuttle = () => {
       travelDetails: travelDetails.trim(),
     });
 
-    // 3. Sync each Additional Guest as their own separate line to Google Sheets
+    // Sync Additional Guests to Google Sheets
     guestNames.forEach((name) => {
       if (name.trim()) {
         syncToSheet({
@@ -285,4 +284,142 @@ const Shuttle = () => {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Full Name</Label>
+              <Input
+                id="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
+
+            {guestNames.map((name, index) => (
+              <div key={index} className="space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                <Label htmlFor={`guestName-${index}`}>Guest {index + 2} Full Name</Label>
+                <Input
+                  id={`guestName-${index}`}
+                  value={name}
+                  onChange={(e) => handleGuestNameChange(index, e.target.value)}
+                  required
+                />
+              </div>
+            ))}
+
+            <div className="space-y-3">
+              <Label>Arrival Shuttle (Sept 17)</Label>
+              {arrivalFull && (
+                <p className="text-sm text-destructive">{ALL_FULL_ERROR}</p>
+              )}
+              <RadioGroup
+                value={arrivalWave}
+                onValueChange={(v) => setArrivalWave(v as Wave)}
+              >
+                {ARRIVAL_OPTIONS.map((opt) => {
+                  const isWave = opt.value === "wave_1" || opt.value === "wave_2";
+                  const left = isWave ? remaining("arrival", opt.value) : null;
+                  const disabled = isWave && left === 0;
+                  return (
+                    <div key={opt.value} className="flex items-center space-x-2">
+                      <RadioGroupItem value={opt.value} id={`arrival-${opt.value}`} disabled={disabled} />
+                      <Label htmlFor={`arrival-${opt.value}`} className="font-normal cursor-pointer">
+                        {opt.label}
+                        {isWave && (
+                          <span className="text-muted-foreground ml-2">
+                            {disabled ? "(Full)" : `(${left} seats left)`}
+                          </span>
+                        )}
+                      </Label>
+                    </div>
+                  );
+                })}
+              </RadioGroup>
+            </div>
+
+            <div className="space-y-3">
+              <Label>Departure Shuttle (Sept 19)</Label>
+              {departureFull && (
+                <p className="text-sm text-destructive">{ALL_FULL_ERROR}</p>
+              )}
+              <RadioGroup
+                value={departureWave}
+                onValueChange={(v) => setDepartureWave(v as Wave)}
+              >
+                {DEPARTURE_OPTIONS.map((opt) => {
+                  const isWave = opt.value === "wave_1" || opt.value === "wave_2";
+                  const left = isWave ? remaining("departure", opt.value) : null;
+                  const disabled = isWave && left === 0;
+                  return (
+                    <div key={opt.value} className="flex items-center space-x-2">
+                      <RadioGroupItem value={opt.value} id={`departure-${opt.value}`} disabled={disabled} />
+                      <Label htmlFor={`departure-${opt.value}`} className="font-normal cursor-pointer">
+                        {opt.label}
+                        {isWave && (
+                          <span className="text-muted-foreground ml-2">
+                            {disabled ? "(Full)" : `(${left} seats left)`}
+                          </span>
+                        )}
+                      </Label>
+                    </div>
+                  );
+                })}
+              </RadioGroup>
+            </div>
+
+            <div className="space-y-3">
+              <Label>
+                Would you like to be added to our WhatsApp group for guest communications during the trip?
+              </Label>
+              <RadioGroup
+                value={whatsappOptin}
+                onValueChange={(v) => setWhatsappOptin(v as "yes" | "no")}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="yes" id="whatsapp-yes" />
+                  <Label htmlFor="whatsapp-yes" className="font-normal cursor-pointer">
+                    Yes
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="no" id="whatsapp-no" />
+                  <Label htmlFor="whatsapp-no" className="font-normal cursor-pointer">
+                    No
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="travelDetails">
+                If you'd like to coordinate with other guests before or after the wedding, feel free to share your
+                rough plans here (dates, cities, etc.)
+              </Label>
+              <Textarea
+                id="travelDetails"
+                value={travelDetails}
+                onChange={(e) => setTravelDetails(e.target.value)}
+              />
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-50"
+              >
+                {submitting ? "Submitting..." : "Submit"}
+              </button>
+            </div>
+          </form>
+        </FadeIn>
+      </section>
+    </Layout>
+  );
+};
+
+export default Shuttle;
