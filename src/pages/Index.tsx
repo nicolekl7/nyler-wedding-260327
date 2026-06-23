@@ -28,7 +28,6 @@ const content = {
     countdown: "Countdown to Tuscany",
     days: "Days",
     itineraryBtn: "Itinerary",
-    travelBtn: "Travel",
   },
   pl: {
     dateLine: "17 września 2026 | Toskania, Włochy",
@@ -52,7 +51,6 @@ const content = {
     countdown: "Odliczanie dni",
     days: "Dni",
     itineraryBtn: "Plan",
-    travelBtn: "Podróż",
   },
 };
 
@@ -103,22 +101,10 @@ const Index = () => {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/shuttle"
-              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-            >
-              {t.shuttleBtn}
-            </Link>
-            <Link
               to="/the-weekend"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
               {t.itineraryBtn}
-            </Link>
-            <Link
-              to="/travel"
-              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-foreground rounded-full px-8 py-3 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-            >
-              {t.travelBtn}
             </Link>
           </div>
         </FadeIn>
