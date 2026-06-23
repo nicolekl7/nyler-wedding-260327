@@ -96,7 +96,7 @@ const Index = () => {
       {/* Welcome */}
       <section className="page-section pt-6 sm:pt-8 md:pt-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
-          <p className="body-editorial mx-auto text-balance">
+          <p className="body-editorial mx-auto max-w-3xl text-pretty">
             {t.welcome}
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
