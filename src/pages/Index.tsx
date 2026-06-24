@@ -9,16 +9,8 @@ const content = {
   en: {
     dateLine: "September 17, 2026 | Tuscany, Italy",
     dateLineLong: "September 17, 2026 | Rapolano Terme, Tuscany, Italy",
-    welcome: (
-      <>
-        There is no place more beautiful and no group of people we’d rather share it with.
-        Thank you for deciding to make the journey to celebrate with us! Details for our
-        wedding weekend are below. Ci vediamo in Italia!
-        <br />
-        <br />
-        xx Tyler &amp; Nicole
-      </>
-    ),
+    welcome: "There is no place more beautiful and no group of people we’d rather share it with. Thank you for deciding to make the journey to celebrate with us! Details for our wedding weekend are below. Ci vediamo in Italia!",
+    signature: "xx Tyler & Nicole",
     countdown: "Countdown to Tuscany",
     days: "Days",
     scheduleTitle: "The Weekend Timeline",
@@ -31,16 +23,8 @@ const content = {
   pl: {
     dateLine: "17 września 2026 | Toskania, Włochy",
     dateLineLong: "17 września 2026 | Rapolano Terme, Toskania, Włochy",
-    welcome: (
-      <>
-        Nie ma piękniejszego miejsca i wspanialszej grupy ludzi, z którą wolelibyśmy się nim podzielić. 
-        Dziękujemy, że zdecydowaliście się na tę podróż, aby świętować razem z nami! Szczegóły 
-        dotyczące naszego weekendu weselnego znajdują się poniżej. Ci vediamo in Italia!
-        <br />
-        <br />
-        xx Tyler i Nicole
-      </>
-    ),
+    welcome: "Nie ma piękniejszego miejsca i wspanialszej grupy ludzi, z którą wolelibyśmy się nim podzielić. Dziękujemy, że zdecydowaliście się na tę podróż, aby świętować razem z nami! Szczegóły dotyczące naszego weekendu weselnego znajdują się poniżej. Ci vediamo in Italia!",
+    signature: "xx Tyler i Nicole",
     countdown: "Odliczanie dni",
     days: "Dni",
     scheduleTitle: "Harmonogram Weekendu",
@@ -94,8 +78,12 @@ const Index = () => {
       {/* Welcome */}
       <section className="page-section pt-16 md:pt-24 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
-          <p className="font-body text-lg md:text-xl lg:text-2xl font-light tracking-wide leading-relaxed text-foreground mx-auto max-w-3xl text-pretty">
+          <div className="w-12 h-px bg-primary mx-auto mb-8" />
+          <p className="font-serif italic text-xl md:text-2xl lg:text-3xl font-light tracking-wide leading-relaxed text-foreground mx-auto max-w-2xl text-pretty">
             {t.welcome}
+          </p>
+          <p className="font-body text-sm tracking-[0.2em] uppercase text-muted-foreground mt-8">
+            {t.signature}
           </p>
         </FadeIn>
       </section>
