@@ -92,7 +92,7 @@ const Index = () => {
       </section>
 
       {/* Welcome */}
-      <section className="page-section pt-16 md:pt-24 pb-6 w-[90%] max-w-[1200px] mx-auto text-center">
+      <section className="page-section pt-16 md:pt-24 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
           <p className="font-body text-lg md:text-xl lg:text-2xl font-light tracking-wide leading-relaxed text-foreground mx-auto max-w-3xl text-pretty">
             {t.welcome}
@@ -101,7 +101,7 @@ const Index = () => {
       </section>
 
       {/* Timeline Section */}
-      <section className="bg-[#464320] text-[#fff7f0] py-16 md:py-24 my-12 overflow-hidden">
+      <section className="bg-[#464320] text-[#fff7f0] py-16 md:py-24 overflow-hidden">
         <div className="w-[90%] max-w-[1000px] mx-auto">
           <FadeIn>
             <h2 className="heading-section italic text-center mb-16 opacity-95">
@@ -172,7 +172,7 @@ const Index = () => {
                       {language === "en" ? "Option #1: The Borgo Pool Party" : "Opcja #1: Pool Party w Borgo"}
                     </h4>
                     <p className="text-xs opacity-75 max-w-xl leading-relaxed">
-                      {language === "en" 
+                      {language === "en"
                         ? "A lively afternoon of sun, music, and an open spritz bar by the main pool for those looking to stay on-site and keep the energy high."
                         : "Tętniące życiem popołudnie przy głównym basenie z muzyką i otwartym barem z drinkami."}
                     </p>
@@ -237,7 +237,7 @@ const Index = () => {
       </section>
 
       {/* Countdown — days only */}
-      <section className="page-section pt-4 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
+      <section className="page-section pt-16 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
           <p className="heading-sub mb-3">{t.countdown}</p>
           <span className="font-serif text-5xl sm:text-6xl md:text-8xl font-light text-foreground">
