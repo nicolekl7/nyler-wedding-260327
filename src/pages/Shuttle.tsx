@@ -75,7 +75,7 @@ function ShuttleOptionCard({
       disabled={disabled}
       className={`flex items-center justify-between w-full p-4 border rounded-md text-left transition-all ${
         selected
-          ? "border-green-400 bg-green-400 text-white"
+          ? "border-sage bg-sage text-white"
           : "border-input bg-background hover:bg-muted/50"
       } ${disabled ? "opacity-40 cursor-not-allowed hover:bg-background" : "cursor-pointer"}`}
     >
@@ -119,7 +119,7 @@ function PillOption({
       onClick={onSelect}
       className={`px-4 py-2.5 border rounded-md font-body text-sm transition-all ${
         selected
-          ? "border-green-400 bg-green-400 text-white font-medium"
+          ? "border-sage bg-sage text-white font-medium"
           : "border-input bg-background hover:bg-muted/50"
       }`}
     >
@@ -384,7 +384,7 @@ const Shuttle = () => {
                       onClick={() => handlePartySizeChange(n)}
                       className={`w-11 h-11 flex items-center justify-center rounded-md border font-body text-base transition-all ${
                         partySize === n
-                          ? "border-green-400 bg-green-400 text-white font-medium"
+                          ? "border-sage bg-sage text-white font-medium"
                           : "border-input bg-background hover:bg-muted/50"
                       }`}
                     >
