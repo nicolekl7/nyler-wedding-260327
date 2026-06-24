@@ -552,6 +552,17 @@ const Shuttle = () => {
                 Arriving early? We're planning an informal gathering in Florence on Tuesday night, September 15th.
                 Details are coming, but let us know if you'll be around and want to join.
               </p>
+              <p className="font-body text-sm text-muted-foreground">
+                To stay in the loop and connected before and during the Italy trip, join our travel WhatsApp group.
+              </p>
+              <a
+                href={WHATSAPP_GROUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-sage text-white font-body text-sm font-semibold rounded-md hover:opacity-90 transition-opacity"
+              >
+                Join the WhatsApp Group
+              </a>
               <div className="space-y-2 pt-1">
                 <Label>Will you be in Florence on September 15th?</Label>
                 <div className="flex flex-wrap gap-2.5">
@@ -577,18 +588,6 @@ const Shuttle = () => {
                 placeholder="Share your rough plans to help coordinate with other guests"
                 rows={4}
               />
-              <p className="font-body text-sm text-muted-foreground">
-                To coordinate travel, share rental cars, or meet other guests before the weekend, join our travel
-                WhatsApp group.
-              </p>
-              <a
-                href={WHATSAPP_GROUP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-sage text-white font-body text-sm font-semibold rounded-md hover:opacity-90 transition-opacity"
-              >
-                Join the WhatsApp Group
-              </a>
             </div>
 
             <div className="flex justify-center">
