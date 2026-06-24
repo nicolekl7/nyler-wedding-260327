@@ -352,10 +352,7 @@ const Shuttle = () => {
       <section className="page-section w-[90%] max-w-[900px] mx-auto">
         <FadeIn>
           <h1 className="heading-section text-center mb-4">Confirm Your Travel</h1>
-          <div className="w-12 h-px bg-primary mx-auto mb-6" />
-          <p className="body-editorial mx-auto text-balance max-w-none text-center mb-12">
-            Fill this out whether or not you're taking the shuttle so we can plan accordingly.
-          </p>
+          <div className="w-12 h-px bg-primary mx-auto mb-12" />
         </FadeIn>
 
         <FadeIn delay={100}>
@@ -582,16 +579,16 @@ const Shuttle = () => {
               />
               <p className="font-body text-sm text-muted-foreground">
                 To coordinate travel, share rental cars, or meet other guests before the weekend, join our travel
-                WhatsApp group:{" "}
-                <a
-                  href={WHATSAPP_GROUP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary underline font-medium"
-                >
-                  Join WhatsApp Group
-                </a>
+                WhatsApp group.
               </p>
+              <a
+                href={WHATSAPP_GROUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-sage text-white font-body text-sm font-semibold rounded-md hover:opacity-90 transition-opacity"
+              >
+                Join the WhatsApp Group
+              </a>
             </div>
 
             <div className="flex justify-center">
