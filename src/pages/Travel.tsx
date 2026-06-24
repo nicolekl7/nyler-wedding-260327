@@ -22,7 +22,6 @@ const pageContent = {
       "Renting a car? Get an International Driver's Permit through AAA (~$20)",
       "Pack Type C or Type L travel adapters",
     ],
-    gettingThereTitle: "Getting There",
     gettingThere: [
       {
         label: "By Air",
@@ -72,7 +71,6 @@ const pageContent = {
       "Wynajmujesz samochód? Zdobądź Międzynarodowe Prawo Jazdy przez AAA (~20 USD)",
       "Zapakuj adaptery podróżne typu C lub L",
     ],
-    gettingThereTitle: "Jak dojechać",
     gettingThere: [
       {
         label: "Samolotem",
@@ -299,11 +297,7 @@ const Travel = () => {
       </section>
 
       <section className="px-6 md:px-12 lg:px-24 pb-16 md:pb-32 w-[90%] max-w-[1400px] mx-auto">
-        <FadeIn>
-          <h2 className="heading-section text-center mb-4">{t.gettingThereTitle}</h2>
-          <div className="w-12 h-px bg-primary mx-auto mb-16" />
-        </FadeIn>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 pt-16 md:pt-24">
           {t.gettingThere.map((s, i) => (
             <FadeIn key={s.label} delay={i * 100}>
               <div className="flex flex-col gap-5">
