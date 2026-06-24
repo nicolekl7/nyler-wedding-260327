@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import logo from "@/assets/T&N Logo Web.png";
 
 const navLabels = {
   en: {
@@ -41,8 +42,8 @@ const Navigation = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border/50" style={{ WebkitTransform: 'translateZ(0)' }}>
       <div className="flex items-center justify-between px-6 md:px-12 py-4">
-        <Link to="/" className="font-serif text-lg tracking-wide text-foreground">
-          N &amp; T
+        <Link to="/" className="flex items-center">
+          <img src={logo} alt="Tyler &amp; Nicole" className="h-8 md:h-10 w-auto object-contain" />
         </Link>
 
         {/* Desktop */}
