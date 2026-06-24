@@ -363,6 +363,10 @@ const Shuttle = () => {
 
             <div className="space-y-2">
               <Label htmlFor="passport-0">Passport Photo or Scan (optional)</Label>
+              <p className="font-body text-sm text-muted-foreground">
+                Properties in Italy require passport copies for guests prior to arrival. To expedite check-in,
+                please upload them here or send them directly to Nicole or Tyler.
+              </p>
               <Input
                 id="passport-0"
                 type="file"
@@ -413,14 +417,14 @@ const Shuttle = () => {
                       htmlFor={`arrival-${opt.value}`}
                       className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-md cursor-pointer transition-all ${
                         isSelected
-                          ? "border-primary bg-primary/[0.03] ring-1 ring-primary"
+                          ? "border-green-400 bg-green-400 text-white"
                           : "border-input bg-background hover:bg-muted/50"
                       } ${disabled ? "opacity-40 cursor-not-allowed hover:bg-background" : ""}`}
                     >
                       <RadioGroupItem value={opt.value} id={`arrival-${opt.value}`} disabled={disabled} className="sr-only" />
-                      <span className="font-body text-sm font-medium text-foreground">{opt.label}</span>
+                      <span className={`font-body text-sm font-medium ${isSelected ? "text-white" : "text-foreground"}`}>{opt.label}</span>
                       {isWave && (
-                        <span className={`text-xs uppercase tracking-wider mt-1 sm:mt-0 ${disabled ? "text-destructive font-semibold" : "text-muted-foreground"}`}>
+                        <span className={`text-xs uppercase tracking-wider mt-1 sm:mt-0 ${disabled ? "text-destructive font-semibold" : isSelected ? "text-white" : "text-muted-foreground"}`}>
                           {disabled ? "Full" : `${left} spots left`}
                         </span>
                       )}
@@ -453,14 +457,14 @@ const Shuttle = () => {
                       htmlFor={`departure-${opt.value}`}
                       className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-md cursor-pointer transition-all ${
                         isSelected
-                          ? "border-primary bg-primary/[0.03] ring-1 ring-primary"
+                          ? "border-green-400 bg-green-400 text-white"
                           : "border-input bg-background hover:bg-muted/50"
                       } ${disabled ? "opacity-40 cursor-not-allowed hover:bg-background" : ""}`}
                     >
                       <RadioGroupItem value={opt.value} id={`departure-${opt.value}`} disabled={disabled} className="sr-only" />
-                      <span className="font-body text-sm font-medium text-foreground">{opt.label}</span>
+                      <span className={`font-body text-sm font-medium ${isSelected ? "text-white" : "text-foreground"}`}>{opt.label}</span>
                       {isWave && (
-                        <span className={`text-xs uppercase tracking-wider mt-1 sm:mt-0 ${disabled ? "text-destructive font-semibold" : "text-muted-foreground"}`}>
+                        <span className={`text-xs uppercase tracking-wider mt-1 sm:mt-0 ${disabled ? "text-destructive font-semibold" : isSelected ? "text-white" : "text-muted-foreground"}`}>
                           {disabled ? "Full" : `${left} spots left`}
                         </span>
                       )}
@@ -484,19 +488,19 @@ const Shuttle = () => {
                   htmlFor="whatsapp-yes"
                   className={`flex items-center justify-center p-4 border rounded-md cursor-pointer transition-all text-center font-body text-sm font-medium ${
                     whatsappOptin === "yes"
-                      ? "border-primary bg-primary/[0.03] ring-1 ring-primary"
+                      ? "border-green-400 bg-green-400 text-white"
                       : "border-input bg-background hover:bg-muted/50"
                   }`}
                 >
                   <RadioGroupItem value="yes" id="whatsapp-yes" className="sr-only" />
                   Yes
                 </label>
-                
+
                 <label
                   htmlFor="whatsapp-no"
                   className={`flex items-center justify-center p-4 border rounded-md cursor-pointer transition-all text-center font-body text-sm font-medium ${
                     whatsappOptin === "no"
-                      ? "border-primary bg-primary/[0.03] ring-1 ring-primary"
+                      ? "border-green-400 bg-green-400 text-white"
                       : "border-input bg-background hover:bg-muted/50"
                   }`}
                 >
