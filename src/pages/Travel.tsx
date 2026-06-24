@@ -18,6 +18,12 @@ const pageContent = {
     intro: "Every route to Tuscany leads through some of the most beautiful landscape in the world.",
     thingsTitle: "Before You Go",
     beforeYouGoItems: [
+      <>
+        Confirm your travel{" "}
+        <Link to="/shuttle" className="underline underline-offset-2 text-primary hover:text-primary/80 transition-colors">
+          here
+        </Link>
+      </>,
       "Passport must be valid through March 2027",
       "Renting a car? Get an International Driver's Permit through AAA (~$20)",
       "Pack Type C or Type L travel adapters",
@@ -67,6 +73,12 @@ const pageContent = {
     intro: "Każda droga do Toskanii wiedzie przez jedno z najpiękniejszych krajobrazów na świecie.",
     thingsTitle: "Przed wyjazdem",
     beforeYouGoItems: [
+      <>
+        Potwierdź swoją podróż{" "}
+        <Link to="/shuttle" className="underline underline-offset-2 text-primary hover:text-primary/80 transition-colors">
+          tutaj
+        </Link>
+      </>,
       "Paszport musi być ważny do marca 2027",
       "Wynajmujesz samochód? Zdobądź Międzynarodowe Prawo Jazdy przez AAA (~20 USD)",
       "Zapakuj adaptery podróżne typu C lub L",
@@ -280,13 +292,13 @@ const Travel = () => {
         </div>
       </section>
 
-      <section className="px-6 md:px-12 lg:px-24 pt-10 md:pt-12 pb-16 md:pb-24 w-[90%] max-w-[1400px] mx-auto">
+      <section className="px-6 md:px-12 lg:px-24 pt-10 md:pt-12 pb-6 md:pb-8 w-[90%] max-w-[1400px] mx-auto">
         <FadeIn>
           <div className="border border-border bg-stone-light/40 px-8 py-8 md:px-12 md:py-10">
             <p className="heading-sub text-primary mb-4">{t.thingsTitle}</p>
             <ul className="space-y-2">
-              {t.beforeYouGoItems.map((item) => (
-                <li key={item} className="font-body text-xs leading-[1.8] text-muted-foreground font-light flex gap-2">
+              {t.beforeYouGoItems.map((item, i) => (
+                <li key={i} className="font-body text-xs leading-[1.8] text-muted-foreground font-light flex gap-2">
                   <span className="text-primary">•</span>
                   <span>{item}</span>
                 </li>
@@ -297,7 +309,7 @@ const Travel = () => {
       </section>
 
       <section className="px-6 md:px-12 lg:px-24 pb-16 md:pb-32 w-[90%] max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 pt-16 md:pt-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           {t.gettingThere.map((s, i) => (
             <FadeIn key={s.label} delay={i * 100}>
               <div className="flex flex-col gap-5">
