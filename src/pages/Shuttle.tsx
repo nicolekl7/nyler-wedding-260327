@@ -10,6 +10,15 @@ import { toast } from "sonner";
 
 const CAPACITY = 28;
 const MAX_PARTY_SIZE = 6;
+const MAX_PASSPORT_BYTES = 10 * 1024 * 1024;
+const ALLOWED_PASSPORT_TYPES = ["image/jpeg", "image/png", "image/heic", "image/heif", "application/pdf"];
+
+const slugify = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "guest";
 
 type Wave = "wave_1" | "wave_2" | "none";
 
@@ -38,6 +47,7 @@ const Shuttle = () => {
   const [departureWave, setDepartureWave] = useState<Wave | "">("");
   const [whatsappOptin, setWhatsappOptin] = useState<"yes" | "no" | "">("");
   const [travelDetails, setTravelDetails] = useState("");
+  const [passportFiles, setPassportFiles] = useState<(File | null)[]>([null]);
 
   const [seatsUsed, setSeatsUsed] = useState<Record<string, number>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -88,8 +98,17 @@ const Shuttle = () => {
           return currentGuests.slice(0, size - 1);
         }
       });
+      setPassportFiles((prev) => {
+        const current = [...prev];
+        if (current.length < size) {
+          return [...current, ...Array(size - current.length).fill(null)];
+        } else {
+          return current.slice(0, size);
+        }
+      });
     } else if (value === "") {
       setGuestNames([]);
+      setPassportFiles([null]);
     }
   };
 
@@ -97,6 +116,24 @@ const Shuttle = () => {
     setGuestNames((prev) => {
       const next = [...prev];
       next[index] = value;
+      return next;
+    });
+  };
+
+  const handlePassportFileChange = (index: number, file: File | null) => {
+    if (file) {
+      if (!ALLOWED_PASSPORT_TYPES.includes(file.type)) {
+        toast.error("Please upload a JPG, PNG, HEIC, or PDF file.");
+        return;
+      }
+      if (file.size > MAX_PASSPORT_BYTES) {
+        toast.error("File is too large. Max size is 10MB.");
+        return;
+      }
+    }
+    setPassportFiles((prev) => {
+      const next = [...prev];
+      next[index] = file;
       return next;
     });
   };
@@ -115,6 +152,8 @@ const Shuttle = () => {
     departureWave: Wave;
     whatsappOptin: boolean;
     travelDetails: string;
+    passportPaths?: string[];
+    guestNames?: string[];
   }) => {
     supabase.functions
       .invoke("shuttle-sheet", {
@@ -127,6 +166,8 @@ const Shuttle = () => {
           departureWave: payload.departureWave,
           whatsappOptin: payload.whatsappOptin,
           travelDetails: payload.travelDetails,
+          passportPaths: payload.passportPaths ?? [],
+          guestNames: payload.guestNames ?? [],
         },
       })
       .catch(() => {});
@@ -156,10 +197,28 @@ const Shuttle = () => {
 
     setSubmitting(true);
 
-    const guestListText = guestNames.length > 0 
-      ? `[Additional Guests: ${guestNames.map(n => n.trim()).join(", ")}]` 
+    const guestListText = guestNames.length > 0
+      ? `[Additional Guests: ${guestNames.map(n => n.trim()).join(", ")}]`
       : "";
     const combinedTravelDetails = `${guestListText} ${travelDetails.trim()}`.trim();
+
+    const bookingId = crypto.randomUUID();
+    const allGuestNames = [fullName.trim(), ...guestNames.map((n) => n.trim())];
+    const passportPaths: string[] = [];
+
+    for (let i = 0; i < passportFiles.length; i++) {
+      const file = passportFiles[i];
+      if (!file) continue;
+      const ext = file.name.includes(".") ? file.name.split(".").pop() : "";
+      const path = `${bookingId}/${slugify(allGuestNames[i] ?? `guest-${i}`)}${ext ? `.${ext}` : ""}`;
+      const { error: uploadError } = await supabase.storage.from("passports").upload(path, file);
+      if (uploadError) {
+        toast.error("Could not upload passport file. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+      passportPaths.push(path);
+    }
 
     const { data, error } = await supabase.rpc("book_shuttle", {
       _full_name: fullName.trim(),
@@ -169,6 +228,7 @@ const Shuttle = () => {
       _whatsapp_optin: whatsappOptin === "yes",
       _travel_details: combinedTravelDetails || null,
       _email: email.trim(),
+      _passport_paths: passportPaths,
     });
 
     if (error) {
@@ -187,6 +247,8 @@ const Shuttle = () => {
       departureWave: departureWave as Wave,
       whatsappOptin: whatsappOptin === "yes",
       travelDetails: travelDetails.trim(),
+      passportPaths,
+      guestNames: allGuestNames,
     });
 
     // Sync Additional Guests to Google Sheets
@@ -230,7 +292,7 @@ const Shuttle = () => {
     <Layout>
       <section className="page-section w-[90%] max-w-[900px] mx-auto">
         <FadeIn>
-          <h1 className="heading-section text-center mb-4">Shuttle Sign-Ups</h1>
+          <h1 className="heading-section text-center mb-4">Travel Confirmation</h1>
           <div className="w-12 h-px bg-primary mx-auto mb-12" />
         </FadeIn>
 
@@ -299,6 +361,16 @@ const Shuttle = () => {
               />
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="passport-0">Passport Photo or Scan (optional)</Label>
+              <Input
+                id="passport-0"
+                type="file"
+                accept="image/*,.pdf"
+                onChange={(e) => handlePassportFileChange(0, e.target.files?.[0] ?? null)}
+              />
+            </div>
+
             {guestNames.map((name, index) => (
               <div key={index} className="space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
                 <Label htmlFor={`guestName-${index}`}>Guest {index + 2} Full Name</Label>
@@ -307,6 +379,13 @@ const Shuttle = () => {
                   value={name}
                   onChange={(e) => handleGuestNameChange(index, e.target.value)}
                   required
+                />
+                <Label htmlFor={`passport-${index + 1}`}>Passport Photo or Scan (optional)</Label>
+                <Input
+                  id={`passport-${index + 1}`}
+                  type="file"
+                  accept="image/*,.pdf"
+                  onChange={(e) => handlePassportFileChange(index + 1, e.target.files?.[0] ?? null)}
                 />
               </div>
             ))}

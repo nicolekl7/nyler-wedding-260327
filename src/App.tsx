@@ -17,7 +17,7 @@ import BookingSuccess from "./pages/BookingSuccess";
 import Travel from "./pages/Travel";
 import RsvpV2 from "./pages/RsvpV2";
 import Payment from "./pages/Payment";
-import AdminReservations from "./pages/AdminReservations";
+import Admin from "./pages/Admin";
 import Shuttle from "./pages/Shuttle";
 import NotFound from "./pages/NotFound";
 
@@ -44,7 +44,9 @@ const App = () => (
           <Route path="/home-v2" element={<HomeV2 />} />
           <Route path="/home" element={<HomeV2 />} />
           <Route path="/payment" element={<Payment />} />
-          <Route path="/admin/reservations" element={<AdminReservations />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/reservations" element={<Navigate to="/admin?tab=reservations" replace />} />
+          <Route path="/admin/shuttle" element={<Navigate to="/admin?tab=travel" replace />} />
           <Route path="/shuttle" element={<Shuttle />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -223,6 +223,7 @@ export type Database = {
           full_name: string
           id: string
           party_size: number
+          passport_paths: string[]
           travel_details: string | null
           whatsapp_optin: boolean
         }
@@ -234,6 +235,7 @@ export type Database = {
           full_name: string
           id?: string
           party_size: number
+          passport_paths?: string[]
           travel_details?: string | null
           whatsapp_optin?: boolean
         }
@@ -245,6 +247,7 @@ export type Database = {
           full_name?: string
           id?: string
           party_size?: number
+          passport_paths?: string[]
           travel_details?: string | null
           whatsapp_optin?: boolean
         }
@@ -262,6 +265,7 @@ export type Database = {
           _email: string
           _full_name: string
           _party_size: number
+          _passport_paths?: string[]
           _travel_details: string | null
           _whatsapp_optin: boolean
         }
@@ -273,6 +277,7 @@ export type Database = {
           full_name: string
           id: string
           party_size: number
+          passport_paths: string[]
           travel_details: string | null
           whatsapp_optin: boolean
         }
