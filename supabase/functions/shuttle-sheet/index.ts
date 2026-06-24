@@ -1,5 +1,3 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -12,37 +10,25 @@ Deno.serve(async (req) => {
     if (!url) throw new Error("SHUTTLE_SHEET_URL not set");
     const body = await req.json();
 
-    const passportPaths: string[] = Array.isArray(body.passportPaths) ? body.passportPaths : [];
-    let passportLinks = "";
-    if (passportPaths.length > 0) {
-      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-      const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-      const supabase = createClient(supabaseUrl, serviceRoleKey);
-      const links: string[] = [];
-      for (const path of passportPaths) {
-        const { data } = await supabase.storage.from("passports").createSignedUrl(path, 60 * 60 * 24 * 7);
-        if (data?.signedUrl) links.push(data.signedUrl);
-      }
-      passportLinks = links.join(", ");
-    }
+    const names: string[] = Array.isArray(body.names) ? body.names : [];
 
-    const additionalNames: string[] = Array.isArray(body.guestNames) ? body.guestNames : [];
+    const payload = {
+      timestamp: new Date().toISOString(),
+      email: body.email ?? "",
+      partySize: body.partySize ?? null,
+      names,
+      arrivalShuttle: body.arrivalShuttle ?? "",
+      departureShuttle: body.departureShuttle ?? "",
+      departurePlan: body.departurePlan ?? null,
+      passportUploaded: Boolean(body.passportUploaded),
+      florenceRsvp: body.florenceRsvp ?? null,
+      travelPlans: body.travelPlans ?? "",
+    };
 
-    const form = new URLSearchParams();
-    form.append("timestamp", new Date().toISOString());
-    form.append("fullName", body.fullName ?? "");
-    form.append("email", body.email ?? "");
-    form.append("partySize", String(body.partySize ?? ""));
-    form.append("arrivalWave", body.arrivalWave ?? "");
-    form.append("departureWave", body.departureWave ?? "");
-    form.append("whatsappOptin", body.whatsappOptin ? "Yes" : "No");
-    form.append("travelDetails", body.travelDetails ?? "");
-    form.append("passportLinks", passportLinks);
-    form.append("additionalNames", additionalNames.join(", "));
     const res = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: form.toString(),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
     const text = await res.text();
     return new Response(JSON.stringify({ ok: res.ok, status: res.status, body: text }), {

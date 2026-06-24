@@ -218,8 +218,10 @@ export type Database = {
         Row: {
           arrival_wave: string
           created_at: string
+          departure_plan: string | null
           departure_wave: string
           email: string
+          florence_rsvp: string | null
           full_name: string
           id: string
           party_size: number
@@ -230,8 +232,10 @@ export type Database = {
         Insert: {
           arrival_wave: string
           created_at?: string
+          departure_plan?: string | null
           departure_wave: string
           email: string
+          florence_rsvp?: string | null
           full_name: string
           id?: string
           party_size: number
@@ -242,8 +246,10 @@ export type Database = {
         Update: {
           arrival_wave?: string
           created_at?: string
+          departure_plan?: string | null
           departure_wave?: string
           email?: string
+          florence_rsvp?: string | null
           full_name?: string
           id?: string
           party_size?: number
@@ -261,8 +267,10 @@ export type Database = {
       book_shuttle: {
         Args: {
           _arrival_wave: string
+          _departure_plan?: string | null
           _departure_wave: string
           _email: string
+          _florence_rsvp?: string | null
           _full_name: string
           _party_size: number
           _passport_paths?: string[]
@@ -272,8 +280,10 @@ export type Database = {
         Returns: {
           arrival_wave: string
           created_at: string
+          departure_plan: string | null
           departure_wave: string
           email: string
+          florence_rsvp: string | null
           full_name: string
           id: string
           party_size: number
