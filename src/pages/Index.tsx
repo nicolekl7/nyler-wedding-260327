@@ -11,8 +11,8 @@ const content = {
     dateLineLong: "September 17, 2026 | Rapolano Terme, Tuscany, Italy",
     welcome: (
       <>
-        There is no place more beautiful and no group of people we’d rather share it with. 
-        Thank you for deciding to make the journey to celebrate with us! Details for our 
+        There is no place more beautiful and no group of people we’d rather share it with.
+        Thank you for deciding to make the journey to celebrate with us! Details for our
         wedding weekend are below. Ci vediamo in Italia!
         <br />
         <br />

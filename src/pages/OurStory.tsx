@@ -416,13 +416,13 @@ const OurStory = () => {
               to="/"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
-              ← Home
+              ← Schedule
             </Link>
             <Link
               to="/the-weekend"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
-              The Itinerary →
+              The Attire →
             </Link>
             <Link
               to="/rsvp-v2"

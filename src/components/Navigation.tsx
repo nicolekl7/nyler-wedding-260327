@@ -5,20 +5,20 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const navLabels = {
   en: {
-    home: "Home",
+    home: "Schedule",
     travel: "Travel",
-    events: "Itinerary",
+    events: "Attire",
     registry: "Registry",
     ourStory: "Our Story",
-    rsvp: "RESERVE SHUTTLE",
+    rsvp: "CONFIRM TRAVEL",
   },
   pl: {
-    home: "Strona główna",
+    home: "Plan",
     travel: "Podróż",
-    events: "Plan",
+    events: "Strój",
     registry: "Lista prezentów",
     ourStory: "Nasza historia",
-    rsvp: "ZAREZERWUJ SHUTTLE",
+    rsvp: "POTWIERDŹ PODRÓŻ",
   },
 };
 
