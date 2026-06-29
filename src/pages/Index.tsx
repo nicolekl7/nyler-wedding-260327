@@ -18,7 +18,6 @@ const content = {
     thursday: "09.17.2026",
     friday: "09.18.2026",
     saturday: "09.19.2026",
-    moreInfo: "*More information to follow",
   },
   pl: {
     dateLine: "17 września 2026 | Toskania, Włochy",
@@ -32,7 +31,6 @@ const content = {
     thursday: "17.09.2026",
     friday: "18.09.2026",
     saturday: "19.09.2026",
-    moreInfo: "*Więcej informacji wkrótce",
   },
 };
 
@@ -187,18 +185,13 @@ const Index = () => {
                     </h4>
                     <p className="text-xs opacity-75 max-w-xl leading-relaxed">
                       {language === "en"
-                        ? "Grazyna and Waldemar Landmesser welcome family and friends to join them on a trip to explore Tuscany. A beautiful, curated daytime tour exploring historic Siena followed by a scenic wine tasting lunch in the Tuscan hills. More information to follow."
-                        : "Grażyna i Waldemar Landmesser zapraszają rodzinę i przyjaciół do wspólnego odkrywania Toskanii. Piękna, zorganizowana wycieczka po zabytkowej Sienie, a następnie obiad z degustacją wina wśród toskańskich wzgórz. Więcej informacji wkrótce."}
+                        ? "Grazyna and Waldemar Landmesser invite parents, family, and friends to join them for a quiet day exploring Tuscany. The group will tour Siena's historic center, including the cathedral and Piazza del Campo, then sit down for a traditional wine tasting lunch. More information to follow."
+                        : "Grażyna i Waldemar Landmesser zapraszają rodziców, rodzinę i przyjaciół do wspólnego, spokojnego dnia odkrywania Toskanii. Grupa zwiedzi historyczne centrum Sieny, w tym katedrę i Piazza del Campo, a następnie zasiądzie do tradycyjnego obiadu z degustacją wina. Więcej informacji wkrótce."}
                     </p>
                     <div className="text-xs pt-1 border-t border-[#fff7f0]/10 mt-2">
                       <span className="font-medium inline-block w-20">12:00 PM</span>
                       <span className="opacity-90">Shuttle pick up from Borgo</span>
                     </div>
-                  </div>
-
-                  {/* Note at the bottom of Friday's stack */}
-                  <div className="text-xs italic opacity-65 pt-2">
-                    {t.moreInfo}
                   </div>
                 </div>
               </div>
