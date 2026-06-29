@@ -34,6 +34,12 @@ const DEPARTURE_WAVES: { value: Wave; label: string; detail: string | null }[] =
   { value: "none", label: "Not taking the departure shuttle", detail: null },
 ];
 
+const ARRIVAL_PLANS: { value: "rental_car" | "private_transfer" | "not_sure"; label: string }[] = [
+  { value: "rental_car", label: "Renting a car" },
+  { value: "private_transfer", label: "Arranging a private transfer or taxi" },
+  { value: "not_sure", label: "Not sure yet" },
+];
+
 const DEPARTURE_PLANS: { value: "rental_car" | "private_transfer" | "not_sure"; label: string }[] = [
   { value: "rental_car", label: "Renting a car" },
   { value: "private_transfer", label: "Arranging a private transfer or taxi" },
@@ -133,6 +139,7 @@ const Shuttle = () => {
   const [partySize, setPartySize] = useState(1);
   const [names, setNames] = useState<string[]>([""]);
   const [arrivalWave, setArrivalWave] = useState<Wave | "">("");
+  const [arrivalPlan, setArrivalPlan] = useState<"rental_car" | "private_transfer" | "not_sure" | "">("");
   const [departureWave, setDepartureWave] = useState<Wave | "">("");
   const [departurePlan, setDeparturePlan] = useState<"rental_car" | "private_transfer" | "not_sure" | "">("");
   const [passportFile, setPassportFile] = useState<File | null>(null);
@@ -220,6 +227,7 @@ const Shuttle = () => {
       if (!n.trim()) errs[`name_${i}`] = "Name is required";
     });
     if (!arrivalWave) errs.arrival = "Select an arrival option";
+    if (arrivalWave === "none" && !arrivalPlan) errs.arrivalPlan = "Let us know your plan";
     if (!departureWave) errs.departure = "Select a departure option";
     if (departureWave === "none" && !departurePlan) errs.departurePlan = "Let us know your plan";
 
@@ -233,7 +241,7 @@ const Shuttle = () => {
     setErrors(errs);
 
     if (Object.keys(errs).length > 0) {
-      const order = ["email", ...names.map((_, i) => `name_${i}`), "arrival", "departure", "departurePlan"];
+      const order = ["email", ...names.map((_, i) => `name_${i}`), "arrival", "arrivalPlan", "departure", "departurePlan"];
       const firstKey = order.find((k) => errs[k]);
       if (firstKey) {
         document.getElementById(`field-${firstKey}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -248,6 +256,7 @@ const Shuttle = () => {
     partySize: number;
     names: string[];
     arrivalShuttle: string;
+    arrivalPlan: string | null;
     departureShuttle: string;
     departurePlan: string | null;
     passportUploaded: boolean;
@@ -264,15 +273,6 @@ const Shuttle = () => {
     setSubmitting(true);
 
     const trimmedNames = names.map((n) => n.trim());
-    const additionalGuestsText =
-      trimmedNames.length > 1 ? `[Additional Guests: ${trimmedNames.slice(1).join(", ")}]` : "";
-    const departurePlanLabel = DEPARTURE_PLANS.find((p) => p.value === departurePlan)?.label ?? "";
-    const departurePlanText = departurePlan ? `[Departure Plan: ${departurePlanLabel}]` : "";
-    const florenceText = florenceRsvp ? `[Florence Sept 15: ${florenceRsvp}]` : "";
-    const combinedTravelDetails = [additionalGuestsText, departurePlanText, florenceText, travelPlans.trim()]
-      .filter(Boolean)
-      .join(" ")
-      .trim();
 
     const bookingId = crypto.randomUUID();
     const passportPaths: string[] = [];
@@ -295,11 +295,13 @@ const Shuttle = () => {
       _arrival_wave: arrivalWave,
       _departure_wave: departureWave,
       _whatsapp_optin: false,
-      _travel_details: combinedTravelDetails || null,
+      _travel_details: travelPlans.trim() || null,
       _email: email.trim(),
       _passport_paths: passportPaths,
       _departure_plan: departurePlan || null,
       _florence_rsvp: florenceRsvp || null,
+      _arrival_plan: arrivalPlan || null,
+      _guest_names: trimmedNames,
     });
 
     if (error) {
@@ -314,6 +316,7 @@ const Shuttle = () => {
       partySize,
       names: trimmedNames,
       arrivalShuttle: arrivalWave === "wave_1" ? "arr1" : arrivalWave === "wave_2" ? "arr2" : "arr_none",
+      arrivalPlan: arrivalPlan || null,
       departureShuttle: departureWave === "wave_1" ? "dep1" : departureWave === "wave_2" ? "dep2" : "dep_none",
       departurePlan: departurePlan || null,
       passportUploaded: passportPaths.length > 0,
@@ -456,13 +459,35 @@ const Shuttle = () => {
                         spotsLeft={spotsLeft}
                         disabled={isWave && spotsLeft === 0}
                         selected={arrivalWave === w.value}
-                        onSelect={() => setArrivalWave(w.value)}
+                        onSelect={() => {
+                          setArrivalWave(w.value);
+                          if (w.value !== "none") setArrivalPlan("");
+                        }}
                       />
                     );
                   })}
                 </div>
                 <FieldError message={errors.arrival} />
               </div>
+
+              {arrivalWave === "none" && (
+                <div id="field-arrivalPlan" className="p-5 border border-border rounded-md bg-muted/30 space-y-3">
+                  <Label>
+                    What's your plan for getting there? <span className="text-destructive">*</span>
+                  </Label>
+                  <div className="flex flex-wrap gap-2.5">
+                    {ARRIVAL_PLANS.map((p) => (
+                      <PillOption
+                        key={p.value}
+                        label={p.label}
+                        selected={arrivalPlan === p.value}
+                        onSelect={() => setArrivalPlan(p.value)}
+                      />
+                    ))}
+                  </div>
+                  <FieldError message={errors.arrivalPlan} />
+                </div>
+              )}
 
               <div id="field-departure" className="space-y-3">
                 <h3 className="font-body text-sm font-semibold text-foreground">

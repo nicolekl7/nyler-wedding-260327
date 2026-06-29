@@ -21,6 +21,8 @@ interface Signup {
   passport_paths: string[] | null;
   departure_plan: string | null;
   florence_rsvp: string | null;
+  arrival_plan: string | null;
+  guest_names: string[] | null;
 }
 
 const DEPARTURE_PLAN_LABELS: Record<string, string> = {
@@ -139,6 +141,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
         travel_details: editForm.travel_details?.trim() || null,
         departure_plan: editForm.departure_plan || null,
         florence_rsvp: editForm.florence_rsvp || null,
+        arrival_plan: editForm.arrival_plan || null,
       })
       .eq("id", editingId);
     setSaving(false);
@@ -276,6 +279,19 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
             </select>
           </label>
           <label className="flex flex-col gap-1">
+            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Arrival Plan</span>
+            <select
+              value={editForm.arrival_plan ?? ""}
+              onChange={(e) => setEditForm({ ...editForm, arrival_plan: e.target.value || null })}
+              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
+            >
+              <option value="">—</option>
+              {Object.entries(DEPARTURE_PLAN_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col gap-1">
             <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Departure Plan</span>
             <select
               value={editForm.departure_plan ?? ""}
@@ -351,9 +367,11 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
               <thead>
                 <tr className="text-left text-xs uppercase tracking-[0.2em] text-muted-foreground border-b border-border">
                   <th className="px-5 py-3 font-medium">Full Name</th>
+                  <th className="px-5 py-3 font-medium">Guest Names</th>
                   <th className="px-5 py-3 font-medium">Email</th>
                   <th className="px-5 py-3 font-medium">Party</th>
                   <th className="px-5 py-3 font-medium">WhatsApp</th>
+                  <th className="px-5 py-3 font-medium">Arrival Plan</th>
                   <th className="px-5 py-3 font-medium">Departure Plan</th>
                   <th className="px-5 py-3 font-medium">Florence Sept 15</th>
                   <th className="px-5 py-3 font-medium">Travel Details</th>
@@ -368,9 +386,13 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                   ) : (
                     <tr key={r.id} className="border-b border-border/50 last:border-0">
                       <td className="px-5 py-3 text-foreground">{r.full_name}</td>
+                      <td className="px-5 py-3 text-muted-foreground">
+                        {r.guest_names && r.guest_names.length > 1 ? r.guest_names.slice(1).join(", ") : "—"}
+                      </td>
                       <td className="px-5 py-3 text-foreground">{r.email || "—"}</td>
                       <td className="px-5 py-3 text-foreground">{r.party_size}</td>
                       <td className="px-5 py-3 text-foreground">{r.whatsapp_optin ? "Yes" : "No"}</td>
+                      <td className="px-5 py-3 text-foreground">{r.arrival_plan ? DEPARTURE_PLAN_LABELS[r.arrival_plan] ?? r.arrival_plan : "—"}</td>
                       <td className="px-5 py-3 text-foreground">{r.departure_plan ? DEPARTURE_PLAN_LABELS[r.departure_plan] ?? r.departure_plan : "—"}</td>
                       <td className="px-5 py-3 text-foreground">{r.florence_rsvp || "—"}</td>
                       <td className="px-5 py-3 text-muted-foreground whitespace-pre-wrap max-w-xs">{r.travel_details || "—"}</td>

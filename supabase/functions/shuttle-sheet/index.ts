@@ -18,6 +18,7 @@ Deno.serve(async (req) => {
       partySize: body.partySize ?? null,
       names,
       arrivalShuttle: body.arrivalShuttle ?? "",
+      arrivalPlan: body.arrivalPlan ?? null,
       departureShuttle: body.departureShuttle ?? "",
       departurePlan: body.departurePlan ?? null,
       passportUploaded: Boolean(body.passportUploaded),

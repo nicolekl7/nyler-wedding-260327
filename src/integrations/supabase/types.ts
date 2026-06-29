@@ -216,6 +216,7 @@ export type Database = {
       }
       shuttle_signups: {
         Row: {
+          arrival_plan: string | null
           arrival_wave: string
           created_at: string
           departure_plan: string | null
@@ -223,6 +224,7 @@ export type Database = {
           email: string
           florence_rsvp: string | null
           full_name: string
+          guest_names: string[]
           id: string
           party_size: number
           passport_paths: string[]
@@ -230,6 +232,7 @@ export type Database = {
           whatsapp_optin: boolean
         }
         Insert: {
+          arrival_plan?: string | null
           arrival_wave: string
           created_at?: string
           departure_plan?: string | null
@@ -237,6 +240,7 @@ export type Database = {
           email: string
           florence_rsvp?: string | null
           full_name: string
+          guest_names?: string[]
           id?: string
           party_size: number
           passport_paths?: string[]
@@ -244,6 +248,7 @@ export type Database = {
           whatsapp_optin?: boolean
         }
         Update: {
+          arrival_plan?: string | null
           arrival_wave?: string
           created_at?: string
           departure_plan?: string | null
@@ -251,6 +256,7 @@ export type Database = {
           email?: string
           florence_rsvp?: string | null
           full_name?: string
+          guest_names?: string[]
           id?: string
           party_size?: number
           passport_paths?: string[]
@@ -266,18 +272,21 @@ export type Database = {
     Functions: {
       book_shuttle: {
         Args: {
+          _arrival_plan?: string | null
           _arrival_wave: string
           _departure_plan?: string | null
           _departure_wave: string
           _email: string
           _florence_rsvp?: string | null
           _full_name: string
+          _guest_names?: string[]
           _party_size: number
           _passport_paths?: string[]
           _travel_details: string | null
           _whatsapp_optin: boolean
         }
         Returns: {
+          arrival_plan: string | null
           arrival_wave: string
           created_at: string
           departure_plan: string | null
@@ -285,6 +294,7 @@ export type Database = {
           email: string
           florence_rsvp: string | null
           full_name: string
+          guest_names: string[]
           id: string
           party_size: number
           passport_paths: string[]
