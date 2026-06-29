@@ -387,7 +387,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                     <tr key={r.id} className="border-b border-border/50 last:border-0">
                       <td className="px-5 py-3 text-foreground">{r.full_name}</td>
                       <td className="px-5 py-3 text-muted-foreground">
-                        {r.guest_names && r.guest_names.length > 1 ? r.guest_names.slice(1).join(", ") : "—"}
+                        {Array.isArray(r.guest_names) && r.guest_names.length > 1 ? r.guest_names.slice(1).join(", ") : "—"}
                       </td>
                       <td className="px-5 py-3 text-foreground">{r.email || "—"}</td>
                       <td className="px-5 py-3 text-foreground">{r.party_size}</td>
