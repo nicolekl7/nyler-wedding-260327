@@ -206,7 +206,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     const groups: Record<Wave, Signup[]> = { wave_1: [], wave_2: [], none: [] };
     signups.forEach((s) => {
       const w = direction === "arrival" ? s.arrival_wave : s.departure_wave;
-      groups[w].push(s);
+      (groups[w] ?? groups.none).push(s);
     });
     return groups;
   };
