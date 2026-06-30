@@ -275,7 +275,12 @@ const Shuttle = () => {
     florenceRsvp: string | null;
     travelPlans: string;
   }) => {
-    await supabase.functions.invoke("shuttle-sheet", { body: payload }).catch(() => {});
+    try {
+      const { error } = await supabase.functions.invoke("shuttle-sheet", { body: payload });
+      if (error) console.error("shuttle-sheet sync failed:", error);
+    } catch (err) {
+      console.error("shuttle-sheet sync failed:", err);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
