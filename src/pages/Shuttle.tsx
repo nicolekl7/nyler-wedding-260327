@@ -260,18 +260,7 @@ const Shuttle = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const fileToBase64 = (file: File): Promise<{ base64: string; mimeType: string; fileName: string }> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const result = reader.result as string;
-        const base64Data = result.split(",")[1];
-        resolve({ base64: base64Data, mimeType: file.type, fileName: file.name });
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  };
+  const PASSPORT_URL_TTL_SECONDS = 60 * 60 * 24 * 7;
 
   const syncToAppsScript = async (payload: {
     email: string;
@@ -282,7 +271,7 @@ const Shuttle = () => {
     departureShuttle: string;
     departurePlan: string | null;
     passportUploaded: boolean;
-    passportFiles: { base64: string; mimeType: string; fileName: string }[];
+    passportFiles: { fileName: string; path: string; url: string | null }[];
     florenceRsvp: string | null;
     travelPlans: string;
   }) => {
@@ -299,6 +288,7 @@ const Shuttle = () => {
 
     const bookingId = crypto.randomUUID();
     const passportPaths: string[] = [];
+    const uploadedPassportFiles: { fileName: string; path: string }[] = [];
 
     for (let i = 0; i < passportFiles.length; i++) {
       const file = passportFiles[i];
@@ -312,6 +302,7 @@ const Shuttle = () => {
         return;
       }
       passportPaths.push(path);
+      uploadedPassportFiles.push({ fileName: file.name, path });
     }
 
     const { data, error } = await supabase.rpc("book_shuttle", {
@@ -336,15 +327,14 @@ const Shuttle = () => {
       return;
     }
 
-    const base64PassportFiles: { base64: string; mimeType: string; fileName: string }[] = [];
-    for (const file of passportFiles) {
-      if (!file) continue;
-      try {
-        base64PassportFiles.push(await fileToBase64(file));
-      } catch {
-        // skip files that fail to read; passport is still saved in Supabase Storage
-      }
-    }
+    const passportFilesForSync: { fileName: string; path: string; url: string | null }[] = await Promise.all(
+      uploadedPassportFiles.map(async ({ fileName, path }) => {
+        const { data: signedData } = await supabase.storage
+          .from("passports")
+          .createSignedUrl(path, PASSPORT_URL_TTL_SECONDS);
+        return { fileName, path, url: signedData?.signedUrl ?? null };
+      })
+    );
 
     await syncToAppsScript({
       email: email.trim(),
@@ -355,7 +345,7 @@ const Shuttle = () => {
       departureShuttle: departureWave === "wave_1" ? "dep1" : departureWave === "wave_2" ? "dep2" : "dep_none",
       departurePlan: departurePlan || null,
       passportUploaded: passportPaths.length > 0,
-      passportFiles: base64PassportFiles,
+      passportFiles: passportFilesForSync,
       florenceRsvp: florenceRsvp || null,
       travelPlans: travelPlans.trim(),
     });

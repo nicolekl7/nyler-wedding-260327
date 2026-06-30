@@ -11,7 +11,7 @@ Deno.serve(async (req) => {
     const body = await req.json();
 
     const names: string[] = Array.isArray(body.names) ? body.names : [];
-    const passportFiles: { base64: string; mimeType: string; fileName: string }[] = Array.isArray(body.passportFiles)
+    const passportFiles: { fileName: string; path: string; url: string | null }[] = Array.isArray(body.passportFiles)
       ? body.passportFiles
       : [];
 
