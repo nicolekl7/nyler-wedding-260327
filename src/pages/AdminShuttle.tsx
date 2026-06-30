@@ -25,12 +25,6 @@ interface Signup {
   guest_names: string[] | null;
 }
 
-const DEPARTURE_PLAN_LABELS: Record<string, string> = {
-  rental_car: "Renting a car",
-  private_transfer: "Private transfer or taxi",
-  not_sure: "Not sure yet",
-};
-
 const WAVE_LABELS: Record<"arrival" | "departure", Record<Wave, string>> = {
   arrival: {
     wave_1: "Wave 1 — depart Siena Train Station 2:00 PM (Sept 17)",
@@ -137,11 +131,8 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
         party_size: editForm.party_size,
         arrival_wave: editForm.arrival_wave,
         departure_wave: editForm.departure_wave,
-        whatsapp_optin: editForm.whatsapp_optin,
         travel_details: editForm.travel_details?.trim() || null,
-        departure_plan: editForm.departure_plan || null,
         florence_rsvp: editForm.florence_rsvp || null,
-        arrival_plan: editForm.arrival_plan || null,
       })
       .eq("id", editingId);
     setSaving(false);
@@ -244,17 +235,6 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">WhatsApp</span>
-            <select
-              value={editForm.whatsapp_optin ? "yes" : "no"}
-              onChange={(e) => setEditForm({ ...editForm, whatsapp_optin: e.target.value === "yes" })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary w-32"
-            >
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-          </label>
-          <label className="flex flex-col gap-1">
             <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Arrival Wave</span>
             <select
               value={editForm.arrival_wave}
@@ -275,32 +255,6 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
             >
               {DEPARTURE_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Arrival Plan</span>
-            <select
-              value={editForm.arrival_plan ?? ""}
-              onChange={(e) => setEditForm({ ...editForm, arrival_plan: e.target.value || null })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-            >
-              <option value="">—</option>
-              {Object.entries(DEPARTURE_PLAN_LABELS).map(([value, label]) => (
-                <option key={value} value={value}>{label}</option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Departure Plan</span>
-            <select
-              value={editForm.departure_plan ?? ""}
-              onChange={(e) => setEditForm({ ...editForm, departure_plan: e.target.value || null })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-            >
-              <option value="">—</option>
-              {Object.entries(DEPARTURE_PLAN_LABELS).map(([value, label]) => (
-                <option key={value} value={value}>{label}</option>
               ))}
             </select>
           </label>
@@ -370,9 +324,6 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                   <th className="px-5 py-3 font-medium">Guest Names</th>
                   <th className="px-5 py-3 font-medium">Email</th>
                   <th className="px-5 py-3 font-medium">Party</th>
-                  <th className="px-5 py-3 font-medium">WhatsApp</th>
-                  <th className="px-5 py-3 font-medium">Arrival Plan</th>
-                  <th className="px-5 py-3 font-medium">Departure Plan</th>
                   <th className="px-5 py-3 font-medium">Florence Sept 15</th>
                   <th className="px-5 py-3 font-medium">Travel Details</th>
                   <th className="px-5 py-3 font-medium">Passports</th>
@@ -391,9 +342,6 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                       </td>
                       <td className="px-5 py-3 text-foreground">{r.email || "—"}</td>
                       <td className="px-5 py-3 text-foreground">{r.party_size}</td>
-                      <td className="px-5 py-3 text-foreground">{r.whatsapp_optin ? "Yes" : "No"}</td>
-                      <td className="px-5 py-3 text-foreground">{r.arrival_plan ? DEPARTURE_PLAN_LABELS[r.arrival_plan] ?? r.arrival_plan : "—"}</td>
-                      <td className="px-5 py-3 text-foreground">{r.departure_plan ? DEPARTURE_PLAN_LABELS[r.departure_plan] ?? r.departure_plan : "—"}</td>
                       <td className="px-5 py-3 text-foreground">{r.florence_rsvp || "—"}</td>
                       <td className="px-5 py-3 text-muted-foreground whitespace-pre-wrap max-w-xs">{r.travel_details || "—"}</td>
                       <td className="px-5 py-3 text-foreground">
