@@ -8,13 +8,11 @@ Deno.serve(async (req) => {
   try {
     const url = Deno.env.get("SHUTTLE_SHEET_URL");
     if (!url) throw new Error("SHUTTLE_SHEET_URL not set");
-
     const body = await req.json();
 
-    // Pure passthrough — add timestamp, forward everything else unchanged
     const payload = {
-      timestamp: new Date().toISOString(),
       ...body,
+      timestamp: new Date().toISOString(),
     };
 
     const res = await fetch(url, {
@@ -24,14 +22,12 @@ Deno.serve(async (req) => {
     });
     const text = await res.text();
     return new Response(JSON.stringify({ ok: res.ok, status: res.status, body: text }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200,
     });
   } catch (err) {
     console.error("shuttle-sheet error", err);
     return new Response(JSON.stringify({ ok: false, error: String(err) }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500,
     });
   }
 });
