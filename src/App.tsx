@@ -16,6 +16,7 @@ import AccommodationsV2 from "./pages/AccommodationsV2";
 import BookingSuccess from "./pages/BookingSuccess";
 import Travel from "./pages/Travel";
 import RsvpV2 from "./pages/RsvpV2";
+import LateRsvp from "./pages/LateRsvp";
 import Payment from "./pages/Payment";
 import Admin from "./pages/Admin";
 import Shuttle from "./pages/Shuttle";
@@ -38,7 +39,10 @@ const App = () => (
           <Route path="/reserve-lodging" element={<AccommodationsV2 />} />
           <Route path="/booking-success" element={<BookingSuccess />} />
           <Route path="/travel" element={<Travel />} />
-          <Route path="/rsvp-v2" element={<RsvpV2 />} />
+          <Route path="/latersvp" element={<LateRsvp />} />
+          <Route path="/rsvp-v2" element={<Navigate to="/latersvp" replace />} />
+          <Route path="/rsvp" element={<Navigate to="/latersvp" replace />} />
+          <Route path="/rsvp-v2-form" element={<RsvpV2 />} />
           <Route path="/local-guide" element={<Navigate to="/travel" replace />} />
           <Route path="/our-story" element={<OurStory />} />
           <Route path="/about-us" element={<OurStoryV2 />} />
