@@ -155,12 +155,12 @@ const Index = () => {
                   {/* Option 1 */}
                   <div className="border-l-2 border-[#fff7f0]/30 pl-4 space-y-3">
                     <h4 className="italic text-base text-[#fff7f0]">
-                      {language === "en" ? "Option #1: The Borgo Pool Party" : "Opcja #1: Pool Party w Borgo"}
+                      {language === "en" ? "Option #1: Il Dolce Far Niente" : "Opcja #1: Il Dolce Far Niente"}
                     </h4>
                     <p className="text-xs opacity-75 max-w-xl leading-relaxed">
                       {language === "en"
-                        ? "A lively afternoon of sun, music, and an open spritz bar by the main pool for those looking to stay on-site and keep the energy high."
-                        : "Tętniące życiem popołudnie przy głównym basenie z muzyką i otwartym barem z drinkami."}
+                        ? "A full day of the beautiful Tuscan sun, music, and spritzes by the pool with Nicole and Tyler. Spend the afternoon recovering then get ready for a delicious dinner out in the local town of Rapolano Terme."
+                        : "Pełen dzień pięknego toskańskiego słońca, muzyki i drinków przy basenie z Nicole i Tylerem. Spędźcie popołudnie na odpoczynku, a następnie przygotujcie się na pyszną kolację w pobliskim miasteczku Rapolano Terme."}
                     </p>
                     <div className="text-xs space-y-2 pt-1 border-t border-[#fff7f0]/10 mt-2">
                       <div>
@@ -181,12 +181,12 @@ const Index = () => {
                   {/* Option 2 */}
                   <div className="border-l-2 border-[#fff7f0]/30 pl-4 space-y-3">
                     <h4 className="italic text-base text-[#fff7f0]">
-                      {language === "en" ? "Option #2: Siena & Winery Excursion" : "Opcja #2: Wycieczka do Sieny i Winnicy"}
+                      {language === "en" ? "Option #2: Historic Siena Tour" : "Opcja #2: Wycieczka po Historycznej Sienie"}
                     </h4>
                     <p className="text-xs opacity-75 max-w-xl leading-relaxed">
                       {language === "en"
-                        ? "Grazyna and Waldemar Landmesser invite parents, family, and friends to join them for a quiet day exploring Tuscany. The group will tour Siena's historic center, including the cathedral and Piazza del Campo, then sit down for a traditional wine tasting lunch. More information to follow."
-                        : "Grażyna i Waldemar Landmesser zapraszają rodziców, rodzinę i przyjaciół do wspólnego, spokojnego dnia odkrywania Toskanii. Grupa zwiedzi historyczne centrum Sieny, w tym katedrę i Piazza del Campo, a następnie zasiądzie do tradycyjnego obiadu z degustacją wina. Więcej informacji wkrótce."}
+                        ? "Grazyna and Waldemar Landmesser invite parents, family, and friends to join them for a quiet day exploring Tuscany. The group will partake in a traditional wine tasting lunch and tour Siena's historic center. More information to follow."
+                        : "Grażyna i Waldemar Landmesser zapraszają rodziców, rodzinę i przyjaciół do wspólnego, spokojnego dnia odkrywania Toskanii. Grupa weźmie udział w tradycyjnym obiedzie z degustacją wina oraz zwiedzi historyczne centrum Sieny. Więcej informacji wkrótce."}
                     </p>
                     <div className="text-xs pt-1 border-t border-[#fff7f0]/10 mt-2">
                       <span className="font-medium inline-block w-20">12:00 PM</span>
