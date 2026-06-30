@@ -11,6 +11,9 @@ Deno.serve(async (req) => {
     const body = await req.json();
 
     const names: string[] = Array.isArray(body.names) ? body.names : [];
+    const passportFiles: { base64: string; mimeType: string; fileName: string }[] = Array.isArray(body.passportFiles)
+      ? body.passportFiles
+      : [];
 
     const payload = {
       timestamp: new Date().toISOString(),
@@ -22,6 +25,7 @@ Deno.serve(async (req) => {
       departureShuttle: body.departureShuttle ?? "",
       departurePlan: body.departurePlan ?? null,
       passportUploaded: Boolean(body.passportUploaded),
+      passportFiles,
       florenceRsvp: body.florenceRsvp ?? null,
       travelPlans: body.travelPlans ?? "",
     };
