@@ -20,7 +20,7 @@ const pageContent = {
     beforeYouGoItems: [
       <>
         Confirm your travel{" "}
-        <Link to="/comingsoon" className="underline underline-offset-2 text-primary hover:text-primary/80 transition-colors">
+        <Link to="/shuttle" className="underline underline-offset-2 text-primary hover:text-primary/80 transition-colors">
           here
         </Link>
       </>,
@@ -46,7 +46,7 @@ const pageContent = {
         body: (
           <>
             <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Reserve your spot{" "}
-            <Link to="/comingsoon" className="underline underline-offset-2 hover:text-primary transition-colors">here</Link>{" "}
+            <Link to="/shuttle" className="underline underline-offset-2 hover:text-primary transition-colors">here</Link>{" "}
             before July 16th.
           </>
         ),
@@ -75,7 +75,7 @@ const pageContent = {
     beforeYouGoItems: [
       <>
         Potwierdź swoją podróż{" "}
-        <Link to="/comingsoon" className="underline underline-offset-2 text-primary hover:text-primary/80 transition-colors">
+        <Link to="/shuttle" className="underline underline-offset-2 text-primary hover:text-primary/80 transition-colors">
           tutaj
         </Link>
       </>,
@@ -101,7 +101,7 @@ const pageContent = {
         body: (
           <>
             <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Organizujemy transfery z dworca w Sienie do posiadłości w środę, 16 września, oraz transfery powrotne na dworzec w Sienie w sobotę, 19 września. Zarezerwuj swoje miejsce{" "}
-            <Link to="/comingsoon" className="underline underline-offset-2 hover:text-primary transition-colors">tutaj</Link>{" "}
+            <Link to="/shuttle" className="underline underline-offset-2 hover:text-primary transition-colors">tutaj</Link>{" "}
             przed 16 lipca.
           </>
         ),
@@ -334,7 +334,7 @@ const Travel = () => {
         <FadeIn delay={100}>
           <div className="flex justify-center mt-10">
             <Link
-              to="/comingsoon"
+              to="/shuttle"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
               {t.reserveShuttle}
