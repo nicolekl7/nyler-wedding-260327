@@ -36,7 +36,7 @@ const Navigation = () => {
     { path: "/the-weekend", label: labels.events },
     { path: "https://www.zola.com/registry/nicoleandtylersregistry", label: labels.registry, external: true },
     { path: "/about-us", label: labels.ourStory },
-    { path: "/comingsoon", label: labels.rsvp, cta: true },
+    { path: "/shuttle", label: labels.rsvp, cta: true },
   ];
 
   return (
