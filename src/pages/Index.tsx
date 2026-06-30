@@ -188,10 +188,6 @@ const Index = () => {
                         ? "Grazyna and Waldemar Landmesser invite parents, family, and friends to join them for a quiet day exploring Tuscany. The group will partake in a traditional wine tasting lunch and tour Siena's historic center. More information to follow."
                         : "Grażyna i Waldemar Landmesser zapraszają rodziców, rodzinę i przyjaciół do wspólnego, spokojnego dnia odkrywania Toskanii. Grupa weźmie udział w tradycyjnym obiedzie z degustacją wina oraz zwiedzi historyczne centrum Sieny. Więcej informacji wkrótce."}
                     </p>
-                    <div className="text-xs pt-1 border-t border-[#fff7f0]/10 mt-2">
-                      <span className="font-medium inline-block w-20">12:00 PM</span>
-                      <span className="opacity-90">Shuttle pick up from Borgo</span>
-                    </div>
                   </div>
                 </div>
               </div>
