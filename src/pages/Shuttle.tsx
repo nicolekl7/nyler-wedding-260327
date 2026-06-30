@@ -142,7 +142,7 @@ const Shuttle = () => {
   const [arrivalPlan, setArrivalPlan] = useState<"rental_car" | "private_transfer" | "not_sure" | "">("");
   const [departureWave, setDepartureWave] = useState<Wave | "">("");
   const [departurePlan, setDeparturePlan] = useState<"rental_car" | "private_transfer" | "not_sure" | "">("");
-  const [passportFile, setPassportFile] = useState<File | null>(null);
+  const [passportFiles, setPassportFiles] = useState<(File | null)[]>([null]);
   const [florenceRsvp, setFlorenceRsvp] = useState<"Yes, count me in" | "No" | "Maybe" | "">("");
   const [travelPlans, setTravelPlans] = useState("");
 
@@ -151,7 +151,7 @@ const Shuttle = () => {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const fileRef = useRef<HTMLInputElement | null>(null);
+  const fileRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const loadSeatsUsed = async () => {
     const { data } = await supabase.from("shuttle_signups").select("party_size, arrival_wave, departure_wave");
@@ -195,6 +195,11 @@ const Shuttle = () => {
       while (updated.length < size) updated.push("");
       return updated.slice(0, size);
     });
+    setPassportFiles((prev) => {
+      const updated = [...prev];
+      while (updated.length < size) updated.push(null);
+      return updated.slice(0, size);
+    });
   };
 
   const handleNameChange = (index: number, value: string) => {
@@ -205,7 +210,7 @@ const Shuttle = () => {
     });
   };
 
-  const handlePassportFileChange = (file: File | null) => {
+  const handlePassportFileChange = (index: number, file: File | null) => {
     if (file) {
       if (!ALLOWED_PASSPORT_TYPES.includes(file.type)) {
         toast.error("Please upload a JPG, PNG, HEIC, or PDF file.");
@@ -216,7 +221,11 @@ const Shuttle = () => {
         return;
       }
     }
-    setPassportFile(file);
+    setPassportFiles((prev) => {
+      const next = [...prev];
+      next[index] = file;
+      return next;
+    });
   };
 
   const validate = () => {
@@ -277,10 +286,12 @@ const Shuttle = () => {
     const bookingId = crypto.randomUUID();
     const passportPaths: string[] = [];
 
-    if (passportFile) {
-      const ext = passportFile.name.includes(".") ? passportFile.name.split(".").pop() : "";
-      const path = `${bookingId}/${slugify(trimmedNames[0] ?? "guest")}${ext ? `.${ext}` : ""}`;
-      const { error: uploadError } = await supabase.storage.from("passports").upload(path, passportFile);
+    for (let i = 0; i < passportFiles.length; i++) {
+      const file = passportFiles[i];
+      if (!file) continue;
+      const ext = file.name.includes(".") ? file.name.split(".").pop() : "";
+      const path = `${bookingId}/${slugify(trimmedNames[i] ?? `guest-${i + 1}`)}${ext ? `.${ext}` : ""}`;
+      const { error: uploadError } = await supabase.storage.from("passports").upload(path, file);
       if (uploadError) {
         toast.error("Could not upload passport file. Please try again.");
         setSubmitting(false);
@@ -547,22 +558,35 @@ const Shuttle = () => {
               </div>
               <p className="font-body text-sm text-muted-foreground">
                 Properties in Italy require passport copies for all guests prior to arrival. Upload a photo or scan
-                here to expedite check-in, or send it directly to Nicole or Tyler.
+                for each guest to expedite check-in, or send them directly to Nicole or Tyler.
               </p>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/*,.pdf"
-                className="hidden"
-                onChange={(e) => handlePassportFileChange(e.target.files?.[0] ?? null)}
-              />
-              <button
-                type="button"
-                onClick={() => fileRef.current?.click()}
-                className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-md font-body text-sm text-foreground hover:bg-muted/50 transition-colors"
-              >
-                {passportFile ? passportFile.name : "Upload passport photo or scan"}
-              </button>
+              <div className="space-y-2">
+                {passportFiles.map((file, index) => (
+                  <div key={index} className="space-y-1">
+                    {names.length > 1 && (
+                      <Label className="text-xs text-muted-foreground">
+                        {names[index]?.trim() || `Guest ${index + 1}`}
+                      </Label>
+                    )}
+                    <div>
+                      <input
+                        ref={(el) => (fileRefs.current[index] = el)}
+                        type="file"
+                        accept="image/*,.pdf"
+                        className="hidden"
+                        onChange={(e) => handlePassportFileChange(index, e.target.files?.[0] ?? null)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fileRefs.current[index]?.click()}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-md font-body text-sm text-foreground hover:bg-muted/50 transition-colors"
+                      >
+                        {file ? file.name : "Upload passport photo or scan"}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="w-full h-px bg-border" />
