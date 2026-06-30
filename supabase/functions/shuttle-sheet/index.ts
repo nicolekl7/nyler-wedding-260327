@@ -10,24 +10,9 @@ Deno.serve(async (req) => {
     if (!url) throw new Error("SHUTTLE_SHEET_URL not set");
     const body = await req.json();
 
-    const names: string[] = Array.isArray(body.names) ? body.names : [];
-    const passportFiles: { fileName: string; path: string; url: string | null }[] = Array.isArray(body.passportFiles)
-      ? body.passportFiles
-      : [];
-
     const payload = {
+      ...body,
       timestamp: new Date().toISOString(),
-      email: body.email ?? "",
-      partySize: body.partySize ?? null,
-      names,
-      arrivalShuttle: body.arrivalShuttle ?? "",
-      arrivalPlan: body.arrivalPlan ?? null,
-      departureShuttle: body.departureShuttle ?? "",
-      departurePlan: body.departurePlan ?? null,
-      passportUploaded: Boolean(body.passportUploaded),
-      passportFiles,
-      florenceRsvp: body.florenceRsvp ?? null,
-      travelPlans: body.travelPlans ?? "",
     };
 
     const res = await fetch(url, {
