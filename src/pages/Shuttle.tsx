@@ -228,6 +228,16 @@ const Shuttle = () => {
     });
   };
 
+  const handleRemovePassportFile = (index: number) => {
+    setPassportFiles((prev) => {
+      const next = [...prev];
+      next[index] = null;
+      return next;
+    });
+    const input = fileRefs.current[index];
+    if (input) input.value = "";
+  };
+
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!email.trim()) errs.email = "Email is required";
@@ -588,7 +598,7 @@ const Shuttle = () => {
                         {names[index]?.trim() || `Guest ${index + 1}`}
                       </Label>
                     )}
-                    <div>
+                    <div className="flex items-center gap-2">
                       <input
                         ref={(el) => (fileRefs.current[index] = el)}
                         type="file"
@@ -603,6 +613,16 @@ const Shuttle = () => {
                       >
                         {file ? file.name : "Upload passport photo or scan"}
                       </button>
+                      {file && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemovePassportFile(index)}
+                          aria-label="Remove uploaded passport file"
+                          className="inline-flex items-center justify-center w-8 h-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                        >
+                          ✕
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
