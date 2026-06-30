@@ -663,9 +663,18 @@ const Shuttle = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="relative inline-block w-full max-w-xs py-4 font-body text-xs uppercase tracking-[0.25em] transition-opacity disabled:pointer-events-none overflow-hidden border border-primary"
               >
-                {submitting ? "Submitting..." : "Submit"}
+                {submitting && (
+                  <div
+                    className="absolute inset-0 bg-primary animate-[progress_4s_ease-in-out_forwards]"
+                    style={{ transformOrigin: "left" }}
+                  />
+                )}
+                <span className={`relative z-10 ${submitting ? "text-white" : "text-primary-foreground"}`}>
+                  {submitting ? "Submitting..." : "Submit"}
+                </span>
+                {!submitting && <div className="absolute inset-0 bg-primary -z-0" />}
               </button>
             </div>
           </form>
