@@ -37,13 +37,13 @@ BEGIN
   PERFORM pg_advisory_xact_lock(hashtext('shuttle_signups_capacity'));
 
   IF _arrival_wave <> 'none' THEN
-    cap := CASE _arrival_wave WHEN 'wave_1' THEN 22 ELSE 26 END;
+    cap := 26;
     SELECT COALESCE(SUM(party_size),0) INTO arr_used FROM public.shuttle_signups WHERE arrival_wave = _arrival_wave;
     IF arr_used + _party_size > cap THEN RAISE EXCEPTION 'This shuttle is full, please choose another time.'; END IF;
   END IF;
 
   IF _departure_wave <> 'none' THEN
-    cap := CASE _departure_wave WHEN 'wave_1' THEN 22 ELSE 26 END;
+    cap := 26;
     SELECT COALESCE(SUM(party_size),0) INTO dep_used FROM public.shuttle_signups WHERE departure_wave = _departure_wave;
     IF dep_used + _party_size > cap THEN RAISE EXCEPTION 'This shuttle is full, please choose another time.'; END IF;
   END IF;

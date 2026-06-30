@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
-const WAVE_CAPACITY: Record<"wave_1" | "wave_2", number> = { wave_1: 22, wave_2: 26 };
+const WAVE_CAPACITY: Record<"wave_1" | "wave_2", number> = { wave_1: 26, wave_2: 26 };
 
 type Wave = "wave_1" | "wave_2" | "none";
 
