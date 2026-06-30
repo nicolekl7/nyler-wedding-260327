@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
-const CAPACITY = 28;
+const WAVE_CAPACITY: Record<"wave_1" | "wave_2", number> = { wave_1: 22, wave_2: 26 };
 
 type Wave = "wave_1" | "wave_2" | "none";
 
@@ -319,13 +319,14 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const renderWaveBlock = (direction: "arrival" | "departure", wave: Wave, rows: Signup[]) => {
     const used = rows.reduce((sum, r) => sum + r.party_size, 0);
     const isCapacityWave = wave !== "none";
+    const capacity = isCapacityWave ? WAVE_CAPACITY[wave as "wave_1" | "wave_2"] : 0;
     return (
       <div key={`${direction}-${wave}`} className="border border-border bg-card mb-6">
         <div className="px-5 py-4 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <h3 className="font-serif text-lg text-foreground">{WAVE_LABELS[direction][wave]}</h3>
           {isCapacityWave && (
             <div className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              {used} / {CAPACITY} seats used · {Math.max(0, CAPACITY - used)} remaining
+              {used} / {capacity} seats used · {Math.max(0, capacity - used)} remaining
             </div>
           )}
         </div>

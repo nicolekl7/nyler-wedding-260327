@@ -85,6 +85,22 @@ const AdminReservations = () => {
     setAuthenticating(false);
   };
 
+  const exportCsv = () => {
+    const rows = [["Name", "Email"]];
+    bookings.forEach((b) => {
+      rows.push([b.guest_names ?? "", b.email ?? ""]);
+    });
+    const csv = rows
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "rsvp-names-emails.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
+
   const markPaid = async (b: Booking) => {
     const { error } = await supabase
       .from("room_bookings")
@@ -318,6 +334,13 @@ const AdminReservations = () => {
             </p>
           </div>
           <div className="flex items-center gap-5">
+            <button
+              onClick={exportCsv}
+              disabled={loading || bookings.length === 0}
+              className="font-body text-xs uppercase tracking-[0.2em] text-foreground hover:text-primary transition-colors disabled:opacity-50"
+            >
+              Export CSV
+            </button>
             <button
               onClick={loadData}
               disabled={loading}

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-const CAPACITY = 28;
+const WAVE_CAPACITY: Record<"wave_1" | "wave_2", number> = { wave_1: 22, wave_2: 26 };
 const MAX_PARTY_SIZE = 4;
 const MAX_PASSPORT_BYTES = 10 * 1024 * 1024;
 const ALLOWED_PASSPORT_TYPES = ["image/jpeg", "image/png", "image/heic", "image/heif", "application/pdf"];
@@ -186,7 +186,7 @@ const Shuttle = () => {
   }, []);
 
   const remaining = (direction: "arrival" | "departure", wave: "wave_1" | "wave_2") =>
-    Math.max(0, CAPACITY - (seatsUsed[`${direction}_${wave}`] ?? 0));
+    Math.max(0, WAVE_CAPACITY[wave] - (seatsUsed[`${direction}_${wave}`] ?? 0));
 
   const handlePartySizeChange = (size: number) => {
     setPartySize(size);
