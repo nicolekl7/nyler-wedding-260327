@@ -22,8 +22,24 @@ interface Signup {
   departure_plan: string | null;
   florence_rsvp: string | null;
   arrival_plan: string | null;
-  guest_names: string[] | null;
+  guest_names: string[] | string | null;
 }
+
+const parseGuestNames = (raw: Signup["guest_names"]): string[] => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  const s = String(raw).trim();
+  if (!s) return [];
+  if (s.startsWith("[")) {
+    try {
+      const parsed = JSON.parse(s);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+  return s.split(",").map((n) => n.trim()).filter(Boolean);
+};
 
 const WAVE_LABELS: Record<"arrival" | "departure", Record<Wave, string>> = {
   arrival: {
@@ -338,7 +354,10 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                     <tr key={r.id} className="border-b border-border/50 last:border-0">
                       <td className="px-5 py-3 text-foreground">{r.full_name}</td>
                       <td className="px-5 py-3 text-muted-foreground">
-                        {Array.isArray(r.guest_names) && r.guest_names.length > 1 ? r.guest_names.slice(1).join(", ") : "—"}
+                        {(() => {
+                          const names = parseGuestNames(r.guest_names);
+                          return names.length > 1 ? names.slice(1).join(", ") : "—";
+                        })()}
                       </td>
                       <td className="px-5 py-3 text-foreground">{r.email || "—"}</td>
                       <td className="px-5 py-3 text-foreground">{r.party_size}</td>
