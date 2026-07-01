@@ -52,7 +52,7 @@ const WAVE_LABELS: Record<"arrival" | "departure", Record<Wave, string>> = {
   },
   departure: {
     wave_1: "Wave 1 — depart Borgo 11:00 AM (Sept 19)",
-    wave_2: "Wave 2 — depart Borgo 12:00 PM (Sept 19)",
+    wave_2: "Wave 2 — depart Borgo 12:00 PM (Sept 19) (Check-out is 12 PM)",
     none: "Not Taking Departure Shuttle",
   },
 };
@@ -65,7 +65,7 @@ const ARRIVAL_OPTIONS: { value: Wave; label: string }[] = [
 
 const DEPARTURE_OPTIONS: { value: Wave; label: string }[] = [
   { value: "wave_1", label: "Wave 1 — depart Borgo 11:00 AM" },
-  { value: "wave_2", label: "Wave 2 — depart Borgo 12:00 PM" },
+  { value: "wave_2", label: "Wave 2 — depart Borgo 12:00 PM (Check-out is 12 PM)" },
   { value: "none", label: "Not taking the departure shuttle" },
 ];
 

@@ -30,7 +30,7 @@ const ARRIVAL_WAVES: { value: Wave; label: string; detail: string | null }[] = [
 
 const DEPARTURE_WAVES: { value: Wave; label: string; detail: string | null }[] = [
   { value: "wave_1", label: "Wave 1", detail: "Depart Borgo 11:00 AM" },
-  { value: "wave_2", label: "Wave 2", detail: "Depart Borgo 12:00 PM" },
+  { value: "wave_2", label: "Wave 2", detail: "Depart Borgo 12:00 PM (Check-out is 12 PM)" },
   { value: "none", label: "Not taking the departure shuttle", detail: null },
 ];
 
