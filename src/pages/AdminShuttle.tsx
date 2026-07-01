@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, XAxis, YAxis } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
 const WAVE_CAPACITY: Record<"wave_1" | "wave_2", number> = { wave_1: 26, wave_2: 26 };
+const TOTAL_GUESTS_EXPECTED = 68;
 
 type Wave = "wave_1" | "wave_2" | "none";
 
@@ -65,6 +68,11 @@ const DEPARTURE_OPTIONS: { value: Wave; label: string }[] = [
   { value: "wave_2", label: "Wave 2 — depart Borgo 12:00 PM" },
   { value: "none", label: "Not taking the departure shuttle" },
 ];
+
+const partyTotal = (rows: Signup[]) => rows.reduce((sum, r) => sum + r.party_size, 0);
+
+const shuttleChartConfig: ChartConfig = { count: { label: "Guests" } };
+const photoChartConfig: ChartConfig = { value: { label: "Guests" } };
 
 const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const [unlocked, setUnlocked] = useState(false);
@@ -409,6 +417,71 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const arrival = groupBy("arrival");
   const departure = groupBy("departure");
 
+  const shuttleSummaryData = [
+    { label: "Arrival · Wave 1", count: partyTotal(arrival.wave_1), fill: "hsl(var(--primary))" },
+    { label: "Arrival · Wave 2", count: partyTotal(arrival.wave_2), fill: "hsl(var(--dusty-blue))" },
+    { label: "Arrival · Not Taking", count: partyTotal(arrival.none), fill: "hsl(var(--stone))" },
+    { label: "Departure · Wave 1", count: partyTotal(departure.wave_1), fill: "hsl(var(--primary))" },
+    { label: "Departure · Wave 2", count: partyTotal(departure.wave_2), fill: "hsl(var(--dusty-blue))" },
+    { label: "Departure · Not Taking", count: partyTotal(departure.none), fill: "hsl(var(--stone))" },
+  ];
+
+  const photosUploaded = signups.reduce((sum, s) => sum + (s.passport_paths?.length ?? 0), 0);
+  const photosRemaining = Math.max(0, TOTAL_GUESTS_EXPECTED - photosUploaded);
+  const photoChartData = [
+    { name: "Uploaded", value: photosUploaded, fill: "hsl(var(--primary))" },
+    { name: "Remaining", value: photosRemaining, fill: "hsl(var(--stone))" },
+  ];
+
+  const summarySection = (
+    <section className="mb-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="border border-border bg-card p-5">
+        <h2 className="font-serif text-xl text-foreground mb-1">Shuttle Totals</h2>
+        <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
+          Guests per wave · arrival &amp; departure
+        </p>
+        <ChartContainer config={shuttleChartConfig} className="aspect-auto h-64 w-full">
+          <BarChart data={shuttleSummaryData} layout="vertical" margin={{ left: 12, right: 12 }}>
+            <CartesianGrid horizontal={false} stroke="hsl(var(--border))" />
+            <XAxis type="number" allowDecimals={false} tickLine={false} axisLine={false} />
+            <YAxis type="category" dataKey="label" tickLine={false} axisLine={false} width={140} tick={{ fontSize: 11 }} />
+            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+            <Bar dataKey="count" radius={4}>
+              {shuttleSummaryData.map((entry) => (
+                <Cell key={entry.label} fill={entry.fill} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ChartContainer>
+      </div>
+
+      <div className="border border-border bg-card p-5 flex flex-col">
+        <h2 className="font-serif text-xl text-foreground mb-1">Passport Photos</h2>
+        <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
+          {photosUploaded} of {TOTAL_GUESTS_EXPECTED} guests uploaded · {photosRemaining} left to go
+        </p>
+        <div className="relative flex-1 min-h-[220px]">
+          <ChartContainer config={photoChartConfig} className="aspect-auto h-full w-full">
+            <PieChart>
+              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+              <Pie data={photoChartData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={90} strokeWidth={2}>
+                {photoChartData.map((entry) => (
+                  <Cell key={entry.name} fill={entry.fill} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ChartContainer>
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span className="font-serif text-3xl text-foreground">{photosUploaded}</span>
+            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              of {TOTAL_GUESTS_EXPECTED}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+
   const innerContent = (
     <>
       {!embedded && (
@@ -449,6 +522,8 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
           </button>
         </div>
       )}
+
+      {summarySection}
 
       <section className="mb-12">
         <h2 className="font-serif text-2xl text-foreground mb-4">Arrival — Sept 17</h2>
