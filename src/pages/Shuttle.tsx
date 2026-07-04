@@ -30,7 +30,7 @@ const ARRIVAL_WAVES: { value: Wave; label: string; detail: string | null }[] = [
 
 const DEPARTURE_WAVES: { value: Wave; label: string; detail: string | null }[] = [
   { value: "wave_1", label: "Wave 1", detail: "Depart Borgo 11:00 AM" },
-  { value: "wave_2", label: "Wave 2", detail: "Depart Borgo 12:00 PM (Check-out is 12 PM)" },
+  { value: "wave_2", label: "Wave 2", detail: "Depart Borgo 12:00 PM" },
   { value: "none", label: "Not taking the departure shuttle", detail: null },
 ];
 
@@ -532,7 +532,7 @@ const Shuttle = () => {
 
               <div id="field-departure" className="space-y-3">
                 <h3 className="font-body text-sm font-semibold text-foreground">
-                  Departure Shuttle <span className="text-destructive">*</span>
+                  Departure Shuttle (Check-out is 12 PM) <span className="text-destructive">*</span>
                 </h3>
                 <p className="font-body text-xs text-muted-foreground">September 19 · Borgo Laticastelli → Siena</p>
                 <div className="flex flex-col gap-3">
