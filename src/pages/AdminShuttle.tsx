@@ -91,9 +91,6 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const [editForm, setEditForm] = useState<Partial<Signup>>({});
   const [saving, setSaving] = useState(false);
   const [passportTracker, setPassportTracker] = useState<PassportTrackerEntry[]>([]);
-  const [newTrackerName, setNewTrackerName] = useState("");
-  const [newTrackerReceived, setNewTrackerReceived] = useState(true);
-  const [addingTrackerEntry, setAddingTrackerEntry] = useState(false);
 
   useEffect(() => {
     const ts = localStorage.getItem(SESSION_KEY);
@@ -117,42 +114,27 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     setLoading(false);
   };
 
-  const addTrackerEntry = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const fullName = newTrackerName.trim();
-    if (!fullName) return;
-    setAddingTrackerEntry(true);
-    const { error } = await supabase
-      .from("passport_tracker" as any)
-      .insert({ full_name: fullName, received: newTrackerReceived });
-    setAddingTrackerEntry(false);
-    if (error) {
-      toast.error("Could not add passport entry.");
-      return;
-    }
-    setNewTrackerName("");
-    setNewTrackerReceived(true);
-    loadData();
-  };
+  const normalizeName = (name: string) => name.trim().toLowerCase();
 
-  const toggleTrackerReceived = async (entry: PassportTrackerEntry) => {
-    const { error } = await supabase
-      .from("passport_tracker" as any)
-      .update({ received: !entry.received })
-      .eq("id", entry.id);
-    if (error) {
-      toast.error("Could not update entry.");
-      return;
-    }
-    loadData();
-  };
+  const findTrackerEntry = (name: string) =>
+    passportTracker.find((p) => normalizeName(p.full_name) === normalizeName(name));
 
-  const deleteTrackerEntry = async (entry: PassportTrackerEntry) => {
-    if (!confirm(`Remove ${entry.full_name} from the passport tracker?`)) return;
-    const { error } = await supabase.from("passport_tracker" as any).delete().eq("id", entry.id);
-    if (error) {
-      toast.error("Could not remove entry.");
-      return;
+  const toggleSentSeparately = async (name: string) => {
+    const existing = findTrackerEntry(name);
+    if (existing) {
+      const { error } = await supabase.from("passport_tracker" as any).delete().eq("id", existing.id);
+      if (error) {
+        toast.error("Could not update passport checklist.");
+        return;
+      }
+    } else {
+      const { error } = await supabase
+        .from("passport_tracker" as any)
+        .insert({ full_name: name.trim(), received: true });
+      if (error) {
+        toast.error("Could not update passport checklist.");
+        return;
+      }
     }
     loadData();
   };
@@ -414,11 +396,36 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                     renderEditRow(r)
                   ) : (
                     <tr key={r.id} className="border-b border-border/50 last:border-0">
-                      <td className="px-5 py-3 text-foreground">{r.full_name}</td>
+                      <td className="px-5 py-3 text-foreground">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={!!findTrackerEntry(r.full_name)}
+                            onChange={() => toggleSentSeparately(r.full_name)}
+                            title="Sent passport photo separately"
+                          />
+                          {r.full_name}
+                        </label>
+                      </td>
                       <td className="px-5 py-3 text-muted-foreground">
                         {(() => {
-                          const names = parseGuestNames(r.guest_names);
-                          return names.length > 1 ? names.slice(1).join(", ") : "—";
+                          const names = parseGuestNames(r.guest_names).slice(1);
+                          if (names.length === 0) return "—";
+                          return (
+                            <div className="flex flex-col gap-1">
+                              {names.map((name) => (
+                                <label key={name} className="flex items-center gap-2 cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={!!findTrackerEntry(name)}
+                                    onChange={() => toggleSentSeparately(name)}
+                                    title="Sent passport photo separately"
+                                  />
+                                  {name}
+                                </label>
+                              ))}
+                            </div>
+                          );
                         })()}
                       </td>
                       <td className="px-5 py-3 text-foreground">{r.email || "—"}</td>
@@ -480,9 +487,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   ];
 
   const photosUploadedOnline = signups.reduce((sum, s) => sum + (s.passport_paths?.length ?? 0), 0);
-  const trackerReceived = passportTracker.filter((p) => p.received);
-  const trackerPending = passportTracker.filter((p) => !p.received);
-  const photosUploaded = photosUploadedOnline + trackerReceived.length;
+  const photosUploaded = photosUploadedOnline + passportTracker.length;
   const photosRemaining = Math.max(0, TOTAL_GUESTS_EXPECTED - photosUploaded);
   const photoChartData = [
     { name: "Uploaded", value: photosUploaded, fill: "hsl(var(--primary))" },
@@ -516,7 +521,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
         <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
           {photosUploaded} of {TOTAL_GUESTS_EXPECTED} guests uploaded · {photosRemaining} left to go
           <br />
-          ({photosUploadedOnline} online · {trackerReceived.length} logged manually)
+          ({photosUploadedOnline} online · {passportTracker.length} sent separately)
         </p>
         <div className="relative flex-1 min-h-[220px]">
           <ChartContainer config={photoChartConfig} className="aspect-auto h-full w-full">
@@ -535,104 +540,6 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
               of {TOTAL_GUESTS_EXPECTED}
             </span>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-
-  const passportTrackerSection = (
-    <section className="mb-12 border border-border bg-card p-5">
-      <h2 className="font-serif text-xl text-foreground mb-1">Passport Tracker (Manual)</h2>
-      <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
-        Log guests who sent their passport photo directly — by text, email, or in person — instead of through the
-        online form.
-      </p>
-      <form onSubmit={addTrackerEntry} className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
-        <input
-          type="text"
-          value={newTrackerName}
-          onChange={(e) => setNewTrackerName(e.target.value)}
-          placeholder="Full name"
-          className="flex-1 bg-background border border-border px-3 py-2 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-        />
-        <label className="flex items-center gap-2 font-body text-xs uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap">
-          <input
-            type="checkbox"
-            checked={newTrackerReceived}
-            onChange={(e) => setNewTrackerReceived(e.target.checked)}
-          />
-          Already received
-        </label>
-        <button
-          type="submit"
-          disabled={addingTrackerEntry || !newTrackerName.trim()}
-          className="px-4 py-2 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-50"
-        >
-          {addingTrackerEntry ? "Adding..." : "Add"}
-        </button>
-      </form>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h3 className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">
-            Received ({trackerReceived.length})
-          </h3>
-          {trackerReceived.length === 0 ? (
-            <p className="font-body text-sm text-muted-foreground">None logged yet.</p>
-          ) : (
-            <ul className="space-y-2">
-              {trackerReceived.map((entry) => (
-                <li key={entry.id} className="flex items-center justify-between gap-3 border-b border-border/50 pb-2">
-                  <span className="font-body text-sm text-foreground">{entry.full_name}</span>
-                  <span className="flex gap-3 whitespace-nowrap">
-                    <button
-                      onClick={() => toggleTrackerReceived(entry)}
-                      className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Mark Pending
-                    </button>
-                    <button
-                      onClick={() => deleteTrackerEntry(entry)}
-                      className="font-body text-xs uppercase tracking-[0.15em] text-destructive hover:opacity-70 transition-opacity"
-                    >
-                      Remove
-                    </button>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div>
-          <h3 className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">
-            Still Needed ({trackerPending.length})
-          </h3>
-          {trackerPending.length === 0 ? (
-            <p className="font-body text-sm text-muted-foreground">Nobody pending on the manual list.</p>
-          ) : (
-            <ul className="space-y-2">
-              {trackerPending.map((entry) => (
-                <li key={entry.id} className="flex items-center justify-between gap-3 border-b border-border/50 pb-2">
-                  <span className="font-body text-sm text-foreground">{entry.full_name}</span>
-                  <span className="flex gap-3 whitespace-nowrap">
-                    <button
-                      onClick={() => toggleTrackerReceived(entry)}
-                      className="font-body text-xs uppercase tracking-[0.15em] text-primary hover:opacity-70 transition-opacity"
-                    >
-                      Mark Received
-                    </button>
-                    <button
-                      onClick={() => deleteTrackerEntry(entry)}
-                      className="font-body text-xs uppercase tracking-[0.15em] text-destructive hover:opacity-70 transition-opacity"
-                    >
-                      Remove
-                    </button>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       </div>
     </section>
@@ -680,7 +587,11 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
       )}
 
       {summarySection}
-      {passportTrackerSection}
+
+      <p className="mb-6 font-body text-xs text-muted-foreground">
+        Check a name below if that guest sent their passport photo separately (text, email, in person) instead of
+        through the online form — it will count toward the Passport Photos total above.
+      </p>
 
       <section className="mb-12">
         <h2 className="font-serif text-2xl text-foreground mb-4">Arrival — Sept 17</h2>
