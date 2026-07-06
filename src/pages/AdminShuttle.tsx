@@ -69,6 +69,12 @@ const DEPARTURE_OPTIONS: { value: Wave; label: string }[] = [
   { value: "none", label: "Not taking the departure shuttle" },
 ];
 
+const PLAN_LABELS: Record<string, string> = {
+  rental_car: "Renting a car",
+  private_transfer: "Private transfer / taxi",
+  not_sure: "Not sure yet",
+};
+
 const partyTotal = (rows: Signup[]) => rows.reduce((sum, r) => sum + r.party_size, 0);
 
 const shuttleChartConfig: ChartConfig = { count: { label: "Guests" } };
@@ -215,6 +221,57 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     loadData();
   };
 
+  const waveShortLabel = (w: Wave) => (w === "wave_1" ? "Wave 1" : w === "wave_2" ? "Wave 2" : "Not Taking");
+
+  const exportCsv = () => {
+    const header = [
+      "Full Name",
+      "Guest Names",
+      "Email",
+      "Party Size",
+      "Arrival Wave",
+      "Arrival Plan (if not taking)",
+      "Departure Wave",
+      "Departure Plan (if not taking)",
+      "Florence Sept 15",
+      "Travel Details",
+      "Passports Uploaded Online",
+      "Sent Passport Separately",
+      "WhatsApp Opt-in",
+      "Submitted",
+    ];
+    const rows = signups.map((s) => {
+      const names = parseGuestNames(s.guest_names);
+      const allNames = names.length > 0 ? names : [s.full_name];
+      const sentSeparately = allNames.filter((n) => findTrackerEntry(n));
+      return [
+        s.full_name,
+        names.slice(1).join("; "),
+        s.email ?? "",
+        String(s.party_size),
+        waveShortLabel(s.arrival_wave),
+        s.arrival_wave === "none" ? (PLAN_LABELS[s.arrival_plan ?? ""] ?? "") : "",
+        waveShortLabel(s.departure_wave),
+        s.departure_wave === "none" ? (PLAN_LABELS[s.departure_plan ?? ""] ?? "") : "",
+        s.florence_rsvp ?? "",
+        s.travel_details ?? "",
+        String(s.passport_paths?.length ?? 0),
+        sentSeparately.join("; "),
+        s.whatsapp_optin ? "Yes" : "No",
+        s.created_at,
+      ];
+    });
+    const csv = [header, ...rows]
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "shuttle-signups.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
+
   const openPassport = async (path: string) => {
     const { data, error } = await supabase.storage
       .from("passports")
@@ -263,7 +320,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
 
   const renderEditRow = (s: Signup) => (
     <tr key={s.id} className="border-b border-border/50 last:border-0 bg-secondary/30">
-      <td colSpan={7} className="px-5 py-4">
+      <td colSpan={100} className="px-5 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
           <label className="flex flex-col gap-1">
             <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Full Name</span>
@@ -385,6 +442,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                   <th className="px-5 py-3 font-medium">Email</th>
                   <th className="px-5 py-3 font-medium">Party</th>
                   <th className="px-5 py-3 font-medium">Florence Sept 15</th>
+                  {wave === "none" && <th className="px-5 py-3 font-medium">Travel Plan</th>}
                   <th className="px-5 py-3 font-medium">Travel Details</th>
                   <th className="px-5 py-3 font-medium">Passports</th>
                   <th className="px-5 py-3 font-medium text-right">Actions</th>
@@ -431,6 +489,11 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                       <td className="px-5 py-3 text-foreground">{r.email || "—"}</td>
                       <td className="px-5 py-3 text-foreground">{r.party_size}</td>
                       <td className="px-5 py-3 text-foreground">{r.florence_rsvp || "—"}</td>
+                      {wave === "none" && (
+                        <td className="px-5 py-3 text-foreground">
+                          {PLAN_LABELS[(direction === "arrival" ? r.arrival_plan : r.departure_plan) ?? ""] ?? "—"}
+                        </td>
+                      )}
                       <td className="px-5 py-3 text-muted-foreground whitespace-pre-wrap max-w-xs">{r.travel_details || "—"}</td>
                       <td className="px-5 py-3 text-foreground">
                         {r.passport_paths && r.passport_paths.length > 0 ? (
@@ -557,6 +620,12 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
           </div>
           <div className="flex gap-3">
             <button
+              onClick={exportCsv}
+              className="px-4 py-2 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              Export CSV
+            </button>
+            <button
               onClick={loadData}
               className="px-4 py-2 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
             >
@@ -577,12 +646,20 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
           <p className="font-body text-sm text-muted-foreground">
             {signups.length} total signup{signups.length === 1 ? "" : "s"}
           </p>
-          <button
-            onClick={loadData}
-            className="px-4 py-2 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
-          >
-            {loading ? "Loading..." : "Refresh"}
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={exportCsv}
+              className="px-4 py-2 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              Export CSV
+            </button>
+            <button
+              onClick={loadData}
+              className="px-4 py-2 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              {loading ? "Loading..." : "Refresh"}
+            </button>
+          </div>
         </div>
       )}
 
