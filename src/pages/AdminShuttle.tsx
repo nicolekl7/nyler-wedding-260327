@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, XAxis, YAxis } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
 const WAVE_CAPACITY: Record<"wave_1" | "wave_2", number> = { wave_1: 26, wave_2: 26 };
-const TOTAL_GUESTS_EXPECTED = 68;
+const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", string>> = {
+  arrival: { wave_1: "2 PM", wave_2: "3 PM" },
+  departure: { wave_1: "11 AM", wave_2: "12 PM" },
+};
 
 type Wave = "wave_1" | "wave_2" | "none";
 
@@ -75,17 +76,27 @@ const PLAN_LABELS: Record<string, string> = {
   not_sure: "Not sure yet",
 };
 
-const partyTotal = (rows: Signup[]) => rows.reduce((sum, r) => sum + r.party_size, 0);
-
-const shuttleChartConfig: ChartConfig = { count: { label: "Guests" } };
-const photoChartConfig: ChartConfig = { value: { label: "Guests" } };
-
 interface PassportTrackerEntry {
   id: string;
   created_at: string;
   full_name: string;
   received: boolean;
 }
+
+interface InvitedGuest {
+  id: string;
+  first_name: string;
+  last_name: string;
+  welcome_party_rsvp: string | null;
+  wedding_day_rsvp: string | null;
+  pool_day_rsvp: string | null;
+}
+
+const EVENT_FIELDS: { key: keyof InvitedGuest; label: string }[] = [
+  { key: "welcome_party_rsvp", label: "Welcome" },
+  { key: "wedding_day_rsvp", label: "Wedding" },
+  { key: "pool_day_rsvp", label: "Pool" },
+];
 
 const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const [unlocked, setUnlocked] = useState(false);
@@ -97,6 +108,8 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const [editForm, setEditForm] = useState<Partial<Signup>>({});
   const [saving, setSaving] = useState(false);
   const [passportTracker, setPassportTracker] = useState<PassportTrackerEntry[]>([]);
+  const [invitedGuests, setInvitedGuests] = useState<InvitedGuest[]>([]);
+  const [guestFilter, setGuestFilter] = useState<"all" | "missingShuttle" | "missingPassport">("all");
 
   useEffect(() => {
     const ts = localStorage.getItem(SESSION_KEY);
@@ -109,14 +122,19 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
 
   const loadData = async () => {
     setLoading(true);
-    const [signupsRes, trackerRes] = await Promise.all([
+    const [signupsRes, trackerRes, invitedRes] = await Promise.all([
       supabase.from("shuttle_signups" as any).select("*").order("created_at", { ascending: true }),
       supabase.from("passport_tracker" as any).select("*").order("full_name", { ascending: true }),
+      supabase
+        .from("invited_guests")
+        .select("id, first_name, last_name, welcome_party_rsvp, wedding_day_rsvp, pool_day_rsvp"),
     ]);
     if (signupsRes.error) toast.error("Failed to load signups");
     if (trackerRes.error) toast.error("Failed to load passport tracker");
+    if (invitedRes.error) toast.error("Failed to load guest list");
     setSignups(((signupsRes.data ?? []) as unknown) as Signup[]);
     setPassportTracker(((trackerRes.data ?? []) as unknown) as PassportTrackerEntry[]);
+    setInvitedGuests((invitedRes.data ?? []) as InvitedGuest[]);
     setLoading(false);
   };
 
@@ -128,21 +146,50 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const toggleSentSeparately = async (name: string) => {
     const existing = findTrackerEntry(name);
     if (existing) {
+      setPassportTracker((prev) => prev.filter((p) => p.id !== existing.id));
       const { error } = await supabase.from("passport_tracker" as any).delete().eq("id", existing.id);
       if (error) {
         toast.error("Could not update passport checklist.");
-        return;
+        setPassportTracker((prev) => [...prev, existing]);
       }
-    } else {
-      const { error } = await supabase
-        .from("passport_tracker" as any)
-        .insert({ full_name: name.trim(), received: true });
-      if (error) {
-        toast.error("Could not update passport checklist.");
-        return;
-      }
+      return;
     }
-    loadData();
+    const tempId = `temp-${Date.now()}`;
+    const optimisticEntry: PassportTrackerEntry = {
+      id: tempId,
+      created_at: new Date().toISOString(),
+      full_name: name.trim(),
+      received: true,
+    };
+    setPassportTracker((prev) => [...prev, optimisticEntry]);
+    const { data, error } = await supabase
+      .from("passport_tracker" as any)
+      .insert({ full_name: name.trim(), received: true })
+      .select()
+      .single();
+    if (error) {
+      toast.error("Could not update passport checklist.");
+      setPassportTracker((prev) => prev.filter((p) => p.id !== tempId));
+      return;
+    }
+    setPassportTracker((prev) => prev.map((p) => (p.id === tempId ? ((data as unknown) as PassportTrackerEntry) : p)));
+  };
+
+  const renderSentSeparatelyButton = (name: string) => {
+    const checked = !!findTrackerEntry(name);
+    return (
+      <button
+        type="button"
+        onClick={() => toggleSentSeparately(name)}
+        className={`px-3 py-1 font-body text-[11px] uppercase tracking-[0.15em] border transition-colors whitespace-nowrap ${
+          checked
+            ? "bg-primary text-primary-foreground border-primary"
+            : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+        }`}
+      >
+        {checked ? "✓ Sent" : "Mark Sent"}
+      </button>
+    );
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -455,32 +502,22 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                   ) : (
                     <tr key={r.id} className="border-b border-border/50 last:border-0">
                       <td className="px-5 py-3 text-foreground">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={!!findTrackerEntry(r.full_name)}
-                            onChange={() => toggleSentSeparately(r.full_name)}
-                            title="Sent passport photo separately"
-                          />
-                          {r.full_name}
-                        </label>
+                        <div className="flex items-center gap-2">
+                          <span>{r.full_name}</span>
+                          {renderSentSeparatelyButton(r.full_name)}
+                        </div>
                       </td>
                       <td className="px-5 py-3 text-muted-foreground">
                         {(() => {
                           const names = parseGuestNames(r.guest_names).slice(1);
                           if (names.length === 0) return "—";
                           return (
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-2">
                               {names.map((name) => (
-                                <label key={name} className="flex items-center gap-2 cursor-pointer">
-                                  <input
-                                    type="checkbox"
-                                    checked={!!findTrackerEntry(name)}
-                                    onChange={() => toggleSentSeparately(name)}
-                                    title="Sent passport photo separately"
-                                  />
-                                  {name}
-                                </label>
+                                <div key={name} className="flex items-center gap-2">
+                                  <span>{name}</span>
+                                  {renderSentSeparatelyButton(name)}
+                                </div>
                               ))}
                             </div>
                           );
@@ -540,70 +577,170 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const arrival = groupBy("arrival");
   const departure = groupBy("departure");
 
-  const shuttleSummaryData = [
-    { label: "Arrival · Wave 1", count: partyTotal(arrival.wave_1), fill: "hsl(var(--primary))" },
-    { label: "Arrival · Wave 2", count: partyTotal(arrival.wave_2), fill: "hsl(var(--dusty-blue))" },
-    { label: "Arrival · Not Taking", count: partyTotal(arrival.none), fill: "hsl(var(--stone))" },
-    { label: "Departure · Wave 1", count: partyTotal(departure.wave_1), fill: "hsl(var(--primary))" },
-    { label: "Departure · Wave 2", count: partyTotal(departure.wave_2), fill: "hsl(var(--dusty-blue))" },
-    { label: "Departure · Not Taking", count: partyTotal(departure.none), fill: "hsl(var(--stone))" },
-  ];
+  const shuttleByName = new Map<string, Signup>();
+  signups.forEach((s) => {
+    const names = parseGuestNames(s.guest_names);
+    const allNames = names.length > 0 ? names : [s.full_name];
+    allNames.forEach((n) => shuttleByName.set(normalizeName(n), s));
+  });
 
-  const photosUploadedOnline = signups.reduce((sum, s) => sum + (s.passport_paths?.length ?? 0), 0);
-  const photosUploaded = photosUploadedOnline + passportTracker.length;
-  const photosRemaining = Math.max(0, TOTAL_GUESTS_EXPECTED - photosUploaded);
-  const photoChartData = [
-    { name: "Uploaded", value: photosUploaded, fill: "hsl(var(--primary))" },
-    { name: "Remaining", value: photosRemaining, fill: "hsl(var(--stone))" },
-  ];
+  const attendingGuests = invitedGuests
+    .filter((g) => EVENT_FIELDS.some((f) => g[f.key] === "accept"))
+    .map((g) => ({
+      id: g.id,
+      name: `${g.first_name} ${g.last_name}`.trim(),
+      events: EVENT_FIELDS.filter((f) => g[f.key] === "accept").map((f) => f.label),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
-  const summarySection = (
-    <section className="mb-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="border border-border bg-card p-5">
-        <h2 className="font-serif text-xl text-foreground mb-1">Shuttle Totals</h2>
-        <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
-          Guests per wave · arrival &amp; departure
-        </p>
-        <ChartContainer config={shuttleChartConfig} className="aspect-auto h-64 w-full">
-          <BarChart data={shuttleSummaryData} layout="vertical" margin={{ left: 12, right: 12 }}>
-            <CartesianGrid horizontal={false} stroke="hsl(var(--border))" />
-            <XAxis type="number" allowDecimals={false} tickLine={false} axisLine={false} />
-            <YAxis type="category" dataKey="label" tickLine={false} axisLine={false} width={140} tick={{ fontSize: 11 }} />
-            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="count" radius={4}>
-              {shuttleSummaryData.map((entry) => (
-                <Cell key={entry.label} fill={entry.fill} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ChartContainer>
+  const attendingTotal = attendingGuests.length;
+  const shuttleSubmittedCount = attendingGuests.filter((g) => shuttleByName.has(normalizeName(g.name))).length;
+  const shuttleOutstanding = attendingTotal - shuttleSubmittedCount;
+  const shuttlePct = attendingTotal ? Math.round((shuttleSubmittedCount / attendingTotal) * 100) : 0;
+
+  const passportsReceivedCount = attendingGuests.filter((g) => !!findTrackerEntry(g.name)).length;
+  const passportsPct = attendingTotal ? Math.round((passportsReceivedCount / attendingTotal) * 100) : 0;
+
+  const missingShuttleGuests = attendingGuests.filter((g) => !shuttleByName.has(normalizeName(g.name)));
+  const missingPassportGuests = attendingGuests.filter((g) => !findTrackerEntry(g.name));
+
+  const filteredGuests =
+    guestFilter === "missingShuttle"
+      ? missingShuttleGuests
+      : guestFilter === "missingPassport"
+        ? missingPassportGuests
+        : attendingGuests;
+
+  const guestListSection = (
+    <section className="mb-12">
+      <h2 className="font-serif text-2xl text-foreground mb-1">Attending Guest List</h2>
+      <p className="font-body text-sm text-muted-foreground mb-6">
+        Every invited guest who accepted at least one event, cross-referenced with shuttle signups and passport
+        photos.
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div className="border border-border bg-card p-5">
+          <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Attending</p>
+          <p className="font-serif text-4xl text-foreground">{attendingTotal}</p>
+          <p className="font-body text-xs text-muted-foreground mt-1">guests across all events</p>
+        </div>
+        <div className="border border-border bg-card p-5">
+          <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Shuttle Form</p>
+          <p className="font-serif text-4xl text-foreground">
+            {shuttleSubmittedCount}
+            <span className="text-lg text-muted-foreground"> / {attendingTotal}</span>
+          </p>
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden mt-3 mb-2">
+            <div className="h-full bg-primary" style={{ width: `${shuttlePct}%` }} />
+          </div>
+          <p className="font-body text-xs text-muted-foreground">
+            {shuttlePct}% submitted · {shuttleOutstanding} outstanding
+          </p>
+        </div>
+        <div className="border border-border bg-card p-5">
+          <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">
+            Passports Received
+          </p>
+          <p className="font-serif text-4xl text-foreground">
+            {passportsReceivedCount}
+            <span className="text-lg text-muted-foreground"> / {attendingTotal}</span>
+          </p>
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden mt-3 mb-2">
+            <div className="h-full bg-primary" style={{ width: `${passportsPct}%` }} />
+          </div>
+          <p className="font-body text-xs text-muted-foreground">
+            {passportsPct}% received · form or direct
+          </p>
+        </div>
       </div>
 
-      <div className="border border-border bg-card p-5 flex flex-col">
-        <h2 className="font-serif text-xl text-foreground mb-1">Passport Photos</h2>
-        <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
-          {photosUploaded} of {TOTAL_GUESTS_EXPECTED} guests uploaded · {photosRemaining} left to go
-          <br />
-          ({photosUploadedOnline} online · {passportTracker.length} sent separately)
-        </p>
-        <div className="relative flex-1 min-h-[220px]">
-          <ChartContainer config={photoChartConfig} className="aspect-auto h-full w-full">
-            <PieChart>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-              <Pie data={photoChartData} dataKey="value" nameKey="name" innerRadius={60} outerRadius={90} strokeWidth={2}>
-                {photoChartData.map((entry) => (
-                  <Cell key={entry.name} fill={entry.fill} />
-                ))}
-              </Pie>
-            </PieChart>
-          </ChartContainer>
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="font-serif text-3xl text-foreground">{photosUploaded}</span>
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              of {TOTAL_GUESTS_EXPECTED}
-            </span>
-          </div>
-        </div>
+      <div className="flex gap-2 mb-4 flex-wrap">
+        {(
+          [
+            { key: "all" as const, label: `All (${attendingTotal})` },
+            { key: "missingShuttle" as const, label: `Missing Shuttle (${missingShuttleGuests.length})` },
+            { key: "missingPassport" as const, label: `Missing Passport (${missingPassportGuests.length})` },
+          ]
+        ).map((f) => (
+          <button
+            key={f.key}
+            onClick={() => setGuestFilter(f.key)}
+            className={`px-4 py-2 font-body text-xs uppercase tracking-[0.2em] border transition-colors ${
+              guestFilter === f.key
+                ? "bg-primary text-primary-foreground border-primary"
+                : "border-border text-foreground hover:border-primary"
+            }`}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="border border-border bg-card overflow-x-auto">
+        <table className="w-full text-sm font-body">
+          <thead>
+            <tr className="text-left text-xs uppercase tracking-[0.2em] text-muted-foreground border-b border-border">
+              <th className="px-5 py-3 font-medium">Guest</th>
+              <th className="px-5 py-3 font-medium">Events</th>
+              <th className="px-5 py-3 font-medium">Shuttle</th>
+              <th className="px-5 py-3 font-medium">Passport</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredGuests.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-5 py-4 font-body text-sm text-muted-foreground">
+                  No guests match this filter.
+                </td>
+              </tr>
+            ) : (
+              filteredGuests.map((g) => {
+                const shuttleMatch = shuttleByName.get(normalizeName(g.name));
+                return (
+                  <tr key={g.id} className="border-b border-border/50 last:border-0">
+                    <td className="px-5 py-3 text-foreground">{g.name}</td>
+                    <td className="px-5 py-3">
+                      <div className="flex flex-wrap gap-1.5">
+                        {g.events.map((e) => (
+                          <span
+                            key={e}
+                            className="px-2 py-1 border border-border font-body text-[10px] uppercase tracking-[0.15em] text-muted-foreground"
+                          >
+                            {e}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-5 py-3">
+                      {shuttleMatch ? (
+                        <div className="flex flex-col gap-0.5 text-xs text-foreground">
+                          <span>
+                            Arr ·{" "}
+                            {shuttleMatch.arrival_wave === "none"
+                              ? "Not Taking"
+                              : WAVE_TIME.arrival[shuttleMatch.arrival_wave as "wave_1" | "wave_2"]}
+                          </span>
+                          <span>
+                            Dep ·{" "}
+                            {shuttleMatch.departure_wave === "none"
+                              ? "Not Taking"
+                              : WAVE_TIME.departure[shuttleMatch.departure_wave as "wave_1" | "wave_2"]}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="font-body text-xs uppercase tracking-[0.15em] text-destructive font-medium">
+                          Not Submitted
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-5 py-3">{renderSentSeparatelyButton(g.name)}</td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
       </div>
     </section>
   );
@@ -663,11 +800,11 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
         </div>
       )}
 
-      {summarySection}
+      {guestListSection}
 
       <p className="mb-6 font-body text-xs text-muted-foreground">
-        Check a name below if that guest sent their passport photo separately (text, email, in person) instead of
-        through the online form — it will count toward the Passport Photos total above.
+        Use "Mark Sent" below to record a guest's passport photo that arrived outside the online form — it counts
+        toward the Passports Received total above.
       </p>
 
       <section className="mb-12">
