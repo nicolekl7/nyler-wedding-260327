@@ -604,6 +604,18 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const missingShuttleGuests = attendingGuests.filter((g) => !shuttleByName.has(normalizeName(g.name)));
   const missingPassportGuests = attendingGuests.filter((g) => !findTrackerEntry(g.name));
 
+  const waveBreakdown = (direction: "arrival" | "departure") => {
+    const key = direction === "arrival" ? "arrival_wave" : "departure_wave";
+    const wave1 = attendingGuests.filter((g) => shuttleByName.get(normalizeName(g.name))?.[key] === "wave_1").length;
+    const wave2 = attendingGuests.filter((g) => shuttleByName.get(normalizeName(g.name))?.[key] === "wave_2").length;
+    const none = attendingGuests.filter((g) => shuttleByName.get(normalizeName(g.name))?.[key] === "none").length;
+    const notSubmitted = attendingTotal - wave1 - wave2 - none;
+    return { wave1, wave2, none, notSubmitted, submittedSoFar: wave1 + wave2, maxPossible: attendingTotal - none };
+  };
+
+  const arrivalBreakdown = waveBreakdown("arrival");
+  const departureBreakdown = waveBreakdown("departure");
+
   const filteredGuests =
     guestFilter === "missingShuttle"
       ? missingShuttleGuests
@@ -653,6 +665,49 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
             {passportsPct}% received · form or direct
           </p>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {(
+          [
+            { direction: "arrival" as const, title: "Arrival Shuttle", wave1Label: "2 PM (Wave 1)", wave2Label: "3 PM (Wave 2)", data: arrivalBreakdown },
+            { direction: "departure" as const, title: "Departure Shuttle", wave1Label: "11 AM (Wave 1)", wave2Label: "12 PM (Wave 2)", data: departureBreakdown },
+          ]
+        ).map(({ direction, title, wave1Label, wave2Label, data }) => (
+          <div key={direction} className="border border-border bg-card p-5">
+            <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">{title}</p>
+            <div className="font-body text-sm space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{wave1Label}</span>
+                <span className="text-foreground">{data.wave1}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{wave2Label}</span>
+                <span className="text-foreground">{data.wave2}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Not Taking</span>
+                <span className="text-foreground">{data.none}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Hasn't Submitted</span>
+                <span className="text-foreground">{data.notSubmitted}</span>
+              </div>
+              <div className="flex justify-between border-t border-border/50 pt-1.5 mt-1.5">
+                <span className="text-muted-foreground">Submitted So Far (both times)</span>
+                <span className="text-foreground font-medium">{data.submittedSoFar}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Max Possible Riders</span>
+                <span className="text-foreground font-medium">{data.maxPossible}</span>
+              </div>
+            </div>
+            <p className="font-body text-[11px] text-muted-foreground mt-3">
+              Max possible = {attendingTotal} attending − {data.none} not taking = {data.maxPossible}, assuming
+              everyone who hasn't submitted yet ends up riding.
+            </p>
+          </div>
+        ))}
       </div>
 
       <div className="flex gap-2 mb-4 flex-wrap">
