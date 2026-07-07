@@ -484,7 +484,7 @@ const Shuttle = () => {
                   to be connected with our wedding coordinator, who can share local resources or book a private
                   transfer on your behalf.
                 </p>
-                <p className="font-body text-sm p-4 rounded-md bg-green-50 border border-green-200 text-green-900">
+                <p className="font-body text-sm p-4 rounded-md bg-sage-light border border-sage/30 text-foreground">
                   <span className="font-semibold">IMPORTANT:</span> We are considering moving the 12 pm shuttle
                   earlier to 11-11:30 am pending availability with the shuttle company. If you are interested in
                   this, please let us know in the travel note section.
