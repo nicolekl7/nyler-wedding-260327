@@ -4,7 +4,10 @@ import { toast } from "sonner";
 
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
-const WAVE_CAPACITY: Record<"wave_1" | "wave_2", number> = { wave_1: 26, wave_2: 26 };
+const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
+  arrival: { wave_1: 26, wave_2: 26 },
+  departure: { wave_1: 22, wave_2: 22 },
+};
 const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", string>> = {
   arrival: { wave_1: "2 PM", wave_2: "3 PM" },
   departure: { wave_1: "11 AM", wave_2: "12 PM" },
@@ -466,7 +469,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const renderWaveBlock = (direction: "arrival" | "departure", wave: Wave, rows: Signup[]) => {
     const used = rows.reduce((sum, r) => sum + r.party_size, 0);
     const isCapacityWave = wave !== "none";
-    const capacity = isCapacityWave ? WAVE_CAPACITY[wave as "wave_1" | "wave_2"] : 0;
+    const capacity = isCapacityWave ? WAVE_CAPACITY[direction][wave as "wave_1" | "wave_2"] : 0;
     return (
       <div key={`${direction}-${wave}`} className="border border-border bg-card mb-6">
         <div className="px-5 py-4 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
