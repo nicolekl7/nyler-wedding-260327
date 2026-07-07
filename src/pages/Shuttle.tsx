@@ -398,17 +398,7 @@ const Shuttle = () => {
     <Layout>
       <section className="page-section w-[90%] max-w-[900px] mx-auto">
         <FadeIn>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
-            <h1 className="heading-section text-center">Confirm Your Travel</h1>
-            <a
-              href="https://www.trenitalia.com/en.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-sage text-white font-body text-sm font-semibold rounded-md hover:opacity-90 transition-opacity shrink-0"
-            >
-              Book Train Tickets
-            </a>
-          </div>
+          <h1 className="heading-section text-center mb-4">Confirm Your Travel</h1>
           <div className="w-12 h-px bg-primary mx-auto mb-12" />
         </FadeIn>
 

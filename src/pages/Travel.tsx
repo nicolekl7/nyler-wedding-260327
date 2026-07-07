@@ -332,13 +332,21 @@ const Travel = () => {
           ))}
         </div>
         <FadeIn delay={100}>
-          <div className="flex justify-center mt-10">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-10">
             <Link
               to="/shuttle"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
               {t.reserveShuttle}
             </Link>
+            <a
+              href="https://www.trenitalia.com/en.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+            >
+              Book Train Tickets
+            </a>
           </div>
         </FadeIn>
       </section>
