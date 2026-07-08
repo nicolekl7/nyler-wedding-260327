@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
+const DEFAULT_WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
   arrival: { wave_1: 26, wave_2: 26 },
   departure: { wave_1: 22, wave_2: 22 },
 };
@@ -150,6 +150,7 @@ const Shuttle = () => {
   const [travelPlans, setTravelPlans] = useState("");
 
   const [seatsUsed, setSeatsUsed] = useState<Record<string, number>>({});
+  const [waveCapacity, setWaveCapacity] = useState(DEFAULT_WAVE_CAPACITY);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -173,8 +174,21 @@ const Shuttle = () => {
     setSeatsUsed(used);
   };
 
+  const loadWaveCapacity = async () => {
+    const { data } = await supabase.from("shuttle_capacity" as any).select("direction, wave, capacity");
+    if (!data || data.length === 0) return;
+    setWaveCapacity((prev) => {
+      const next = { arrival: { ...prev.arrival }, departure: { ...prev.departure } };
+      (data as { direction: "arrival" | "departure"; wave: "wave_1" | "wave_2"; capacity: number }[]).forEach((row) => {
+        next[row.direction][row.wave] = row.capacity;
+      });
+      return next;
+    });
+  };
+
   useEffect(() => {
     loadSeatsUsed();
+    loadWaveCapacity();
 
     const channel = supabase
       .channel("shuttle-signups-changes")
@@ -183,13 +197,21 @@ const Shuttle = () => {
       })
       .subscribe();
 
+    const capacityChannel = supabase
+      .channel("shuttle-capacity-changes")
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "shuttle_capacity" }, () => {
+        loadWaveCapacity();
+      })
+      .subscribe();
+
     return () => {
       supabase.removeChannel(channel);
+      supabase.removeChannel(capacityChannel);
     };
   }, []);
 
   const remaining = (direction: "arrival" | "departure", wave: "wave_1" | "wave_2") =>
-    Math.max(0, WAVE_CAPACITY[direction][wave] - (seatsUsed[`${direction}_${wave}`] ?? 0));
+    Math.max(0, waveCapacity[direction][wave] - (seatsUsed[`${direction}_${wave}`] ?? 0));
 
   const handlePartySizeChange = (size: number) => {
     setPartySize(size);

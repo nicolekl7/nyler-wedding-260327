@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
-const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
+const DEFAULT_WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
   arrival: { wave_1: 26, wave_2: 26 },
   departure: { wave_1: 22, wave_2: 22 },
 };
@@ -113,6 +113,9 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const [passportTracker, setPassportTracker] = useState<PassportTrackerEntry[]>([]);
   const [invitedGuests, setInvitedGuests] = useState<InvitedGuest[]>([]);
   const [guestFilter, setGuestFilter] = useState<"all" | "missingShuttle" | "missingPassport">("all");
+  const [waveCapacity, setWaveCapacity] = useState(DEFAULT_WAVE_CAPACITY);
+  const [capacityDraft, setCapacityDraft] = useState(DEFAULT_WAVE_CAPACITY);
+  const [savingCapacity, setSavingCapacity] = useState(false);
 
   useEffect(() => {
     const ts = localStorage.getItem(SESSION_KEY);
@@ -125,20 +128,60 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
 
   const loadData = async () => {
     setLoading(true);
-    const [signupsRes, trackerRes, invitedRes] = await Promise.all([
+    const [signupsRes, trackerRes, invitedRes, capacityRes] = await Promise.all([
       supabase.from("shuttle_signups" as any).select("*").order("created_at", { ascending: true }),
       supabase.from("passport_tracker" as any).select("*").order("full_name", { ascending: true }),
       supabase
         .from("invited_guests")
         .select("id, first_name, last_name, welcome_party_rsvp, wedding_day_rsvp, pool_day_rsvp"),
+      supabase.from("shuttle_capacity" as any).select("direction, wave, capacity"),
     ]);
     if (signupsRes.error) toast.error("Failed to load signups");
     if (trackerRes.error) toast.error("Failed to load passport tracker");
     if (invitedRes.error) toast.error("Failed to load guest list");
+    if (capacityRes.error) toast.error("Failed to load shuttle capacity");
     setSignups(((signupsRes.data ?? []) as unknown) as Signup[]);
     setPassportTracker(((trackerRes.data ?? []) as unknown) as PassportTrackerEntry[]);
     setInvitedGuests((invitedRes.data ?? []) as InvitedGuest[]);
+    if (capacityRes.data && capacityRes.data.length > 0) {
+      const next = { arrival: { ...DEFAULT_WAVE_CAPACITY.arrival }, departure: { ...DEFAULT_WAVE_CAPACITY.departure } };
+      (capacityRes.data as { direction: "arrival" | "departure"; wave: "wave_1" | "wave_2"; capacity: number }[]).forEach(
+        (row) => {
+          next[row.direction][row.wave] = row.capacity;
+        }
+      );
+      setWaveCapacity(next);
+      setCapacityDraft(next);
+    }
     setLoading(false);
+  };
+
+  const saveCapacity = async () => {
+    setSavingCapacity(true);
+    const rows = (["arrival", "departure"] as const).flatMap((direction) =>
+      (["wave_1", "wave_2"] as const).map((wave) => ({
+        direction,
+        wave,
+        capacity: capacityDraft[direction][wave],
+      }))
+    );
+    const results = await Promise.all(
+      rows.map((row) =>
+        supabase
+          .from("shuttle_capacity" as any)
+          .update({ capacity: row.capacity })
+          .eq("direction", row.direction)
+          .eq("wave", row.wave)
+      )
+    );
+    const failed = results.some((r) => r.error);
+    if (failed) {
+      toast.error("Could not save shuttle capacity.");
+    } else {
+      setWaveCapacity(capacityDraft);
+      toast.success("Shuttle capacity updated.");
+    }
+    setSavingCapacity(false);
   };
 
   const normalizeName = (name: string) => name.trim().toLowerCase();
@@ -469,7 +512,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const renderWaveBlock = (direction: "arrival" | "departure", wave: Wave, rows: Signup[]) => {
     const used = rows.reduce((sum, r) => sum + r.party_size, 0);
     const isCapacityWave = wave !== "none";
-    const capacity = isCapacityWave ? WAVE_CAPACITY[direction][wave as "wave_1" | "wave_2"] : 0;
+    const capacity = isCapacityWave ? waveCapacity[direction][wave as "wave_1" | "wave_2"] : 0;
     return (
       <div key={`${direction}-${wave}`} className="border border-border bg-card mb-6">
         <div className="px-5 py-4 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -864,6 +907,45 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
         Use "Mark Sent" below to record a guest's passport photo that arrived outside the online form — it counts
         toward the Passports Received total above.
       </p>
+
+      <section className="mb-12 border border-border bg-card p-5">
+        <h2 className="font-serif text-lg text-foreground mb-4">Shuttle Capacity</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+          {(
+            [
+              { direction: "arrival" as const, wave: "wave_1" as const, label: "Arrival Wave 1" },
+              { direction: "arrival" as const, wave: "wave_2" as const, label: "Arrival Wave 2" },
+              { direction: "departure" as const, wave: "wave_1" as const, label: "Departure Wave 1" },
+              { direction: "departure" as const, wave: "wave_2" as const, label: "Departure Wave 2" },
+            ]
+          ).map(({ direction, wave, label }) => (
+            <div key={`${direction}-${wave}`} className="space-y-1.5">
+              <label className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground block">
+                {label}
+              </label>
+              <input
+                type="number"
+                min={0}
+                value={capacityDraft[direction][wave]}
+                onChange={(e) =>
+                  setCapacityDraft((prev) => ({
+                    ...prev,
+                    [direction]: { ...prev[direction], [wave]: Math.max(0, parseInt(e.target.value || "0", 10)) },
+                  }))
+                }
+                className="w-full px-3 py-2 border border-border bg-background font-body text-sm"
+              />
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={saveCapacity}
+          disabled={savingCapacity}
+          className="px-4 py-2 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors disabled:opacity-50"
+        >
+          {savingCapacity ? "Saving..." : "Save Capacity"}
+        </button>
+      </section>
 
       <section className="mb-12">
         <h2 className="font-serif text-2xl text-foreground mb-4">Arrival — Sept 17</h2>
