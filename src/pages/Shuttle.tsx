@@ -106,7 +106,7 @@ function ShuttleOptionCard({
             disabled ? "text-destructive font-semibold" : selected ? "text-white" : "text-muted-foreground"
           }`}
         >
-          {disabled ? "Full" : `${spotsLeft} spots left`}
+          {disabled ? "Full" : `${spotsLeft} spot${spotsLeft === 1 ? "" : "s"} left`}
         </span>
       )}
     </button>
