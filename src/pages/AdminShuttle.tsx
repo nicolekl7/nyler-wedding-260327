@@ -5,7 +5,7 @@ import { toast } from "sonner";
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
 const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
-  arrival: { wave_1: 26, wave_2: 26 },
+  arrival: { wave_1: 24, wave_2: 24 },
   departure: { wave_1: 22, wave_2: 22 },
 };
 const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", string>> = {
