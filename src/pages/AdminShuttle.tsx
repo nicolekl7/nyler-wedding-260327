@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -9,11 +10,18 @@ const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2",
   departure: { wave_1: 22, wave_2: 22 },
 };
 const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", string>> = {
-  arrival: { wave_1: "2 PM", wave_2: "3 PM" },
-  departure: { wave_1: "11 AM", wave_2: "12 PM" },
+  arrival: { wave_1: "2:00 PM", wave_2: "3:00 PM" },
+  departure: { wave_1: "11:00 AM", wave_2: "12:00 PM" },
 };
 
 type Wave = "wave_1" | "wave_2" | "none";
+type SortMode = "lastName" | "firstName" | "submitted";
+
+const SORT_OPTIONS: { value: SortMode; label: string }[] = [
+  { value: "lastName", label: "Last Name (A–Z)" },
+  { value: "firstName", label: "First Name (A–Z)" },
+  { value: "submitted", label: "Date Submitted" },
+];
 
 interface Signup {
   id: string;
@@ -48,16 +56,32 @@ const parseGuestNames = (raw: Signup["guest_names"]): string[] => {
   return s.split(",").map((n) => n.trim()).filter(Boolean);
 };
 
+const getFirstName = (fullName: string) => fullName.trim().split(/\s+/)[0] ?? fullName;
+const getLastName = (fullName: string) => {
+  const parts = fullName.trim().split(/\s+/);
+  return parts.length > 1 ? parts[parts.length - 1] : (parts[0] ?? fullName);
+};
+
+const sortSignups = (rows: Signup[], mode: SortMode) => {
+  const sorted = [...rows];
+  sorted.sort((a, b) => {
+    if (mode === "submitted") return a.created_at.localeCompare(b.created_at);
+    if (mode === "firstName") return getFirstName(a.full_name).localeCompare(getFirstName(b.full_name));
+    return getLastName(a.full_name).localeCompare(getLastName(b.full_name));
+  });
+  return sorted;
+};
+
 const WAVE_LABELS: Record<"arrival" | "departure", Record<Wave, string>> = {
   arrival: {
-    wave_1: "Wave 1 — depart Siena Train Station 2:00 PM (Sept 17)",
-    wave_2: "Wave 2 — depart Siena Train Station 3:00 PM (Sept 17)",
-    none: "Not Taking Arrival Shuttle",
+    wave_1: "Depart Siena Train Station 2:00 PM (Sept 17)",
+    wave_2: "Depart Siena Train Station 3:00 PM (Sept 17)",
+    none: "Not taking the arrival shuttle",
   },
   departure: {
-    wave_1: "Wave 1 — depart Borgo 11:00 AM (Sept 19)",
-    wave_2: "Wave 2 — depart Borgo 12:00 PM (Sept 19)",
-    none: "Not Taking Departure Shuttle",
+    wave_1: "Depart Borgo 11:00 AM (Sept 19)",
+    wave_2: "Depart Borgo 12:00 PM (Sept 19)",
+    none: "Not taking the departure shuttle",
   },
 };
 
@@ -113,6 +137,10 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const [passportTracker, setPassportTracker] = useState<PassportTrackerEntry[]>([]);
   const [invitedGuests, setInvitedGuests] = useState<InvitedGuest[]>([]);
   const [guestFilter, setGuestFilter] = useState<"all" | "missingShuttle" | "missingPassport">("all");
+  const [sortMode, setSortMode] = useState<SortMode>("lastName");
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [arrivalTab, setArrivalTab] = useState<Wave>("wave_1");
+  const [departureTab, setDepartureTab] = useState<Wave>("wave_1");
 
   useEffect(() => {
     const ts = localStorage.getItem(SESSION_KEY);
@@ -219,6 +247,15 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     localStorage.removeItem(SESSION_KEY);
     setUnlocked(false);
     setPassword("");
+  };
+
+  const toggleExpand = (id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
   const startEdit = (s: Signup) => {
@@ -368,210 +405,265 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     return groups;
   };
 
-  const renderEditRow = (s: Signup) => (
-    <tr key={s.id} className="border-b border-border/50 last:border-0 bg-secondary/30">
-      <td colSpan={100} className="px-5 py-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-          <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Full Name</span>
-            <input
-              type="text"
-              value={editForm.full_name ?? ""}
-              onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-            />
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Email</span>
-            <input
-              type="email"
-              value={editForm.email ?? ""}
-              onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-            />
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Party Size</span>
-            <input
-              type="number"
-              min={1}
-              value={editForm.party_size ?? 1}
-              onChange={(e) => setEditForm({ ...editForm, party_size: Math.max(1, parseInt(e.target.value || "1", 10)) })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary w-32"
-            />
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Arrival Wave</span>
-            <select
-              value={editForm.arrival_wave}
-              onChange={(e) => setEditForm({ ...editForm, arrival_wave: e.target.value as Wave })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-            >
-              {ARRIVAL_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Departure Wave</span>
-            <select
-              value={editForm.departure_wave}
-              onChange={(e) => setEditForm({ ...editForm, departure_wave: e.target.value as Wave })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-            >
-              {DEPARTURE_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>{o.label}</option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Florence Sept 15</span>
-            <select
-              value={editForm.florence_rsvp ?? ""}
-              onChange={(e) => setEditForm({ ...editForm, florence_rsvp: e.target.value || null })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-            >
-              <option value="">—</option>
-              <option value="Yes, count me in">Yes, count me in</option>
-              <option value="No">No</option>
-              <option value="Maybe">Maybe</option>
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 md:col-span-2">
-            <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Travel Details</span>
-            <textarea
-              rows={2}
-              value={editForm.travel_details ?? ""}
-              onChange={(e) => setEditForm({ ...editForm, travel_details: e.target.value })}
-              className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
-            />
-          </label>
-        </div>
-        <div className="flex gap-2 justify-end">
-          <button
-            onClick={cancelEdit}
-            className="px-4 py-2 font-body text-xs uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors"
+  const renderEditForm = (s: Signup) => (
+    <div className="pt-1">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+        <label className="flex flex-col gap-1">
+          <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Full Name</span>
+          <input
+            type="text"
+            value={editForm.full_name ?? ""}
+            onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
+            className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Email</span>
+          <input
+            type="email"
+            value={editForm.email ?? ""}
+            onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+            className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Party Size</span>
+          <input
+            type="number"
+            min={1}
+            value={editForm.party_size ?? 1}
+            onChange={(e) => setEditForm({ ...editForm, party_size: Math.max(1, parseInt(e.target.value || "1", 10)) })}
+            className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary w-32"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Arrival Wave</span>
+          <select
+            value={editForm.arrival_wave}
+            onChange={(e) => setEditForm({ ...editForm, arrival_wave: e.target.value as Wave })}
+            className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
           >
-            Cancel
-          </button>
-          <button
-            onClick={saveEdit}
-            disabled={saving}
-            className="px-4 py-2 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-50"
+            {ARRIVAL_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Departure Wave</span>
+          <select
+            value={editForm.departure_wave}
+            onChange={(e) => setEditForm({ ...editForm, departure_wave: e.target.value as Wave })}
+            className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
           >
-            {saving ? "Saving..." : "Save"}
-          </button>
-        </div>
-      </td>
-    </tr>
+            {DEPARTURE_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Florence Sept 15</span>
+          <select
+            value={editForm.florence_rsvp ?? ""}
+            onChange={(e) => setEditForm({ ...editForm, florence_rsvp: e.target.value || null })}
+            className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
+          >
+            <option value="">—</option>
+            <option value="Yes, count me in">Yes, count me in</option>
+            <option value="No">No</option>
+            <option value="Maybe">Maybe</option>
+          </select>
+        </label>
+        <label className="flex flex-col gap-1 md:col-span-2">
+          <span className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">Travel Details</span>
+          <textarea
+            rows={2}
+            value={editForm.travel_details ?? ""}
+            onChange={(e) => setEditForm({ ...editForm, travel_details: e.target.value })}
+            className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
+          />
+        </label>
+      </div>
+      <div className="flex gap-2 justify-end">
+        <button
+          onClick={cancelEdit}
+          className="px-4 py-2 font-body text-xs uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={saveEdit}
+          disabled={saving}
+          className="px-4 py-2 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-50"
+        >
+          {saving ? "Saving..." : "Save"}
+        </button>
+      </div>
+    </div>
   );
 
-  const renderWaveBlock = (direction: "arrival" | "departure", wave: Wave, rows: Signup[]) => {
-    const used = rows.reduce((sum, r) => sum + r.party_size, 0);
-    const isCapacityWave = wave !== "none";
-    const capacity = isCapacityWave ? WAVE_CAPACITY[direction][wave as "wave_1" | "wave_2"] : 0;
+  const renderPartyRow = (r: Signup, direction: "arrival" | "departure", wave: Wave) => {
+    const isExpanded = expandedIds.has(r.id);
+    const isEditing = editingId === r.id;
+    const names = parseGuestNames(r.guest_names);
+    const extraNames = names.slice(1);
+    const allNames = names.length > 0 ? names : [r.full_name];
+    const sentSeparatelyCount = allNames.filter((n) => findTrackerEntry(n)).length;
+    const uploadedCount = r.passport_paths?.length ?? 0;
+    const passportsAccounted = Math.min(r.party_size, uploadedCount + sentSeparatelyCount);
+    const passportComplete = passportsAccounted >= r.party_size;
+
     return (
-      <div key={`${direction}-${wave}`} className="border border-border bg-card mb-6">
-        <div className="px-5 py-4 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <h3 className="font-serif text-lg text-foreground">{WAVE_LABELS[direction][wave]}</h3>
-          {isCapacityWave && (
-            <div className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              {used} / {capacity} seats used · {Math.max(0, capacity - used)} remaining
-            </div>
-          )}
-        </div>
-        {rows.length === 0 ? (
-          <p className="px-5 py-4 font-body text-sm text-muted-foreground">No signups yet.</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm font-body">
-              <thead>
-                <tr className="text-left text-xs uppercase tracking-[0.2em] text-muted-foreground border-b border-border">
-                  <th className="px-5 py-3 font-medium">Full Name</th>
-                  <th className="px-5 py-3 font-medium">Guest Names</th>
-                  <th className="px-5 py-3 font-medium">Email</th>
-                  <th className="px-5 py-3 font-medium">Party</th>
-                  <th className="px-5 py-3 font-medium">Florence Sept 15</th>
-                  {wave === "none" && <th className="px-5 py-3 font-medium">Travel Plan</th>}
-                  <th className="px-5 py-3 font-medium">Travel Details</th>
-                  <th className="px-5 py-3 font-medium">Passports</th>
-                  <th className="px-5 py-3 font-medium text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) =>
-                  editingId === r.id ? (
-                    renderEditRow(r)
-                  ) : (
-                    <tr key={r.id} className="border-b border-border/50 last:border-0">
-                      <td className="px-5 py-3 text-foreground">
-                        <div className="flex items-center gap-2">
-                          <span>{r.full_name}</span>
-                          {renderSentSeparatelyButton(r.full_name)}
-                        </div>
-                      </td>
-                      <td className="px-5 py-3 text-muted-foreground">
-                        {(() => {
-                          const names = parseGuestNames(r.guest_names).slice(1);
-                          if (names.length === 0) return "—";
-                          return (
-                            <div className="flex flex-col gap-2">
-                              {names.map((name) => (
-                                <div key={name} className="flex items-center gap-2">
-                                  <span>{name}</span>
-                                  {renderSentSeparatelyButton(name)}
-                                </div>
-                              ))}
-                            </div>
-                          );
-                        })()}
-                      </td>
-                      <td className="px-5 py-3 text-foreground">{r.email || "—"}</td>
-                      <td className="px-5 py-3 text-foreground">{r.party_size}</td>
-                      <td className="px-5 py-3 text-foreground">{r.florence_rsvp || "—"}</td>
-                      {wave === "none" && (
-                        <td className="px-5 py-3 text-foreground">
-                          {PLAN_LABELS[(direction === "arrival" ? r.arrival_plan : r.departure_plan) ?? ""] ?? "—"}
-                        </td>
-                      )}
-                      <td className="px-5 py-3 text-muted-foreground whitespace-pre-wrap max-w-xs">{r.travel_details || "—"}</td>
-                      <td className="px-5 py-3 text-foreground">
-                        {r.passport_paths && r.passport_paths.length > 0 ? (
-                          <div className="flex flex-col gap-1">
-                            {r.passport_paths.map((p, i) => (
-                              <button
-                                key={p}
-                                onClick={() => openPassport(p)}
-                                className="text-left font-body text-xs uppercase tracking-[0.15em] text-primary hover:opacity-70 transition-opacity"
-                              >
-                                Passport {i + 1}
-                              </button>
-                            ))}
-                          </div>
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
-                      </td>
-                      <td className="px-5 py-3 text-right whitespace-nowrap">
-                        <button
-                          onClick={() => startEdit(r)}
-                          className="font-body text-xs uppercase tracking-[0.2em] text-primary hover:opacity-70 transition-opacity mr-3"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => deleteRow(r)}
-                          className="font-body text-xs uppercase tracking-[0.2em] text-destructive hover:opacity-70 transition-opacity"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
+      <div key={r.id} className="border-b border-border/50 last:border-0">
+        <button
+          type="button"
+          onClick={() => toggleExpand(r.id)}
+          className="w-full flex items-center justify-between gap-3 px-5 py-3 text-left hover:bg-muted/30 transition-colors"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            {isExpanded ? (
+              <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
+            )}
+            <span className="font-body text-sm text-foreground truncate">
+              {r.full_name}
+              {r.party_size > 1 && <span className="text-muted-foreground"> (+{r.party_size - 1})</span>}
+            </span>
           </div>
+          <span
+            className={`font-body text-[11px] uppercase tracking-[0.15em] shrink-0 ${
+              passportComplete ? "text-primary" : "text-destructive"
+            }`}
+          >
+            {passportComplete ? "Passports OK" : `Passports ${passportsAccounted}/${r.party_size}`}
+          </span>
+        </button>
+
+        {isExpanded && (
+          <div className="px-5 pb-5 bg-secondary/20">
+            {isEditing ? (
+              renderEditForm(r)
+            ) : (
+              <div className="pt-1 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-body text-sm">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">Email</p>
+                    <p className="text-foreground">{r.email || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">Florence Sept 15</p>
+                    <p className="text-foreground">{r.florence_rsvp || "—"}</p>
+                  </div>
+                  {wave === "none" && (
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">Travel Plan</p>
+                      <p className="text-foreground">
+                        {PLAN_LABELS[(direction === "arrival" ? r.arrival_plan : r.departure_plan) ?? ""] ?? "—"}
+                      </p>
+                    </div>
+                  )}
+                  <div className="sm:col-span-2">
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">Travel Details</p>
+                    <p className="text-foreground whitespace-pre-wrap">{r.travel_details || "—"}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Party & Passports</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 font-body text-sm">
+                      <span className="text-foreground">{r.full_name} (primary)</span>
+                      {renderSentSeparatelyButton(r.full_name)}
+                    </div>
+                    {extraNames.map((name) => (
+                      <div key={name} className="flex items-center gap-2 font-body text-sm">
+                        <span className="text-foreground">{name}</span>
+                        {renderSentSeparatelyButton(name)}
+                      </div>
+                    ))}
+                  </div>
+                  {uploadedCount > 0 && (
+                    <div className="flex flex-wrap gap-3 mt-3">
+                      {r.passport_paths!.map((p, i) => (
+                        <button
+                          key={p}
+                          onClick={() => openPassport(p)}
+                          className="font-body text-xs uppercase tracking-[0.15em] text-primary hover:opacity-70 transition-opacity"
+                        >
+                          View Passport {i + 1}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex gap-4 pt-1">
+                  <button
+                    onClick={() => startEdit(r)}
+                    className="font-body text-xs uppercase tracking-[0.2em] text-primary hover:opacity-70 transition-opacity"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deleteRow(r)}
+                    className="font-body text-xs uppercase tracking-[0.2em] text-destructive hover:opacity-70 transition-opacity"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderManifestSection = (direction: "arrival" | "departure") => {
+    const groups = direction === "arrival" ? arrival : departure;
+    const tab = direction === "arrival" ? arrivalTab : departureTab;
+    const setTab = direction === "arrival" ? setArrivalTab : setDepartureTab;
+    const rows = sortSignups(groups[tab], sortMode);
+    const isCapacityWave = tab !== "none";
+    const used = groups[tab].reduce((sum, r) => sum + r.party_size, 0);
+    const capacity = isCapacityWave ? WAVE_CAPACITY[direction][tab as "wave_1" | "wave_2"] : 0;
+    const notTakingCount = groups.none.reduce((sum, r) => sum + r.party_size, 0);
+
+    return (
+      <div className="border border-border bg-card">
+        <div className="flex flex-wrap items-center gap-2 px-5 py-4 border-b border-border">
+          {(["wave_1", "wave_2", "none"] as Wave[]).map((w) => (
+            <button
+              key={w}
+              onClick={() => setTab(w)}
+              className={`px-4 py-2 font-body text-xs uppercase tracking-[0.2em] border transition-colors ${
+                tab === w
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "border-border text-foreground hover:border-primary"
+              }`}
+            >
+              {w === "none"
+                ? `Not Taking (${notTakingCount})`
+                : `Wave ${w === "wave_1" ? "1" : "2"} · ${WAVE_TIME[direction][w]}`}
+            </button>
+          ))}
+        </div>
+
+        <div className="px-5 py-4 border-b border-border">
+          <h3 className="font-serif text-lg text-foreground">
+            {tab === "none"
+              ? `Not Taking the ${direction === "arrival" ? "Arrival" : "Departure"} Shuttle`
+              : `Wave ${tab === "wave_1" ? "1" : "2"} (${WAVE_TIME[direction][tab]}) — ${used} / ${capacity} Seats Used`}
+          </h3>
+          <p className="font-body text-xs text-muted-foreground mt-1">{WAVE_LABELS[direction][tab]}</p>
+        </div>
+
+        {rows.length === 0 ? (
+          <p className="px-5 py-4 font-body text-sm text-muted-foreground">
+            {tab === "none" ? "Everyone has a shuttle assigned." : "No signups yet."}
+          </p>
+        ) : (
+          <div>{rows.map((r) => renderPartyRow(r, direction, tab))}</div>
         )}
       </div>
     );
@@ -579,6 +671,13 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
 
   const arrival = groupBy("arrival");
   const departure = groupBy("departure");
+
+  const arrivalConfirmed =
+    arrival.wave_1.reduce((s, r) => s + r.party_size, 0) + arrival.wave_2.reduce((s, r) => s + r.party_size, 0);
+  const arrivalMax = WAVE_CAPACITY.arrival.wave_1 + WAVE_CAPACITY.arrival.wave_2;
+  const departureConfirmed =
+    departure.wave_1.reduce((s, r) => s + r.party_size, 0) + departure.wave_2.reduce((s, r) => s + r.party_size, 0);
+  const departureMax = WAVE_CAPACITY.departure.wave_1 + WAVE_CAPACITY.departure.wave_2;
 
   const shuttleByName = new Map<string, Signup>();
   signups.forEach((s) => {
@@ -625,6 +724,41 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
       : guestFilter === "missingPassport"
         ? missingPassportGuests
         : attendingGuests;
+
+  const capacitySummary = (
+    <section className="mb-10">
+      <h2 className="font-serif text-2xl text-foreground mb-1">Shuttle Utilization</h2>
+      <p className="font-body text-sm text-muted-foreground mb-4">
+        Confirmed riders against total seat capacity across both waves.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {(
+          [
+            { label: "Arrival Shuttle Riders", confirmed: arrivalConfirmed, max: arrivalMax },
+            { label: "Departure Shuttle Riders", confirmed: departureConfirmed, max: departureMax },
+          ]
+        ).map(({ label, confirmed, max }) => {
+          const pct = max ? Math.min(100, Math.round((confirmed / max) * 100)) : 0;
+          const remaining = Math.max(0, max - confirmed);
+          return (
+            <div key={label} className="border border-border bg-card p-5">
+              <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">{label}</p>
+              <p className="font-serif text-4xl text-foreground">
+                {confirmed}
+                <span className="text-lg text-muted-foreground"> / {max}</span>
+              </p>
+              <div className="h-1.5 bg-muted rounded-full overflow-hidden mt-3 mb-2">
+                <div className="h-full bg-primary" style={{ width: `${pct}%` }} />
+              </div>
+              <p className="font-body text-xs text-muted-foreground">
+                {remaining} seat{remaining === 1 ? "" : "s"} remaining across both waves
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
 
   const guestListSection = (
     <section className="mb-12">
@@ -858,22 +992,47 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
         </div>
       )}
 
-      {guestListSection}
-
-      <p className="mb-6 font-body text-xs text-muted-foreground">
-        Use "Mark Sent" below to record a guest's passport photo that arrived outside the online form — it counts
-        toward the Passports Received total above.
-      </p>
+      {capacitySummary}
 
       <section className="mb-12">
-        <h2 className="font-serif text-2xl text-foreground mb-4">Arrival — Sept 17</h2>
-        {(["wave_1", "wave_2", "none"] as Wave[]).map((w) => renderWaveBlock("arrival", w, arrival[w]))}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+          <div>
+            <h2 className="font-serif text-2xl text-foreground">Shuttle Manifests</h2>
+            <p className="font-body text-xs text-muted-foreground mt-1">
+              Click a party to view flight details, passport status, and edit actions. Use "Mark Sent" inside a
+              party to record a passport photo that arrived outside the online form.
+            </p>
+          </div>
+          <label className="flex items-center gap-2 font-body text-xs uppercase tracking-[0.2em] text-muted-foreground shrink-0">
+            Sort riders by
+            <select
+              value={sortMode}
+              onChange={(e) => setSortMode(e.target.value as SortMode)}
+              className="bg-background border border-border px-2 py-1.5 font-body text-xs text-foreground focus:outline-none focus:border-primary normal-case tracking-normal"
+            >
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div className="mb-8">
+          <h3 className="font-body text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">
+            Arrival — Sept 17
+          </h3>
+          {renderManifestSection("arrival")}
+        </div>
+
+        <div>
+          <h3 className="font-body text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">
+            Departure — Sept 19 (Check-out is 12 PM)
+          </h3>
+          {renderManifestSection("departure")}
+        </div>
       </section>
 
-      <section>
-        <h2 className="font-serif text-2xl text-foreground mb-4">Departure Shuttle — Sept 19 (Check-out is 12 PM)</h2>
-        {(["wave_1", "wave_2", "none"] as Wave[]).map((w) => renderWaveBlock("departure", w, departure[w]))}
-      </section>
+      {guestListSection}
     </>
   );
 
