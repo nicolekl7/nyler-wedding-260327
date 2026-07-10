@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
 const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
-  arrival: { wave_1: 26, wave_2: 26 },
+  arrival: { wave_1: 24, wave_2: 24 },
   departure: { wave_1: 22, wave_2: 22 },
 };
 const MAX_PARTY_SIZE = 4;
