@@ -511,6 +511,10 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     const uploadedCount = r.passport_paths?.length ?? 0;
     const passportsAccounted = Math.min(r.party_size, uploadedCount + sentSeparatelyCount);
     const passportComplete = passportsAccounted >= r.party_size;
+    const planLabel =
+      wave === "none"
+        ? PLAN_LABELS[(direction === "arrival" ? r.arrival_plan : r.departure_plan) ?? ""] ?? "Plan not specified"
+        : null;
 
     return (
       <div key={r.id} className="border-b border-border/50 last:border-0">
@@ -529,6 +533,11 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
               {r.full_name}
               {r.party_size > 1 && <span className="text-muted-foreground"> (+{r.party_size - 1})</span>}
             </span>
+            {planLabel && (
+              <span className="font-body text-xs text-muted-foreground truncate hidden sm:inline">
+                · {planLabel}
+              </span>
+            )}
           </div>
           <span
             className={`font-body text-[11px] uppercase tracking-[0.15em] shrink-0 ${
