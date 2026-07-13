@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
   arrival: { wave_1: 24, wave_2: 24 },
-  departure: { wave_1: 22, wave_2: 22 },
+  departure: { wave_1: 23, wave_2: 23 },
 };
 const MAX_PARTY_SIZE = 4;
 const MAX_PASSPORT_BYTES = 10 * 1024 * 1024;

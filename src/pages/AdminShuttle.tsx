@@ -7,7 +7,7 @@ const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
 const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
   arrival: { wave_1: 24, wave_2: 24 },
-  departure: { wave_1: 22, wave_2: 22 },
+  departure: { wave_1: 23, wave_2: 23 },
 };
 const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", string>> = {
   arrival: { wave_1: "2:00 PM", wave_2: "3:00 PM" },
