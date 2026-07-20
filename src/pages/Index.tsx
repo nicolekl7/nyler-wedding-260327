@@ -155,7 +155,7 @@ const Index = () => {
                   {/* Option 1 */}
                   <div className="border-l-2 border-[#fff7f0]/30 pl-4 space-y-3">
                     <h4 className="italic text-base text-[#fff7f0]">
-                      {language === "en" ? "Option #1: Il Dolce Far Niente" : "Opcja #1: Il Dolce Far Niente"}
+                      {language === "en" ? "Option #1: Recovery Pool Party & Lounge" : "Opcja #1: Relaks przy Basenie"}
                     </h4>
                     <p className="text-xs opacity-75 max-w-xl leading-relaxed">
                       {language === "en"
@@ -181,7 +181,7 @@ const Index = () => {
                   {/* Option 2 */}
                   <div className="border-l-2 border-[#fff7f0]/30 pl-4 space-y-3">
                     <h4 className="italic text-base text-[#fff7f0]">
-                      {language === "en" ? "Option #2: Historic Siena Tour" : "Opcja #2: Wycieczka po Historycznej Sienie"}
+                      {language === "en" ? "Option #2: Family & Parents Siena Wine Tour" : "Opcja #2: Wycieczka Rodziców do Sieny"}
                     </h4>
                     <p className="text-xs opacity-75 max-w-xl leading-relaxed">
                       {language === "en"
