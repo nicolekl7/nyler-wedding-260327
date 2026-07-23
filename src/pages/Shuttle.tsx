@@ -301,9 +301,9 @@ const Shuttle = () => {
             ];
 
             return (
-              <div className="space-y-5">
+              <div className="space-y-4">
                 <div className="text-center">
-                  <h2 className="font-serif text-3xl sm:text-4xl text-foreground leading-[1.05] tracking-tight">
+                  <h2 className="font-serif text-2xl sm:text-3xl text-foreground leading-[1.05] tracking-tight">
                     Your Details
                   </h2>
                 </div>
@@ -311,17 +311,17 @@ const Shuttle = () => {
                 {/* Events */}
                 <Card>
                   <CardTitle>Events</CardTitle>
-                  <ul className="space-y-2.5">
+                  <ul className="space-y-2">
                     {eventRows.map((e) => {
                       const attending = e.rsvp === "yes" || e.rsvp === "accept";
                       const declined = e.rsvp === "no" || e.rsvp === "decline";
 
                       return (
                         <li key={e.label} className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-3">
                             <span
                               className={
-                                "flex items-center justify-center w-6 h-6 rounded-full border " +
+                                "flex items-center justify-center w-5 h-5 rounded-full border " +
                                 (attending
                                   ? "bg-primary border-primary text-primary-foreground"
                                   : declined
@@ -330,10 +330,10 @@ const Shuttle = () => {
                               }
                               aria-label={attending ? "attending" : declined ? "not attending" : "no response"}
                             >
-                              {attending && <Check size={14} strokeWidth={2.5} />}
-                              {declined && <X size={14} strokeWidth={2.5} />}
+                              {attending && <Check size={12} strokeWidth={2.5} />}
+                              {declined && <X size={12} strokeWidth={2.5} />}
                             </span>
-                            <span className="font-serif text-lg text-foreground">{e.label}</span>
+                            <span className="font-serif text-base text-foreground">{e.label}</span>
                           </div>
                           <span className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
                             {e.day}
@@ -348,7 +348,7 @@ const Shuttle = () => {
                 <Card>
                   <CardTitle>Shuttle</CardTitle>
                   {result.shuttle ? (
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-2 gap-5">
                       <WaveBlock label="Arriving" wave={arr} plan={null} />
                       <WaveBlock
                         label="Departing"
@@ -371,33 +371,17 @@ const Shuttle = () => {
 
                 {/* Room */}
                 <Card>
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div>
-                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-2">
-                        Your room
-                      </p>
-                      <h3 className="font-serif text-2xl text-foreground leading-tight">
-                        {result.room?.category_name || "Not staying onsite"}
-                      </h3>
-                    </div>
-                    {result.room && (
-                      <span
-                        className={
-                          "shrink-0 mt-2 font-body text-[10px] uppercase tracking-[0.22em] px-3 py-2 border " +
-                          (result.room.payment_status === "paid"
-                            ? "border-primary text-primary"
-                            : "border-border text-muted-foreground")
-                        }
-                      >
-                        {result.room.payment_status === "paid" ? "Paid in full" : "Payment pending"}
-                      </span>
-                    )}
-                  </div>
+                  <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
+                    Your room
+                  </p>
+                  <h3 className="font-serif text-xl text-foreground leading-tight mb-3">
+                    {result.room?.category_name || "Not staying onsite"}
+                  </h3>
 
                   {roster.length > 0 && !hasMismatch && (
                     <>
-                      <div className="h-px bg-border/70 mb-3" />
-                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-2.5">
+                      <div className="h-px bg-border/70 mb-2" />
+                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
                         {result.room && result.shuttle
                           ? "Your Room:"
                           : result.room
@@ -410,14 +394,14 @@ const Shuttle = () => {
 
                   {hasMismatch && (
                     <>
-                      <div className="h-px bg-border/70 mb-3" />
-                      <p className="font-body text-xs text-muted-foreground mb-2.5 italic">
+                      <div className="h-px bg-border/70 mb-2" />
+                      <p className="font-body text-xs text-muted-foreground mb-1.5 italic">
                         A couple names differ between the room and the shuttle — that's fine, we just
                         want you to see both.
                       </p>
                       {roomGuests.length > 0 && (
-                        <div className="mb-3">
-                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-2">
+                        <div className="mb-2">
+                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
                             Staying in the room
                           </p>
                           <GuestChips names={roomGuests} />
@@ -425,7 +409,7 @@ const Shuttle = () => {
                       )}
                       {shuttleGuests.length > 0 && (
                         <div>
-                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-2">
+                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
                             On the shuttle
                           </p>
                           <GuestChips names={shuttleGuests} />
@@ -436,8 +420,8 @@ const Shuttle = () => {
 
                   {result.invited?.dietary_restrictions && (
                     <>
-                      <div className="h-px bg-border/70 my-3" />
-                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
+                      <div className="h-px bg-border/70 my-2" />
+                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
                         Dietary notes
                       </p>
                       <p className="font-body text-sm text-foreground">
@@ -447,14 +431,14 @@ const Shuttle = () => {
                   )}
 
                   {result.shuttle?.submitted_by && (
-                    <p className="font-body text-xs text-muted-foreground mt-4 leading-relaxed">
+                    <p className="font-body text-xs text-muted-foreground mt-3 leading-relaxed">
                       Submitted by {result.shuttle.submitted_by}. Something look wrong? Reply to your
                       confirmation email and we'll fix it.
                     </p>
                   )}
                 </Card>
 
-                <div className="flex items-center justify-center gap-10 pt-2">
+                <div className="flex items-center justify-center gap-10 pt-1">
                   <button
                     type="button"
                     onClick={reset}
@@ -479,11 +463,11 @@ const Shuttle = () => {
 };
 
 const Card = ({ children }: { children: React.ReactNode }) => (
-  <div className="border border-border/70 bg-card p-5 sm:p-6">{children}</div>
+  <div className="border border-border/70 bg-card p-4 sm:p-5">{children}</div>
 );
 
 const CardTitle = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="font-serif text-xl text-foreground mb-3">{children}</h3>
+  <h3 className="font-serif text-lg text-foreground mb-2">{children}</h3>
 );
 
 const WaveBlock = ({
@@ -496,24 +480,24 @@ const WaveBlock = ({
   plan: string | null;
 }) => (
   <div>
-    <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-2">
+    <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
       {label}
     </p>
     {wave ? (
       <>
-        <p className="font-serif text-2xl text-foreground leading-none mb-1.5">{wave.time}</p>
+        <p className="font-serif text-xl text-foreground leading-none mb-1">{wave.time}</p>
         <p className="font-body text-sm text-muted-foreground leading-snug">
           {wave.from}
           <br />
           to {wave.to}
         </p>
-        <span className="inline-block mt-2.5 font-body text-[10px] uppercase tracking-[0.22em] text-foreground bg-secondary px-3 py-1.5">
+        <span className="inline-block mt-2 font-body text-[10px] uppercase tracking-[0.22em] text-foreground bg-secondary px-3 py-1.5">
           {wave.badge}
         </span>
       </>
     ) : (
       <>
-        <p className="font-serif text-lg text-foreground leading-tight mb-1">
+        <p className="font-serif text-base text-foreground leading-tight mb-1">
           Not taking the shuttle
         </p>
         {plan && (
