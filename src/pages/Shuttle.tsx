@@ -126,27 +126,18 @@ const Shuttle = () => {
       if (bookRes.error) throw bookRes.error;
       if (catRes.error) throw catRes.error;
 
-      const emailNorm = email.trim().toLowerCase();
-
       const invited = (invRes.data || []).find((g) => {
         const full = `${g.first_name} ${g.last_name}`;
-        const emailOk = (g.email || "").trim().toLowerCase() === emailNorm;
-        return namesMatch(full, name) && (emailOk || !g.email);
+        return namesMatch(full, name);
       });
 
-      const invitedByEmail = !invited
-        ? (invRes.data || []).find((g) => (g.email || "").trim().toLowerCase() === emailNorm)
-        : null;
-
-      const finalInvited = invited || invitedByEmail;
-
-      if (!finalInvited) {
+      if (!invited) {
         setNotFound(true);
         setLoading(false);
         return;
       }
 
-      const matchedFullName = `${finalInvited.first_name} ${finalInvited.last_name}`;
+      const matchedFullName = `${invited.first_name} ${invited.last_name}`;
 
       const shuttle = (shuttleRes.data || []).find((s) => {
         if (namesMatch(s.full_name, matchedFullName)) return true;
@@ -157,7 +148,6 @@ const Shuttle = () => {
       const catMap = new Map((catRes.data || []).map((c) => [c.id, c.name]));
       const room = (bookRes.data || []).find((b) => {
         if (b.is_released) return false;
-        if ((b.email || "").trim().toLowerCase() === emailNorm) return true;
         const guests = parseGuestList(b.guest_names);
         return guests.some((g) => namesMatch(g, matchedFullName));
       });
@@ -165,11 +155,11 @@ const Shuttle = () => {
       setResult({
         matchedName: matchedFullName,
         invited: {
-          welcome_party_rsvp: finalInvited.welcome_party_rsvp,
-          pool_day_rsvp: finalInvited.pool_day_rsvp,
-          wedding_day_rsvp: finalInvited.wedding_day_rsvp,
-          email: finalInvited.email,
-          dietary_restrictions: finalInvited.dietary_restrictions,
+          welcome_party_rsvp: invited.welcome_party_rsvp,
+          pool_day_rsvp: invited.pool_day_rsvp,
+          wedding_day_rsvp: invited.wedding_day_rsvp,
+          email: invited.email,
+          dietary_restrictions: invited.dietary_restrictions,
         },
         shuttle: shuttle
           ? {
