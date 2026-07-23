@@ -11,7 +11,7 @@ const navLabels = {
     events: "Attire",
     registry: "Registry",
     ourStory: "Our Story",
-    rsvp: "CONFIRM TRAVEL",
+    rsvp: "My Details",
   },
   pl: {
     home: "Plan",
@@ -19,7 +19,7 @@ const navLabels = {
     events: "Strój",
     registry: "Lista prezentów",
     ourStory: "Nasza historia",
-    rsvp: "POTWIERDŹ PODRÓŻ",
+    rsvp: "Moje Dane",
   },
 };
 

@@ -1,716 +1,540 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Check, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { supabase } from "@/integrations/supabase/client";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
-  arrival: { wave_1: 24, wave_2: 24 },
-  departure: { wave_1: 23, wave_2: 23 },
+// ---------- name normalization + nickname matching ----------
+const NICKNAMES: Record<string, string[]> = {
+  ala: ["alicja"], alicja: ["ala"],
+  bri: ["brianna"], brianna: ["bri"],
+  nick: ["nicholas"], nicholas: ["nick"],
+  ray: ["raymond"], raymond: ["ray"],
+  mike: ["michael"], michael: ["mike"],
+  tom: ["thomas"], thomas: ["tom"],
+  cathy: ["catherine"], catherine: ["cathy"],
+  fil: ["filip"], filip: ["fil"],
 };
-const MAX_PARTY_SIZE = 4;
-const MAX_PASSPORT_BYTES = 10 * 1024 * 1024;
-const ALLOWED_PASSPORT_TYPES = ["image/jpeg", "image/png", "image/heic", "image/heif", "application/pdf"];
-const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/JxILxYsQ4cHEiOPRRsvXbL";
 
-const slugify = (value: string) =>
-  value
-    .trim()
+const norm = (s: string) =>
+  (s || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "") || "guest";
+    .replace(/[^a-z\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-type Wave = "wave_1" | "wave_2" | "none";
+const firstLast = (full: string) => {
+  const parts = norm(full).split(" ").filter(Boolean);
+  if (parts.length === 0) return { first: "", last: "" };
+  return { first: parts[0], last: parts[parts.length - 1] };
+};
 
-const ARRIVAL_WAVES: { value: Wave; label: string; detail: string | null }[] = [
-  { value: "wave_1", label: "Wave 1", detail: "Depart Siena Train Station 2:00 PM" },
-  { value: "wave_2", label: "Wave 2", detail: "Depart Siena Train Station 3:00 PM" },
-  { value: "none", label: "Not taking the arrival shuttle", detail: null },
-];
+const firstMatches = (a: string, b: string) => {
+  if (!a || !b) return false;
+  if (a === b) return true;
+  if (a.length >= 3 && b.length >= 3 && (a.startsWith(b) || b.startsWith(a))) return true;
+  if ((NICKNAMES[a] || []).includes(b)) return true;
+  if ((NICKNAMES[b] || []).includes(a)) return true;
+  return false;
+};
 
-const DEPARTURE_WAVES: { value: Wave; label: string; detail: string | null }[] = [
-  { value: "wave_1", label: "Wave 1", detail: "Depart Borgo 11:00 AM" },
-  { value: "wave_2", label: "Wave 2", detail: "Depart Borgo 12:00 PM" },
-  { value: "none", label: "Not taking the departure shuttle", detail: null },
-];
+const namesMatch = (a: string, b: string) => {
+  const A = firstLast(a);
+  const B = firstLast(b);
+  if (!A.last || !B.last) return false;
+  return A.last === B.last && firstMatches(A.first, B.first);
+};
 
-const ARRIVAL_PLANS: { value: "rental_car" | "private_transfer" | "not_sure"; label: string }[] = [
-  { value: "rental_car", label: "Renting a car" },
-  { value: "private_transfer", label: "Arranging a private transfer or taxi" },
-  { value: "not_sure", label: "Not sure yet" },
-];
+// Parse guest_names (JSON array string or comma/plus separated)
+const parseGuestList = (raw: string | null | undefined): string[] => {
+  if (!raw) return [];
+  const s = raw.trim();
+  if (s.startsWith("[")) {
+    try {
+      const arr = JSON.parse(s);
+      if (Array.isArray(arr)) return arr.map((x) => String(x).trim()).filter(Boolean);
+    } catch { /* fall through */ }
+  }
+  return s.split(/[,;+&]|\band\b/i).map((x) => x.trim()).filter(Boolean);
+};
 
-const DEPARTURE_PLANS: { value: "rental_car" | "private_transfer" | "not_sure"; label: string }[] = [
-  { value: "rental_car", label: "Renting a car" },
-  { value: "private_transfer", label: "Arranging a private transfer or taxi" },
-  { value: "not_sure", label: "Not sure yet" },
-];
+// ---------- display helpers ----------
+type WaveDetail = { time: string; from: string; to: string; badge: string };
+const ARRIVAL_WAVES: Record<string, WaveDetail> = {
+  wave_1: { time: "2:00 pm", from: "Siena train station", to: "the Borgo", badge: "Wave 1" },
+  wave_2: { time: "3:00 pm", from: "Siena train station", to: "the Borgo", badge: "Wave 2" },
+};
+const DEPARTURE_WAVES: Record<string, WaveDetail> = {
+  wave_1: { time: "10:00 am", from: "The Borgo", to: "Siena train station", badge: "Wave 1" },
+  wave_2: { time: "11:00 am", from: "The Borgo", to: "Siena train station", badge: "Wave 2" },
+};
 
-const FLORENCE_OPTIONS: { value: "Yes, count me in" | "No" | "Maybe" }[] = [
-  { value: "Yes, count me in" },
-  { value: "No" },
-  { value: "Maybe" },
-];
+const DEPARTURE_PLAN_LABEL: Record<string, string> = {
+  rental_car: "Renting a car",
+  private_transfer: "Private transfer or taxi",
+  not_sure: "Not sure yet",
+};
 
-const NOT_ENOUGH_SPOTS_ERROR = "Please select an option that has enough spots for your party.";
-
-function FieldError({ message }: { message?: string }) {
-  if (!message) return null;
-  return <p className="text-sm text-destructive font-medium mt-1.5">{message}</p>;
-}
-
-function ShuttleOptionCard({
-  label,
-  detail,
-  spotsLeft,
-  disabled,
-  selected,
-  onSelect,
-}: {
-  label: string;
-  detail: string | null;
-  spotsLeft: number | null;
-  disabled: boolean;
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      disabled={disabled}
-      className={`flex items-center justify-between w-full p-4 border rounded-md text-left transition-all ${
-        selected
-          ? "border-sage bg-sage text-white"
-          : "border-input bg-background hover:bg-muted/50"
-      } ${disabled ? "opacity-40 cursor-not-allowed hover:bg-background" : "cursor-pointer"}`}
-    >
-      <div className="flex items-center gap-3">
-        <div
-          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
-            selected ? "border-white" : "border-border"
-          }`}
-        >
-          {selected && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
-        </div>
-        <span className="font-body text-sm font-medium">
-          {detail ? `${label} — ${detail}` : label}
-        </span>
-      </div>
-      {spotsLeft !== null && (
-        <span
-          className={`text-xs uppercase tracking-wider shrink-0 ml-3 ${
-            disabled ? "text-destructive font-semibold" : selected ? "text-white" : "text-muted-foreground"
-          }`}
-        >
-          {disabled ? "Full" : `${spotsLeft} spot${spotsLeft === 1 ? "" : "s"} left`}
-        </span>
-      )}
-    </button>
-  );
-}
-
-function PillOption({
-  label,
-  selected,
-  onSelect,
-}: {
-  label: string;
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`px-4 py-2.5 border rounded-md font-body text-sm transition-all ${
-        selected
-          ? "border-sage bg-sage text-white font-medium"
-          : "border-input bg-background hover:bg-muted/50"
-      }`}
-    >
-      {label}
-    </button>
-  );
+interface LookupResult {
+  matchedName: string;
+  invited: {
+    welcome_party_rsvp: string | null;
+    pool_day_rsvp: string | null;
+    wedding_day_rsvp: string | null;
+    email: string | null;
+    dietary_restrictions: string | null;
+  } | null;
+  shuttle: {
+    arrival_wave: string;
+    departure_wave: string;
+    departure_plan: string | null;
+    party_size: number;
+    guests: string[];
+    submitted_by: string;
+  } | null;
+  room: {
+    category_name: string | null;
+    guest_names: string;
+    payment_status: string;
+  } | null;
 }
 
 const Shuttle = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [partySize, setPartySize] = useState(1);
-  const [names, setNames] = useState<string[]>([""]);
-  const [arrivalWave, setArrivalWave] = useState<Wave | "">("");
-  const [arrivalPlan, setArrivalPlan] = useState<"rental_car" | "private_transfer" | "not_sure" | "">("");
-  const [departureWave, setDepartureWave] = useState<Wave | "">("");
-  const [departurePlan, setDeparturePlan] = useState<"rental_car" | "private_transfer" | "not_sure" | "">("");
-  const [passportFiles, setPassportFiles] = useState<(File | null)[]>([null]);
-  const [florenceRsvp, setFlorenceRsvp] = useState<"Yes, count me in" | "No" | "Maybe" | "">("");
-  const [travelPlans, setTravelPlans] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<LookupResult | null>(null);
+  const [notFound, setNotFound] = useState(false);
 
-  const [seatsUsed, setSeatsUsed] = useState<Record<string, number>>({});
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const fileRefs = useRef<(HTMLInputElement | null)[]>([]);
-
-  const loadSeatsUsed = async () => {
-    const { data } = await supabase.from("shuttle_signups").select("party_size, arrival_wave, departure_wave");
-    const used: Record<string, number> = {
-      arrival_wave_1: 0,
-      arrival_wave_2: 0,
-      departure_wave_1: 0,
-      departure_wave_2: 0,
-    };
-    (data ?? []).forEach((row) => {
-      if (row.arrival_wave === "wave_1") used.arrival_wave_1 += row.party_size;
-      if (row.arrival_wave === "wave_2") used.arrival_wave_2 += row.party_size;
-      if (row.departure_wave === "wave_1") used.departure_wave_1 += row.party_size;
-      if (row.departure_wave === "wave_2") used.departure_wave_2 += row.party_size;
-    });
-    setSeatsUsed(used);
-  };
-
-  useEffect(() => {
-    loadSeatsUsed();
-
-    const channel = supabase
-      .channel("shuttle-signups-changes")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "shuttle_signups" }, () => {
-        loadSeatsUsed();
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const remaining = (direction: "arrival" | "departure", wave: "wave_1" | "wave_2") =>
-    Math.max(0, WAVE_CAPACITY[direction][wave] - (seatsUsed[`${direction}_${wave}`] ?? 0));
-
-  const handlePartySizeChange = (size: number) => {
-    setPartySize(size);
-    setNames((prev) => {
-      const updated = [...prev];
-      while (updated.length < size) updated.push("");
-      return updated.slice(0, size);
-    });
-    setPassportFiles((prev) => {
-      const updated = [...prev];
-      while (updated.length < size) updated.push(null);
-      return updated.slice(0, size);
-    });
-  };
-
-  const handleNameChange = (index: number, value: string) => {
-    setNames((prev) => {
-      const next = [...prev];
-      next[index] = value;
-      return next;
-    });
-  };
-
-  const handlePassportFileChange = (index: number, file: File | null) => {
-    if (file) {
-      if (!ALLOWED_PASSPORT_TYPES.includes(file.type)) {
-        toast.error("Please upload a JPG, PNG, HEIC, or PDF file.");
-        return;
-      }
-      if (file.size > MAX_PASSPORT_BYTES) {
-        toast.error("File is too large. Max size is 10MB.");
-        return;
-      }
-    }
-    setPassportFiles((prev) => {
-      const next = [...prev];
-      next[index] = file;
-      return next;
-    });
-  };
-
-  const handleRemovePassportFile = (index: number) => {
-    setPassportFiles((prev) => {
-      const next = [...prev];
-      next[index] = null;
-      return next;
-    });
-    const input = fileRefs.current[index];
-    if (input) input.value = "";
-  };
-
-  const validate = () => {
-    const errs: Record<string, string> = {};
-    if (!email.trim()) errs.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(email)) errs.email = "Enter a valid email";
-    names.forEach((n, i) => {
-      if (!n.trim()) errs[`name_${i}`] = "Name is required";
-    });
-    if (!arrivalWave) errs.arrival = "Select an arrival option";
-    if (arrivalWave === "none" && !arrivalPlan) errs.arrivalPlan = "Let us know your plan";
-    if (!departureWave) errs.departure = "Select a departure option";
-    if (departureWave === "none" && !departurePlan) errs.departurePlan = "Let us know your plan";
-
-    if (arrivalWave === "wave_1" || arrivalWave === "wave_2") {
-      if (partySize > remaining("arrival", arrivalWave)) errs.arrival = NOT_ENOUGH_SPOTS_ERROR;
-    }
-    if (departureWave === "wave_1" || departureWave === "wave_2") {
-      if (partySize > remaining("departure", departureWave)) errs.departure = NOT_ENOUGH_SPOTS_ERROR;
-    }
-
-    setErrors(errs);
-
-    if (Object.keys(errs).length > 0) {
-      const order = ["email", ...names.map((_, i) => `name_${i}`), "arrival", "arrivalPlan", "departure", "departurePlan"];
-      const firstKey = order.find((k) => errs[k]);
-      if (firstKey) {
-        document.getElementById(`field-${firstKey}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-
-    return Object.keys(errs).length === 0;
-  };
-
-  const PASSPORT_URL_TTL_SECONDS = 60 * 60 * 24 * 7;
-
-  const syncToAppsScript = async (payload: {
-    email: string;
-    partySize: number;
-    names: string[];
-    arrivalShuttle: string;
-    arrivalPlan: string | null;
-    departureShuttle: string;
-    departurePlan: string | null;
-    passportUploaded: boolean;
-    passportFiles: { fileName: string; path: string; url: string | null }[];
-    florenceRsvp: string | null;
-    travelPlans: string;
-  }) => {
-    try {
-      const { error } = await supabase.functions.invoke("shuttle-sheet", { body: payload });
-      if (error) console.error("shuttle-sheet sync failed:", error);
-    } catch (err) {
-      console.error("shuttle-sheet sync failed:", err);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLookup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
-
-    setSubmitting(true);
-
-    const trimmedNames = names.map((n) => n.trim());
-
-    const bookingId = crypto.randomUUID();
-    const passportPaths: string[] = [];
-    const uploadedPassportFiles: { fileName: string; path: string }[] = [];
-
-    for (let i = 0; i < passportFiles.length; i++) {
-      const file = passportFiles[i];
-      if (!file) continue;
-      const ext = file.name.includes(".") ? file.name.split(".").pop() : "";
-      const path = `${bookingId}/${slugify(trimmedNames[i] ?? `guest-${i + 1}`)}${ext ? `.${ext}` : ""}`;
-      const { error: uploadError } = await supabase.storage.from("passports").upload(path, file);
-      if (uploadError) {
-        toast.error("Could not upload passport file. Please try again.");
-        setSubmitting(false);
-        return;
-      }
-      passportPaths.push(path);
-      uploadedPassportFiles.push({ fileName: file.name, path });
-    }
-
-    const { data, error } = await supabase.rpc("book_shuttle", {
-      _full_name: trimmedNames[0],
-      _party_size: partySize,
-      _arrival_wave: arrivalWave,
-      _departure_wave: departureWave,
-      _whatsapp_optin: false,
-      _travel_details: travelPlans.trim() || null,
-      _email: email.trim(),
-      _passport_paths: passportPaths,
-      _departure_plan: departurePlan || null,
-      _florence_rsvp: florenceRsvp || null,
-      _arrival_plan: arrivalPlan || null,
-      _guest_names: trimmedNames,
-    });
-
-    if (error) {
-      toast.error(error.message.toLowerCase().includes("full") ? error.message : NOT_ENOUGH_SPOTS_ERROR);
-      setSubmitting(false);
-      loadSeatsUsed();
+    if (!name.trim() || !email.trim()) {
+      toast.error("Please enter your name and email.");
       return;
     }
+    setLoading(true);
+    setResult(null);
+    setNotFound(false);
 
-    const passportFilesForSync: { fileName: string; path: string; url: string | null }[] = await Promise.all(
-      uploadedPassportFiles.map(async ({ fileName, path }) => {
-        const { data: signedData } = await supabase.storage
-          .from("passports")
-          .createSignedUrl(path, PASSPORT_URL_TTL_SECONDS);
-        return { fileName, path, url: signedData?.signedUrl ?? null };
-      })
-    );
+    try {
+      const [invRes, shuttleRes, bookRes, catRes] = await Promise.all([
+        supabase.from("invited_guests").select("first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,dietary_restrictions"),
+        supabase.from("shuttle_signups").select("full_name,email,arrival_wave,departure_wave,departure_plan,party_size,guest_names"),
+        supabase.from("room_bookings").select("email,guest_names,room_category_id,payment_status,is_released"),
+        supabase.from("room_categories").select("id,name"),
+      ]);
 
-    await syncToAppsScript({
-      email: email.trim(),
-      partySize,
-      names: trimmedNames,
-      arrivalShuttle: arrivalWave === "wave_1" ? "arr1" : arrivalWave === "wave_2" ? "arr2" : "arr_none",
-      arrivalPlan: arrivalPlan || null,
-      departureShuttle: departureWave === "wave_1" ? "dep1" : departureWave === "wave_2" ? "dep2" : "dep_none",
-      departurePlan: departurePlan || null,
-      passportUploaded: passportPaths.length > 0,
-      passportFiles: passportFilesForSync,
-      florenceRsvp: florenceRsvp || null,
-      travelPlans: travelPlans.trim(),
-    });
+      if (invRes.error) throw invRes.error;
+      if (shuttleRes.error) throw shuttleRes.error;
+      if (bookRes.error) throw bookRes.error;
+      if (catRes.error) throw catRes.error;
 
-    setSubmitting(false);
-    setSubmitted(true);
-    void data;
+      const emailNorm = email.trim().toLowerCase();
+
+      const invited = (invRes.data || []).find((g) => {
+        const full = `${g.first_name} ${g.last_name}`;
+        const emailOk = (g.email || "").trim().toLowerCase() === emailNorm;
+        return namesMatch(full, name) && (emailOk || !g.email);
+      });
+
+      const invitedByEmail = !invited
+        ? (invRes.data || []).find((g) => (g.email || "").trim().toLowerCase() === emailNorm)
+        : null;
+
+      const finalInvited = invited || invitedByEmail;
+
+      if (!finalInvited) {
+        setNotFound(true);
+        setLoading(false);
+        return;
+      }
+
+      const matchedFullName = `${finalInvited.first_name} ${finalInvited.last_name}`;
+
+      const shuttle = (shuttleRes.data || []).find((s) => {
+        if (namesMatch(s.full_name, matchedFullName)) return true;
+        const guests = parseGuestList(s.guest_names);
+        return guests.some((g) => namesMatch(g, matchedFullName));
+      });
+
+      const catMap = new Map((catRes.data || []).map((c) => [c.id, c.name]));
+      const room = (bookRes.data || []).find((b) => {
+        if (b.is_released) return false;
+        if ((b.email || "").trim().toLowerCase() === emailNorm) return true;
+        const guests = parseGuestList(b.guest_names);
+        return guests.some((g) => namesMatch(g, matchedFullName));
+      });
+
+      setResult({
+        matchedName: matchedFullName,
+        invited: {
+          welcome_party_rsvp: finalInvited.welcome_party_rsvp,
+          pool_day_rsvp: finalInvited.pool_day_rsvp,
+          wedding_day_rsvp: finalInvited.wedding_day_rsvp,
+          email: finalInvited.email,
+          dietary_restrictions: finalInvited.dietary_restrictions,
+        },
+        shuttle: shuttle
+          ? {
+              arrival_wave: shuttle.arrival_wave,
+              departure_wave: shuttle.departure_wave,
+              departure_plan: shuttle.departure_plan,
+              party_size: shuttle.party_size,
+              guests: parseGuestList(shuttle.guest_names),
+              submitted_by: shuttle.full_name,
+            }
+          : null,
+        room: room
+          ? {
+              category_name: catMap.get(room.room_category_id) || null,
+              guest_names: room.guest_names,
+              payment_status: room.payment_status,
+            }
+          : null,
+      });
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (submitted) {
-    return (
-      <Layout>
-        <section className="page-section w-[90%] max-w-[900px] mx-auto text-center">
-          <FadeIn>
-            <h1 className="heading-section mb-4">Travel Confirmed</h1>
-            <div className="w-12 h-px bg-primary mx-auto mb-8" />
-            <p className="body-editorial mx-auto text-balance max-w-none">
-              We've got your details. If anything changes, fill out the form again or email us at{" "}
-              <a href="mailto:nicoleandtylersitalianwedding@gmail.com" className="underline text-primary">
-                nicoleandtylersitalianwedding@gmail.com
-              </a>
-              .
-            </p>
-            <p className="font-display italic text-lg text-foreground mt-8">Ci vediamo in Italia!</p>
-          </FadeIn>
-        </section>
-      </Layout>
-    );
-  }
+  const reset = () => {
+    setResult(null);
+    setNotFound(false);
+    setName("");
+    setEmail("");
+  };
 
   return (
     <Layout>
-      <section className="page-section w-[90%] max-w-[900px] mx-auto">
+      <section className={`page-section w-[90%] mx-auto ${result ? "max-w-[1100px]" : "max-w-[560px]"}`}>
         <FadeIn>
-          <h1 className="heading-section text-center mb-4">Confirm Your Travel</h1>
-          <div className="w-12 h-px bg-primary mx-auto mb-12" />
-        </FadeIn>
+          {!result && (
+            <>
+              <h1 className="heading-section mb-4 text-center">Check Your Submission</h1>
+              <div className="w-12 h-px bg-primary mx-auto mb-10" />
+              <p className="body-editorial mx-auto text-balance mb-10 text-center">
+                Enter your name and email to review your RSVP, shuttle times, and room reservation.
+              </p>
+            </>
+          )}
 
-        <FadeIn delay={100}>
-          <form onSubmit={handleSubmit} className="space-y-10">
-            {/* Guest Info */}
-            <div className="space-y-6">
-              <div id="field-email" className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
+          {!result && (
+            <form onSubmit={handleLookup} className="space-y-8 max-w-md mx-auto">
+              <div>
+                <label className="block font-body text-xs uppercase tracking-[0.25em] text-muted-foreground mb-2">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  placeholder="First and last name"
+                  className="w-full bg-transparent border-b border-border py-2 font-body text-foreground focus:outline-none focus:border-primary transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block font-body text-xs uppercase tracking-[0.25em] text-muted-foreground mb-2">
+                  Email *
+                </label>
+                <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@email.com"
+                  required
+                  placeholder="you@example.com"
+                  className="w-full bg-transparent border-b border-border py-2 font-body text-foreground focus:outline-none focus:border-primary transition-colors"
                 />
-                <FieldError message={errors.email} />
               </div>
 
-              <div className="space-y-2">
-                <Label>Party Size</Label>
-                <div className="flex gap-2">
-                  {[1, 2, 3, 4].map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => handlePartySizeChange(n)}
-                      className={`w-11 h-11 flex items-center justify-center rounded-md border font-body text-base transition-all ${
-                        partySize === n
-                          ? "border-sage bg-sage text-white font-medium"
-                          : "border-input bg-background hover:bg-muted/50"
-                      }`}
-                    >
-                      {n}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {names.map((name, index) => (
-                <div key={index} id={`field-name_${index}`} className="space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
-                  <Label htmlFor={`name-${index}`}>{names.length === 1 ? "Full Name" : `Guest ${index + 1} Full Name`}</Label>
-                  <Input
-                    id={`name-${index}`}
-                    value={name}
-                    onChange={(e) => handleNameChange(index, e.target.value)}
-                    placeholder="First and last name"
-                  />
-                  <FieldError message={errors[`name_${index}`]} />
-                </div>
-              ))}
-            </div>
-
-            <div className="w-full h-px bg-border" />
-
-            {/* Transportation Details */}
-            <div className="space-y-6">
-              <h2 className="font-serif text-xl text-foreground">Transportation Details</h2>
-              <div className="space-y-4">
-                <p className="body-editorial mx-auto text-balance max-w-none">
-                  We have arranged a complimentary shuttle service between the Siena train station and Borgo
-                  Laticastelli on September 16th and September 19th. The trip takes approximately 25 to 35 minutes.
+              {notFound && (
+                <p className="font-body text-sm text-destructive text-center">
+                  We couldn't find a matching invitation. Double-check your name and email, or reach out to Nicole & Tyler.
                 </p>
-                <p className="body-editorial mx-auto text-balance max-w-none">
-                  Check local train schedules and purchase your tickets before reserving a shuttle spot below. Each
-                  time slot is capped by vehicle size and cannot accommodate additional guests once it is filled.
-                </p>
-                <p className="body-editorial mx-auto text-balance max-w-none font-semibold text-foreground">
-                  Timing in Italy tends to run loose so pickups and drop-offs may shift by 15 to 30 minutes. We
-                  can't guarantee exact timing so give yourself a generous buffer when booking a return shuttle for
-                  a departing train.
-                </p>
-                <p className="body-editorial mx-auto text-balance max-w-none">
-                  Public transit and taxis are hard to come by in the Tuscan countryside. If your travel window
-                  doesn't line up with our shuttle times, we recommend renting a car or booking a private transfer
-                  in advance.
-                </p>
-                <p className="font-body text-sm text-muted-foreground">
-                  You can email{" "}
-                  <a href="mailto:nicoleandtylersitalianwedding@gmail.com" className="text-primary underline">
-                    nicoleandtylersitalianwedding@gmail.com
-                  </a>{" "}
-                  to be connected with our wedding coordinator, who can share local resources or book a private
-                  transfer on your behalf.
-                </p>
-              </div>
-
-              <div id="field-arrival" className="space-y-3">
-                <h3 className="font-body text-sm font-semibold text-foreground">
-                  Arrival Shuttle <span className="text-destructive">*</span>
-                </h3>
-                <p className="font-body text-xs text-muted-foreground">September 16 · Siena → Borgo Laticastelli</p>
-                <div className="flex flex-col gap-3">
-                  {ARRIVAL_WAVES.map((w) => {
-                    const isWave = w.value === "wave_1" || w.value === "wave_2";
-                    const spotsLeft = isWave ? remaining("arrival", w.value) : null;
-                    return (
-                      <ShuttleOptionCard
-                        key={w.value}
-                        label={w.label}
-                        detail={w.detail}
-                        spotsLeft={spotsLeft}
-                        disabled={isWave && spotsLeft === 0}
-                        selected={arrivalWave === w.value}
-                        onSelect={() => {
-                          setArrivalWave(w.value);
-                          if (w.value !== "none") setArrivalPlan("");
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-                <FieldError message={errors.arrival} />
-              </div>
-
-              {arrivalWave === "none" && (
-                <div id="field-arrivalPlan" className="p-5 border border-border rounded-md bg-muted/30 space-y-3">
-                  <Label>
-                    What's your plan for getting there? <span className="text-destructive">*</span>
-                  </Label>
-                  <div className="flex flex-wrap gap-2.5">
-                    {ARRIVAL_PLANS.map((p) => (
-                      <PillOption
-                        key={p.value}
-                        label={p.label}
-                        selected={arrivalPlan === p.value}
-                        onSelect={() => setArrivalPlan(p.value)}
-                      />
-                    ))}
-                  </div>
-                  <FieldError message={errors.arrivalPlan} />
-                </div>
               )}
 
-              <p className="font-body text-sm p-4 rounded-md bg-sage-light border border-sage/30 text-foreground">
-                <span className="font-semibold">IMPORTANT:</span> We are considering moving the 12 pm shuttle
-                earlier to 11-11:30 am pending availability with the shuttle company. If you are interested in
-                this, please let us know in the travel note section.
-              </p>
-
-              <div id="field-departure" className="space-y-3">
-                <h3 className="font-body text-sm font-semibold text-foreground">
-                  Departure Shuttle (Check-out is 12 PM) <span className="text-destructive">*</span>
-                </h3>
-                <p className="font-body text-xs text-muted-foreground">September 19 · Borgo Laticastelli → Siena</p>
-                <div className="flex flex-col gap-3">
-                  {DEPARTURE_WAVES.map((w) => {
-                    const isWave = w.value === "wave_1" || w.value === "wave_2";
-                    const spotsLeft = isWave ? remaining("departure", w.value) : null;
-                    return (
-                      <ShuttleOptionCard
-                        key={w.value}
-                        label={w.label}
-                        detail={w.detail}
-                        spotsLeft={spotsLeft}
-                        disabled={isWave && spotsLeft === 0}
-                        selected={departureWave === w.value}
-                        onSelect={() => {
-                          setDepartureWave(w.value);
-                          if (w.value !== "none") setDeparturePlan("");
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-                <FieldError message={errors.departure} />
-              </div>
-
-              {departureWave === "none" && (
-                <div id="field-departurePlan" className="p-5 border border-border rounded-md bg-muted/30 space-y-3">
-                  <Label>
-                    What's your plan for getting back? <span className="text-destructive">*</span>
-                  </Label>
-                  <div className="flex flex-wrap gap-2.5">
-                    {DEPARTURE_PLANS.map((p) => (
-                      <PillOption
-                        key={p.value}
-                        label={p.label}
-                        selected={departurePlan === p.value}
-                        onSelect={() => setDeparturePlan(p.value)}
-                      />
-                    ))}
-                  </div>
-                  <FieldError message={errors.departurePlan} />
-                </div>
-              )}
-            </div>
-
-            <div className="w-full h-px bg-border" />
-
-            {/* Passport */}
-            <div className="space-y-3">
-              <div className="flex items-baseline gap-2">
-                <h2 className="font-serif text-xl text-foreground">Passport</h2>
-                <span className="font-body text-xs italic text-muted-foreground">Optional</span>
-              </div>
-              <p className="font-body text-sm text-muted-foreground">
-                Properties in Italy require passport copies for all guests prior to arrival. Upload a photo or scan
-                for each guest to expedite check-in, or send them directly to Nicole or Tyler.
-              </p>
-              <div className="space-y-2">
-                {passportFiles.map((file, index) => (
-                  <div key={index} className="space-y-1">
-                    {names.length > 1 && (
-                      <Label className="text-xs text-muted-foreground">
-                        {names[index]?.trim() || `Guest ${index + 1}`}
-                      </Label>
-                    )}
-                    <div className="flex items-center gap-2">
-                      <input
-                        ref={(el) => (fileRefs.current[index] = el)}
-                        type="file"
-                        accept="image/*,.pdf"
-                        className="hidden"
-                        onChange={(e) => handlePassportFileChange(index, e.target.files?.[0] ?? null)}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => fileRefs.current[index]?.click()}
-                        className="inline-flex items-center gap-2 px-4 py-2.5 border border-border rounded-md font-body text-sm text-foreground hover:bg-muted/50 transition-colors"
-                      >
-                        {file ? file.name : "Upload passport photo or scan"}
-                      </button>
-                      {file && (
-                        <button
-                          type="button"
-                          onClick={() => handleRemovePassportFile(index)}
-                          aria-label="Remove uploaded passport file"
-                          className="inline-flex items-center justify-center w-8 h-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-                        >
-                          ✕
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="w-full h-px bg-border" />
-
-            {/* Pre-Event Activities */}
-            <div className="space-y-3">
-              <div className="flex items-baseline gap-2">
-                <h2 className="font-serif text-xl text-foreground">Pre-Event Activities</h2>
-                <span className="font-body text-xs italic text-muted-foreground">Optional</span>
-              </div>
-              <p className="body-editorial mx-auto text-balance max-w-none">
-                Arriving early? We're planning an informal gathering in Florence on Tuesday night, September 15th.
-                Details are coming, but let us know if you'll be around and want to join.
-              </p>
-              <p className="font-body text-sm text-muted-foreground">
-                To stay in the loop and connected before and during the Italy trip, join our travel WhatsApp group.
-              </p>
-              <a
-                href={WHATSAPP_GROUP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-sage text-white font-body text-sm font-semibold rounded-md hover:opacity-90 transition-opacity"
-              >
-                Join the WhatsApp Group
-              </a>
-              <div className="space-y-2 pt-1">
-                <Label>Will you be in Florence on September 15th?</Label>
-                <div className="flex flex-wrap gap-2.5">
-                  {FLORENCE_OPTIONS.map((opt) => (
-                    <PillOption
-                      key={opt.value}
-                      label={opt.value}
-                      selected={florenceRsvp === opt.value}
-                      onSelect={() => setFlorenceRsvp(opt.value)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Travel Coordination */}
-            <div className="space-y-2">
-              <Label htmlFor="travelPlans">Your travel plans (dates, cities, rental car interest, etc.)</Label>
-              <Textarea
-                id="travelPlans"
-                value={travelPlans}
-                onChange={(e) => setTravelPlans(e.target.value)}
-                placeholder="Share your rough plans to help coordinate with other guests"
-                rows={4}
-              />
-            </div>
-
-            <div className="flex justify-center">
               <button
                 type="submit"
-                disabled={submitting}
-                className="relative inline-block w-full max-w-xs py-4 font-body text-xs uppercase tracking-[0.25em] transition-opacity disabled:pointer-events-none overflow-hidden border border-primary"
+                disabled={loading}
+                className="w-full bg-primary text-primary-foreground py-3 font-body text-sm uppercase tracking-[0.25em] hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
-                {submitting && (
-                  <div
-                    className="absolute inset-0 bg-primary animate-[progress_4s_ease-in-out_forwards]"
-                    style={{ transformOrigin: "left" }}
-                  />
-                )}
-                <span className={`relative z-10 ${submitting ? "text-white" : "text-primary-foreground"}`}>
-                  {submitting ? "Submitting..." : "Submit"}
-                </span>
-                {!submitting && <div className="absolute inset-0 bg-primary -z-0" />}
+                {loading ? "Looking up…" : "Check My Submission"}
               </button>
-            </div>
-          </form>
+            </form>
+          )}
+
+          {result && (() => {
+            const arr = ARRIVAL_WAVES[result.shuttle?.arrival_wave ?? ""];
+            const dep = DEPARTURE_WAVES[result.shuttle?.departure_wave ?? ""];
+
+            const roomGuests = parseGuestList(result.room?.guest_names);
+            const shuttleGuests = result.shuttle?.guests ?? [];
+            const rosterSource = shuttleGuests.length > 0 ? shuttleGuests : roomGuests;
+            const seen = new Set<string>();
+            const roster = rosterSource.filter((g) => {
+              const key = norm(g);
+              if (!key || seen.has(key)) return false;
+              seen.add(key);
+              return true;
+            });
+
+            const staysNotRiding = roomGuests.filter(
+              (g) => !shuttleGuests.some((s) => namesMatch(g, s))
+            );
+            const ridesNotStaying = shuttleGuests.filter(
+              (g) => roomGuests.length > 0 && !roomGuests.some((r) => namesMatch(g, r))
+            );
+            const hasMismatch = result.room && result.shuttle && (staysNotRiding.length > 0 || ridesNotStaying.length > 0);
+
+            const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined }> = [
+              { label: "Welcome party", day: "Wed, Sept 16", rsvp: result.invited?.welcome_party_rsvp },
+              { label: "Pool day", day: "Thu, Sept 17", rsvp: result.invited?.pool_day_rsvp },
+              { label: "Wedding day", day: "Fri, Sept 18", rsvp: result.invited?.wedding_day_rsvp },
+            ];
+
+            return (
+              <div className="space-y-8">
+                <div className="text-center">
+                  <h2 className="font-serif text-4xl sm:text-5xl text-foreground leading-[1.05] tracking-tight">
+                    Your Details
+                  </h2>
+                </div>
+
+                {/* Events */}
+                <Card>
+                  <CardTitle>Events</CardTitle>
+                  <ul className="space-y-4">
+                    {eventRows.map((e) => {
+                      const attending = e.rsvp === "yes" || e.rsvp === "accept";
+                      const declined = e.rsvp === "no" || e.rsvp === "decline";
+
+                      return (
+                        <li key={e.label} className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <span
+                              className={
+                                "flex items-center justify-center w-6 h-6 rounded-full border " +
+                                (attending
+                                  ? "bg-primary border-primary text-primary-foreground"
+                                  : declined
+                                  ? "border-border text-muted-foreground"
+                                  : "border-border text-transparent")
+                              }
+                              aria-label={attending ? "attending" : declined ? "not attending" : "no response"}
+                            >
+                              {attending && <Check size={14} strokeWidth={2.5} />}
+                              {declined && <X size={14} strokeWidth={2.5} />}
+                            </span>
+                            <span className="font-serif text-lg text-foreground">{e.label}</span>
+                          </div>
+                          <span className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+                            {e.day}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </Card>
+
+                {/* Shuttle */}
+                <Card>
+                  <CardTitle>Shuttle</CardTitle>
+                  {result.shuttle ? (
+                    <div className="grid grid-cols-2 gap-8">
+                      <WaveBlock label="Arriving" wave={arr} plan={null} />
+                      <WaveBlock
+                        label="Departing"
+                        wave={dep}
+                        plan={
+                          !dep && result.shuttle.departure_plan
+                            ? DEPARTURE_PLAN_LABEL[result.shuttle.departure_plan] ||
+                              result.shuttle.departure_plan
+                            : null
+                        }
+                      />
+                    </div>
+                  ) : (
+                    <p className="font-body text-sm text-muted-foreground">
+                      No shuttle submission on file. If someone in your party filled it out for you,
+                      ask them to confirm your name is included.
+                    </p>
+                  )}
+                </Card>
+
+                {/* Room */}
+                <Card>
+                  <div className="flex items-start justify-between gap-4 mb-6">
+                    <div>
+                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+                        Your room
+                      </p>
+                      <h3 className="font-serif text-3xl text-foreground leading-tight">
+                        {result.room?.category_name || "Not staying onsite"}
+                      </h3>
+                    </div>
+                    {result.room && (
+                      <span
+                        className={
+                          "shrink-0 mt-2 font-body text-[10px] uppercase tracking-[0.22em] px-3 py-2 border " +
+                          (result.room.payment_status === "paid"
+                            ? "border-primary text-primary"
+                            : "border-border text-muted-foreground")
+                        }
+                      >
+                        {result.room.payment_status === "paid" ? "Paid in full" : "Payment pending"}
+                      </span>
+                    )}
+                  </div>
+
+                  {roster.length > 0 && !hasMismatch && (
+                    <>
+                      <div className="h-px bg-border/70 mb-5" />
+                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-4">
+                        {result.room && result.shuttle
+                          ? "Your Room:"
+                          : result.room
+                          ? "Your Room:"
+                          : "On this shuttle"}
+                      </p>
+                      <GuestChips names={roster} />
+                    </>
+                  )}
+
+                  {hasMismatch && (
+                    <>
+                      <div className="h-px bg-border/70 mb-5" />
+                      <p className="font-body text-xs text-muted-foreground mb-4 italic">
+                        A couple names differ between the room and the shuttle — that's fine, we just
+                        want you to see both.
+                      </p>
+                      {roomGuests.length > 0 && (
+                        <div className="mb-5">
+                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+                            Staying in the room
+                          </p>
+                          <GuestChips names={roomGuests} />
+                        </div>
+                      )}
+                      {shuttleGuests.length > 0 && (
+                        <div>
+                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+                            On the shuttle
+                          </p>
+                          <GuestChips names={shuttleGuests} />
+                        </div>
+                      )}
+                    </>
+                  )}
+
+                  {result.invited?.dietary_restrictions && (
+                    <>
+                      <div className="h-px bg-border/70 my-5" />
+                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-2">
+                        Dietary notes
+                      </p>
+                      <p className="font-body text-sm text-foreground">
+                        {result.invited.dietary_restrictions}
+                      </p>
+                    </>
+                  )}
+
+                  {result.shuttle?.submitted_by && (
+                    <p className="font-body text-xs text-muted-foreground mt-6 leading-relaxed">
+                      Submitted by {result.shuttle.submitted_by}. Something look wrong? Reply to your
+                      confirmation email and we'll fix it.
+                    </p>
+                  )}
+                </Card>
+
+                <div className="flex items-center justify-center gap-10 pt-2">
+                  <button
+                    type="button"
+                    onClick={reset}
+                    className="font-body text-[11px] uppercase tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
+                  >
+                    Look up another name
+                  </button>
+                  <Link
+                    to="/the-weekend"
+                    className="font-body text-[11px] uppercase tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
+                  >
+                    Full schedule
+                  </Link>
+                </div>
+              </div>
+            );
+          })()}
         </FadeIn>
       </section>
     </Layout>
   );
 };
+
+const Card = ({ children }: { children: React.ReactNode }) => (
+  <div className="border border-border/70 bg-card p-7 sm:p-8">{children}</div>
+);
+
+const CardTitle = ({ children }: { children: React.ReactNode }) => (
+  <h3 className="font-serif text-2xl text-foreground mb-6">{children}</h3>
+);
+
+const WaveBlock = ({
+  label,
+  wave,
+  plan,
+}: {
+  label: string;
+  wave: WaveDetail | undefined;
+  plan: string | null;
+}) => (
+  <div>
+    <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-3">
+      {label}
+    </p>
+    {wave ? (
+      <>
+        <p className="font-serif text-3xl text-foreground leading-none mb-3">{wave.time}</p>
+        <p className="font-body text-sm text-muted-foreground leading-snug">
+          {wave.from}
+          <br />
+          to {wave.to}
+        </p>
+        <span className="inline-block mt-4 font-body text-[10px] uppercase tracking-[0.22em] text-foreground bg-secondary px-3 py-1.5">
+          {wave.badge}
+        </span>
+      </>
+    ) : (
+      <>
+        <p className="font-serif text-xl text-foreground leading-tight mb-2">
+          Not taking the shuttle
+        </p>
+        {plan && (
+          <p className="font-body text-sm text-muted-foreground">{plan}</p>
+        )}
+      </>
+    )}
+  </div>
+);
+
+const GuestChips = ({ names }: { names: string[] }) => (
+  <div className="flex flex-wrap gap-2">
+    {names.map((n) => (
+      <span
+        key={n}
+        className="font-body text-sm text-foreground border border-border/80 px-4 py-2"
+      >
+        {n}
+      </span>
+    ))}
+  </div>
+);
 
 export default Shuttle;
