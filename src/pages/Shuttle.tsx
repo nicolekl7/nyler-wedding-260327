@@ -87,13 +87,10 @@ interface LookupResult {
     arrival_wave: string;
     departure_wave: string;
     departure_plan: string | null;
-    party_size: number;
-    guests: string[];
     submitted_by: string;
   } | null;
   room: {
     category_name: string | null;
-    guest_names: string;
     payment_status: string;
   } | null;
 }
@@ -178,15 +175,12 @@ const Shuttle = () => {
               arrival_wave: shuttle.arrival_wave,
               departure_wave: shuttle.departure_wave,
               departure_plan: shuttle.departure_plan,
-              party_size: shuttle.party_size,
-              guests: parseGuestList(shuttle.guest_names),
               submitted_by: shuttle.full_name,
             }
           : null,
         room: room
           ? {
               category_name: catMap.get(room.room_category_id) || null,
-              guest_names: room.guest_names,
               payment_status: room.payment_status,
             }
           : null,
@@ -274,25 +268,6 @@ const Shuttle = () => {
             const arr = ARRIVAL_WAVES[result.shuttle?.arrival_wave ?? ""];
             const dep = DEPARTURE_WAVES[result.shuttle?.departure_wave ?? ""];
 
-            const roomGuests = parseGuestList(result.room?.guest_names);
-            const shuttleGuests = result.shuttle?.guests ?? [];
-            const rosterSource = shuttleGuests.length > 0 ? shuttleGuests : roomGuests;
-            const seen = new Set<string>();
-            const roster = rosterSource.filter((g) => {
-              const key = norm(g);
-              if (!key || seen.has(key)) return false;
-              seen.add(key);
-              return true;
-            });
-
-            const staysNotRiding = roomGuests.filter(
-              (g) => !shuttleGuests.some((s) => namesMatch(g, s))
-            );
-            const ridesNotStaying = shuttleGuests.filter(
-              (g) => roomGuests.length > 0 && !roomGuests.some((r) => namesMatch(g, r))
-            );
-            const hasMismatch = result.room && result.shuttle && (staysNotRiding.length > 0 || ridesNotStaying.length > 0);
-
             const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined }> = [
               { label: "Welcome party", day: "Wed, Sept 16", rsvp: result.invited?.welcome_party_rsvp },
               { label: "Pool day", day: "Thu, Sept 17", rsvp: result.invited?.pool_day_rsvp },
@@ -367,44 +342,6 @@ const Shuttle = () => {
                   <h3 className="font-serif text-lg text-foreground leading-tight mb-2">
                     {result.room?.category_name || "Not staying onsite"}
                   </h3>
-
-                  {roster.length > 0 && !hasMismatch && (
-                    <>
-                      <div className={`h-px bg-border/70 ${result.room ? "mb-4" : "mb-1.5"}`} />
-                      {!result.room && (
-                        <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
-                          On this shuttle
-                        </p>
-                      )}
-                      <GuestChips names={roster} />
-                    </>
-                  )}
-
-                  {hasMismatch && (
-                    <>
-                      <div className="h-px bg-border/70 mb-1.5" />
-                      <p className="font-body text-xs text-muted-foreground mb-1 italic">
-                        A couple names differ between the room and the shuttle — that's fine, we just
-                        want you to see both.
-                      </p>
-                      {roomGuests.length > 0 && (
-                        <div className="mb-1.5">
-                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
-                            Staying in the room
-                          </p>
-                          <GuestChips names={roomGuests} />
-                        </div>
-                      )}
-                      {shuttleGuests.length > 0 && (
-                        <div>
-                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
-                            On the shuttle
-                          </p>
-                          <GuestChips names={shuttleGuests} />
-                        </div>
-                      )}
-                    </>
-                  )}
 
                   {result.invited?.dietary_restrictions && (
                     <>
@@ -486,19 +423,6 @@ const WaveBlock = ({
         Not taking the shuttle
       </p>
     )}
-  </div>
-);
-
-const GuestChips = ({ names }: { names: string[] }) => (
-  <div className="grid grid-cols-2 gap-1.5">
-    {names.map((n) => (
-      <span
-        key={n}
-        className="font-body text-sm text-foreground border border-border/80 px-3 py-1.5 text-center truncate"
-      >
-        {n}
-      </span>
-    ))}
   </div>
 );
 
