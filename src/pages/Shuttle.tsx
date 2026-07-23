@@ -73,12 +73,6 @@ const DEPARTURE_WAVES: Record<string, WaveDetail> = {
   wave_2: { time: "11:00 am", from: "Laticastelli", to: "Siena train station", badge: "Wave 2" },
 };
 
-const DEPARTURE_PLAN_LABEL: Record<string, string> = {
-  rental_car: "Renting a car",
-  private_transfer: "Private transfer or taxi",
-  not_sure: "Not sure yet",
-};
-
 interface LookupResult {
   matchedName: string;
   invited: {
@@ -353,17 +347,8 @@ const Shuttle = () => {
                   <CardTitle>Shuttle</CardTitle>
                   {result.shuttle ? (
                     <div className="grid grid-cols-2 gap-4">
-                      <WaveBlock label="Arriving" wave={arr} plan={null} />
-                      <WaveBlock
-                        label="Departing"
-                        wave={dep}
-                        plan={
-                          !dep && result.shuttle.departure_plan
-                            ? DEPARTURE_PLAN_LABEL[result.shuttle.departure_plan] ||
-                              result.shuttle.departure_plan
-                            : null
-                        }
-                      />
+                      <WaveBlock label="Arriving" wave={arr} />
+                      <WaveBlock label="Departing" wave={dep} />
                     </div>
                   ) : (
                     <p className="font-body text-sm text-muted-foreground">
@@ -475,11 +460,9 @@ const CardTitle = ({ children }: { children: React.ReactNode }) => (
 const WaveBlock = ({
   label,
   wave,
-  plan,
 }: {
   label: string;
   wave: WaveDetail | undefined;
-  plan: string | null;
 }) => (
   <div>
     <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
@@ -498,14 +481,9 @@ const WaveBlock = ({
         </span>
       </>
     ) : (
-      <>
-        <p className="font-serif text-base text-foreground leading-tight mb-1">
-          Not taking the shuttle
-        </p>
-        {plan && (
-          <p className="font-body text-sm text-muted-foreground">{plan}</p>
-        )}
-      </>
+      <p className="font-serif text-base text-foreground leading-tight">
+        Not taking the shuttle
+      </p>
     )}
   </div>
 );
