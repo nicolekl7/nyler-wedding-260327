@@ -213,7 +213,11 @@ const Shuttle = () => {
 
   return (
     <Layout>
-      <section className={`page-section w-[90%] mx-auto ${result ? "max-w-[1100px]" : "max-w-[560px]"}`}>
+      <section
+        className={`page-section w-[90%] mx-auto ${
+          result ? "max-w-[1100px] !py-8 sm:!py-10 md:!py-12 lg:!py-14" : "max-w-[560px]"
+        }`}
+      >
         <FadeIn>
           {!result && (
             <>
@@ -301,9 +305,9 @@ const Shuttle = () => {
             ];
 
             return (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="text-center">
-                  <h2 className="font-serif text-2xl sm:text-3xl text-foreground leading-[1.05] tracking-tight">
+                  <h2 className="font-serif text-xl sm:text-2xl text-foreground leading-[1.05] tracking-tight">
                     Your Details
                   </h2>
                 </div>
@@ -311,7 +315,7 @@ const Shuttle = () => {
                 {/* Events */}
                 <Card>
                   <CardTitle>Events</CardTitle>
-                  <ul className="space-y-2">
+                  <ul className="space-y-1.5">
                     {eventRows.map((e) => {
                       const attending = e.rsvp === "yes" || e.rsvp === "accept";
                       const declined = e.rsvp === "no" || e.rsvp === "decline";
@@ -348,7 +352,7 @@ const Shuttle = () => {
                 <Card>
                   <CardTitle>Shuttle</CardTitle>
                   {result.shuttle ? (
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-2 gap-4">
                       <WaveBlock label="Arriving" wave={arr} plan={null} />
                       <WaveBlock
                         label="Departing"
@@ -371,17 +375,17 @@ const Shuttle = () => {
 
                 {/* Room */}
                 <Card>
-                  <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
+                  <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
                     Your room
                   </p>
-                  <h3 className="font-serif text-xl text-foreground leading-tight mb-3">
+                  <h3 className="font-serif text-lg text-foreground leading-tight mb-2">
                     {result.room?.category_name || "Not staying onsite"}
                   </h3>
 
                   {roster.length > 0 && !hasMismatch && (
                     <>
-                      <div className="h-px bg-border/70 mb-2" />
-                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
+                      <div className="h-px bg-border/70 mb-1.5" />
+                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
                         {result.room && result.shuttle
                           ? "Your Room:"
                           : result.room
@@ -394,14 +398,14 @@ const Shuttle = () => {
 
                   {hasMismatch && (
                     <>
-                      <div className="h-px bg-border/70 mb-2" />
-                      <p className="font-body text-xs text-muted-foreground mb-1.5 italic">
+                      <div className="h-px bg-border/70 mb-1.5" />
+                      <p className="font-body text-xs text-muted-foreground mb-1 italic">
                         A couple names differ between the room and the shuttle — that's fine, we just
                         want you to see both.
                       </p>
                       {roomGuests.length > 0 && (
-                        <div className="mb-2">
-                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
+                        <div className="mb-1.5">
+                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
                             Staying in the room
                           </p>
                           <GuestChips names={roomGuests} />
@@ -409,7 +413,7 @@ const Shuttle = () => {
                       )}
                       {shuttleGuests.length > 0 && (
                         <div>
-                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
+                          <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
                             On the shuttle
                           </p>
                           <GuestChips names={shuttleGuests} />
@@ -420,7 +424,7 @@ const Shuttle = () => {
 
                   {result.invited?.dietary_restrictions && (
                     <>
-                      <div className="h-px bg-border/70 my-2" />
+                      <div className="h-px bg-border/70 my-1.5" />
                       <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
                         Dietary notes
                       </p>
@@ -431,14 +435,14 @@ const Shuttle = () => {
                   )}
 
                   {result.shuttle?.submitted_by && (
-                    <p className="font-body text-xs text-muted-foreground mt-3 leading-relaxed">
+                    <p className="font-body text-xs text-muted-foreground mt-2 leading-relaxed">
                       Submitted by {result.shuttle.submitted_by}. Something look wrong? Reply to your
                       confirmation email and we'll fix it.
                     </p>
                   )}
                 </Card>
 
-                <div className="flex items-center justify-center gap-10 pt-1">
+                <div className="flex items-center justify-center gap-8">
                   <button
                     type="button"
                     onClick={reset}
@@ -463,11 +467,11 @@ const Shuttle = () => {
 };
 
 const Card = ({ children }: { children: React.ReactNode }) => (
-  <div className="border border-border/70 bg-card p-4 sm:p-5">{children}</div>
+  <div className="border border-border/70 bg-card p-3 sm:p-4">{children}</div>
 );
 
 const CardTitle = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="font-serif text-lg text-foreground mb-2">{children}</h3>
+  <h3 className="font-serif text-lg text-foreground mb-1.5">{children}</h3>
 );
 
 const WaveBlock = ({
@@ -480,7 +484,7 @@ const WaveBlock = ({
   plan: string | null;
 }) => (
   <div>
-    <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1.5">
+    <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
       {label}
     </p>
     {wave ? (
@@ -491,7 +495,7 @@ const WaveBlock = ({
           <br />
           to {wave.to}
         </p>
-        <span className="inline-block mt-2 font-body text-[10px] uppercase tracking-[0.22em] text-foreground bg-secondary px-3 py-1.5">
+        <span className="inline-block mt-1.5 font-body text-[10px] uppercase tracking-[0.22em] text-foreground bg-secondary px-3 py-1">
           {wave.badge}
         </span>
       </>
@@ -509,11 +513,11 @@ const WaveBlock = ({
 );
 
 const GuestChips = ({ names }: { names: string[] }) => (
-  <div className="flex flex-wrap gap-2">
+  <div className="flex flex-wrap gap-1.5">
     {names.map((n) => (
       <span
         key={n}
-        className="font-body text-sm text-foreground border border-border/80 px-4 py-2"
+        className="font-body text-sm text-foreground border border-border/80 px-3 py-1.5"
       >
         {n}
       </span>
