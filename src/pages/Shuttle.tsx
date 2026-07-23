@@ -384,14 +384,12 @@ const Shuttle = () => {
 
                   {roster.length > 0 && !hasMismatch && (
                     <>
-                      <div className="h-px bg-border/70 mb-1.5" />
-                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
-                        {result.room && result.shuttle
-                          ? "Your Room:"
-                          : result.room
-                          ? "Your Room:"
-                          : "On this shuttle"}
-                      </p>
+                      <div className={`h-px bg-border/70 ${result.room ? "mb-4" : "mb-1.5"}`} />
+                      {!result.room && (
+                        <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
+                          On this shuttle
+                        </p>
+                      )}
                       <GuestChips names={roster} />
                     </>
                   )}
