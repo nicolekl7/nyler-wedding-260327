@@ -70,7 +70,8 @@ const ARRIVAL_WAVES: Record<string, WaveDetail> = {
 };
 const DEPARTURE_WAVES: Record<string, WaveDetail> = {
   wave_1: { time: "10:00 am", from: "Laticastelli", to: "Siena train station", badge: "Wave 1" },
-  wave_2: { time: "11:00 am", from: "Laticastelli", to: "Siena train station", badge: "Wave 2" },
+  wave_2: { time: "11:15 am", from: "Laticastelli", to: "Siena train station", badge: "Wave 2" },
+  wave_3: { time: "12:30 pm", from: "Laticastelli", to: "Siena train station", badge: "Wave 3" },
 };
 
 interface LookupResult {

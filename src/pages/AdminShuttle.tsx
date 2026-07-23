@@ -5,16 +5,21 @@ import { toast } from "sonner";
 
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
-const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", number>> = {
-  arrival: { wave_1: 24, wave_2: 24 },
-  departure: { wave_1: 23, wave_2: 23 },
+const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2" | "wave_3", number>> = {
+  arrival: { wave_1: 24, wave_2: 24, wave_3: 0 },
+  departure: { wave_1: 15, wave_2: 15, wave_3: 16 },
 };
-const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2", string>> = {
-  arrival: { wave_1: "2:00 PM", wave_2: "3:00 PM" },
-  departure: { wave_1: "11:00 AM", wave_2: "12:00 PM" },
+const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2" | "wave_3", string>> = {
+  arrival: { wave_1: "2:00 PM", wave_2: "3:00 PM", wave_3: "" },
+  departure: { wave_1: "10:00 AM", wave_2: "11:15 AM", wave_3: "12:30 PM" },
 };
+const WAVE_TABS: Record<"arrival" | "departure", Wave[]> = {
+  arrival: ["wave_1", "wave_2", "none"],
+  departure: ["wave_1", "wave_2", "wave_3", "none"],
+};
+const waveNumberLabel = (w: Wave) => (w === "wave_1" ? "1" : w === "wave_2" ? "2" : w === "wave_3" ? "3" : "");
 
-type Wave = "wave_1" | "wave_2" | "none";
+type Wave = "wave_1" | "wave_2" | "wave_3" | "none";
 type SortMode = "lastName" | "firstName" | "submitted";
 
 const SORT_OPTIONS: { value: SortMode; label: string }[] = [
@@ -76,11 +81,13 @@ const WAVE_LABELS: Record<"arrival" | "departure", Record<Wave, string>> = {
   arrival: {
     wave_1: "Depart Siena Train Station 2:00 PM (Sept 17)",
     wave_2: "Depart Siena Train Station 3:00 PM (Sept 17)",
+    wave_3: "",
     none: "Not taking the arrival shuttle",
   },
   departure: {
-    wave_1: "Depart Borgo 11:00 AM (Sept 19)",
-    wave_2: "Depart Borgo 12:00 PM (Sept 19)",
+    wave_1: "Depart Borgo 10:00 AM (Sept 19)",
+    wave_2: "Depart Borgo 11:15 AM (Sept 19)",
+    wave_3: "Depart Borgo 12:30 PM (Sept 19)",
     none: "Not taking the departure shuttle",
   },
 };
@@ -92,8 +99,9 @@ const ARRIVAL_OPTIONS: { value: Wave; label: string }[] = [
 ];
 
 const DEPARTURE_OPTIONS: { value: Wave; label: string }[] = [
-  { value: "wave_1", label: "Wave 1 — depart Borgo 11:00 AM" },
-  { value: "wave_2", label: "Wave 2 — depart Borgo 12:00 PM" },
+  { value: "wave_1", label: "Wave 1 — depart Borgo 10:00 AM" },
+  { value: "wave_2", label: "Wave 2 — depart Borgo 11:15 AM" },
+  { value: "wave_3", label: "Wave 3 — depart Borgo 12:30 PM" },
   { value: "none", label: "Not taking the departure shuttle" },
 ];
 
@@ -308,7 +316,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     loadData();
   };
 
-  const waveShortLabel = (w: Wave) => (w === "wave_1" ? "Wave 1" : w === "wave_2" ? "Wave 2" : "Not Taking");
+  const waveShortLabel = (w: Wave) => (w === "none" ? "Not Taking" : `Wave ${waveNumberLabel(w)}`);
 
   const exportCsv = () => {
     const header = [
@@ -397,7 +405,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
   }
 
   const groupBy = (direction: "arrival" | "departure") => {
-    const groups: Record<Wave, Signup[]> = { wave_1: [], wave_2: [], none: [] };
+    const groups: Record<Wave, Signup[]> = { wave_1: [], wave_2: [], wave_3: [], none: [] };
     signups.forEach((s) => {
       const w = direction === "arrival" ? s.arrival_wave : s.departure_wave;
       (groups[w] ?? groups.none).push(s);
@@ -635,13 +643,13 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     const rows = sortSignups(groups[tab], sortMode);
     const isCapacityWave = tab !== "none";
     const used = groups[tab].reduce((sum, r) => sum + r.party_size, 0);
-    const capacity = isCapacityWave ? WAVE_CAPACITY[direction][tab as "wave_1" | "wave_2"] : 0;
+    const capacity = isCapacityWave ? WAVE_CAPACITY[direction][tab as "wave_1" | "wave_2" | "wave_3"] : 0;
     const notTakingCount = groups.none.reduce((sum, r) => sum + r.party_size, 0);
 
     return (
       <div className="border border-border bg-card">
         <div className="flex flex-wrap items-center gap-2 px-5 py-4 border-b border-border">
-          {(["wave_1", "wave_2", "none"] as Wave[]).map((w) => (
+          {WAVE_TABS[direction].map((w) => (
             <button
               key={w}
               onClick={() => setTab(w)}
@@ -653,7 +661,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
             >
               {w === "none"
                 ? `Not Taking (${notTakingCount})`
-                : `Wave ${w === "wave_1" ? "1" : "2"} · ${WAVE_TIME[direction][w]}`}
+                : `Wave ${waveNumberLabel(w)} · ${WAVE_TIME[direction][w]}`}
             </button>
           ))}
         </div>
@@ -662,7 +670,7 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
           <h3 className="font-serif text-lg text-foreground">
             {tab === "none"
               ? `Not Taking the ${direction === "arrival" ? "Arrival" : "Departure"} Shuttle`
-              : `Wave ${tab === "wave_1" ? "1" : "2"} (${WAVE_TIME[direction][tab]}) — ${used} / ${capacity} Seats Used`}
+              : `Wave ${waveNumberLabel(tab)} (${WAVE_TIME[direction][tab]}) — ${used} / ${capacity} Seats Used`}
           </h3>
           <p className="font-body text-xs text-muted-foreground mt-1">{WAVE_LABELS[direction][tab]}</p>
         </div>
@@ -685,8 +693,10 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     arrival.wave_1.reduce((s, r) => s + r.party_size, 0) + arrival.wave_2.reduce((s, r) => s + r.party_size, 0);
   const arrivalMax = WAVE_CAPACITY.arrival.wave_1 + WAVE_CAPACITY.arrival.wave_2;
   const departureConfirmed =
-    departure.wave_1.reduce((s, r) => s + r.party_size, 0) + departure.wave_2.reduce((s, r) => s + r.party_size, 0);
-  const departureMax = WAVE_CAPACITY.departure.wave_1 + WAVE_CAPACITY.departure.wave_2;
+    departure.wave_1.reduce((s, r) => s + r.party_size, 0) +
+    departure.wave_2.reduce((s, r) => s + r.party_size, 0) +
+    departure.wave_3.reduce((s, r) => s + r.party_size, 0);
+  const departureMax = WAVE_CAPACITY.departure.wave_1 + WAVE_CAPACITY.departure.wave_2 + WAVE_CAPACITY.departure.wave_3;
 
   const shuttleByName = new Map<string, Signup>();
   signups.forEach((s) => {
@@ -719,9 +729,18 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
     const key = direction === "arrival" ? "arrival_wave" : "departure_wave";
     const wave1 = attendingGuests.filter((g) => shuttleByName.get(normalizeName(g.name))?.[key] === "wave_1").length;
     const wave2 = attendingGuests.filter((g) => shuttleByName.get(normalizeName(g.name))?.[key] === "wave_2").length;
+    const wave3 = attendingGuests.filter((g) => shuttleByName.get(normalizeName(g.name))?.[key] === "wave_3").length;
     const none = attendingGuests.filter((g) => shuttleByName.get(normalizeName(g.name))?.[key] === "none").length;
-    const notSubmitted = attendingTotal - wave1 - wave2 - none;
-    return { wave1, wave2, none, notSubmitted, submittedSoFar: wave1 + wave2, maxPossible: attendingTotal - none };
+    const notSubmitted = attendingTotal - wave1 - wave2 - wave3 - none;
+    return {
+      wave1,
+      wave2,
+      wave3,
+      none,
+      notSubmitted,
+      submittedSoFar: wave1 + wave2 + wave3,
+      maxPossible: attendingTotal - none,
+    };
   };
 
   const arrivalBreakdown = waveBreakdown("arrival");
@@ -816,21 +835,29 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {(
           [
-            { direction: "arrival" as const, title: "Arrival Shuttle", wave1Label: "2 PM (Wave 1)", wave2Label: "3 PM (Wave 2)", data: arrivalBreakdown },
-            { direction: "departure" as const, title: "Departure Shuttle", wave1Label: "11 AM (Wave 1)", wave2Label: "12 PM (Wave 2)", data: departureBreakdown },
+            {
+              direction: "arrival" as const,
+              title: "Arrival Shuttle",
+              waveLabels: ["2 PM (Wave 1)", "3 PM (Wave 2)"],
+              data: arrivalBreakdown,
+            },
+            {
+              direction: "departure" as const,
+              title: "Departure Shuttle",
+              waveLabels: ["10 AM (Wave 1)", "11:15 AM (Wave 2)", "12:30 PM (Wave 3)"],
+              data: departureBreakdown,
+            },
           ]
-        ).map(({ direction, title, wave1Label, wave2Label, data }) => (
+        ).map(({ direction, title, waveLabels, data }) => (
           <div key={direction} className="border border-border bg-card p-5">
             <p className="font-body text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">{title}</p>
             <div className="font-body text-sm space-y-1.5">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">{wave1Label}</span>
-                <span className="text-foreground">{data.wave1}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">{wave2Label}</span>
-                <span className="text-foreground">{data.wave2}</span>
-              </div>
+              {[data.wave1, data.wave2, data.wave3].slice(0, waveLabels.length).map((count, i) => (
+                <div key={waveLabels[i]} className="flex justify-between">
+                  <span className="text-muted-foreground">{waveLabels[i]}</span>
+                  <span className="text-foreground">{count}</span>
+                </div>
+              ))}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Not Taking</span>
                 <span className="text-foreground">{data.none}</span>
@@ -920,13 +947,13 @@ const AdminShuttle = ({ embedded = false }: { embedded?: boolean } = {}) => {
                             Arr ·{" "}
                             {shuttleMatch.arrival_wave === "none"
                               ? "Not Taking"
-                              : WAVE_TIME.arrival[shuttleMatch.arrival_wave as "wave_1" | "wave_2"]}
+                              : WAVE_TIME.arrival[shuttleMatch.arrival_wave as "wave_1" | "wave_2" | "wave_3"]}
                           </span>
                           <span>
                             Dep ·{" "}
                             {shuttleMatch.departure_wave === "none"
                               ? "Not Taking"
-                              : WAVE_TIME.departure[shuttleMatch.departure_wave as "wave_1" | "wave_2"]}
+                              : WAVE_TIME.departure[shuttleMatch.departure_wave as "wave_1" | "wave_2" | "wave_3"]}
                           </span>
                         </div>
                       ) : (
