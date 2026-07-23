@@ -215,7 +215,7 @@ const Shuttle = () => {
     <Layout>
       <section
         className={`page-section w-[90%] mx-auto ${
-          result ? "max-w-[1100px] !py-8 sm:!py-10 md:!py-12 lg:!py-14" : "max-w-[560px]"
+          result ? "max-w-[720px] !py-8 sm:!py-10 md:!py-12 lg:!py-14" : "max-w-[560px]"
         }`}
       >
         <FadeIn>
