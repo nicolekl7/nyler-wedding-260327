@@ -511,11 +511,11 @@ const WaveBlock = ({
 );
 
 const GuestChips = ({ names }: { names: string[] }) => (
-  <div className="flex flex-wrap gap-1.5">
+  <div className="grid grid-cols-2 gap-1.5">
     {names.map((n) => (
       <span
         key={n}
-        className="font-body text-sm text-foreground border border-border/80 px-3 py-1.5"
+        className="font-body text-sm text-foreground border border-border/80 px-3 py-1.5 text-center truncate"
       >
         {n}
       </span>
