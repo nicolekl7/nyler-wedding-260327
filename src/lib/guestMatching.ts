@@ -34,11 +34,7 @@ export const norm = (s: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
-const firstLast = (full: string) => {
-  const parts = norm(full).split(" ").filter(Boolean);
-  if (parts.length === 0) return { first: "", last: "" };
-  return { first: parts[0], last: parts[parts.length - 1] };
-};
+const nameTokens = (full: string) => norm(full).split(" ").filter(Boolean);
 
 const firstMatches = (a: string, b: string) => {
   if (!a || !b) return false;
@@ -50,9 +46,19 @@ const firstMatches = (a: string, b: string) => {
 };
 
 export const namesMatch = (a: string, b: string) => {
-  const A = firstLast(a);
-  const B = firstLast(b);
-  if (!A.last || !B.last) return false;
+  const aTokens = nameTokens(a);
+  const bTokens = nameTokens(b);
+  if (aTokens.length === 0 || bTokens.length === 0) return false;
+
+  const A = { first: aTokens[0], last: aTokens[aTokens.length - 1] };
+  const B = { first: bTokens[0], last: bTokens[bTokens.length - 1] };
+
+  // A bare first name (no last name typed, e.g. informally-entered guest lists) can't be
+  // compared on last name at all — fall back to matching first name alone in that case.
+  if (aTokens.length === 1 || bTokens.length === 1) {
+    return firstMatches(A.first, B.first);
+  }
+
   return A.last === B.last && firstMatches(A.first, B.first);
 };
 
