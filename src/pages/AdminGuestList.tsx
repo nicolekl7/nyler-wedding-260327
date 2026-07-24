@@ -33,7 +33,8 @@ interface RoomCategory {
 
 interface GuestRow {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   welcome: string | null;
   pool: string | null;
   wedding: string | null;
@@ -41,6 +42,27 @@ interface GuestRow {
   departure: string;
   room: string;
 }
+
+type SortKey =
+  | "firstName"
+  | "lastName"
+  | "welcome"
+  | "pool"
+  | "wedding"
+  | "arrival"
+  | "departure"
+  | "room";
+
+const COLUMNS: { key: SortKey; label: string }[] = [
+  { key: "firstName", label: "First Name" },
+  { key: "lastName", label: "Last Name" },
+  { key: "welcome", label: "Welcome" },
+  { key: "pool", label: "Pool" },
+  { key: "wedding", label: "Wedding" },
+  { key: "arrival", label: "Arrival Shuttle" },
+  { key: "departure", label: "Departure Shuttle" },
+  { key: "room", label: "Room" },
+];
 
 const rsvpLabel = (v: string | null) => {
   if (v === "yes" || v === "accept") return "Yes";
@@ -54,15 +76,41 @@ const rsvpClass = (v: string | null) => {
   return "text-muted-foreground/60";
 };
 
+const isNoRsvp = (v: string | null) => v === "no" || v === "decline";
+
 const waveLabel = (direction: "arrival" | "departure", wave: string) => {
   if (wave === "none" || !wave) return "Not taking";
   return WAVE_TIME[direction][wave as "wave_1" | "wave_2" | "wave_3"] ?? "—";
+};
+
+const sortValue = (r: GuestRow, key: SortKey): string => {
+  switch (key) {
+    case "firstName":
+      return r.firstName;
+    case "lastName":
+      return r.lastName;
+    case "welcome":
+      return rsvpLabel(r.welcome);
+    case "pool":
+      return rsvpLabel(r.pool);
+    case "wedding":
+      return rsvpLabel(r.wedding);
+    case "arrival":
+      return r.arrival;
+    case "departure":
+      return r.departure;
+    case "room":
+      return r.room;
+  }
 };
 
 const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState<GuestRow[]>([]);
   const [search, setSearch] = useState("");
+  const [hideAllNo, setHideAllNo] = useState(true);
+  const [sortKey, setSortKey] = useState<SortKey>("lastName");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   const loadData = async () => {
     setLoading(true);
@@ -101,7 +149,8 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
 
       return {
         id: g.id,
-        name: fullName,
+        firstName: g.first_name,
+        lastName: g.last_name,
         welcome: g.welcome_party_rsvp,
         pool: g.pool_day_rsvp,
         wedding: g.wedding_day_rsvp,
@@ -109,12 +158,6 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
         departure: shuttle ? waveLabel("departure", shuttle.departure_wave) : "Not submitted",
         room: room ? catMap.get(room.room_category_id) ?? "—" : "Not staying onsite",
       };
-    });
-
-    built.sort((a, b) => {
-      const aLast = a.name.trim().split(/\s+/).pop() ?? a.name;
-      const bLast = b.name.trim().split(/\s+/).pop() ?? b.name;
-      return aLast.localeCompare(bLast);
     });
 
     setRows(built);
@@ -125,10 +168,34 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
     loadData();
   }, []);
 
+  const toggleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  };
+
+  const isAllNo = (r: GuestRow) => isNoRsvp(r.welcome) && isNoRsvp(r.pool) && isNoRsvp(r.wedding);
+
+  const visibleRows = rows
+    .filter((r) => !hideAllNo || !isAllNo(r))
+    .filter((r) =>
+      search.trim()
+        ? `${r.firstName} ${r.lastName}`.toLowerCase().includes(search.trim().toLowerCase())
+        : true
+    )
+    .sort((a, b) => {
+      const cmp = sortValue(a, sortKey).localeCompare(sortValue(b, sortKey));
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+
   const exportCsv = () => {
-    const header = ["Guest", "Welcome", "Pool", "Wedding", "Arrival Shuttle", "Departure Shuttle", "Room"];
-    const csvRows = rows.map((r) => [
-      r.name,
+    const header = ["First Name", "Last Name", "Welcome", "Pool", "Wedding", "Arrival Shuttle", "Departure Shuttle", "Room"];
+    const csvRows = visibleRows.map((r) => [
+      r.firstName,
+      r.lastName,
       rsvpLabel(r.welcome),
       rsvpLabel(r.pool),
       rsvpLabel(r.wedding),
@@ -147,18 +214,16 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
     URL.revokeObjectURL(link.href);
   };
 
-  const filteredRows = search.trim()
-    ? rows.filter((r) => r.name.toLowerCase().includes(search.trim().toLowerCase()))
-    : rows;
+  const hiddenCount = rows.length - rows.filter((r) => !isAllNo(r)).length;
 
   const innerContent = (
     <>
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div>
           <h2 className="font-serif text-2xl text-foreground">Guest List</h2>
           <p className="font-body text-sm text-muted-foreground mt-1">
-            {rows.length} invited guest{rows.length === 1 ? "" : "s"} — RSVPs, shuttle times, and room
-            assignments in one place.
+            {visibleRows.length} of {rows.length} invited guest{rows.length === 1 ? "" : "s"} shown — RSVPs,
+            shuttle times, and room assignments in one place.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -171,7 +236,7 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
           />
           <button
             onClick={exportCsv}
-            disabled={loading || rows.length === 0}
+            disabled={loading || visibleRows.length === 0}
             className="px-4 py-2 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors disabled:opacity-50"
           >
             Export CSV
@@ -186,36 +251,55 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
         </div>
       </div>
 
+      <label className="flex items-center gap-2 mb-4 font-body text-xs uppercase tracking-[0.2em] text-muted-foreground cursor-pointer w-fit">
+        <input
+          type="checkbox"
+          checked={hideAllNo}
+          onChange={(e) => setHideAllNo(e.target.checked)}
+          className="w-4 h-4 cursor-pointer"
+        />
+        Hide guests who RSVP'd no to everything
+        {hideAllNo && hiddenCount > 0 && <span className="normal-case tracking-normal">({hiddenCount} hidden)</span>}
+      </label>
+
       <div className="border border-border bg-card overflow-x-auto">
         <table className="w-full text-sm font-body">
           <thead>
             <tr className="text-left text-xs uppercase tracking-[0.2em] text-muted-foreground border-b border-border">
-              <th className="px-5 py-3 font-medium">Guest</th>
-              <th className="px-4 py-3 font-medium">Welcome</th>
-              <th className="px-4 py-3 font-medium">Pool</th>
-              <th className="px-4 py-3 font-medium">Wedding</th>
-              <th className="px-4 py-3 font-medium">Arrival Shuttle</th>
-              <th className="px-4 py-3 font-medium">Departure Shuttle</th>
-              <th className="px-4 py-3 font-medium">Room</th>
+              {COLUMNS.map((col, i) => (
+                <th key={col.key} className={i === 0 ? "px-5 py-3 font-medium" : "px-4 py-3 font-medium"}>
+                  <button
+                    type="button"
+                    onClick={() => toggleSort(col.key)}
+                    className="flex items-center gap-1 hover:text-foreground transition-colors whitespace-nowrap"
+                  >
+                    {col.label}
+                    <span className="inline-block w-3">
+                      {sortKey === col.key ? (sortDir === "asc" ? "▲" : "▼") : ""}
+                    </span>
+                  </button>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={7} className="px-5 py-4 font-body text-sm text-muted-foreground">
+                <td colSpan={COLUMNS.length} className="px-5 py-4 font-body text-sm text-muted-foreground">
                   Loading…
                 </td>
               </tr>
-            ) : filteredRows.length === 0 ? (
+            ) : visibleRows.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-5 py-4 font-body text-sm text-muted-foreground">
+                <td colSpan={COLUMNS.length} className="px-5 py-4 font-body text-sm text-muted-foreground">
                   No guests match this search.
                 </td>
               </tr>
             ) : (
-              filteredRows.map((r) => (
+              visibleRows.map((r) => (
                 <tr key={r.id} className="border-b border-border/50 last:border-0">
-                  <td className="px-5 py-3 text-foreground whitespace-nowrap">{r.name}</td>
+                  <td className="px-5 py-3 text-foreground whitespace-nowrap">{r.firstName}</td>
+                  <td className="px-4 py-3 text-foreground whitespace-nowrap">{r.lastName}</td>
                   <td className={`px-4 py-3 ${rsvpClass(r.welcome)}`}>{rsvpLabel(r.welcome)}</td>
                   <td className={`px-4 py-3 ${rsvpClass(r.pool)}`}>{rsvpLabel(r.pool)}</td>
                   <td className={`px-4 py-3 ${rsvpClass(r.wedding)}`}>{rsvpLabel(r.wedding)}</td>
