@@ -8,6 +8,21 @@ const NICKNAMES: Record<string, string[]> = {
   tom: ["thomas"], thomas: ["tom"],
   cathy: ["catherine"], catherine: ["cathy"],
   fil: ["filip"], filip: ["fil"],
+  char: ["charlene"], charlene: ["char"],
+  wes: ["wesley"], wesley: ["wes"],
+  dan: ["daniel"], daniel: ["dan"],
+  lexie: ["alexandra"], alexandra: ["lexie"],
+  vic: ["victor"], victor: ["vic"],
+  ben: ["benjamin"], benjamin: ["ben"],
+  michal: ["micha"], micha: ["michal"],
+  pat: ["patrick"], patrick: ["pat"],
+  waldek: ["waldemar"], waldemar: ["waldek"],
+  art: ["arthur"], arthur: ["art"],
+  bob: ["robert"], robert: ["bob"],
+  val: ["valerie"], valerie: ["val"],
+  nim: ["naima"], naima: ["nim"],
+  kait: ["kaitlyn"], kaitlyn: ["kait"],
+  hal: ["haldun"], haldun: ["hal"],
 };
 
 export const norm = (s: string) =>
