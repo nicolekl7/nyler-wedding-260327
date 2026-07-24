@@ -8,6 +8,7 @@ interface InvitedGuest {
   id: string;
   first_name: string;
   last_name: string;
+  email: string | null;
   welcome_party_rsvp: string | null;
   pool_day_rsvp: string | null;
   wedding_day_rsvp: string | null;
@@ -15,12 +16,14 @@ interface InvitedGuest {
 
 interface ShuttleSignup {
   full_name: string;
+  email: string | null;
   arrival_wave: string;
   departure_wave: string;
   guest_names: string | null;
 }
 
 interface RoomBooking {
+  email: string | null;
   guest_names: string | null;
   room_category_id: string;
   is_released: boolean;
@@ -117,9 +120,9 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
     const [invRes, shuttleRes, bookRes, catRes] = await Promise.all([
       supabase
         .from("invited_guests")
-        .select("id,first_name,last_name,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp"),
-      supabase.from("shuttle_signups" as any).select("full_name,arrival_wave,departure_wave,guest_names"),
-      supabase.from("room_bookings" as any).select("guest_names,room_category_id,is_released"),
+        .select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp"),
+      supabase.from("shuttle_signups" as any).select("full_name,email,arrival_wave,departure_wave,guest_names"),
+      supabase.from("room_bookings" as any).select("email,guest_names,room_category_id,is_released"),
       supabase.from("room_categories").select("id,name"),
     ]);
 
@@ -136,15 +139,21 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
 
     const built = invitedGuests.map((g) => {
       const fullName = `${g.first_name} ${g.last_name}`.trim();
+      const emailNorm = (g.email || "").trim().toLowerCase();
+      const emailMatches = (other: string | null) =>
+        !!emailNorm && (other || "").trim().toLowerCase() === emailNorm;
 
       const shuttle = shuttleSignups.find(
         (s) =>
+          emailMatches(s.email) ||
           namesMatch(s.full_name, fullName) ||
           parseGuestList(s.guest_names).some((n) => namesMatch(n, fullName))
       );
 
       const room = roomBookings.find(
-        (b) => !b.is_released && parseGuestList(b.guest_names).some((n) => namesMatch(n, fullName))
+        (b) =>
+          !b.is_released &&
+          (emailMatches(b.email) || parseGuestList(b.guest_names).some((n) => namesMatch(n, fullName)))
       );
 
       return {
