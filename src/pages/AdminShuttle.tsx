@@ -9,7 +9,7 @@ const WAVE_CAPACITY: Record<"arrival" | "departure", Record<"wave_1" | "wave_2" 
   arrival: { wave_1: 24, wave_2: 24, wave_3: 0 },
   departure: { wave_1: 15, wave_2: 15, wave_3: 16 },
 };
-const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2" | "wave_3", string>> = {
+export const WAVE_TIME: Record<"arrival" | "departure", Record<"wave_1" | "wave_2" | "wave_3", string>> = {
   arrival: { wave_1: "2:00 PM", wave_2: "3:00 PM", wave_3: "" },
   departure: { wave_1: "10:00 AM", wave_2: "11:15 AM", wave_3: "12:30 PM" },
 };

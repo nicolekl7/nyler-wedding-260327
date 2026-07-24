@@ -3,11 +3,12 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import AdminReservations from "./AdminReservations";
 import AdminShuttle from "./AdminShuttle";
+import AdminGuestList from "./AdminGuestList";
 
 const SESSION_KEY = "admin_unlocked_at";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 4;
 
-type Tab = "reservations" | "travel";
+type Tab = "reservations" | "travel" | "guests";
 
 import { supabase } from "@/integrations/supabase/client";
 
@@ -17,7 +18,8 @@ const Admin = () => {
   const [authenticating, setAuthenticating] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const tab: Tab = searchParams.get("tab") === "travel" ? "travel" : "reservations";
+  const tabParam = searchParams.get("tab");
+  const tab: Tab = tabParam === "travel" ? "travel" : tabParam === "guests" ? "guests" : "reservations";
 
   useEffect(() => {
     const ts = localStorage.getItem(SESSION_KEY);
@@ -114,9 +116,25 @@ const Admin = () => {
           >
             Travel Confirmations
           </button>
+          <button
+            onClick={() => setTab("guests")}
+            className={`px-5 py-3 font-body text-xs uppercase tracking-[0.25em] border-b-2 transition-colors ${
+              tab === "guests"
+                ? "border-primary text-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Guest List
+          </button>
         </div>
 
-        {tab === "reservations" ? <AdminReservations embedded /> : <AdminShuttle embedded />}
+        {tab === "reservations" ? (
+          <AdminReservations embedded />
+        ) : tab === "travel" ? (
+          <AdminShuttle embedded />
+        ) : (
+          <AdminGuestList embedded />
+        )}
       </div>
     </div>
   );
