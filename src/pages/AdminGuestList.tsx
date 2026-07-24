@@ -76,7 +76,7 @@ const rsvpClass = (v: string | null) => {
   return "text-muted-foreground/60";
 };
 
-const isNoRsvp = (v: string | null) => v === "no" || v === "decline";
+const isYesRsvp = (v: string | null) => v === "yes" || v === "accept";
 
 const waveLabel = (direction: "arrival" | "departure", wave: string) => {
   if (wave === "none" || !wave) return "Not taking";
@@ -108,7 +108,7 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState<GuestRow[]>([]);
   const [search, setSearch] = useState("");
-  const [hideAllNo, setHideAllNo] = useState(true);
+  const [hideNotAttending, setHideNotAttending] = useState(true);
   const [sortKey, setSortKey] = useState<SortKey>("lastName");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
@@ -177,10 +177,11 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
     }
   };
 
-  const isAllNo = (r: GuestRow) => isNoRsvp(r.welcome) && isNoRsvp(r.pool) && isNoRsvp(r.wedding);
+  const isNotAttending = (r: GuestRow) =>
+    !isYesRsvp(r.welcome) && !isYesRsvp(r.pool) && !isYesRsvp(r.wedding);
 
   const visibleRows = rows
-    .filter((r) => !hideAllNo || !isAllNo(r))
+    .filter((r) => !hideNotAttending || !isNotAttending(r))
     .filter((r) =>
       search.trim()
         ? `${r.firstName} ${r.lastName}`.toLowerCase().includes(search.trim().toLowerCase())
@@ -214,7 +215,7 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
     URL.revokeObjectURL(link.href);
   };
 
-  const hiddenCount = rows.length - rows.filter((r) => !isAllNo(r)).length;
+  const hiddenCount = rows.length - rows.filter((r) => !isNotAttending(r)).length;
 
   const innerContent = (
     <>
@@ -254,12 +255,14 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
       <label className="flex items-center gap-2 mb-4 font-body text-xs uppercase tracking-[0.2em] text-muted-foreground cursor-pointer w-fit">
         <input
           type="checkbox"
-          checked={hideAllNo}
-          onChange={(e) => setHideAllNo(e.target.checked)}
+          checked={hideNotAttending}
+          onChange={(e) => setHideNotAttending(e.target.checked)}
           className="w-4 h-4 cursor-pointer"
         />
-        Hide guests who RSVP'd no to everything
-        {hideAllNo && hiddenCount > 0 && <span className="normal-case tracking-normal">({hiddenCount} hidden)</span>}
+        Hide guests not attending anything (declined or never RSVP'd)
+        {hideNotAttending && hiddenCount > 0 && (
+          <span className="normal-case tracking-normal">({hiddenCount} hidden)</span>
+        )}
       </label>
 
       <div className="border border-border bg-card overflow-x-auto">
