@@ -173,7 +173,7 @@ const Index = () => {
                       </div>
                       <div>
                         <span className="font-medium inline-block w-20">7:30 PM</span>
-                        <span className="opacity-90">{language === "en" ? "Dinner in Rapolano Terme" : "Kolacja w Rapolano Terme"}</span>
+                        <span className="opacity-90">{language === "en" ? "Dinner at Sapor in Torre" : "Kolacja w Sapor in Torre"}</span>
                       </div>
                     </div>
                   </div>
