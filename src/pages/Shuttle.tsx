@@ -242,8 +242,8 @@ const Shuttle = () => {
             });
 
             const fridayActivityLabel: Record<string, string> = {
-              pool_party: "Pool Party & Dinner at Sapor in Torre",
-              wine_tour: "Siena Wine Tour",
+              "Recovery Day": "Pool Party & Dinner at Sapor in Torre",
+              "Wine Tour": "Siena Wine Tour",
             };
 
             const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined; detail?: string }> = [

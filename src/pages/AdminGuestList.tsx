@@ -17,9 +17,10 @@ interface InvitedGuest {
 }
 
 const FRIDAY_ACTIVITY_OPTIONS: { value: string; label: string }[] = [
-  { value: "", label: "—" },
-  { value: "pool_party", label: "Pool Party & Dinner" },
-  { value: "wine_tour", label: "Siena Wine Tour" },
+  { value: "", label: "— Unassigned" },
+  { value: "Recovery Day", label: "Pool Party & Dinner" },
+  { value: "Wine Tour", label: "Siena Wine Tour" },
+  { value: "Not Coming", label: "Not Coming" },
 ];
 
 const fridayActivityLabel = (v: string | null) =>
