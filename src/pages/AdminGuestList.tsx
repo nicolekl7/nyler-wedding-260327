@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { namesMatch, parseGuestList } from "@/lib/guestMatching";
+import { formatRoomLabel } from "@/lib/roomLabel";
 import { WAVE_TIME } from "./AdminShuttle";
 
 interface InvitedGuest {
@@ -117,7 +118,7 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
 
   const loadData = async () => {
     setLoading(true);
-    const [invRes, shuttleRes, bookRes, catRes, assignRes] = await Promise.all([
+    const [invRes, shuttleRes, bookRes, catRes, assignRes, estateRes] = await Promise.all([
       supabase
         .from("invited_guests")
         .select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp"),
@@ -125,17 +126,22 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
       supabase.from("room_bookings" as any).select("email,guest_names,room_category_id,is_released"),
       supabase.from("room_categories").select("id,name"),
       supabase.from("room_assignments" as any).select("room_number,guest_id"),
+      supabase.from("estate_rooms" as any).select("room_number,room_type"),
     ]);
 
     if (invRes.error) toast.error("Failed to load guest list");
     if (shuttleRes.error) toast.error("Failed to load shuttle signups");
     if (bookRes.error) toast.error("Failed to load room bookings");
     if (catRes.error) toast.error("Failed to load room categories");
-    // room_assignments may not exist in every environment — degrade gracefully instead of
-    // breaking the whole tab if that table isn't present.
+    // room_assignments/estate_rooms may not exist in every environment — degrade
+    // gracefully instead of breaking the whole tab if those tables aren't present.
     const roomAssignments = assignRes.error
       ? []
       : ((assignRes.data ?? []) as { room_number: string | number; guest_id: string }[]);
+    const estateRooms = estateRes.error
+      ? []
+      : ((estateRes.data ?? []) as { room_number: string | number; room_type: string }[]);
+    const roomTypeByNumber = new Map(estateRooms.map((r) => [String(r.room_number), r.room_type]));
 
     const invitedGuests = (invRes.data ?? []) as InvitedGuest[];
     const shuttleSignups = ((shuttleRes.data ?? []) as unknown) as ShuttleSignup[];
@@ -176,7 +182,7 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
         room: room
           ? catMap.get(room.room_category_id) ?? "—"
           : myAssignment
-          ? `Room ${myAssignment.room_number}`
+          ? formatRoomLabel(roomTypeByNumber.get(String(myAssignment.room_number)), myAssignment.room_number)
           : "Not staying onsite",
       };
     });

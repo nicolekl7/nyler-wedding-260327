@@ -6,6 +6,7 @@ import FadeIn from "@/components/FadeIn";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { norm, namesMatch, parseGuestList } from "@/lib/guestMatching";
+import { formatRoomLabel } from "@/lib/roomLabel";
 
 // ---------- display helpers ----------
 type WaveDetail = { time: string; from: string; to: string; badge: string };
@@ -59,21 +60,24 @@ const Shuttle = () => {
     setNotFound(false);
 
     try {
-      const [invRes, shuttleRes, bookRes, catRes, assignRes] = await Promise.all([
+      const [invRes, shuttleRes, bookRes, catRes, assignRes, estateRes] = await Promise.all([
         supabase.from("invited_guests").select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,dietary_restrictions"),
         supabase.from("shuttle_signups").select("full_name,email,arrival_wave,departure_wave,departure_plan,party_size,guest_names"),
         supabase.from("room_bookings").select("email,guest_names,room_category_id,payment_status,is_released"),
         supabase.from("room_categories").select("id,name"),
         supabase.from("room_assignments" as any).select("room_number,guest_id"),
+        supabase.from("estate_rooms" as any).select("room_number,room_type"),
       ]);
 
       if (invRes.error) throw invRes.error;
       if (shuttleRes.error) throw shuttleRes.error;
       if (bookRes.error) throw bookRes.error;
       if (catRes.error) throw catRes.error;
-      // room_assignments may not exist in every environment — degrade gracefully instead of
-      // breaking the whole lookup if that table isn't present.
+      // room_assignments/estate_rooms may not exist in every environment — degrade
+      // gracefully instead of breaking the whole lookup if those tables aren't present.
       const roomAssignments = assignRes.error ? [] : ((assignRes.data || []) as { room_number: string | number; guest_id: string }[]);
+      const estateRooms = estateRes.error ? [] : ((estateRes.data || []) as { room_number: string | number; room_type: string }[]);
+      const roomTypeByNumber = new Map(estateRooms.map((r) => [String(r.room_number), r.room_type]));
 
       const invited = (invRes.data || []).find((g) => {
         const full = `${g.first_name} ${g.last_name}`;
@@ -112,7 +116,7 @@ const Shuttle = () => {
             .map((a) => guestById.get(a.guest_id))
             .filter((n): n is string => !!n);
           assignedRoom = {
-            category_name: `Room ${myAssignment.room_number}`,
+            category_name: formatRoomLabel(roomTypeByNumber.get(String(myAssignment.room_number)), myAssignment.room_number),
             guest_names: roommates.join(", "),
             payment_status: "paid",
           };
