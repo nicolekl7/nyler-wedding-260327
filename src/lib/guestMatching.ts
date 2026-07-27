@@ -45,6 +45,18 @@ const firstMatches = (a: string, b: string) => {
   return false;
 };
 
+// Surname variants that refer to the same family: Polish gender-inflected endings
+// (Maciejewska/Maciejewski) and a known misspelling (Trzeciak/Trezciak).
+const LAST_NAME_EQUIVALENTS: string[][] = [
+  ["maciejewska", "maciejewski"],
+  ["trzeciak", "trezciak"],
+];
+
+const lastMatches = (a: string, b: string) => {
+  if (a === b) return true;
+  return LAST_NAME_EQUIVALENTS.some((group) => group.includes(a) && group.includes(b));
+};
+
 export const namesMatch = (a: string, b: string) => {
   const aTokens = nameTokens(a);
   const bTokens = nameTokens(b);
@@ -59,7 +71,7 @@ export const namesMatch = (a: string, b: string) => {
     return firstMatches(A.first, B.first);
   }
 
-  return A.last === B.last && firstMatches(A.first, B.first);
+  return lastMatches(A.last, B.last) && firstMatches(A.first, B.first);
 };
 
 // Parse guest_names (JSON array string or comma/plus separated)

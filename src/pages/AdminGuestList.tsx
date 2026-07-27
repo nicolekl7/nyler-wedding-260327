@@ -117,19 +117,25 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
 
   const loadData = async () => {
     setLoading(true);
-    const [invRes, shuttleRes, bookRes, catRes] = await Promise.all([
+    const [invRes, shuttleRes, bookRes, catRes, assignRes] = await Promise.all([
       supabase
         .from("invited_guests")
         .select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp"),
       supabase.from("shuttle_signups" as any).select("full_name,email,arrival_wave,departure_wave,guest_names"),
       supabase.from("room_bookings" as any).select("email,guest_names,room_category_id,is_released"),
       supabase.from("room_categories").select("id,name"),
+      supabase.from("room_assignments" as any).select("room_number,guest_id"),
     ]);
 
     if (invRes.error) toast.error("Failed to load guest list");
     if (shuttleRes.error) toast.error("Failed to load shuttle signups");
     if (bookRes.error) toast.error("Failed to load room bookings");
     if (catRes.error) toast.error("Failed to load room categories");
+    // room_assignments may not exist in every environment — degrade gracefully instead of
+    // breaking the whole tab if that table isn't present.
+    const roomAssignments = assignRes.error
+      ? []
+      : ((assignRes.data ?? []) as { room_number: string | number; guest_id: string }[]);
 
     const invitedGuests = (invRes.data ?? []) as InvitedGuest[];
     const shuttleSignups = ((shuttleRes.data ?? []) as unknown) as ShuttleSignup[];
@@ -156,6 +162,8 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
           (emailMatches(b.email) || parseGuestList(b.guest_names).some((n) => namesMatch(n, fullName)))
       );
 
+      const myAssignment = roomAssignments.find((a) => a.guest_id === g.id);
+
       return {
         id: g.id,
         firstName: g.first_name,
@@ -165,7 +173,11 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
         wedding: g.wedding_day_rsvp,
         arrival: shuttle ? waveLabel("arrival", shuttle.arrival_wave) : "Not submitted",
         departure: shuttle ? waveLabel("departure", shuttle.departure_wave) : "Not submitted",
-        room: room ? catMap.get(room.room_category_id) ?? "—" : "Not staying onsite",
+        room: room
+          ? catMap.get(room.room_category_id) ?? "—"
+          : myAssignment
+          ? `Room ${myAssignment.room_number}`
+          : "Not staying onsite",
       };
     });
 

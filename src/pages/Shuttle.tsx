@@ -59,17 +59,21 @@ const Shuttle = () => {
     setNotFound(false);
 
     try {
-      const [invRes, shuttleRes, bookRes, catRes] = await Promise.all([
-        supabase.from("invited_guests").select("first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,dietary_restrictions"),
+      const [invRes, shuttleRes, bookRes, catRes, assignRes] = await Promise.all([
+        supabase.from("invited_guests").select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,dietary_restrictions"),
         supabase.from("shuttle_signups").select("full_name,email,arrival_wave,departure_wave,departure_plan,party_size,guest_names"),
         supabase.from("room_bookings").select("email,guest_names,room_category_id,payment_status,is_released"),
         supabase.from("room_categories").select("id,name"),
+        supabase.from("room_assignments" as any).select("room_number,guest_id"),
       ]);
 
       if (invRes.error) throw invRes.error;
       if (shuttleRes.error) throw shuttleRes.error;
       if (bookRes.error) throw bookRes.error;
       if (catRes.error) throw catRes.error;
+      // room_assignments may not exist in every environment — degrade gracefully instead of
+      // breaking the whole lookup if that table isn't present.
+      const roomAssignments = assignRes.error ? [] : ((assignRes.data || []) as { room_number: string | number; guest_id: string }[]);
 
       const invited = (invRes.data || []).find((g) => {
         const full = `${g.first_name} ${g.last_name}`;
@@ -97,6 +101,24 @@ const Shuttle = () => {
         return guests.some((g) => namesMatch(g, matchedFullName));
       });
 
+      // Fallback: manually-assigned room (no self-serve booking on file).
+      let assignedRoom: { category_name: string | null; guest_names: string; payment_status: string } | null = null;
+      if (!room) {
+        const myAssignment = roomAssignments.find((a) => a.guest_id === invited.id);
+        if (myAssignment) {
+          const guestById = new Map((invRes.data || []).map((g) => [g.id, `${g.first_name} ${g.last_name}`]));
+          const roommates = roomAssignments
+            .filter((a) => a.room_number === myAssignment.room_number)
+            .map((a) => guestById.get(a.guest_id))
+            .filter((n): n is string => !!n);
+          assignedRoom = {
+            category_name: `Room ${myAssignment.room_number}`,
+            guest_names: roommates.join(", "),
+            payment_status: "paid",
+          };
+        }
+      }
+
       setResult({
         matchedName: matchedFullName,
         invited: {
@@ -120,7 +142,7 @@ const Shuttle = () => {
               guest_names: room.guest_names,
               payment_status: room.payment_status,
             }
-          : null,
+          : assignedRoom,
       });
     } catch (err) {
       console.error(err);
