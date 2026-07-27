@@ -46,6 +46,7 @@ export type Database = {
           created_at: string
           dietary_restrictions: string | null
           first_name: string
+          friday_activity: string | null
           group_id: string
           has_responded: boolean
           id: string
@@ -61,6 +62,7 @@ export type Database = {
           created_at?: string
           dietary_restrictions?: string | null
           first_name: string
+          friday_activity?: string | null
           group_id?: string
           has_responded?: boolean
           id?: string
@@ -76,6 +78,7 @@ export type Database = {
           created_at?: string
           dietary_restrictions?: string | null
           first_name?: string
+          friday_activity?: string | null
           group_id?: string
           has_responded?: boolean
           id?: string

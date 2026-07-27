@@ -13,7 +13,17 @@ interface InvitedGuest {
   welcome_party_rsvp: string | null;
   pool_day_rsvp: string | null;
   wedding_day_rsvp: string | null;
+  friday_activity: string | null;
 }
+
+const FRIDAY_ACTIVITY_OPTIONS: { value: string; label: string }[] = [
+  { value: "", label: "—" },
+  { value: "pool_party", label: "Pool Party & Dinner" },
+  { value: "wine_tour", label: "Siena Wine Tour" },
+];
+
+const fridayActivityLabel = (v: string | null) =>
+  FRIDAY_ACTIVITY_OPTIONS.find((o) => o.value === (v ?? ""))?.label ?? "—";
 
 interface ShuttleSignup {
   full_name: string;
@@ -42,6 +52,7 @@ interface GuestRow {
   welcome: string | null;
   pool: string | null;
   wedding: string | null;
+  fridayActivity: string | null;
   arrival: string;
   departure: string;
   room: string;
@@ -53,6 +64,7 @@ type SortKey =
   | "welcome"
   | "pool"
   | "wedding"
+  | "fridayActivity"
   | "arrival"
   | "departure"
   | "room";
@@ -63,6 +75,7 @@ const COLUMNS: { key: SortKey; label: string }[] = [
   { key: "welcome", label: "Welcome" },
   { key: "pool", label: "Pool" },
   { key: "wedding", label: "Wedding" },
+  { key: "fridayActivity", label: "Friday Activity" },
   { key: "arrival", label: "Arrival Shuttle" },
   { key: "departure", label: "Departure Shuttle" },
   { key: "room", label: "Room" },
@@ -99,6 +112,8 @@ const sortValue = (r: GuestRow, key: SortKey): string => {
       return rsvpLabel(r.pool);
     case "wedding":
       return rsvpLabel(r.wedding);
+    case "fridayActivity":
+      return fridayActivityLabel(r.fridayActivity);
     case "arrival":
       return r.arrival;
     case "departure":
@@ -121,7 +136,7 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
     const [invRes, shuttleRes, bookRes, catRes, assignRes, estateRes] = await Promise.all([
       supabase
         .from("invited_guests")
-        .select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp"),
+        .select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,friday_activity"),
       supabase.from("shuttle_signups" as any).select("full_name,email,arrival_wave,departure_wave,guest_names"),
       supabase.from("room_bookings" as any).select("email,guest_names,room_category_id,is_released"),
       supabase.from("room_categories").select("id,name"),
@@ -177,6 +192,7 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
         welcome: g.welcome_party_rsvp,
         pool: g.pool_day_rsvp,
         wedding: g.wedding_day_rsvp,
+        fridayActivity: g.friday_activity,
         arrival: shuttle ? waveLabel("arrival", shuttle.arrival_wave) : "Not submitted",
         departure: shuttle ? waveLabel("departure", shuttle.departure_wave) : "Not submitted",
         room: room
@@ -194,6 +210,17 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
   useEffect(() => {
     loadData();
   }, []);
+
+  const updateFridayActivity = async (id: string, value: string) => {
+    const nextValue = value || null;
+    const prevRows = rows;
+    setRows((rs) => rs.map((r) => (r.id === id ? { ...r, fridayActivity: nextValue } : r)));
+    const { error } = await supabase.from("invited_guests").update({ friday_activity: nextValue }).eq("id", id);
+    if (error) {
+      toast.error("Could not save Friday activity.");
+      setRows(prevRows);
+    }
+  };
 
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -220,13 +247,14 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
     });
 
   const exportCsv = () => {
-    const header = ["First Name", "Last Name", "Welcome", "Pool", "Wedding", "Arrival Shuttle", "Departure Shuttle", "Room"];
+    const header = ["First Name", "Last Name", "Welcome", "Pool", "Wedding", "Friday Activity", "Arrival Shuttle", "Departure Shuttle", "Room"];
     const csvRows = visibleRows.map((r) => [
       r.firstName,
       r.lastName,
       rsvpLabel(r.welcome),
       rsvpLabel(r.pool),
       rsvpLabel(r.wedding),
+      fridayActivityLabel(r.fridayActivity),
       r.arrival,
       r.departure,
       r.room,
@@ -333,6 +361,19 @@ const AdminGuestList = ({ embedded = false }: { embedded?: boolean } = {}) => {
                   <td className={`px-4 py-3 ${rsvpClass(r.welcome)}`}>{rsvpLabel(r.welcome)}</td>
                   <td className={`px-4 py-3 ${rsvpClass(r.pool)}`}>{rsvpLabel(r.pool)}</td>
                   <td className={`px-4 py-3 ${rsvpClass(r.wedding)}`}>{rsvpLabel(r.wedding)}</td>
+                  <td className="px-4 py-3 text-foreground whitespace-nowrap">
+                    <select
+                      value={r.fridayActivity ?? ""}
+                      onChange={(e) => updateFridayActivity(r.id, e.target.value)}
+                      className="bg-background border border-border px-2 py-1 font-body text-sm text-foreground focus:outline-none focus:border-primary"
+                    >
+                      {FRIDAY_ACTIVITY_OPTIONS.map((o) => (
+                        <option key={o.value} value={o.value}>
+                          {o.label}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
                   <td className="px-4 py-3 text-foreground whitespace-nowrap">{r.arrival}</td>
                   <td className="px-4 py-3 text-foreground whitespace-nowrap">{r.departure}</td>
                   <td className="px-4 py-3 text-foreground whitespace-nowrap">{r.room}</td>

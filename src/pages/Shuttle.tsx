@@ -26,6 +26,7 @@ interface LookupResult {
     welcome_party_rsvp: string | null;
     pool_day_rsvp: string | null;
     wedding_day_rsvp: string | null;
+    friday_activity: string | null;
     email: string | null;
     dietary_restrictions: string | null;
   } | null;
@@ -61,7 +62,7 @@ const Shuttle = () => {
 
     try {
       const [invRes, shuttleRes, bookRes, catRes, assignRes, estateRes] = await Promise.all([
-        supabase.from("invited_guests").select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,dietary_restrictions"),
+        supabase.from("invited_guests").select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,friday_activity,dietary_restrictions"),
         supabase.from("shuttle_signups").select("full_name,email,arrival_wave,departure_wave,departure_plan,party_size,guest_names"),
         supabase.from("room_bookings").select("email,guest_names,room_category_id,payment_status,is_released"),
         supabase.from("room_categories").select("id,name"),
@@ -129,6 +130,7 @@ const Shuttle = () => {
           welcome_party_rsvp: invited.welcome_party_rsvp,
           pool_day_rsvp: invited.pool_day_rsvp,
           wedding_day_rsvp: invited.wedding_day_rsvp,
+          friday_activity: invited.friday_activity,
           email: invited.email,
           dietary_restrictions: invited.dietary_restrictions,
         },
@@ -239,10 +241,20 @@ const Shuttle = () => {
               return true;
             });
 
-            const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined }> = [
+            const fridayActivityLabel: Record<string, string> = {
+              pool_party: "Pool Party & Dinner at Sapor in Torre",
+              wine_tour: "Siena Wine Tour",
+            };
+
+            const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined; detail?: string }> = [
               { label: "Welcome party", day: "Wed, Sept 16", rsvp: result.invited?.welcome_party_rsvp },
-              { label: "Pool day", day: "Thu, Sept 17", rsvp: result.invited?.pool_day_rsvp },
-              { label: "Wedding day", day: "Fri, Sept 18", rsvp: result.invited?.wedding_day_rsvp },
+              { label: "Wedding day", day: "Thu, Sept 17", rsvp: result.invited?.wedding_day_rsvp },
+              {
+                label: "Recovery day",
+                day: "Fri, Sept 18",
+                rsvp: result.invited?.pool_day_rsvp,
+                detail: result.invited?.friday_activity ? fridayActivityLabel[result.invited.friday_activity] : undefined,
+              },
             ];
 
             return (
@@ -262,27 +274,32 @@ const Shuttle = () => {
                       const declined = e.rsvp === "no" || e.rsvp === "decline";
 
                       return (
-                        <li key={e.label} className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <span
-                              className={
-                                "flex items-center justify-center w-5 h-5 rounded-full border " +
-                                (attending
-                                  ? "bg-primary border-primary text-primary-foreground"
-                                  : declined
-                                  ? "border-border text-muted-foreground"
-                                  : "border-border text-transparent")
-                              }
-                              aria-label={attending ? "attending" : declined ? "not attending" : "no response"}
-                            >
-                              {attending && <Check size={12} strokeWidth={2.5} />}
-                              {declined && <X size={12} strokeWidth={2.5} />}
+                        <li key={e.label} className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span
+                                className={
+                                  "flex items-center justify-center w-5 h-5 rounded-full border " +
+                                  (attending
+                                    ? "bg-primary border-primary text-primary-foreground"
+                                    : declined
+                                    ? "border-border text-muted-foreground"
+                                    : "border-border text-transparent")
+                                }
+                                aria-label={attending ? "attending" : declined ? "not attending" : "no response"}
+                              >
+                                {attending && <Check size={12} strokeWidth={2.5} />}
+                                {declined && <X size={12} strokeWidth={2.5} />}
+                              </span>
+                              <span className="font-serif text-base text-foreground">{e.label}</span>
+                            </div>
+                            <span className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+                              {e.day}
                             </span>
-                            <span className="font-serif text-base text-foreground">{e.label}</span>
                           </div>
-                          <span className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                            {e.day}
-                          </span>
+                          {attending && e.detail && (
+                            <p className="font-body text-sm text-muted-foreground pl-8">{e.detail}</p>
+                          )}
                         </li>
                       );
                     })}
