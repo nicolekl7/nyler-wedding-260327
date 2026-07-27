@@ -11,7 +11,7 @@ const navLabels = {
     events: "Attire",
     registry: "Registry",
     ourStory: "Our Story",
-    rsvp: "My Details",
+    rsvp: "Guest Portal",
   },
   pl: {
     home: "Plan",
