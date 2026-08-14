@@ -29,7 +29,7 @@ const pageContent = {
         description:
           "Join us under the stars for wood-fired pizza and the best wine in the world to welcome you to Tuscany.",
         attire:
-          "La Notte Bianca — All white everything: linens, summer dresses, effortless Italian style. You've spent years avoiding white at weddings. This is your night. Head to toe, linens to silk.. whatever you'd like but all white, no exceptions.",
+          "La Notte Bianca — All white everything. You've spent years avoiding white at weddings. This is your night. Head to toe, linens to silk.. whatever you'd like but all white, no exceptions.",
       },
       {
         day: "Thursday, September 17",
