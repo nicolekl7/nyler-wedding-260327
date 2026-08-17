@@ -19,12 +19,6 @@ const pageContent = {
     intro: "Every route to Tuscany leads through some of the most beautiful landscape in the world.",
     thingsTitle: "Before You Go",
     beforeYouGoItems: [
-      <>
-        Confirm your travel{" "}
-        <Link to="/shuttle" className="underline underline-offset-2 text-primary hover:text-primary/80 transition-colors">
-          here
-        </Link>
-      </>,
       "Passport must be valid through March 2027",
       "Renting a car? Get an International Driver's Permit through AAA (~$20)",
       "Pack Type C or Type L travel adapters",
@@ -95,12 +89,6 @@ const pageContent = {
     intro: "Każda droga do Toskanii wiedzie przez jedno z najpiękniejszych krajobrazów na świecie.",
     thingsTitle: "Przed wyjazdem",
     beforeYouGoItems: [
-      <>
-        Potwierdź swoją podróż{" "}
-        <Link to="/shuttle" className="underline underline-offset-2 text-primary hover:text-primary/80 transition-colors">
-          tutaj
-        </Link>
-      </>,
       "Paszport musi być ważny do marca 2027",
       "Wynajmujesz samochód? Zdobądź Międzynarodowe Prawo Jazdy przez AAA (~20 USD)",
       "Zapakuj adaptery podróżne typu C lub L",
