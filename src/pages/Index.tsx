@@ -282,10 +282,10 @@ const Index = () => {
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a2e1a]/90 via-[#1a2e1a]/20 to-transparent" />
         <FadeIn className="relative z-10 px-6 md:px-12 lg:px-24 pb-16 md:pb-24">
-          <h1 className="heading-display mb-4 text-[#fff7f0]">
+          <h1 className="heading-display mb-4 text-[#fdfbf7]">
             Nicole <span className="font-light italic">&</span> Tyler
           </h1>
-          <p className="label-xs tracking-[0.158em] text-[#fff7f0] opacity-75">
+          <p className="label-xs tracking-[0.158em] text-[#fdfbf7] opacity-75">
             <span className="inline sm:hidden">{t.dateLine}</span>
             <span className="hidden sm:inline">{t.dateLineLong}</span>
           </p>
@@ -306,11 +306,11 @@ const Index = () => {
       </section>
 
       {/* Schedule Section */}
-      <section className="bg-[#464320] text-[#fff7f0] py-16 md:py-24 overflow-hidden">
+      <section className="bg-[#464320] text-[#fdfbf7] py-16 md:py-24 overflow-hidden">
         <div className="w-[90%] max-w-[1000px] mx-auto">
           <FadeIn>
             <h2 className="heading-section italic text-center mb-4 opacity-95">{t.heading}</h2>
-            <div className="w-12 h-px bg-[#fff7f0]/40 mx-auto mb-6" />
+            <div className="w-12 h-px bg-[#fdfbf7]/40 mx-auto mb-6" />
             <p className="body-small opacity-75 text-center max-w-xl mx-auto mb-8 text-pretty">
               {t.intro}
             </p>
@@ -319,7 +319,7 @@ const Index = () => {
           <div className="space-y-16 md:space-y-20">
             {t.schedule.map((day, i) => (
               <FadeIn key={day.date} delay={i * 60}>
-                <div className={i > 0 ? "pt-10 md:pt-12 border-t border-[#fff7f0]/20" : ""}>
+                <div className={i > 0 ? "pt-10 md:pt-12 border-t border-[#fdfbf7]/20" : ""}>
                   {/* Day icon */}
                   {i === 0 && (
                     <div className="relative w-28 h-20 mb-2">
@@ -369,16 +369,16 @@ const Index = () => {
                   )}
 
                   {/* Date + title */}
-                  <p className="label-xs text-[#fff7f0] opacity-60 mb-1">
+                  <p className="label-xs text-[#fdfbf7] opacity-60 mb-1">
                     {day.date}
                   </p>
-                  <h3 className="heading-card text-[#fff7f0] mb-6">
+                  <h3 className="heading-card text-[#fdfbf7] mb-6">
                     {day.title}
                   </h3>
 
                   {/* Schedule items */}
                   {day.subSchedules && (
-                    <p className="label-xs text-[#fff7f0] opacity-60 mb-3">
+                    <p className="label-xs text-[#fdfbf7] opacity-60 mb-3">
                       {t.scheduleLabel}
                     </p>
                   )}
@@ -402,7 +402,7 @@ const Index = () => {
                       <div className="flex-1 min-w-0">
                         {day.details && (
                           <div className="mb-5">
-                            <p className="label-xs text-[#fff7f0] opacity-60 mb-2">
+                            <p className="label-xs text-[#fdfbf7] opacity-60 mb-2">
                               {t.detailsLabel}
                             </p>
                             <p className="body-small leading-relaxed opacity-90">
@@ -429,12 +429,12 @@ const Index = () => {
                   {day.subSchedules && (
                     <div className="grid md:grid-cols-2 gap-6 mt-8">
                       {day.subSchedules.map((sub, si) => (
-                        <div key={si} className="border border-[#fff7f0]/20 p-6 md:p-7 space-y-3">
+                        <div key={si} className="border border-[#fdfbf7]/20 p-6 md:p-7 space-y-3">
                           <div>
-                            <h4 className="heading-card text-[#fff7f0] mb-1 leading-snug">
+                            <h4 className="heading-card text-[#fdfbf7] mb-1 leading-snug">
                               {sub.heading}
                             </h4>
-                            <p className="label-xs text-[#fff7f0] opacity-60">
+                            <p className="label-xs text-[#fdfbf7] opacity-60">
                               {sub.host}
                             </p>
                           </div>

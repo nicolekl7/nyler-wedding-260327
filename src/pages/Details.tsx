@@ -278,12 +278,12 @@ const Details = () => {
   return (
     <Layout>
       {/* Registry */}
-      <section className="bg-[#464320] text-[#fff7f0] pt-10 pb-6 sm:pt-14 sm:pb-8">
+      <section className="bg-[#464320] text-[#fdfbf7] pt-10 pb-6 sm:pt-14 sm:pb-8">
         <div className="w-[90%] max-w-[700px] mx-auto text-center">
           <FadeIn>
             <h1 className="heading-section mb-4">{registry.heading}</h1>
-            <div className="w-12 h-px bg-[#fff7f0]/40 mx-auto mb-8" />
-            <p className="body-editorial text-[#fff7f0]/80 mx-auto text-balance mb-10">
+            <div className="w-12 h-px bg-[#fdfbf7]/40 mx-auto mb-8" />
+            <p className="body-editorial text-[#fdfbf7]/80 mx-auto text-balance mb-10">
               {registry.body}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
@@ -291,7 +291,7 @@ const Details = () => {
                 href={ZOLA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fff7f0] text-[#464320] px-8 py-2.5 hover:bg-[#fff7f0]/90 transition-colors duration-300"
+                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fdfbf7] text-[#464320] px-8 py-2.5 hover:bg-[#fdfbf7]/90 transition-colors duration-300"
               >
                 {registry.zolaLabel}
               </a>
@@ -299,7 +299,7 @@ const Details = () => {
                 href={AMAZON_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fff7f0] text-[#464320] px-8 py-2.5 hover:bg-[#fff7f0]/90 transition-colors duration-300"
+                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fdfbf7] text-[#464320] px-8 py-2.5 hover:bg-[#fdfbf7]/90 transition-colors duration-300"
               >
                 {registry.amazonLabel}
               </a>
