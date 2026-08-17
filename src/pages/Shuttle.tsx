@@ -175,7 +175,7 @@ const Shuttle = () => {
         <FadeIn>
           {!result && (
             <>
-              <h1 className="heading-section mb-4 text-center">Check Your Submission</h1>
+              <h1 className="heading-section mb-4 text-center">Guest Portal</h1>
               <div className="w-12 h-px bg-primary mx-auto mb-10" />
               <p className="body-editorial mx-auto text-balance mb-10 text-center">
                 Enter your name and email to review your RSVP, shuttle times, and room reservation.
