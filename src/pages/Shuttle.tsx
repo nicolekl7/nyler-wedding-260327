@@ -316,8 +316,8 @@ const Shuttle = () => {
                     </div>
                   ) : (
                     <p className="font-body text-sm text-muted-foreground">
-                      No shuttle submission on file. If someone in your party filled it out for you,
-                      ask them to confirm your name is included.
+                      No shuttle reserved. Please ensure you have arranged independent transportation
+                      from the train station.
                     </p>
                   )}
                 </Card>
