@@ -65,6 +65,9 @@ export default {
         },
         cream: "hsl(var(--cream))",
         "warm-white": "hsl(var(--warm-white))",
+        // Canonical off-white/cream — overrides Tailwind's default #ffffff so
+        // every bg-white/text-white/border-white usage matches the site's cream.
+        white: "hsl(var(--cream))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Wine, Heart, Sun } from "lucide-react";
 
-const CREAM = "#fff8f1";
+const CREAM = "#fff7f0";
 const OLIVE = "#534f23";
 const CHARCOAL = "#3a3a3a";
 
