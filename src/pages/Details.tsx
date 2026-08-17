@@ -291,7 +291,7 @@ const Details = () => {
                 href={ZOLA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-sage-light text-primary px-8 py-2.5 hover:bg-sage-light/80 transition-colors duration-300"
+                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-sage text-[#fdfbf7] px-8 py-2.5 hover:bg-sage/90 transition-colors duration-300"
               >
                 {registry.zolaLabel}
               </a>
@@ -299,7 +299,7 @@ const Details = () => {
                 href={AMAZON_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-sage-light text-primary px-8 py-2.5 hover:bg-sage-light/80 transition-colors duration-300"
+                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-sage text-[#fdfbf7] px-8 py-2.5 hover:bg-sage/90 transition-colors duration-300"
               >
                 {registry.amazonLabel}
               </a>
