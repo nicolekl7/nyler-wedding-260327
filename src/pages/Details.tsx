@@ -39,14 +39,14 @@ const AMAZON_URL = "https://www.amazon.com/wedding/guest-view/10UL21FCFHV3X";
 
 const registryContent = {
   en: {
-    heading: "Registry",
     body: "Please, no gifts expected—we are just thrilled to celebrate with you in Italy! Should you wish to honor us with a gift, we are registered at the links below. To save your precious suitcase space, we kindly request that any physical items be shipped directly to our home rather than brought to the venue.",
+    signature: "xx Tyler & Nicole",
     zolaLabel: "Zola",
     amazonLabel: "Amazon",
   },
   pl: {
-    heading: "Lista Prezentów",
     body: "Nie oczekujemy żadnych prezentów — najważniejsze jest dla nas to, że będziecie z nami świętować we Włoszech! Jeśli mimo wszystko chcielibyście nas obdarować, jesteśmy zarejestrowani pod linkami poniżej. Aby oszczędzić miejsce w bagażu, prosimy o wysyłkę fizycznych prezentów bezpośrednio do naszego domu, a nie przynoszenie ich na miejsce uroczystości.",
+    signature: "xx Tyler i Nicole",
     zolaLabel: "Zola",
     amazonLabel: "Amazon",
   },
@@ -281,10 +281,12 @@ const Details = () => {
       <section className="bg-[#464320] text-[#fdfbf7] pt-10 pb-6 sm:pt-14 sm:pb-8">
         <div className="w-[90%] max-w-[700px] mx-auto text-center">
           <FadeIn>
-            <h1 className="heading-section mb-4">{registry.heading}</h1>
             <div className="w-12 h-px bg-[#fdfbf7]/40 mx-auto mb-8" />
-            <p className="body-editorial text-[#fdfbf7]/80 mx-auto text-balance mb-10">
+            <p className="heading-card italic tracking-wide leading-relaxed text-[#fdfbf7] mx-auto max-w-2xl text-pretty">
               {registry.body}
+            </p>
+            <p className="body-small tracking-[0.2em] uppercase text-[#fdfbf7]/70 mt-6 mb-10">
+              {registry.signature}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <a
