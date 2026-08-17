@@ -56,7 +56,7 @@ const content: Record<"en" | "pl", LangContent> = {
     detailsLabel: "The Details",
     attireLabel: "Attire:",
     scheduleLabel: "The Schedule",
-    timingNote: "Timing details for each schedule to follow.",
+    timingNote: "Detailed schedule timing for each excursion to follow.",
     schedule: [
       {
         date: "Wednesday, September 16",
@@ -101,9 +101,6 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "The Recovery & The Road Trip",
         items: [
           { time: "9 - 11:00 AM", label: "Complimentary Breakfast" },
-          { time: "10:00 AM – 10:30 AM", label: "Tuscany Day Trip Departs" },
-          { time: "1:00 PM", label: "Pool Party Officially Kicks Off" },
-          { time: "7:00 PM", label: "Shuttle pick-up to Rapolano Terme (for the Pool Party crew)" },
         ],
         subSchedules: [
           {
@@ -161,7 +158,7 @@ const content: Record<"en" | "pl", LangContent> = {
     detailsLabel: "Szczegóły",
     attireLabel: "Strój:",
     scheduleLabel: "Harmonogram",
-    timingNote: "Szczegółowy harmonogram dla każdej opcji podamy wkrótce.",
+    timingNote: "Szczegółowy harmonogram każdej wycieczki podamy wkrótce.",
     schedule: [
       {
         date: "Środa, 16 września",
@@ -206,9 +203,6 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "Odpoczynek i wycieczka",
         items: [
           { time: "9:00 – 11:00", label: "Śniadanie w cenie pobytu" },
-          { time: "10:00 – 10:30", label: "Wyjazd na wycieczkę po Toskanii" },
-          { time: "13:00", label: "Oficjalny start imprezy przy basenie" },
-          { time: "19:00", label: "Transfer do Rapolano Terme (dla ekipy znad basenu)" },
         ],
         subSchedules: [
           {
