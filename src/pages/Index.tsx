@@ -139,7 +139,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Saturday, September 19",
         title: "Arrivederci",
         items: [
-          { time: "8:00 AM – 10:00 AM", label: "Breakfast" },
+          { time: "8 - 10:00 AM", label: "Complimentary Breakfast" },
           { time: "10:00 AM, 11:15 AM, 12:30 PM", label: "Shuttles depart Borgo Laticastelli for Siena Train Station" },
           { time: "12:00 PM", label: "Check-out & Arrivederci!" },
         ],
@@ -241,7 +241,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Sobota, 19 września",
         title: "Arrivederci",
         items: [
-          { time: "8:00 – 10:00", label: "Śniadanie" },
+          { time: "8:00 – 10:00", label: "Śniadanie w cenie pobytu" },
           { time: "10:00, 11:15, 12:30", label: "Transfery odjeżdżają z Borgo Laticastelli do dworca kolejowego w Sienie" },
           { time: "12:00", label: "Wymeldowanie i Arrivederci!" },
         ],
