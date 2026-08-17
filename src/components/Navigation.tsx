@@ -7,19 +7,17 @@ import logo from "@/assets/T&N Logo Web.png";
 const navLabels = {
   en: {
     home: "Schedule",
-    travel: "Travel",
-    events: "Attire",
-    registry: "Registry",
-    ourStory: "Our Story",
-    rsvp: "Guest Portal",
+    attire: "Attire",
+    travel: "Travel & FAQs",
+    guestPortal: "Guest Portal",
+    details: "Details",
   },
   pl: {
     home: "Plan",
-    travel: "Podróż",
-    events: "Strój",
-    registry: "Lista prezentów",
-    ourStory: "Nasza historia",
-    rsvp: "Moje Dane",
+    attire: "Strój",
+    travel: "Podróż i FAQ",
+    guestPortal: "Moje Dane",
+    details: "Szczegóły",
   },
 };
 
@@ -31,12 +29,10 @@ const Navigation = () => {
 
   const navItems = [
     { path: "/", label: labels.home },
-    { path: "/our-story", label: labels.ourStory, hidden: true },
+    { path: "/the-weekend", label: labels.attire },
     { path: "/travel", label: labels.travel },
-    { path: "/the-weekend", label: labels.events },
-    { path: "https://www.zola.com/registry/nicoleandtylersregistry", label: labels.registry, external: true },
-    { path: "/about-us", label: labels.ourStory },
-    { path: "/shuttle", label: labels.rsvp, cta: true },
+    { path: "/shuttle", label: labels.guestPortal, cta: true },
+    { path: "/details", label: labels.details },
   ];
 
   return (
@@ -48,35 +44,23 @@ const Navigation = () => {
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
-          {navItems.filter((item) => !item.hidden).map((item) =>
-            item.external ? (
-              <a
-                key={item.path}
-                href={item.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 after:w-0 hover:after:w-full"
-              >
-                {item.label}
-              </a>
-            ) : (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={
-                  item.cta
-                    ? "font-body text-xs uppercase tracking-[0.2em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-                    : `nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
-                        location.pathname === item.path
-                          ? "text-foreground after:w-full"
-                          : "after:w-0 hover:after:w-full"
-                      }`
-                }
-              >
-                {item.label}
-              </Link>
-            )
-          )}
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={
+                item.cta
+                  ? "font-body text-xs uppercase tracking-[0.2em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                  : `nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
+                      location.pathname === item.path
+                        ? "text-foreground after:w-full"
+                        : "after:w-0 hover:after:w-full"
+                    }`
+              }
+            >
+              {item.label}
+            </Link>
+          ))}
 
           {/* Language switcher — desktop */}
           <div className="flex items-center gap-1 font-body text-xs tracking-widest">
@@ -117,29 +101,16 @@ const Navigation = () => {
         }`}
       >
         <div className="bg-background border-b border-border px-6 pb-6 flex flex-col gap-4">
-          {navItems.filter((item) => !item.hidden).map((item) =>
-            item.external ? (
-              <a
-                key={item.path}
-                href={item.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                className="nav-link"
-              >
-                {item.label}
-              </a>
-            ) : (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setOpen(false)}
-                className={`nav-link ${location.pathname === item.path ? "text-foreground" : ""}`}
-              >
-                {item.label}
-              </Link>
-            )
-          )}
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setOpen(false)}
+              className={`nav-link ${location.pathname === item.path ? "text-foreground" : ""}`}
+            >
+              {item.label}
+            </Link>
+          ))}
 
           {/* Language switcher — mobile */}
           <div className="flex items-center gap-2 pt-2 border-t border-border/30 font-body text-xs tracking-widest">

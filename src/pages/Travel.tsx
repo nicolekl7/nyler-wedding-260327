@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import airImg from "@/assets/travel-by-air.avif";
 import trainImg from "@/assets/travel-by-train.jpg";
 import carImg from "@/assets/travel-by-car.jpg";
@@ -45,7 +46,7 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Shuttle reservations are now closed. If you missed the deadline or your train schedule has changed, please text Tyler or Nicole immediately so we can help you coordinate a ride.
+            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Shuttle reservations are now closed. If you missed the deadline or your train schedule has changed, please text Tyler or Nicole immediately so we can help coordinate.
           </>
         ),
       },
@@ -61,10 +62,33 @@ const pageContent = {
       },
     ],
     navEvents: "ATTIRE",
-    navRegistry: "REGISTRY",
+    navDetails: "DETAILS",
     reserveShuttle: "Check Your Schedule",
     exploreHeading: "Explore Tuscany",
     exploreIntro: "Extending your trip? Here are our favorite highlights near the venue.",
+    faqHeading: "Concierge FAQs",
+    faqs: [
+      {
+        q: "What is the weather like in September?",
+        a: "Late September in Tuscany is typically beautiful, with warm, sunny days (around 75°F / 24°C) and crisp evenings (around 55°F / 13°C). We recommend bringing a light jacket or wrap for the evening events. Don't forget a bathing suit!",
+      },
+      {
+        q: "What shoes should I wear?",
+        a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
+      },
+      {
+        q: "Are kids welcome?",
+        a: "We love your kids, we really do. However, this celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
+      },
+      {
+        q: "Can I bring a date?",
+        a: "While we'd love to celebrate with everyone, our venue has limited capacity. We are only able to accommodate the guests specifically listed on your invitation.",
+      },
+      {
+        q: "Are gifts expected?",
+        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola.",
+      },
+    ],
   },
   pl: {
     heading: "Jak dotrzeć do Borgo Laticastelli",
@@ -98,9 +122,7 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Organizujemy transfery z dworca w Sienie do posiadłości w środę, 16 września, oraz transfery powrotne na dworzec w Sienie w sobotę, 19 września. Zarezerwuj swoje miejsce{" "}
-            <Link to="/shuttle" className="underline underline-offset-2 hover:text-primary transition-colors">tutaj</Link>{" "}
-            przed 16 lipca.
+            <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Organizujemy transfery z dworca w Sienie do posiadłości w środę, 16 września, oraz transfery powrotne na dworzec w Sienie w sobotę, 19 września. Rezerwacje transferów są już zamknięte. Jeśli nie zdążyłeś/aś przed terminem lub Twój rozkład pociągów się zmienił, napisz SMS-a do Tylera lub Nicole, abyśmy mogli pomóc Ci zorganizować dojazd.
           </>
         ),
       },
@@ -116,10 +138,33 @@ const pageContent = {
       },
     ],
     navEvents: "STRÓJ",
-    navRegistry: "LISTA PREZENTÓW",
+    navDetails: "SZCZEGÓŁY",
     reserveShuttle: "Sprawdź swój harmonogram",
     exploreHeading: "Odkryj Toskanię",
     exploreIntro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
+    faqHeading: "Najczęstsze pytania",
+    faqs: [
+      {
+        q: "Jaka jest pogoda we wrześniu?",
+        a: "Koniec września w Toskanii jest zazwyczaj piękny — ciepłe, słoneczne dni (około 24°C) i rześkie wieczory (około 13°C). Polecamy zabrać lekką kurtkę lub szal na wieczorne imprezy. I nie zapomnijcie o stroju kąpielowym!",
+      },
+      {
+        q: "Jakie buty powinnam/powinienem włożyć?",
+        a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
+      },
+      {
+        q: "Czy dzieci są mile widziane?",
+        a: "Naprawdę kochamy Wasze dzieci. Jednak to świętowanie jest tylko dla dorosłych. Na uroczystości będzie obecna niewielka liczba dzieci z najbliższej rodziny. Dziękujemy za zrozumienie!",
+      },
+      {
+        q: "Czy mogę przyjść z osobą towarzyszącą?",
+        a: "Z całego serca chcielibyśmy zaprosić wszystkich, ale liczba miejsc jest ograniczona. Prosimy o przybycie wyłącznie osób wskazanych na zaproszeniu.",
+      },
+      {
+        q: "Czy oczekujemy prezentów?",
+        a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — lista prezentów pojawi się wkrótce.",
+      },
+    ],
   },
 };
 
@@ -244,6 +289,7 @@ const Travel = () => {
   const { language } = useLanguage();
   const t = pageContent[language];
   const guides = guidesContent[language];
+  const { faqs } = t;
 
   return (
     <Layout dark hideFooterImage>
@@ -400,15 +446,35 @@ const Travel = () => {
             >
               {t.navEvents}
             </Link>
-            <a
-              href="https://www.zola.com/registry/nicoleandtylersregistry"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/details"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
-              {t.navRegistry}
-            </a>
+              {t.navDetails}
+            </Link>
           </div>
+        </FadeIn>
+      </section>
+
+      {/* Concierge FAQs */}
+      <section className="w-[90%] max-w-[800px] mx-auto pb-24">
+        <FadeIn>
+          <h2 className="heading-section text-center mb-4">{t.faqHeading}</h2>
+          <div className="w-12 h-px bg-primary mx-auto mb-12" />
+        </FadeIn>
+        <FadeIn delay={150}>
+          <Accordion type="single" collapsible className="space-y-2">
+            {faqs.map((faq, i) => (
+              <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 px-0">
+                <AccordionTrigger className="font-serif text-xl md:text-2xl text-foreground font-light py-6 hover:no-underline text-left">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="pb-8">
+                  <p className="body-editorial text-left">{faq.a}</p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </FadeIn>
       </section>
     </Layout>

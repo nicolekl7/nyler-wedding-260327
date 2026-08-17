@@ -315,10 +315,17 @@ const Shuttle = () => {
                       <WaveBlock label="Departing" wave={dep} />
                     </div>
                   ) : (
-                    <p className="font-body text-sm text-muted-foreground">
-                      No shuttle reserved. Please ensure you have arranged independent transportation
-                      from the train station.
-                    </p>
+                    <>
+                      <p className="font-body text-sm text-muted-foreground">
+                        No shuttle reserved. Please ensure you have arranged independent transportation
+                        from the train station.
+                      </p>
+                      <p className="font-body text-sm text-muted-foreground mt-3">
+                        Our final passenger manifests have been submitted to our transportation vendors.
+                        If you need to make an emergency change to your shuttle plans, please contact us
+                        directly.
+                      </p>
+                    </>
                   )}
                 </Card>
 

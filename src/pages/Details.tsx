@@ -34,6 +34,24 @@ import poland2 from "@/assets/2024-2.jpeg";
 import proposal1 from "@/assets/2025-5-1.jpeg";
 import proposal2 from "@/assets/2025-5-2.jpeg";
 
+const ZOLA_URL = "https://www.zola.com/registry/nicoleandtylersregistry/";
+const AMAZON_URL = "https://www.amazon.com/wedding/guest-view/10UL21FCFHV3X";
+
+const registryContent = {
+  en: {
+    heading: "Registry",
+    body: "Please, no gifts expected—we are just thrilled to celebrate with you in Italy! Should you wish to honor us with a gift, we are registered at the links below. To save your precious suitcase space, we kindly request that any physical items be shipped directly to our home rather than brought to the venue.",
+    zolaLabel: "Zola Registry",
+    amazonLabel: "Amazon Registry",
+  },
+  pl: {
+    heading: "Lista Prezentów",
+    body: "Nie oczekujemy żadnych prezentów — najważniejsze jest dla nas to, że będziecie z nami świętować we Włoszech! Jeśli mimo wszystko chcielibyście nas obdarować, jesteśmy zarejestrowani pod linkami poniżej. Aby oszczędzić miejsce w bagażu, prosimy o wysyłkę fizycznych prezentów bezpośrednio do naszego domu, a nie przynoszenie ich na miejsce uroczystości.",
+    zolaLabel: "Zola Registry",
+    amazonLabel: "Amazon Registry",
+  },
+};
+
 const stopsEN: RoadmapStopData[] = [
   {
     year: "2016",
@@ -232,7 +250,7 @@ const stopsPL: RoadmapStopData[] = [
   },
 ];
 
-const pageStrings = {
+const ourStoryStrings = {
   en: {
     eyebrow: "December 2016 — September 2026",
     headline: <>The long way <em className="italic font-light">here.</em></>,
@@ -251,30 +269,58 @@ const pageStrings = {
   },
 };
 
-const OurStoryV2 = () => {
+const Details = () => {
   const { language } = useLanguage();
+  const registry = registryContent[language];
   const stops = language === "pl" ? stopsPL : stopsEN;
-  const t = pageStrings[language];
+  const story = ourStoryStrings[language];
 
   return (
     <Layout>
+      {/* Registry */}
+      <section className="page-section w-[90%] max-w-[700px] mx-auto text-center">
+        <FadeIn>
+          <h1 className="heading-section mb-4">{registry.heading}</h1>
+          <div className="w-12 h-px bg-primary mx-auto mb-8" />
+          <p className="body-editorial mx-auto text-balance mb-10">
+            {registry.body}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <a
+              href={ZOLA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 hover:bg-primary/90 transition-colors duration-300"
+            >
+              {registry.zolaLabel}
+            </a>
+            <a
+              href={AMAZON_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 hover:bg-primary/90 transition-colors duration-300"
+            >
+              {registry.amazonLabel}
+            </a>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* Our Story */}
       <article className="bg-background">
-        {/* Hero */}
         <header className="w-[90%] mx-auto max-w-4xl pt-20 sm:pt-28 pb-16 text-center">
           <FadeIn>
             <p className="font-body text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground mb-4">
-              {t.eyebrow}
+              {story.eyebrow}
             </p>
-            <h1 className="heading-section text-foreground">
-              {t.headline}
-            </h1>
+            <h2 className="heading-section text-foreground">
+              {story.headline}
+            </h2>
             <div className="w-12 h-px bg-primary/30 mx-auto mt-8 mb-6" />
           </FadeIn>
         </header>
 
-        {/* Roadmap */}
         <section className="w-[90%] mx-auto max-w-6xl pb-32 relative">
-          {/* Vertical center line — desktop */}
           <div
             aria-hidden
             className="hidden lg:block absolute left-1/2 -translate-x-1/2 top-0 w-px"
@@ -284,7 +330,6 @@ const OurStoryV2 = () => {
                 "repeating-linear-gradient(to bottom, hsl(var(--foreground) / 0.25) 0 6px, transparent 6px 14px)",
             }}
           />
-          {/* Vertical left rail — mobile */}
           <div
             aria-hidden
             className="lg:hidden absolute left-[12px] top-0 w-px"
@@ -309,21 +354,20 @@ const OurStoryV2 = () => {
           </ol>
         </section>
 
-        {/* Outro */}
         <footer className="bg-foreground text-cream">
           <div className="w-[90%] mx-auto max-w-2xl py-28 sm:py-32 text-center">
             <FadeIn>
               <p className="font-body uppercase tracking-[0.3em] text-[0.65rem] text-cream/70 mb-3">
-                {t.footerEyebrow}
+                {story.footerEyebrow}
               </p>
               <h2 className="font-serif italic text-3xl sm:text-4xl font-light text-cream leading-tight mb-4 text-balance">
-                {t.footerHeadline}
+                {story.footerHeadline}
               </h2>
               <p className="font-body text-sm sm:text-base text-cream/80 leading-relaxed text-balance max-w-md mx-auto mb-8">
-                {t.footerBody}
+                {story.footerBody}
               </p>
               <p className="font-serif italic text-2xl sm:text-3xl font-light text-cream/90 text-balance">
-                {t.footerClose}
+                {story.footerClose}
               </p>
             </FadeIn>
           </div>
@@ -333,4 +377,4 @@ const OurStoryV2 = () => {
   );
 };
 
-export default OurStoryV2;
+export default Details;

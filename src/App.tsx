@@ -9,8 +9,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import Index from "./pages/Index";
 import IndexV2 from "./pages/IndexV2";
 import HomeV2 from "./pages/HomeV2";
-import OurStory from "./pages/OurStory";
-import OurStoryV2 from "./pages/OurStoryV2";
+import Details from "./pages/Details";
 import TheWeekend from "./pages/TheWeekend";
 import AccommodationsV2 from "./pages/AccommodationsV2";
 import BookingSuccess from "./pages/BookingSuccess";
@@ -44,8 +43,9 @@ const App = () => (
           <Route path="/rsvp" element={<Navigate to="/latersvp" replace />} />
           <Route path="/rsvp-v2-form" element={<RsvpV2 />} />
           <Route path="/local-guide" element={<Navigate to="/travel" replace />} />
-          <Route path="/our-story" element={<OurStory />} />
-          <Route path="/about-us" element={<OurStoryV2 />} />
+          <Route path="/details" element={<Details />} />
+          <Route path="/our-story" element={<Navigate to="/details" replace />} />
+          <Route path="/about-us" element={<Navigate to="/details" replace />} />
           <Route path="/home-v2" element={<HomeV2 />} />
           <Route path="/home" element={<HomeV2 />} />
           <Route path="/payment" element={<Payment />} />

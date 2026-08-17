@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { motion } from "framer-motion";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import welcomeBottle from "@/assets/Welcome-Party-Bottle.png";
 import welcomeCup from "@/assets/Welcome-Party-Cup.png";
 import weddingIcon from "@/assets/Wedding-4.png";
@@ -17,7 +16,6 @@ const pageContent = {
   en: {
     heading: "The Itinerary",
     intro: "Three days in the Tuscan countryside. Here's what to expect.",
-    faqHeading: "Concierge FAQs",
     attireLabel: "Attire:",
     colorsNote: "Here are a few colors to inspire but wear whatever makes you feel good.",
     navTravel: "Travel →",
@@ -46,33 +44,10 @@ const pageContent = {
         attire: "Vintage Resort Wear",
       },
     ],
-    faqs: [
-      {
-        q: "What is the weather like in September?",
-        a: "Late September in Tuscany is typically beautiful, with warm, sunny days (around 75°F / 24°C) and crisp evenings (around 55°F / 13°C). We recommend bringing a light jacket or wrap for the evening events. Don't forget a bathing suit!",
-      },
-      {
-        q: "What shoes should I wear?",
-        a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
-      },
-      {
-        q: "Are kids welcome?",
-        a: "We love your kids, we really do. However, this celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
-      },
-      {
-        q: "Can I bring a date?",
-        a: "While we'd love to celebrate with everyone, our venue has limited capacity. We are only able to accommodate the guests specifically listed on your invitation.",
-      },
-      {
-        q: "Are gifts expected?",
-        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola.",
-      },
-    ],
   },
   pl: {
     heading: "Plan",
     intro: "Trzy dni w toskańskiej scenerii. Oto, co na Was czeka.",
-    faqHeading: "Najczęstsze pytania",
     attireLabel: "Strój:",
     colorsNote: "Kilka kolorów dla inspiracji, ale przede wszystkim ubierz to, w czym czujesz się najlepiej.",
     navTravel: "Podróż →",
@@ -101,35 +76,13 @@ const pageContent = {
         attire: "Styl vintage resort",
       },
     ],
-    faqs: [
-      {
-        q: "Jaka jest pogoda we wrześniu?",
-        a: "Koniec września w Toskanii jest zazwyczaj piękny — ciepłe, słoneczne dni (około 24°C) i rześkie wieczory (około 13°C). Polecamy zabrać lekką kurtkę lub szal na wieczorne imprezy. I nie zapomnijcie o stroju kąpielowym!",
-      },
-      {
-        q: "Jakie buty powinnam/powinienem włożyć?",
-        a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
-      },
-      {
-        q: "Czy dzieci są mile widziane?",
-        a: "Naprawdę kochamy Wasze dzieci. Jednak to świętowanie jest tylko dla dorosłych. Na uroczystości będzie obecna niewielka liczba dzieci z najbliższej rodziny. Dziękujemy za zrozumienie!",
-      },
-      {
-        q: "Czy mogę przyjść z osobą towarzyszącą?",
-        a: "Z całego serca chcielibyśmy zaprosić wszystkich, ale liczba miejsc jest ograniczona. Prosimy o przybycie wyłącznie osób wskazanych na zaproszeniu.",
-      },
-      {
-        q: "Czy oczekujemy prezentów?",
-        a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — lista prezentów pojawi się wkrótce.",
-      },
-    ],
   },
 };
 
 const TheWeekend = () => {
   const { language } = useLanguage();
   const t = pageContent[language];
-  const { itinerary, faqs } = t;
+  const { itinerary } = t;
 
   return (
     <Layout>
@@ -251,28 +204,6 @@ const TheWeekend = () => {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* Concierge FAQs */}
-      <section className="w-[90%] max-w-[800px] mx-auto pb-24">
-        <FadeIn>
-          <h2 className="heading-section text-center mb-4">{t.faqHeading}</h2>
-          <div className="w-12 h-px bg-primary mx-auto mb-12" />
-        </FadeIn>
-        <FadeIn delay={150}>
-          <Accordion type="single" collapsible className="space-y-2">
-            {faqs.map((faq, i) => (
-              <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 px-0">
-                <AccordionTrigger className="font-serif text-xl md:text-2xl text-foreground font-light py-6 hover:no-underline text-left">
-                  {faq.q}
-                </AccordionTrigger>
-                <AccordionContent className="pb-8">
-                  <p className="body-editorial text-left">{faq.a}</p>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </FadeIn>
       </section>
 
       {/* Navigation buttons */}
