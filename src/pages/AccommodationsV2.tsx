@@ -199,30 +199,30 @@ const AccommodationsV2 = () => {
         >
           <div>
             <div className="flex items-start justify-between mb-1">
-              <h3 className="font-serif text-lg text-foreground">{cat.name}</h3>
+              <h3 className="heading-card text-foreground">{cat.name}</h3>
               {cat.name !== "Solo Guest Estate Pass" && (
                 soldOut ? (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-muted-foreground">
+                  <span className="label-xs tracking-widest whitespace-nowrap ml-4">
                     {t.soldOut}
                   </span>
                 ) : cat.inventory_count <= 3 ? (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-amber-600">
+                  <span className="label-xs tracking-widest whitespace-nowrap ml-4 text-amber-600">
                     ! Only {cat.inventory_count} Left
                   </span>
                 ) : (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-primary">
+                  <span className="label-xs tracking-widest whitespace-nowrap ml-4 text-primary">
                     {t.left(cat.inventory_count)}
                   </span>
                 )
               )}
             </div>
             {cat.description && (
-              <p className="font-body text-sm text-muted-foreground font-light mb-2">
+              <p className="body-small text-muted-foreground font-light mb-2">
                 {cat.description}
               </p>
             )}
-            <p className="font-body text-sm text-muted-foreground">{capacityLabel(cat)}</p>
-            <p className="font-serif text-lg text-foreground mt-3">
+            <p className="body-small text-muted-foreground">{capacityLabel(cat)}</p>
+            <p className="heading-card text-foreground mt-3">
               ${cat.price.toLocaleString()} USD
             </p>
           </div>
@@ -234,7 +234,7 @@ const AccommodationsV2 = () => {
               setGuestNames("");
               setEmail("");
             }}
-            className="mt-5 w-full py-3 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="mt-5 w-full py-3 bg-primary text-primary-foreground label-xs hover:opacity-90 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             {soldOut ? t.soldOut : t.selectRoom}
           </button>
@@ -279,7 +279,7 @@ const AccommodationsV2 = () => {
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-serif text-2xl">
+            <DialogTitle className="heading-card">
               {selected && t.reserveTitle(selected.name)}
             </DialogTitle>
             <DialogDescription className="font-body text-muted-foreground">
@@ -289,7 +289,7 @@ const AccommodationsV2 = () => {
 
           <form onSubmit={handleSubmit} className="space-y-5 mt-2">
             <div>
-              <label className="font-serif text-lg text-foreground block mb-1">
+              <label className="heading-card text-foreground block mb-1">
                 {t.guestNamesLabel}
               </label>
               <textarea
@@ -303,7 +303,7 @@ const AccommodationsV2 = () => {
             </div>
 
             <div>
-              <label className="font-serif text-lg text-foreground block mb-1">{t.emailLabel}</label>
+              <label className="heading-card text-foreground block mb-1">{t.emailLabel}</label>
               <input
                 type="email"
                 value={email}
@@ -317,7 +317,7 @@ const AccommodationsV2 = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-50"
+              className="w-full py-4 bg-primary text-primary-foreground label-xs hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               {submitting ? t.reserving : t.claimRoom}
             </button>

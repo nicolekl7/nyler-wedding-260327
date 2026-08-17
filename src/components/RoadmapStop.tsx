@@ -67,25 +67,25 @@ const RoadmapStop = ({ stop, side, index, isLast }: Props) => {
               textFirst ? "lg:order-1 lg:text-right lg:pr-12" : "lg:order-2 lg:pl-12"
             )}
           >
-            <h3 className="font-serif text-5xl sm:text-6xl font-light text-foreground leading-none mb-3">
+            <h3 className="heading-stat text-foreground leading-none mb-3">
               {stop.year}
             </h3>
-            <p className="font-body uppercase tracking-[0.3em] text-[0.7rem] text-muted-foreground mb-4">
+            <p className="label-xs tracking-[0.3em] mb-4">
               {stop.month}
               {stop.place && <span> · {stop.place}</span>}
             </p>
             {stop.headline && (
-              <h2 className="font-serif italic text-xl sm:text-2xl font-light text-foreground leading-snug mb-3 text-balance">
+              <h2 className="heading-card italic text-foreground leading-snug mb-3 text-balance">
                 {stop.headline}
               </h2>
             )}
             {stop.blurb && (
-              <p className="font-body text-sm text-muted-foreground leading-relaxed text-balance max-w-sm lg:max-w-none lg:inline-block">
+              <p className="body-small text-muted-foreground leading-relaxed text-balance max-w-sm lg:max-w-none lg:inline-block">
                 {stop.blurb}
               </p>
             )}
             {stop.disclaimer && (
-              <p className="font-body text-xs italic text-muted-foreground/50 leading-relaxed text-balance max-w-sm lg:max-w-none mt-2">
+              <p className="label-xs normal-case tracking-normal italic text-muted-foreground/50 leading-relaxed text-balance max-w-sm lg:max-w-none mt-2">
                 {stop.disclaimer}
               </p>
             )}
@@ -320,7 +320,7 @@ const PhotoFrame = ({
         />
       ) : (
         <div className="relative aspect-[4/5] w-full overflow-hidden bg-foreground/10">
-          <div className="absolute inset-0 flex items-center justify-center text-foreground/30 font-serif italic text-xs">
+          <div className="absolute inset-0 flex items-center justify-center text-foreground/30 label-xs normal-case italic">
             coming soon
           </div>
         </div>

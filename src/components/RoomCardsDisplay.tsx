@@ -91,43 +91,43 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
         >
           <div>
             <div className="flex items-start justify-between mb-1">
-              <h3 className="font-serif text-lg text-foreground">{cat.name}</h3>
+              <h3 className="heading-card text-foreground">{cat.name}</h3>
               {!isSolo && (
                 soldOut ? (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-muted-foreground">
+                  <span className="label-xs tracking-widest whitespace-nowrap ml-4">
                     Sold Out
                   </span>
                 ) : cat.inventory_count <= 3 ? (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300">
+                  <span className="label-xs tracking-widest whitespace-nowrap ml-4 px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300">
                     Only {cat.inventory_count} Left
                   </span>
                 ) : (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-primary">
+                  <span className="label-xs tracking-widest whitespace-nowrap ml-4 text-primary">
                     {cat.inventory_count} left
                   </span>
                 )
               )}
             </div>
             {cat.description && (
-              <p className="font-body text-sm text-muted-foreground font-light mb-2">
+              <p className="body-small text-muted-foreground font-light mb-2">
                 {isSolo
                   ? "Attending solo? Reserve your spot and leave the rest to us. We'll place you with another solo guest in a spacious suite."
                   : cat.description}
               </p>
             )}
-            <p className="font-body text-sm text-muted-foreground">{capacityLabel(cat)}</p>
+            <p className="body-small text-muted-foreground">{capacityLabel(cat)}</p>
             {capacityNote(cat) && (
-              <p className="font-body text-xs text-muted-foreground/70 mt-1 italic">
+              <p className="label-xs normal-case tracking-normal text-muted-foreground/70 mt-1 italic">
                 {capacityNote(cat)}
               </p>
             )}
-            <p className="font-serif text-lg text-foreground mt-3">
+            <p className="heading-card text-foreground mt-3">
               ${cat.price.toLocaleString()} USD
             </p>
           </div>
 
           <div
-            className={`mt-5 w-full py-2.5 text-center font-body text-xs uppercase tracking-[0.25em] transition-all duration-200 ${
+            className={`mt-5 w-full py-2.5 text-center label-xs transition-all duration-200 ${
               isSelected
                 ? "bg-primary text-primary-foreground"
                 : soldOut
@@ -158,11 +158,11 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
           }`}
         >
           <div>
-            <h3 className="font-serif text-lg text-foreground mb-1">{title}</h3>
-            <p className="font-body text-sm text-muted-foreground font-light">{description}</p>
+            <h3 className="heading-card text-foreground mb-1">{title}</h3>
+            <p className="body-small text-muted-foreground font-light">{description}</p>
           </div>
           <div
-            className={`mt-5 w-full py-2.5 text-center font-body text-xs uppercase tracking-[0.25em] transition-all duration-200 ${
+            className={`mt-5 w-full py-2.5 text-center label-xs transition-all duration-200 ${
               isSelected
                 ? "bg-primary text-primary-foreground"
                 : "border border-border text-muted-foreground hover:border-primary hover:text-foreground"
@@ -202,13 +202,13 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
             }`}
           >
             <div>
-              <h3 className="font-serif text-lg text-foreground mb-1">Not Staying Onsite</h3>
-              <p className="font-body text-sm text-muted-foreground font-light">
+              <h3 className="heading-card text-foreground mb-1">Not Staying Onsite</h3>
+              <p className="body-small text-muted-foreground font-light">
                 For guests who prefer to make their own travel arrangements and stay off the estate.
               </p>
             </div>
             <div
-              className={`mt-5 w-full py-2.5 text-center font-body text-xs uppercase tracking-[0.25em] transition-all duration-200 ${
+              className={`mt-5 w-full py-2.5 text-center label-xs transition-all duration-200 ${
                 notOnsiteSelected
                   ? "bg-primary text-primary-foreground"
                   : "border border-border text-muted-foreground hover:border-primary hover:text-foreground"

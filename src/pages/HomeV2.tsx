@@ -63,13 +63,13 @@ const HomeV2 = () => {
             </div>
 
             {/* Subline */}
-            <p className="mt-10 sm:mt-14 font-body uppercase tracking-[0.2em] text-xs sm:text-sm text-muted-foreground">
+            <p className="mt-10 sm:mt-14 label-xs tracking-[0.2em]">
               September 17, 2026<span className="hidden sm:inline">&nbsp;|&nbsp;Tuscany, Italy</span><span className="block sm:hidden mt-2">Tuscany, Italy</span>
             </p>
 
             <Link
               to="/rsvp-v2"
-              className="inline-block mt-10 border border-foreground rounded-full px-8 py-3 font-serif text-xs tracking-[0.3em] uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+              className="inline-block mt-10 border border-foreground rounded-full px-8 py-3 label-xs tracking-[0.3em] text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
               RSVP
             </Link>

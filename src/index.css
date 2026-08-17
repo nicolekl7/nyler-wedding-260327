@@ -105,19 +105,55 @@
 }
 
 @layer components {
+  /*
+   * Site-wide text style system — 8 canonical (font family + size) pairs.
+   * Every guest-facing text element should use one of these; layer color,
+   * weight, tracking, italic, or uppercase on top as needed rather than
+   * introducing a new font-size scale.
+   */
+
+  /* 1. Hero / display — biggest text on the site (couple's name) */
   .heading-display {
-    @apply font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-tight leading-none;
+    font-size: clamp(3rem, 12vw, 9rem);
+    @apply font-serif font-light tracking-tight leading-none;
   }
 
+  /* 2. Stat number — large standalone numerals (countdown, roadmap years) */
+  .heading-stat {
+    @apply font-serif text-5xl sm:text-6xl md:text-8xl font-light tracking-tight leading-none;
+  }
+
+  /* 3. Section heading — page titles, major section headers */
   .heading-section {
     @apply font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light tracking-tight;
   }
 
+  /* 4. Card heading — subsection/card/component titles (day titles, room names, etc.) */
+  .heading-card {
+    @apply font-serif text-lg sm:text-xl md:text-2xl font-light tracking-tight;
+  }
+
+  /* 5. Eyebrow label — large uppercase tracked label above a section */
   .heading-sub {
     font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);
     @apply font-body uppercase tracking-[0.25em] sm:tracking-[0.3em] text-muted-foreground font-medium;
   }
 
+  /* 6. Small label — nav links, form labels, eyebrows, captions, fine print */
+  .label-xs {
+    @apply font-body text-xs uppercase tracking-[0.25em] text-muted-foreground;
+  }
+
+  .nav-link {
+    @apply font-body text-xs uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors duration-300;
+  }
+
+  /* 7. Small body — secondary copy, list/schedule items, button labels */
+  .body-small {
+    @apply font-body text-sm;
+  }
+
+  /* 8. Editorial body — primary paragraph copy */
   .body-editorial {
     font-size: clamp(1rem, 1vw + 0.5rem, 1.125rem);
     @apply font-body leading-[1.5] text-muted-foreground font-light max-w-2xl text-pretty;
@@ -125,10 +161,6 @@
 
   .page-section {
     @apply px-5 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 md:py-24 lg:py-32;
-  }
-
-  .nav-link {
-    @apply font-body text-xs uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors duration-300;
   }
 }
 

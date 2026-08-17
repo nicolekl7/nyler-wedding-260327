@@ -282,10 +282,10 @@ const Index = () => {
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a2e1a]/90 via-[#1a2e1a]/20 to-transparent" />
         <FadeIn className="relative z-10 px-6 md:px-12 lg:px-24 pb-16 md:pb-24">
-          <h1 className="heading-display mb-4 text-[#fff7f0]" style={{ fontSize: "clamp(3rem, 12vw, 9rem)" }}>
+          <h1 className="heading-display mb-4 text-[#fff7f0]">
             Nicole <span className="font-light italic">&</span> Tyler
           </h1>
-          <p className="heading-sub tracking-[0.158em] text-[#fff7f0] opacity-75" style={{ fontSize: "clamp(0.65rem, 1.5vw, 1.1rem)" }}>
+          <p className="label-xs tracking-[0.158em] text-[#fff7f0] opacity-75">
             <span className="inline sm:hidden">{t.dateLine}</span>
             <span className="hidden sm:inline">{t.dateLineLong}</span>
           </p>
@@ -296,10 +296,10 @@ const Index = () => {
       <section className="page-section pt-16 md:pt-24 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
           <div className="w-12 h-px bg-primary mx-auto mb-8" />
-          <p className="font-serif italic text-xl md:text-2xl lg:text-3xl font-light tracking-wide leading-relaxed text-foreground mx-auto max-w-2xl text-pretty">
+          <p className="heading-card italic tracking-wide leading-relaxed text-foreground mx-auto max-w-2xl text-pretty">
             {t.welcome}
           </p>
-          <p className="font-body text-sm tracking-[0.2em] uppercase text-muted-foreground mt-8">
+          <p className="body-small tracking-[0.2em] uppercase text-muted-foreground mt-8">
             {t.signature}
           </p>
         </FadeIn>
@@ -311,7 +311,7 @@ const Index = () => {
           <FadeIn>
             <h2 className="heading-section italic text-center mb-4 opacity-95">{t.heading}</h2>
             <div className="w-12 h-px bg-[#fff7f0]/40 mx-auto mb-6" />
-            <p className="font-body text-sm sm:text-base opacity-75 text-center max-w-xl mx-auto mb-8 text-pretty">
+            <p className="body-small opacity-75 text-center max-w-xl mx-auto mb-8 text-pretty">
               {t.intro}
             </p>
           </FadeIn>
@@ -369,20 +369,20 @@ const Index = () => {
                   )}
 
                   {/* Date + title */}
-                  <p className="font-body text-xs uppercase tracking-[0.25em] opacity-60 mb-1">
+                  <p className="label-xs text-[#fff7f0] opacity-60 mb-1">
                     {day.date}
                   </p>
-                  <h3 className="font-serif text-2xl md:text-3xl font-light text-[#fff7f0] mb-6">
+                  <h3 className="heading-card text-[#fff7f0] mb-6">
                     {day.title}
                   </h3>
 
                   {/* Schedule items */}
                   {day.subSchedules && (
-                    <p className="font-body text-xs uppercase tracking-[0.2em] opacity-60 mb-3">
+                    <p className="label-xs text-[#fff7f0] opacity-60 mb-3">
                       {t.scheduleLabel}
                     </p>
                   )}
-                  <div className="space-y-2.5 font-body text-sm tracking-wide mb-6">
+                  <div className="space-y-2.5 body-small tracking-wide mb-6">
                     {day.items.map((item, idx) => (
                       <div key={idx} className="flex flex-col sm:flex-row sm:gap-3">
                         <span className="font-medium sm:min-w-[15rem] shrink-0">{item.time}</span>
@@ -394,10 +394,10 @@ const Index = () => {
                   {/* Details */}
                   {day.details && (
                     <div className="mb-5">
-                      <p className="font-body text-xs uppercase tracking-[0.2em] opacity-60 mb-2">
+                      <p className="label-xs text-[#fff7f0] opacity-60 mb-2">
                         {t.detailsLabel}
                       </p>
-                      <p className="font-body text-sm leading-relaxed opacity-90 max-w-2xl">
+                      <p className="body-small leading-relaxed opacity-90 max-w-2xl">
                         {day.details}
                       </p>
                     </div>
@@ -407,7 +407,7 @@ const Index = () => {
                   {day.attireBlocks && (
                     <div className="space-y-2">
                       {day.attireBlocks.map((block, bi) => (
-                        <p key={bi} className="font-body text-sm italic opacity-80 max-w-2xl leading-relaxed">
+                        <p key={bi} className="body-small italic opacity-80 max-w-2xl leading-relaxed">
                           <span className="not-italic font-medium">{block.label ?? t.attireLabel}</span>{" "}
                           <span className="not-italic">{block.title}</span> — {block.body}
                         </p>
@@ -428,19 +428,19 @@ const Index = () => {
                       {day.subSchedules.map((sub, si) => (
                         <div key={si} className="border border-[#fff7f0]/20 p-6 md:p-7 space-y-3">
                           <div>
-                            <h4 className="font-serif text-lg md:text-xl text-[#fff7f0] mb-1 leading-snug">
+                            <h4 className="heading-card text-[#fff7f0] mb-1 leading-snug">
                               {sub.heading}
                             </h4>
-                            <p className="font-body text-[11px] uppercase tracking-[0.2em] opacity-60">
+                            <p className="label-xs text-[#fff7f0] opacity-60">
                               {sub.host}
                             </p>
                           </div>
-                          <p className="font-body text-sm leading-relaxed opacity-90">
+                          <p className="body-small leading-relaxed opacity-90">
                             {sub.details}
                           </p>
                           <div className="space-y-2 pt-1">
                             {sub.attireBlocks.map((block, bi) => (
-                              <p key={bi} className="font-body text-sm italic opacity-80 leading-relaxed">
+                              <p key={bi} className="body-small italic opacity-80 leading-relaxed">
                                 <span className="not-italic font-medium">{block.label ?? t.attireLabel}</span>{" "}
                                 <span className="not-italic">{block.title}</span> — {block.body}
                               </p>
@@ -461,7 +461,7 @@ const Index = () => {
       <section className="page-section pt-16 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
           <p className="heading-sub mb-3">{t.countdown}</p>
-          <span className="font-serif text-5xl sm:text-6xl md:text-8xl font-light text-foreground">
+          <span className="heading-stat text-foreground">
             {daysLeft}
           </span>
           <p className="heading-sub mt-4 mb-0">{t.days}</p>

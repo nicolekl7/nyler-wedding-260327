@@ -1,5 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
+import Layout from "@/components/Layout";
 
 const NotFound = () => {
   const location = useLocation();
@@ -9,15 +10,15 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
+    <Layout>
+      <section className="page-section max-w-xl mx-auto text-center">
+        <h1 className="heading-section mb-4">404</h1>
+        <p className="body-editorial mx-auto mb-4">Oops! Page not found</p>
         <Link to="/" className="text-primary underline hover:text-primary/90">
           Return to Schedule
         </Link>
-      </div>
-    </div>
+      </section>
+    </Layout>
   );
 };
 

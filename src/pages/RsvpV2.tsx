@@ -110,7 +110,7 @@ const RsvpV2 = () => {
                     href={paypalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="inline-block px-10 py-4 bg-white text-primary border border-primary label-xs hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     {t.payPaypal(price)}
                   </a>
@@ -118,12 +118,12 @@ const RsvpV2 = () => {
                     href={venmoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="inline-block px-10 py-4 bg-white text-primary border border-primary label-xs hover:bg-primary hover:text-primary-foreground transition-colors"
                   >
                     {t.payVenmo(price)}
                   </a>
                 </div>
-                <p className="font-display italic text-lg text-foreground mt-8">{t.italianClose}</p>
+                <p className="heading-card italic text-foreground mt-8">{t.italianClose}</p>
               </>
             )}
 
@@ -131,7 +131,7 @@ const RsvpV2 = () => {
               <>
                 <p className="body-editorial mx-auto text-balance">{t.joiningRoomP1}</p>
                 <p className="body-editorial mx-auto text-balance mt-6">{t.joiningRoomP2}</p>
-                <p className="font-display italic text-lg text-foreground mt-8">{t.italianClose}</p>
+                <p className="heading-card italic text-foreground mt-8">{t.italianClose}</p>
               </>
             )}
 
@@ -148,12 +148,12 @@ const RsvpV2 = () => {
                       setSubmitResult(null);
                       setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
                     }}
-                    className="inline-block px-10 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+                    className="inline-block px-10 py-4 bg-primary text-primary-foreground label-xs hover:opacity-90 transition-opacity"
                   >
                     Browse Rooms
                   </button>
                 </div>
-                <p className="font-display italic text-lg text-foreground mt-8">Ci vediamo in Italia!</p>
+                <p className="heading-card italic text-foreground mt-8">Ci vediamo in Italia!</p>
               </>
             )}
 
@@ -161,7 +161,7 @@ const RsvpV2 = () => {
               <>
                 <p className="body-editorial mx-auto text-balance">{t.offsiteP1}</p>
                 <p className="body-editorial mx-auto text-balance mt-6">{t.offsiteP2}</p>
-                <p className="font-display italic text-lg text-foreground mt-8">{t.italianClose}</p>
+                <p className="heading-card italic text-foreground mt-8">{t.italianClose}</p>
               </>
             )}
 
@@ -169,7 +169,7 @@ const RsvpV2 = () => {
               <>
                 <p className="body-editorial mx-auto text-balance">{t.declinedP1}</p>
                 <p className="body-editorial mx-auto text-balance mt-6">{t.declinedP2}</p>
-                <p className="font-display italic text-lg text-foreground mt-8">{t.declinedClose}</p>
+                <p className="heading-card italic text-foreground mt-8">{t.declinedClose}</p>
               </>
             )}
           </FadeIn>
@@ -205,7 +205,7 @@ const RsvpV2 = () => {
                 <a
                   href="#rsvp-form"
                   onClick={(e) => { e.preventDefault(); formRef.current?.scrollIntoView({ behavior: "smooth" }); }}
-                  className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="body-small italic text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {t.skipRsvp}
                 </a>
@@ -213,7 +213,7 @@ const RsvpV2 = () => {
               <p>
                 <a
                   href="https://www.nicoleandtylerswedding.com/payment"
-                  className="font-display italic text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="body-small italic text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {t.skipPayment}
                 </a>

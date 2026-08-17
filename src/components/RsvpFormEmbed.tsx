@@ -553,7 +553,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
           <button
             type="button"
             onClick={handleEditRsvp}
-            className="font-body text-xs uppercase tracking-[0.25em] text-primary underline underline-offset-4 hover:opacity-70 transition-opacity"
+            className="label-xs text-primary underline underline-offset-4 hover:opacity-70 transition-opacity"
           >
             Need to edit your RSVP?
           </button>
@@ -579,7 +579,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 setOwnTransport("");
                 setAttendingCount(1);
               }}
-              className="font-body text-xs uppercase tracking-[0.25em] text-muted-foreground underline underline-offset-4 hover:opacity-70 transition-opacity"
+              className="label-xs underline underline-offset-4 hover:opacity-70 transition-opacity"
             >
               Not you?
             </button>
@@ -604,7 +604,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
           </p>
           {!allDeclined && !NO_PAYMENT_ACCOMMODATIONS.includes(accommodation) && (
             <>
-              <p className="font-body text-sm text-muted-foreground mt-6">
+              <p className="body-small text-muted-foreground mt-6">
                 Please note: your room is not reserved until payment is received.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
@@ -612,7 +612,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   href="https://paypal.me/nylerwedding"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block px-8 py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity"
+                  className="inline-block px-8 py-4 bg-primary text-primary-foreground label-xs hover:opacity-90 transition-opacity"
                 >
                   Pay with PayPal
                 </a>
@@ -620,7 +620,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   href="https://venmo.com/u/tylermagee"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block px-8 py-4 border border-primary text-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className="inline-block px-8 py-4 border border-primary text-primary label-xs hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
                   Pay with Venmo
                 </a>
@@ -660,7 +660,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-50"
+              className="w-full py-4 bg-primary text-primary-foreground label-xs hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               {loading ? "Searching..." : "Find My Invitation"}
             </button>
@@ -686,12 +686,12 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                     key={opt.id}
                     type="button"
                     onClick={() => loadGuest(opt)}
-                    className="w-full px-5 py-4 border border-border text-left font-body text-sm text-foreground hover:border-primary hover:bg-primary/5 transition-colors"
+                    className="w-full px-5 py-4 border border-border text-left body-small text-foreground hover:border-primary hover:bg-primary/5 transition-colors"
                   >
-                    <span className="font-serif text-lg block">
+                    <span className="heading-card block">
                       {opt.first_name} {opt.last_name}
                     </span>
-                    <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-1 block">
+                    <span className="label-xs tracking-[0.2em] mt-1 block">
                       {opt.party_name}
                     </span>
                   </button>
@@ -706,8 +706,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
           <div className="bg-background w-full max-w-md shadow-xl p-6 space-y-5 max-h-[90vh] overflow-y-auto">
             <div>
-              <h3 className="font-serif text-xl font-light text-foreground">Please confirm guest names</h3>
-              <p className="font-body text-sm text-muted-foreground mt-2">
+              <h3 className="heading-card text-foreground">Please confirm guest names</h3>
+              <p className="body-small text-muted-foreground mt-2">
                 Some names don't exactly match what we have on the invitation. Please review before submitting.
               </p>
             </div>
@@ -720,14 +720,14 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                     key={i}
                     className={`space-y-1 px-3 py-3 ${matches ? "bg-muted/30" : "bg-amber-50/60 border border-amber-200"}`}
                   >
-                    <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                    <p className="label-xs tracking-[0.15em]">
                       Guest {i + 1}
                     </p>
-                    <p className="font-body text-sm text-muted-foreground">
+                    <p className="body-small text-muted-foreground">
                       Invitation:{" "}
                       <span className="text-foreground">{invite || "—"}</span>
                     </p>
-                    <p className="font-body text-sm text-muted-foreground">
+                    <p className="body-small text-muted-foreground">
                       You entered:{" "}
                       <span className={`${matches ? "text-foreground" : "text-foreground font-medium"}`}>
                         {name.trim() || "—"}{" "}
@@ -749,7 +749,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                 onChange={(e) => setNameConfirmChecked(e.target.checked)}
                 className="mt-0.5 accent-primary shrink-0"
               />
-              <span className="font-body text-sm text-foreground">
+              <span className="body-small text-foreground">
                 I confirm these are the correct guests for this invitation.
               </span>
             </label>
@@ -761,14 +761,14 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                   handleSubmit(true);
                 }}
                 disabled={!nameConfirmChecked}
-                className="w-full py-3 bg-primary text-primary-foreground font-body text-xs uppercase tracking-[0.25em] hover:opacity-90 transition-opacity disabled:opacity-40 disabled:pointer-events-none"
+                className="w-full py-3 bg-primary text-primary-foreground label-xs hover:opacity-90 transition-opacity disabled:opacity-40 disabled:pointer-events-none"
               >
                 Confirm and submit
               </button>
               <button
                 type="button"
                 onClick={() => setShowNameConfirmModal(false)}
-                className="w-full py-3 border border-border font-body text-xs uppercase tracking-[0.25em] text-foreground hover:border-primary/40 transition-colors"
+                className="w-full py-3 border border-border label-xs text-foreground hover:border-primary/40 transition-colors"
               >
                 Go back and edit
               </button>
@@ -784,11 +784,11 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               <p className="body-editorial mx-auto mb-2">
                 Welcome, <span className="font-medium text-foreground">{guest.first_name}</span>!
               </p>
-              <p className="font-body text-sm text-muted-foreground">
+              <p className="body-small text-muted-foreground">
                 You may RSVP for up to {guest.max_guests} guest{guest.max_guests > 1 ? "s" : ""}.
               </p>
               {previouslyResponded && (
-                <p className="font-body text-xs text-primary mt-2 italic">
+                <p className="label-xs normal-case tracking-normal text-primary mt-2 italic">
                   Your party has already RSVPd — your previous selections are loaded below. You are able to update your RSVP until June 16, 2026.
                 </p>
               )}
@@ -797,11 +797,11 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             {/* Summary card: other party members who have already responded */}
             {respondedPartyMembers.length > 0 && (
               <div className="bg-muted/40 rounded-md px-5 py-4 space-y-2">
-                <p className="font-body text-xs uppercase tracking-[0.15em] text-muted-foreground mb-3">
+                <p className="label-xs tracking-[0.15em] mb-3">
                   Others in your party have already responded:
                 </p>
                 {respondedPartyMembers.map(({ name, rsvps }) => (
-                  <p key={name} className="font-body text-sm text-foreground">
+                  <p key={name} className="body-small text-foreground">
                     {describeAttendance(name, rsvps)}
                   </p>
                 ))}
@@ -810,21 +810,21 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             {/* Note: shown when more than one party member has not yet responded */}
             {unrespondedCount > 1 && (
-              <p className="font-body text-sm text-muted-foreground">
+              <p className="body-small text-muted-foreground">
                 Plans differ within your party? Just RSVP for yourself or whoever you're going with.
               </p>
             )}
 
             {guest.max_guests > 1 && (
               <div className="space-y-3">
-                <label className="font-serif text-lg md:text-xl font-light text-foreground block">Number of Guests</label>
+                <label className="heading-card text-foreground block">Number of Guests</label>
                 <div className="flex gap-3">
                   {Array.from({ length: guest.max_guests }, (_, i) => i + 1).map((num) => (
                     <button
                       key={num}
                       type="button"
                       onClick={() => handleCountChange(num)}
-                      className={`flex-1 py-3 border text-sm font-body transition-all duration-200 ${
+                      className={`flex-1 py-3 border body-small transition-all duration-200 ${
                         attendingCount === num
                           ? "border-primary bg-primary/5 text-foreground"
                           : "border-border text-muted-foreground hover:border-primary/40"
@@ -838,7 +838,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             )}
 
             <div className="space-y-4">
-              <label className="font-serif text-lg md:text-xl font-light text-foreground block">Guest Name{attendingCount > 1 ? "s" : ""}</label>
+              <label className="heading-card text-foreground block">Guest Name{attendingCount > 1 ? "s" : ""}</label>
               {guestNames.slice(0, attendingCount).map((name, i) => (
                 <div key={i} className="flex items-center gap-2 border-b border-border">
                   <input
@@ -863,7 +863,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                         setGuestNames(updated);
                         setAttendingCount((c) => c - 1);
                       }}
-                      className="text-muted-foreground/40 hover:text-muted-foreground transition-colors px-1 py-3 font-body text-sm leading-none"
+                      className="text-muted-foreground/40 hover:text-muted-foreground transition-colors px-1 py-3 body-small leading-none"
                       aria-label="Remove guest"
                     >
                       ✕
@@ -876,8 +876,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             {events.map((ev) => (
               <div key={ev.key} className="space-y-3">
                 <div>
-                  <p className="font-serif text-lg md:text-xl font-light text-foreground mb-1">{ev.label}</p>
-                  <p className="font-body text-xs text-muted-foreground">{ev.sub}</p>
+                  <p className="heading-card text-foreground mb-1">{ev.label}</p>
+                  <p className="label-xs normal-case tracking-normal">{ev.sub}</p>
                 </div>
                 <div className="flex gap-3">
                   {["accept", "decline"].map((val) => (
@@ -895,7 +895,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             {/* Accommodation dropdown */}
             {!allEventsDeclined && <div className="space-y-3">
-              <label className="font-serif text-lg md:text-xl font-light text-foreground block">On-Site Accommodations</label>
+              <label className="heading-card text-foreground block">On-Site Accommodations</label>
               <select
                 value={accommodation}
                 onChange={(e) => setAccommodation(e.target.value)}
@@ -922,8 +922,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
 
             {/* Transport question */}
             {!allEventsDeclined && <div className="space-y-3">
-              <label className="font-serif text-lg md:text-xl font-light text-foreground block">Transportation</label>
-              <p className="font-body text-xs text-muted-foreground">
+              <label className="heading-card text-foreground block">Transportation</label>
+              <p className="label-xs normal-case tracking-normal">
                 We're arranging a group transfer from the Siena train station on Wednesday, September 16th. Let us know if you'll need a spot.
               </p>
               <div className="space-y-2">
@@ -948,7 +948,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                       }}
                       className="accent-primary"
                     />
-                    <span className="font-body text-sm">
+                    <span className="body-small">
                       {label}
                     </span>
                   </label>
@@ -976,7 +976,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
                         onChange={() => setOwnTransport(value)}
                         className="accent-primary"
                       />
-                      <span className="font-body text-sm">
+                      <span className="body-small">
                         {label}
                       </span>
                     </label>
@@ -986,7 +986,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>}
 
             {!allEventsDeclined && <div>
-              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Dietary Restrictions</label>
+              <label className="heading-card text-foreground block mb-2">Dietary Restrictions</label>
               <input
                 type="text"
                 value={dietary}
@@ -998,7 +998,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>}
 
             <div>
-              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Comments</label>
+              <label className="heading-card text-foreground block mb-2">Comments</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -1010,7 +1010,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
             </div>
 
             <div>
-              <label className="font-serif text-lg md:text-xl font-light text-foreground block mb-2">Email Address</label>
+              <label className="heading-card text-foreground block mb-2">Email Address</label>
               <input
                 type="email"
                 value={email}
@@ -1026,7 +1026,7 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
               type="button"
               onClick={() => handleSubmit()}
               disabled={loading}
-              className="relative w-full py-4 font-body text-xs uppercase tracking-[0.25em] transition-opacity disabled:pointer-events-none overflow-hidden border border-primary"
+              className="relative w-full py-4 label-xs transition-opacity disabled:pointer-events-none overflow-hidden border border-primary"
             >
               {loading && (
                 <div

@@ -330,7 +330,7 @@ const Travel = () => {
             <p className="heading-sub text-primary mb-4">{t.thingsTitle}</p>
             <ul className="space-y-2">
               {t.beforeYouGoItems.map((item, i) => (
-                <li key={i} className="font-body text-xs leading-[1.8] text-muted-foreground font-light flex gap-2">
+                <li key={i} className="label-xs normal-case tracking-normal leading-[1.8] font-light flex gap-2">
                   <span className="text-primary">•</span>
                   <span>{item}</span>
                 </li>
@@ -356,7 +356,7 @@ const Travel = () => {
                   />
                 </div>
 
-                <p className="font-body text-sm leading-[1.9] text-muted-foreground font-light">
+                <p className="body-small leading-[1.9] text-muted-foreground font-light">
                   {s.body}
                 </p>
               </div>
@@ -367,7 +367,7 @@ const Travel = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-10">
             <Link
               to="/shuttle"
-              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
               {t.reserveShuttle}
             </Link>
@@ -375,7 +375,7 @@ const Travel = () => {
               href="https://www.trenitalia.com/en.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
               Book Train Tickets
             </a>
@@ -410,11 +410,11 @@ const Travel = () => {
                   />
                 </div>
                 <div className="md:w-1/2 space-y-3">
-                  <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-light">
+                  <h3 className="heading-section">
                     {g.title}
                   </h3>
                   {g.subtitle && (
-                    <p className="font-body text-sm text-muted-foreground">{g.subtitle}</p>
+                    <p className="body-small text-muted-foreground">{g.subtitle}</p>
                   )}
                   {g.richBody}
                 </div>
@@ -430,13 +430,13 @@ const Travel = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/"
-              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
               {t.navEvents}
             </Link>
             <Link
               to="/details"
-              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
               {t.navDetails}
             </Link>
@@ -454,7 +454,7 @@ const Travel = () => {
           <Accordion type="single" collapsible className="space-y-2">
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 px-0">
-                <AccordionTrigger className="font-serif text-xl md:text-2xl text-foreground font-light py-6 hover:no-underline text-left">
+                <AccordionTrigger className="heading-card text-foreground py-6 hover:no-underline text-left">
                   {faq.q}
                 </AccordionTrigger>
                 <AccordionContent className="pb-8">

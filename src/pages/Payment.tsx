@@ -23,7 +23,7 @@ const Payment = () => {
               href="https://paypal.me/nylerwedding"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+              className="inline-block px-10 py-4 bg-white text-primary border border-primary label-xs hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               Pay with PayPal
             </a>
@@ -31,13 +31,13 @@ const Payment = () => {
               href={`https://venmo.com/tylermagee?txn=pay&note=${encodeURIComponent("Wedding accommodation")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+              className="inline-block px-10 py-4 bg-white text-primary border border-primary label-xs hover:bg-primary hover:text-primary-foreground transition-colors"
             >
               Pay with Venmo
             </a>
           </div>
 
-          <p className="font-body text-sm text-muted-foreground mt-10">
+          <p className="body-small text-muted-foreground mt-10">
             Questions? Email us at{" "}
             <a
               href="mailto:nicoleandtylersitalianwedding@gmail.com"

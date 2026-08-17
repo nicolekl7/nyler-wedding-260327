@@ -51,7 +51,7 @@ const BookingSuccess = () => {
             href={state?.price ? `https://paypal.me/nylerwedding/${state.price}` : "https://paypal.me/nylerwedding"}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="inline-block px-10 py-4 bg-white text-primary border border-primary label-xs hover:bg-primary hover:text-primary-foreground transition-colors"
           >
             Pay with PayPal{state?.price ? ` — $${state.price.toLocaleString()}` : ""}
           </a>
@@ -61,7 +61,7 @@ const BookingSuccess = () => {
               : "https://venmo.com/u/tylermagee"}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-10 py-4 bg-white text-primary border border-primary font-body text-xs uppercase tracking-[0.25em] hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="inline-block px-10 py-4 bg-white text-primary border border-primary label-xs hover:bg-primary hover:text-primary-foreground transition-colors"
           >
             Pay with Venmo{state?.price ? ` — $${state.price.toLocaleString()}` : ""}
           </a>

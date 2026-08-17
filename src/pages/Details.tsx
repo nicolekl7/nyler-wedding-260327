@@ -290,7 +290,7 @@ const Details = () => {
               href={ZOLA_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 hover:bg-primary/90 transition-colors duration-300"
+              className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 hover:bg-primary/90 transition-colors duration-300"
             >
               {registry.zolaLabel}
             </a>
@@ -298,7 +298,7 @@ const Details = () => {
               href={AMAZON_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 hover:bg-primary/90 transition-colors duration-300"
+              className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 hover:bg-primary/90 transition-colors duration-300"
             >
               {registry.amazonLabel}
             </a>
@@ -310,7 +310,7 @@ const Details = () => {
       <article className="bg-background">
         <header className="w-[90%] mx-auto max-w-4xl pt-6 sm:pt-8 pb-16 text-center">
           <FadeIn>
-            <p className="font-body text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground mb-4">
+            <p className="label-xs tracking-[0.3em] mb-4">
               {story.eyebrow}
             </p>
             <h2 className="heading-section text-foreground">
@@ -357,16 +357,16 @@ const Details = () => {
         <footer className="bg-foreground text-cream">
           <div className="w-[90%] mx-auto max-w-2xl py-28 sm:py-32 text-center">
             <FadeIn>
-              <p className="font-body uppercase tracking-[0.3em] text-[0.65rem] text-cream/70 mb-3">
+              <p className="label-xs tracking-[0.3em] text-cream/70 mb-3">
                 {story.footerEyebrow}
               </p>
-              <h2 className="font-serif italic text-3xl sm:text-4xl font-light text-cream leading-tight mb-4 text-balance">
+              <h2 className="heading-section italic text-cream leading-tight mb-4 text-balance">
                 {story.footerHeadline}
               </h2>
-              <p className="font-body text-sm sm:text-base text-cream/80 leading-relaxed text-balance max-w-md mx-auto mb-8">
+              <p className="body-small text-cream/80 leading-relaxed text-balance max-w-md mx-auto mb-8">
                 {story.footerBody}
               </p>
-              <p className="font-serif italic text-2xl sm:text-3xl font-light text-cream/90 text-balance">
+              <p className="heading-section italic text-cream/90 text-balance">
                 {story.footerClose}
               </p>
             </FadeIn>

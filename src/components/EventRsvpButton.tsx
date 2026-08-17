@@ -114,7 +114,7 @@ const EventRsvpButton = ({ eventKey, value, isSelected, onSelect }: Props) => {
     <motion.button
       type="button"
       onClick={onSelect}
-      className="flex-1 py-3 border text-sm font-body uppercase tracking-[0.15em] overflow-hidden"
+      className="flex-1 py-3 border body-small uppercase tracking-[0.15em] overflow-hidden"
       style={{ minHeight: 48 }}
       animate={{
         backgroundColor: isSelected ? (isAccept ? OLIVE : CHARCOAL) : "transparent",

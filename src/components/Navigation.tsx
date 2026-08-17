@@ -47,7 +47,7 @@ const Navigation = () => {
               to={item.path}
               className={
                 item.cta
-                  ? "font-body text-xs uppercase tracking-[0.2em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+                  ? "label-xs tracking-[0.2em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
                   : `nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
                       location.pathname === item.path
                         ? "text-foreground after:w-full"
@@ -60,7 +60,7 @@ const Navigation = () => {
           ))}
 
           {/* Language switcher — desktop */}
-          <div className="flex items-center gap-1 font-body text-xs tracking-widest">
+          <div className="flex items-center gap-1 label-xs tracking-widest">
             <button
               onClick={() => setLanguage("pl")}
               className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
@@ -110,7 +110,7 @@ const Navigation = () => {
           ))}
 
           {/* Language switcher — mobile */}
-          <div className="flex items-center gap-2 pt-2 border-t border-border/30 font-body text-xs tracking-widest">
+          <div className="flex items-center gap-2 pt-2 border-t border-border/30 label-xs tracking-widest">
             <button
               onClick={() => { setLanguage("pl"); setOpen(false); }}
               className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40"}`}

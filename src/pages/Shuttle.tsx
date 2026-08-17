@@ -186,7 +186,7 @@ const Shuttle = () => {
           {!result && (
             <form onSubmit={handleLookup} className="space-y-8 max-w-md mx-auto">
               <div>
-                <label className="block font-body text-xs uppercase tracking-[0.25em] text-muted-foreground mb-2">
+                <label className="block label-xs mb-2">
                   Full Name *
                 </label>
                 <input
@@ -200,7 +200,7 @@ const Shuttle = () => {
               </div>
 
               <div>
-                <label className="block font-body text-xs uppercase tracking-[0.25em] text-muted-foreground mb-2">
+                <label className="block label-xs mb-2">
                   Email *
                 </label>
                 <input
@@ -214,7 +214,7 @@ const Shuttle = () => {
               </div>
 
               {notFound && (
-                <p className="font-body text-sm text-destructive text-center">
+                <p className="body-small text-destructive text-center">
                   We couldn't find a matching invitation. Double-check your name and email, or reach out to Nicole & Tyler.
                 </p>
               )}
@@ -222,7 +222,7 @@ const Shuttle = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary text-primary-foreground py-3 font-body text-sm uppercase tracking-[0.25em] hover:bg-primary/90 transition-colors disabled:opacity-50"
+                className="w-full bg-primary text-primary-foreground py-3 body-small uppercase tracking-[0.25em] hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
                 {loading ? "Looking up…" : "Check My Submission"}
               </button>
@@ -260,7 +260,7 @@ const Shuttle = () => {
             return (
               <div className="space-y-3">
                 <div className="text-center">
-                  <h2 className="font-serif text-xl sm:text-2xl text-foreground leading-[1.05] tracking-tight">
+                  <h2 className="heading-card text-foreground leading-[1.05]">
                     Your Details
                   </h2>
                 </div>
@@ -291,14 +291,14 @@ const Shuttle = () => {
                                 {attending && <Check size={12} strokeWidth={2.5} />}
                                 {declined && <X size={12} strokeWidth={2.5} />}
                               </span>
-                              <span className="font-serif text-base text-foreground">{e.label}</span>
+                              <span className="heading-card text-foreground">{e.label}</span>
                             </div>
-                            <span className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+                            <span className="label-xs tracking-[0.28em]">
                               {e.day}
                             </span>
                           </div>
                           {attending && e.detail && (
-                            <p className="font-body text-sm text-muted-foreground pl-8">{e.detail}</p>
+                            <p className="body-small text-muted-foreground pl-8">{e.detail}</p>
                           )}
                         </li>
                       );
@@ -316,11 +316,11 @@ const Shuttle = () => {
                     </div>
                   ) : (
                     <>
-                      <p className="font-body text-sm text-muted-foreground">
+                      <p className="body-small text-muted-foreground">
                         No shuttle reserved. Please ensure you have arranged independent transportation
                         from the train station.
                       </p>
-                      <p className="font-body text-sm text-muted-foreground mt-3">
+                      <p className="body-small text-muted-foreground mt-3">
                         Our final passenger manifests have been submitted to our transportation vendors.
                         If you need to make an emergency change to your shuttle plans, please contact us
                         directly.
@@ -331,10 +331,10 @@ const Shuttle = () => {
 
                 {/* Room */}
                 <Card>
-                  <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
+                  <p className="label-xs tracking-[0.28em] mb-1">
                     Your room
                   </p>
-                  <h3 className="font-serif text-lg text-foreground leading-tight mb-2">
+                  <h3 className="heading-card text-foreground leading-tight mb-2">
                     {result.room?.category_name || "Not staying onsite"}
                   </h3>
 
@@ -348,17 +348,17 @@ const Shuttle = () => {
                   {result.invited?.dietary_restrictions && (
                     <>
                       <div className="h-px bg-border/70 my-1.5" />
-                      <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
+                      <p className="label-xs tracking-[0.28em] mb-1">
                         Dietary notes
                       </p>
-                      <p className="font-body text-sm text-foreground">
+                      <p className="body-small text-foreground">
                         {result.invited.dietary_restrictions}
                       </p>
                     </>
                   )}
 
                   {result.shuttle?.submitted_by && (
-                    <p className="font-body text-xs text-muted-foreground mt-2 leading-relaxed">
+                    <p className="label-xs normal-case tracking-normal mt-2 leading-relaxed">
                       Submitted by {result.shuttle.submitted_by}. Something look wrong? Reply to your
                       confirmation email and we'll fix it.
                     </p>
@@ -369,13 +369,13 @@ const Shuttle = () => {
                   <button
                     type="button"
                     onClick={reset}
-                    className="font-body text-[11px] uppercase tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
+                    className="label-xs tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
                   >
                     Look up another name
                   </button>
                   <Link
                     to="/"
-                    className="font-body text-[11px] uppercase tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
+                    className="label-xs tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
                   >
                     Full schedule
                   </Link>
@@ -394,7 +394,7 @@ const Card = ({ children }: { children: React.ReactNode }) => (
 );
 
 const CardTitle = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="font-serif text-lg text-foreground mb-1.5">{children}</h3>
+  <h3 className="heading-card text-foreground mb-1.5">{children}</h3>
 );
 
 const WaveBlock = ({
@@ -405,23 +405,23 @@ const WaveBlock = ({
   wave: WaveDetail | undefined;
 }) => (
   <div>
-    <p className="font-body text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-1">
+    <p className="label-xs tracking-[0.28em] mb-1">
       {label}
     </p>
     {wave ? (
       <>
-        <p className="font-serif text-xl text-foreground leading-none mb-1">{wave.time}</p>
-        <p className="font-body text-sm text-muted-foreground leading-snug">
+        <p className="heading-card text-foreground leading-none mb-1">{wave.time}</p>
+        <p className="body-small text-muted-foreground leading-snug">
           {wave.from}
           <br />
           to {wave.to}
         </p>
-        <span className="inline-block mt-1.5 font-body text-[10px] uppercase tracking-[0.22em] text-foreground bg-secondary px-3 py-1">
+        <span className="inline-block mt-1.5 label-xs tracking-[0.22em] text-foreground bg-secondary px-3 py-1">
           {wave.badge}
         </span>
       </>
     ) : (
-      <p className="font-serif text-base text-foreground leading-tight">
+      <p className="heading-card text-foreground leading-tight">
         Not taking the shuttle
       </p>
     )}
@@ -433,7 +433,7 @@ const GuestChips = ({ names }: { names: string[] }) => (
     {names.map((n) => (
       <span
         key={n}
-        className="font-body text-sm text-foreground border border-border/80 px-3 py-1.5 text-center truncate"
+        className="body-small text-foreground border border-border/80 px-3 py-1.5 text-center truncate"
       >
         {n}
       </span>
