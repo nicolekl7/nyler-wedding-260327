@@ -105,32 +105,32 @@ const content: Record<"en" | "pl", LangContent> = {
         ],
         subSchedules: [
           {
-            heading: "Schedule A: The \"Best of Tuscany\" Day Trip",
+            heading: "Schedule A: \"Best of Tuscany\" Day Trip",
             host: "Hosted by Grazyna & Waldemar",
             details:
-              "Sleep in, grab a coffee, and let us do the driving! For those who want to explore, we have curated a seamless, all-day luxury coach tour of our favorite Tuscan spots. We will start by wandering the historic streets of Siena, head to a beautiful local agriturismo for a wine-tasting lunch, and spend the late afternoon exploring the famous medieval towers of San Gimignano. We will cap off the trip with a spectacular group dinner before heading back to the venue around 10:00 PM.",
+              "Skip the driving and explore Tuscany on a luxury coach tour! We'll wander Siena's historic streets, enjoy a wine-tasting lunch at a local agriturismo, and explore San Gimignano's medieval towers. We'll finish with a group dinner before returning around 10:00 PM.",
             attireBlocks: [
               {
                 title: "Tuscan Explorer",
-                body: "Chic but practical daywear. Comfortable walking shoes are an absolute must for the cobblestones and hills in Siena and San Gimignano. Bring a light layer for the evening!",
+                body: "Chic, practical daywear with comfortable walking shoes for cobblestones. Bring a light evening layer.",
               },
             ],
           },
           {
-            heading: "Schedule B: Il Dolce Far Niente Pool Party & Local Dinner",
+            heading: "Schedule B: Il Dolce Far Niente Pool Party",
             host: "Hosted by Nicole & Tyler",
             details:
-              "The art of doing absolutely nothing. For those staying behind at Borgo Laticastelli, spend the day recovering in the Tuscan sun with music, endless spritzes, and lunch by the pool with us. Once we are finally ready to move, we will take a quick shuttle into the local town of Rapolano Terme for a relaxed dinner at Sapor in Torre.",
+              "Embrace the art of doing nothing! Relax poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, we'll shuttle into Rapolano Terme for a casual dinner at Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Daytime Attire:",
                 title: "Vintage Resort Wear",
-                body: "Bring your best vintage-inspired swimwear and cover-ups for lounging by the pool.",
+                body: "Vintage-inspired swimwear and cover-ups.",
               },
               {
                 label: "Evening Attire:",
                 title: "Tuscan Casual",
-                body: "For our dinner in town, effortless evening wear is perfect. Think flowy sundresses, lightweight linen trousers, short-sleeve button-downs, and comfortable sandals for walking around town.",
+                body: "Effortless styles like flowy dresses, linen trousers, short-sleeve button-downs, and comfortable sandals.",
               },
             ],
           },
@@ -212,29 +212,29 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Plan A: Wycieczka „Najlepsze z Toskanii”",
             host: "Organizują Grażyna i Waldemar",
             details:
-              "Wyśpijcie się, weźcie kawę i zostawcie prowadzenie nam! Dla tych, którzy chcą zwiedzać, przygotowaliśmy całodniową, luksusową wycieczkę autokarową po naszych ulubionych miejscach w Toskanii. Zaczniemy od spaceru po historycznych uliczkach Sieny, następnie udamy się do pięknego lokalnego agriturismo na lunch z degustacją wina, a późne popołudnie spędzimy, zwiedzając słynne średniowieczne wieże San Gimignano. Wycieczkę zakończymy wspólną, wyjątkową kolacją, po której wrócimy na miejsce około 22:00.",
+              "Zapomnijcie o prowadzeniu — odkrywajcie Toskanię podczas luksusowej wycieczki autokarowej! Przejdziemy się historycznymi uliczkami Sieny, zjemy lunch z degustacją wina w lokalnym agriturismo i zwiedzimy średniowieczne wieże San Gimignano. Na koniec wspólna kolacja, a powrót około 22:00.",
             attireBlocks: [
               {
                 title: "Odkrywca Toskanii",
-                body: "Szykowny, ale praktyczny strój dzienny. Wygodne buty do chodzenia są absolutnie niezbędne na brukowanych uliczkach i wzgórzach Sieny oraz San Gimignano. Zabierzcie lekką warstwę na wieczór!",
+                body: "Szykowny, ale praktyczny strój dzienny z wygodnymi butami na brukowane uliczki. Zabierzcie lekką warstwę na wieczór.",
               },
             ],
           },
           {
-            heading: "Plan B: Il Dolce Far Niente — impreza przy basenie i lokalna kolacja",
+            heading: "Plan B: Il Dolce Far Niente — impreza przy basenie",
             host: "Organizują Nicole i Tyler",
             details:
-              "Sztuka nierobienia zupełnie niczego. Dla tych, którzy zostają w Borgo Laticastelli — spędźcie dzień na regeneracji w toskańskim słońcu, przy muzyce, drinkach spritz bez końca i lunchu przy basenie z nami. Kiedy w końcu zbierzemy się do wyjścia, pojedziemy krótkim transferem do pobliskiego miasteczka Rapolano Terme na spokojną kolację w Sapor in Torre.",
+              "Poczujcie sztukę nierobienia niczego! Odpoczywajcie przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem pojedziemy do Rapolano Terme na swobodną kolację w Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Strój dzienny:",
                 title: "Vintage Resort Wear",
-                body: "Zabierzcie swój najlepszy strój kąpielowy w stylu vintage i narzutkę do relaksu przy basenie.",
+                body: "Strój kąpielowy w stylu vintage i narzutki.",
               },
               {
                 label: "Strój wieczorowy:",
                 title: "Tuscan Casual",
-                body: "Na naszą kolację w miasteczku idealny będzie swobodny strój wieczorowy. Pomyślcie o zwiewnych sukienkach, lekkich lnianych spodniach, koszulach z krótkim rękawem i wygodnych sandałach do spacerów po miasteczku.",
+                body: "Swobodny styl — zwiewne sukienki, lniane spodnie, koszule z krótkim rękawem i wygodne sandały.",
               },
             ],
           },
@@ -399,7 +399,7 @@ const Index = () => {
                           <img src={day.image} alt={day.imageAlt} className="block w-full" />
                         </div>
                       )}
-                      <div className={`flex-1 min-w-0 ${i === 1 ? "sm:pt-[10px]" : ""}`}>
+                      <div className={`flex-1 min-w-0 ${day.image ? "sm:pt-20" : ""}`}>
                         {day.details && (
                           <div className="mb-5">
                             <p className="label-xs text-[#fdfbf7] opacity-60 mb-2">
