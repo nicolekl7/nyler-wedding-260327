@@ -369,13 +369,13 @@ const Shuttle = () => {
                   <button
                     type="button"
                     onClick={reset}
-                    className="label-xs tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
+                    className="label-xs tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-4 leading-6 max-w-[7.5rem] sm:max-w-none text-center"
                   >
                     Look up another name
                   </button>
                   <Link
                     to="/"
-                    className="label-xs tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
+                    className="label-xs tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-4 leading-6 max-w-[7.5rem] sm:max-w-none text-center"
                   >
                     Full schedule
                   </Link>
