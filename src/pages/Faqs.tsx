@@ -1,6 +1,5 @@
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ZOLA_URL = "https://www.zola.com/registry/nicoleandtylersregistry/";
@@ -65,6 +64,24 @@ const Faqs = () => {
 
   return (
     <Layout>
+      {/* FAQs */}
+      <section className="w-[90%] max-w-[800px] mx-auto pt-16 sm:pt-20 pb-24">
+        <FadeIn>
+          <h1 className="heading-section text-center mb-4">{t.heading}</h1>
+          <div className="w-12 h-px bg-primary mx-auto mb-12" />
+        </FadeIn>
+        <div className="space-y-10">
+          {t.faqs.map((faq, i) => (
+            <FadeIn key={i} delay={150 + i * 80}>
+              <div className="border-b border-border/50 pb-8">
+                <h3 className="heading-card text-foreground mb-3">{faq.q}</h3>
+                <p className="body-editorial">{faq.a}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </section>
+
       {/* Registry */}
       <section className="bg-[#464320] text-[#fdfbf7] pt-10 pb-6 sm:pt-14 sm:pb-8">
         <div className="w-[90%] max-w-[700px] mx-auto text-center">
@@ -96,28 +113,6 @@ const Faqs = () => {
             </div>
           </FadeIn>
         </div>
-      </section>
-
-      {/* FAQs */}
-      <section className="w-[90%] max-w-[800px] mx-auto pt-16 sm:pt-20 pb-24">
-        <FadeIn>
-          <h1 className="heading-section text-center mb-4">{t.heading}</h1>
-          <div className="w-12 h-px bg-primary mx-auto mb-12" />
-        </FadeIn>
-        <FadeIn delay={150}>
-          <Accordion type="single" collapsible className="space-y-2">
-            {t.faqs.map((faq, i) => (
-              <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 px-0">
-                <AccordionTrigger className="heading-card text-foreground py-6 hover:no-underline text-left">
-                  {faq.q}
-                </AccordionTrigger>
-                <AccordionContent className="pb-8">
-                  <p className="body-editorial text-left">{faq.a}</p>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </FadeIn>
       </section>
     </Layout>
   );
