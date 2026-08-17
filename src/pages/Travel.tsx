@@ -71,14 +71,6 @@ const pageContent = {
         a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
       },
       {
-        q: "Are kids welcome?",
-        a: "We love your kids, we really do. However, this celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
-      },
-      {
-        q: "Can I bring a date?",
-        a: "While we'd love to celebrate with everyone, our venue has limited capacity. We are only able to accommodate the guests specifically listed on your invitation.",
-      },
-      {
         q: "Are gifts expected?",
         a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola.",
       },
@@ -139,14 +131,6 @@ const pageContent = {
       {
         q: "Jakie buty powinnam/powinienem włożyć?",
         a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
-      },
-      {
-        q: "Czy dzieci są mile widziane?",
-        a: "Naprawdę kochamy Wasze dzieci. Jednak to świętowanie jest tylko dla dorosłych. Na uroczystości będzie obecna niewielka liczba dzieci z najbliższej rodziny. Dziękujemy za zrozumienie!",
-      },
-      {
-        q: "Czy mogę przyjść z osobą towarzyszącą?",
-        a: "Z całego serca chcielibyśmy zaprosić wszystkich, ale liczba miejsc jest ograniczona. Prosimy o przybycie wyłącznie osób wskazanych na zaproszeniu.",
       },
       {
         q: "Czy oczekujemy prezentów?",
