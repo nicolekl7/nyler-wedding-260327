@@ -39,6 +39,7 @@ type LangContent = {
   detailsLabel: string;
   attireLabel: string;
   scheduleLabel: string;
+  timingNote: string;
   schedule: ScheduleDay[];
 };
 
@@ -51,18 +52,19 @@ const content: Record<"en" | "pl", LangContent> = {
     countdown: "Countdown to Tuscany",
     days: "Days",
     heading: "The Itinerary",
-    intro: "Three days in the Tuscan countryside. Please find our daily schedule and attire details below.",
+    intro: "Three days in the heart of the Tuscan countryside. Please find our complete weekend schedule and dress codes below.",
     detailsLabel: "The Details",
     attireLabel: "Attire:",
     scheduleLabel: "The Schedule",
+    timingNote: "Timing details for each schedule to follow.",
     schedule: [
       {
         date: "Wednesday, September 16",
         title: "Welcome to Tuscany",
         items: [
-          { time: "2:00 PM & 3:00 PM", label: "Shuttles depart Siena Train Station for Borgo Laticastelli" },
-          { time: "3:00 PM", label: "Guest Check-in" },
-          { time: "7:30 PM", label: "Welcome Dinner" },
+          { time: "2:00 PM & 3:00 PM", label: "Private Shuttle Service: Siena Station to Borgo Laticastelli" },
+          { time: "3:00 PM", label: "Guest Check-In & Estate Arrivals" },
+          { time: "7:30 PM", label: "The Welcome Dinner" },
         ],
         details: "Join us under the stars for wood-fired pizza and exceptional local wine to officially welcome you to Tuscany.",
         attireBlocks: [
@@ -78,11 +80,11 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Thursday, September 17",
         title: "The Wedding Day",
         items: [
-          { time: "8:00 AM – 10:00 AM", label: "Breakfast" },
-          { time: "5:00 PM", label: "Ceremony" },
-          { time: "5:30 PM", label: "Cocktail Hour" },
-          { time: "7:30 PM", label: "Dinner" },
-          { time: "10:00 PM", label: "Dancing" },
+          { time: "8:00 AM – 10:00 AM", label: "Complimentary Breakfast" },
+          { time: "5:00 PM", label: "The Wedding Ceremony" },
+          { time: "5:30 PM", label: "Aperitivo (Cocktail Hour)" },
+          { time: "7:30 PM", label: "The Wedding Reception & Dinner" },
+          { time: "10:00 PM", label: "Cake-Cutting & Dancing" },
         ],
         details: "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, an elegant dinner, and dancing the night away.",
         attireBlocks: [
@@ -98,7 +100,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Friday, September 18",
         title: "The Recovery & The Road Trip",
         items: [
-          { time: "9:00 AM – 11:00 AM", label: "Breakfast" },
+          { time: "9:00 AM – 11:00 AM", label: "Complimentary Breakfast" },
           { time: "10:00 AM – 10:30 AM", label: "Tuscany Day Trip Departs" },
           { time: "1:00 PM", label: "Pool Party Officially Kicks Off" },
           { time: "7:00 PM", label: "Shuttle pick-up to Rapolano Terme (for the Pool Party crew)" },
@@ -155,17 +157,18 @@ const content: Record<"en" | "pl", LangContent> = {
     countdown: "Odliczanie dni",
     days: "Dni",
     heading: "Plan",
-    intro: "Trzy dni w toskańskiej scenerii. Poniżej znajdziecie nasz dzienny plan oraz szczegóły dotyczące stroju.",
+    intro: "Trzy dni w sercu toskańskiej scenerii. Poniżej znajdziecie pełny harmonogram weekendu oraz obowiązujące stroje.",
     detailsLabel: "Szczegóły",
     attireLabel: "Strój:",
     scheduleLabel: "Harmonogram",
+    timingNote: "Szczegółowy harmonogram dla każdej opcji podamy wkrótce.",
     schedule: [
       {
         date: "Środa, 16 września",
         title: "Powitanie w Toskanii",
         items: [
-          { time: "14:00 i 15:00", label: "Transfery odjeżdżają z dworca kolejowego w Sienie do Borgo Laticastelli" },
-          { time: "15:00", label: "Zameldowanie gości" },
+          { time: "14:00 i 15:00", label: "Prywatny transfer: dworzec w Sienie do Borgo Laticastelli" },
+          { time: "15:00", label: "Zameldowanie gości i przyjazd do posiadłości" },
           { time: "19:30", label: "Kolacja powitalna" },
         ],
         details: "Dołączcie do nas pod gwiazdami na pizzę z pieca opalanego drewnem i wyjątkowe lokalne wino, aby oficjalnie powitać Was w Toskanii.",
@@ -182,11 +185,11 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Czwartek, 17 września",
         title: "Dzień ślubu",
         items: [
-          { time: "8:00 – 10:00", label: "Śniadanie" },
-          { time: "17:00", label: "Ceremonia" },
+          { time: "8:00 – 10:00", label: "Śniadanie w cenie pobytu" },
+          { time: "17:00", label: "Ceremonia ślubna" },
           { time: "17:30", label: "Aperitivo" },
-          { time: "19:30", label: "Kolacja" },
-          { time: "22:00", label: "Tańce" },
+          { time: "19:30", label: "Kolacja weselna" },
+          { time: "22:00", label: "Krojenie tortu i tańce" },
         ],
         details: "Nasza ceremonia z widokiem na toskańskie wzgórza, a potem wieczór pełen aperitivo, eleganckiej kolacji i tańców do białego rana.",
         attireBlocks: [
@@ -202,7 +205,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Piątek, 18 września",
         title: "Odpoczynek i wycieczka",
         items: [
-          { time: "9:00 – 11:00", label: "Śniadanie" },
+          { time: "9:00 – 11:00", label: "Śniadanie w cenie pobytu" },
           { time: "10:00 – 10:30", label: "Wyjazd na wycieczkę po Toskanii" },
           { time: "13:00", label: "Oficjalny start imprezy przy basenie" },
           { time: "19:00", label: "Transfer do Rapolano Terme (dla ekipy znad basenu)" },
@@ -395,7 +398,7 @@ const Index = () => {
                   {(day.details || day.attireBlocks) && (
                     <div className={day.image ? "flex flex-col sm:flex-row gap-6 sm:gap-8 sm:items-start" : ""}>
                       {day.image && (
-                        <div className={i === 1 ? "sm:w-1/2 shrink-0" : "sm:w-[42%] shrink-0"}>
+                        <div className="sm:w-[42%] shrink-0">
                           <img src={day.image} alt={day.imageAlt} className="block w-full" />
                         </div>
                       )}
@@ -427,6 +430,7 @@ const Index = () => {
 
                   {/* Friday split schedules */}
                   {day.subSchedules && (
+                    <>
                     <div className="grid md:grid-cols-2 gap-6 mt-8">
                       {day.subSchedules.map((sub, si) => (
                         <div key={si} className="border border-[#fdfbf7]/20 p-6 md:p-7 space-y-3">
@@ -452,6 +456,10 @@ const Index = () => {
                         </div>
                       ))}
                     </div>
+                    <p className="label-xs text-[#fdfbf7] opacity-60 mt-4">
+                      {t.timingNote}
+                    </p>
+                    </>
                   )}
                 </div>
               </FadeIn>

@@ -39,7 +39,7 @@ const AMAZON_URL = "https://www.amazon.com/wedding/guest-view/10UL21FCFHV3X";
 
 const registryContent = {
   en: {
-    body: "Please, no gifts expected—we are just thrilled to celebrate with you in Italy! Should you wish to honor us with a gift, we are registered at the links below. To save your precious suitcase space, we kindly request that any physical items be shipped directly to our home rather than brought to the venue.",
+    body: "No gifts expected—we are just thrilled to celebrate with you in Italy! Should you wish to honor us with a gift, we are registered at the links below. To save your precious suitcase space, we kindly request that any physical items be shipped directly to our home rather than brought to the venue.",
     signature: "xx Tyler & Nicole",
     zolaLabel: "Zola",
     amazonLabel: "Amazon",
@@ -293,7 +293,7 @@ const Details = () => {
                 href={ZOLA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-sage text-[#fdfbf7] px-8 py-2.5 hover:bg-sage/90 transition-colors duration-300"
+                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fdfbf7] text-sage border border-sage px-8 py-2.5 hover:bg-sage hover:text-[#fdfbf7] transition-colors duration-300"
               >
                 {registry.zolaLabel}
               </a>
@@ -301,7 +301,7 @@ const Details = () => {
                 href={AMAZON_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-sage text-[#fdfbf7] px-8 py-2.5 hover:bg-sage/90 transition-colors duration-300"
+                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fdfbf7] text-sage border border-sage px-8 py-2.5 hover:bg-sage hover:text-[#fdfbf7] transition-colors duration-300"
               >
                 {registry.amazonLabel}
               </a>
