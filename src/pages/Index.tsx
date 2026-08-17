@@ -290,9 +290,9 @@ const Index = () => {
       </section>
 
       {/* Welcome */}
-      <section className="page-section pt-16 md:pt-24 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
+      <section className="page-section pt-8 md:pt-12 pb-12 w-[90%] max-w-[1200px] mx-auto text-center">
         <FadeIn>
-          <div className="w-12 h-px bg-primary mx-auto mb-8" />
+          <div className="w-12 h-px bg-primary mx-auto mb-5" />
           <p className="heading-card italic tracking-wide leading-relaxed text-foreground mx-auto max-w-2xl text-pretty">
             {t.welcome}
           </p>
