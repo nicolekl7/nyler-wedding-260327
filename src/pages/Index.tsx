@@ -395,11 +395,11 @@ const Index = () => {
                   {(day.details || day.attireBlocks) && (
                     <div className={day.image ? "flex flex-col sm:flex-row gap-6 sm:gap-8 sm:items-start" : ""}>
                       {day.image && (
-                        <div className="sm:w-[42%] shrink-0">
+                        <div className={i === 1 ? "sm:w-1/2 shrink-0" : "sm:w-[42%] shrink-0"}>
                           <img src={day.image} alt={day.imageAlt} className="block w-full" />
                         </div>
                       )}
-                      <div className="flex-1 min-w-0">
+                      <div className={`flex-1 min-w-0 ${i === 1 ? "sm:pt-8" : ""}`}>
                         {day.details && (
                           <div className="mb-5">
                             <p className="label-xs text-[#fdfbf7] opacity-60 mb-2">
@@ -415,7 +415,7 @@ const Index = () => {
                           <div className="space-y-2">
                             {day.attireBlocks.map((block, bi) => (
                               <p key={bi} className="body-small italic opacity-80 leading-relaxed">
-                                <span className="not-italic font-medium">{block.label ?? t.attireLabel}</span>{" "}
+                                <span className="not-italic font-bold text-[#7a7e33]">{block.label ?? t.attireLabel}</span>{" "}
                                 <span className="not-italic">{block.title}</span> — {block.body}
                               </p>
                             ))}
@@ -444,7 +444,7 @@ const Index = () => {
                           <div className="space-y-2 pt-1">
                             {sub.attireBlocks.map((block, bi) => (
                               <p key={bi} className="body-small italic opacity-80 leading-relaxed">
-                                <span className="not-italic font-medium">{block.label ?? t.attireLabel}</span>{" "}
+                                <span className="not-italic font-bold text-[#7a7e33]">{block.label ?? t.attireLabel}</span>{" "}
                                 <span className="not-italic">{block.title}</span> — {block.body}
                               </p>
                             ))}
