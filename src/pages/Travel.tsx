@@ -45,9 +45,7 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Reserve your spot{" "}
-            <Link to="/shuttle" className="underline underline-offset-2 hover:text-primary transition-colors">here</Link>{" "}
-            before July 16th.
+            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Shuttle reservations are now closed. If you missed the deadline or your train schedule has changed, please text Tyler or Nicole immediately so we can help you coordinate a ride.
           </>
         ),
       },
