@@ -80,7 +80,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Thursday, September 17",
         title: "The Wedding Day",
         items: [
-          { time: "8:00 AM – 10:00 AM", label: "Complimentary Breakfast" },
+          { time: "8 - 10:00 AM", label: "Complimentary Breakfast" },
           { time: "5:00 PM", label: "The Wedding Ceremony" },
           { time: "5:30 PM", label: "Aperitivo (Cocktail Hour)" },
           { time: "7:30 PM", label: "The Wedding Reception & Dinner" },
@@ -100,7 +100,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Friday, September 18",
         title: "The Recovery & The Road Trip",
         items: [
-          { time: "9:00 AM – 11:00 AM", label: "Complimentary Breakfast" },
+          { time: "9 - 11:00 AM", label: "Complimentary Breakfast" },
           { time: "10:00 AM – 10:30 AM", label: "Tuscany Day Trip Departs" },
           { time: "1:00 PM", label: "Pool Party Officially Kicks Off" },
           { time: "7:00 PM", label: "Shuttle pick-up to Rapolano Terme (for the Pool Party crew)" },
@@ -389,7 +389,7 @@ const Index = () => {
                     {day.items.map((item, idx) => (
                       <div key={idx} className="flex flex-col sm:flex-row sm:gap-3">
                         <span className="font-medium sm:min-w-[15rem] shrink-0">{item.time}</span>
-                        <span className="opacity-90">{item.label}</span>
+                        <span className="italic opacity-90">{item.label}</span>
                       </div>
                     ))}
                   </div>
