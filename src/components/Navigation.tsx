@@ -7,15 +7,17 @@ import logo from "@/assets/T&N Logo Web.png";
 const navLabels = {
   en: {
     home: "Schedule",
-    travel: "Travel & FAQs",
+    travel: "Travel",
+    faqs: "FAQs",
     guestPortal: "Guest Portal",
-    details: "Details",
+    ourStory: "Our Story",
   },
   pl: {
     home: "Plan",
-    travel: "Podróż i FAQ",
+    travel: "Podróż",
+    faqs: "FAQ",
     guestPortal: "Moje Dane",
-    details: "Szczegóły",
+    ourStory: "Nasza Historia",
   },
 };
 
@@ -28,7 +30,8 @@ const Navigation = () => {
   const navItems = [
     { path: "/", label: labels.home },
     { path: "/travel", label: labels.travel },
-    { path: "/details", label: labels.details },
+    { path: "/faqs", label: labels.faqs },
+    { path: "/our-story", label: labels.ourStory },
     { path: "/shuttle", label: labels.guestPortal, cta: true },
   ];
 

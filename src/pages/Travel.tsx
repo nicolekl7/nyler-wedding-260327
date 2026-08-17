@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import airImg from "@/assets/travel-by-air.avif";
 import trainImg from "@/assets/travel-by-train.jpg";
 import carImg from "@/assets/travel-by-car.jpg";
@@ -56,25 +55,10 @@ const pageContent = {
       },
     ],
     navEvents: "SCHEDULE",
-    navDetails: "DETAILS",
+    navDetails: "OUR STORY",
     reserveShuttle: "Check Your Schedule",
     exploreHeading: "Explore Tuscany",
     exploreIntro: "Extending your trip? Here are our favorite highlights near the venue.",
-    faqHeading: "Concierge FAQs",
-    faqs: [
-      {
-        q: "What is the weather like in September?",
-        a: "Late September in Tuscany is typically beautiful, with warm, sunny days (around 75°F / 24°C) and crisp evenings (around 55°F / 13°C). We recommend bringing a light jacket or wrap for the evening events. Don't forget a bathing suit!",
-      },
-      {
-        q: "What shoes should I wear?",
-        a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
-      },
-      {
-        q: "Are gifts expected?",
-        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola.",
-      },
-    ],
   },
   pl: {
     heading: "Jak dotrzeć do Borgo Laticastelli",
@@ -118,25 +102,10 @@ const pageContent = {
       },
     ],
     navEvents: "PLAN",
-    navDetails: "SZCZEGÓŁY",
+    navDetails: "NASZA HISTORIA",
     reserveShuttle: "Sprawdź swój harmonogram",
     exploreHeading: "Odkryj Toskanię",
     exploreIntro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
-    faqHeading: "Najczęstsze pytania",
-    faqs: [
-      {
-        q: "Jaka jest pogoda we wrześniu?",
-        a: "Koniec września w Toskanii jest zazwyczaj piękny — ciepłe, słoneczne dni (około 24°C) i rześkie wieczory (około 13°C). Polecamy zabrać lekką kurtkę lub szal na wieczorne imprezy. I nie zapomnijcie o stroju kąpielowym!",
-      },
-      {
-        q: "Jakie buty powinnam/powinienem włożyć?",
-        a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
-      },
-      {
-        q: "Czy oczekujemy prezentów?",
-        a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — lista prezentów pojawi się wkrótce.",
-      },
-    ],
   },
 };
 
@@ -261,7 +230,6 @@ const Travel = () => {
   const { language } = useLanguage();
   const t = pageContent[language];
   const guides = guidesContent[language];
-  const { faqs } = t;
 
   return (
     <Layout dark hideFooterImage>
@@ -419,34 +387,12 @@ const Travel = () => {
               {t.navEvents}
             </Link>
             <Link
-              to="/details"
+              to="/our-story"
               className="inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
               {t.navDetails}
             </Link>
           </div>
-        </FadeIn>
-      </section>
-
-      {/* Concierge FAQs */}
-      <section className="w-[90%] max-w-[800px] mx-auto pb-24">
-        <FadeIn>
-          <h2 className="heading-section text-center mb-4">{t.faqHeading}</h2>
-          <div className="w-12 h-px bg-primary mx-auto mb-12" />
-        </FadeIn>
-        <FadeIn delay={150}>
-          <Accordion type="single" collapsible className="space-y-2">
-            {faqs.map((faq, i) => (
-              <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 px-0">
-                <AccordionTrigger className="heading-card text-foreground py-6 hover:no-underline text-left">
-                  {faq.q}
-                </AccordionTrigger>
-                <AccordionContent className="pb-8">
-                  <p className="body-editorial text-left">{faq.a}</p>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
         </FadeIn>
       </section>
     </Layout>
