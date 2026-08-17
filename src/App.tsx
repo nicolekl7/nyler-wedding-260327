@@ -10,7 +10,6 @@ import Index from "./pages/Index";
 import IndexV2 from "./pages/IndexV2";
 import HomeV2 from "./pages/HomeV2";
 import Details from "./pages/Details";
-import TheWeekend from "./pages/TheWeekend";
 import AccommodationsV2 from "./pages/AccommodationsV2";
 import BookingSuccess from "./pages/BookingSuccess";
 import Travel from "./pages/Travel";
@@ -34,7 +33,7 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/the-weekend" element={<TheWeekend />} />
+          <Route path="/the-weekend" element={<Navigate to="/" replace />} />
           <Route path="/reserve-lodging" element={<AccommodationsV2 />} />
           <Route path="/booking-success" element={<BookingSuccess />} />
           <Route path="/travel" element={<Travel />} />

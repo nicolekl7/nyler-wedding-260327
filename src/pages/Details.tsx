@@ -278,7 +278,7 @@ const Details = () => {
   return (
     <Layout>
       {/* Registry */}
-      <section className="page-section w-[90%] max-w-[700px] mx-auto text-center">
+      <section className="w-[90%] max-w-[700px] mx-auto text-center pt-10 pb-6 sm:pt-14 sm:pb-8">
         <FadeIn>
           <h1 className="heading-section mb-4">{registry.heading}</h1>
           <div className="w-12 h-px bg-primary mx-auto mb-8" />
@@ -308,7 +308,7 @@ const Details = () => {
 
       {/* Our Story */}
       <article className="bg-background">
-        <header className="w-[90%] mx-auto max-w-4xl pt-20 sm:pt-28 pb-16 text-center">
+        <header className="w-[90%] mx-auto max-w-4xl pt-6 sm:pt-8 pb-16 text-center">
           <FadeIn>
             <p className="font-body text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground mb-4">
               {story.eyebrow}

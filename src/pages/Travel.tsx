@@ -61,7 +61,7 @@ const pageContent = {
         ),
       },
     ],
-    navEvents: "ATTIRE",
+    navEvents: "SCHEDULE",
     navDetails: "DETAILS",
     reserveShuttle: "Check Your Schedule",
     exploreHeading: "Explore Tuscany",
@@ -137,7 +137,7 @@ const pageContent = {
         ),
       },
     ],
-    navEvents: "STRÓJ",
+    navEvents: "PLAN",
     navDetails: "SZCZEGÓŁY",
     reserveShuttle: "Sprawdź swój harmonogram",
     exploreHeading: "Odkryj Toskanię",
@@ -441,7 +441,7 @@ const Travel = () => {
         <FadeIn>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/the-weekend"
+              to="/"
               className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
               {t.navEvents}

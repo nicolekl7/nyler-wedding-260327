@@ -374,7 +374,7 @@ const Shuttle = () => {
                     Look up another name
                   </button>
                   <Link
-                    to="/the-weekend"
+                    to="/"
                     className="font-body text-[11px] uppercase tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-[6px]"
                   >
                     Full schedule
