@@ -41,14 +41,14 @@ const registryContent = {
   en: {
     heading: "Registry",
     body: "Please, no gifts expected—we are just thrilled to celebrate with you in Italy! Should you wish to honor us with a gift, we are registered at the links below. To save your precious suitcase space, we kindly request that any physical items be shipped directly to our home rather than brought to the venue.",
-    zolaLabel: "Zola Registry",
-    amazonLabel: "Amazon Registry",
+    zolaLabel: "Zola",
+    amazonLabel: "Amazon",
   },
   pl: {
     heading: "Lista Prezentów",
     body: "Nie oczekujemy żadnych prezentów — najważniejsze jest dla nas to, że będziecie z nami świętować we Włoszech! Jeśli mimo wszystko chcielibyście nas obdarować, jesteśmy zarejestrowani pod linkami poniżej. Aby oszczędzić miejsce w bagażu, prosimy o wysyłkę fizycznych prezentów bezpośrednio do naszego domu, a nie przynoszenie ich na miejsce uroczystości.",
-    zolaLabel: "Zola Registry",
-    amazonLabel: "Amazon Registry",
+    zolaLabel: "Zola",
+    amazonLabel: "Amazon",
   },
 };
 
@@ -290,7 +290,7 @@ const Details = () => {
               href={ZOLA_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 hover:bg-primary/90 transition-colors duration-300"
+              className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-primary text-primary-foreground px-8 py-2.5 hover:bg-primary/90 transition-colors duration-300"
             >
               {registry.zolaLabel}
             </a>
@@ -298,7 +298,7 @@ const Details = () => {
               href={AMAZON_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-primary text-primary-foreground px-8 py-4 hover:bg-primary/90 transition-colors duration-300"
+              className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-primary text-primary-foreground px-8 py-2.5 hover:bg-primary/90 transition-colors duration-300"
             >
               {registry.amazonLabel}
             </a>
