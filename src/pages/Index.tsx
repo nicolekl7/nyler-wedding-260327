@@ -391,34 +391,37 @@ const Index = () => {
                     ))}
                   </div>
 
-                  {/* Details */}
-                  {day.details && (
-                    <div className="mb-5">
-                      <p className="label-xs text-[#fff7f0] opacity-60 mb-2">
-                        {t.detailsLabel}
-                      </p>
-                      <p className="body-small leading-relaxed opacity-90 max-w-2xl">
-                        {day.details}
-                      </p>
-                    </div>
-                  )}
+                  {/* Details + Attire, with the attire graphic alongside on wider screens */}
+                  {(day.details || day.attireBlocks) && (
+                    <div className={day.image ? "flex flex-col sm:flex-row gap-6 sm:gap-8 sm:items-start" : ""}>
+                      {day.image && (
+                        <div className="sm:w-[42%] shrink-0">
+                          <img src={day.image} alt={day.imageAlt} className="block w-full" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        {day.details && (
+                          <div className="mb-5">
+                            <p className="label-xs text-[#fff7f0] opacity-60 mb-2">
+                              {t.detailsLabel}
+                            </p>
+                            <p className="body-small leading-relaxed opacity-90">
+                              {day.details}
+                            </p>
+                          </div>
+                        )}
 
-                  {/* Attire */}
-                  {day.attireBlocks && (
-                    <div className="space-y-2">
-                      {day.attireBlocks.map((block, bi) => (
-                        <p key={bi} className="body-small italic opacity-80 max-w-2xl leading-relaxed">
-                          <span className="not-italic font-medium">{block.label ?? t.attireLabel}</span>{" "}
-                          <span className="not-italic">{block.title}</span> — {block.body}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Attire graphic */}
-                  {day.image && (
-                    <div className="mt-6">
-                      <img src={day.image} alt={day.imageAlt} className="block w-full max-w-xl" />
+                        {day.attireBlocks && (
+                          <div className="space-y-2">
+                            {day.attireBlocks.map((block, bi) => (
+                              <p key={bi} className="body-small italic opacity-80 leading-relaxed">
+                                <span className="not-italic font-medium">{block.label ?? t.attireLabel}</span>{" "}
+                                <span className="not-italic">{block.title}</span> — {block.body}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
 
