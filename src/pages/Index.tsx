@@ -311,7 +311,7 @@ const Index = () => {
           <FadeIn>
             <h2 className="heading-section italic text-center mb-4 opacity-95">{t.heading}</h2>
             <div className="w-12 h-px bg-[#fff7f0]/40 mx-auto mb-6" />
-            <p className="font-body text-sm sm:text-base opacity-75 text-center max-w-xl mx-auto mb-16 text-pretty">
+            <p className="font-body text-sm sm:text-base opacity-75 text-center max-w-xl mx-auto mb-8 text-pretty">
               {t.intro}
             </p>
           </FadeIn>
@@ -319,15 +319,15 @@ const Index = () => {
           <div className="space-y-16 md:space-y-20">
             {t.schedule.map((day, i) => (
               <FadeIn key={day.date} delay={i * 60}>
-                <div className={`pt-10 md:pt-12 ${i > 0 ? "border-t border-[#fff7f0]/20" : ""}`}>
+                <div className={i > 0 ? "pt-10 md:pt-12 border-t border-[#fff7f0]/20" : ""}>
                   {/* Day icon */}
                   {i === 0 && (
                     <div className="relative w-28 h-20 mb-2">
-                      <img src={welcomeCup} alt="Glass" className="absolute bottom-0 left-0 w-12 h-12 object-contain" />
+                      <img src={welcomeCup} alt="Glass" className="absolute bottom-0 left-0 w-12 h-12 object-contain brightness-0 invert" />
                       <motion.img
                         src={welcomeBottle}
                         alt="Bottle"
-                        className="absolute -top-[16px] left-[34px] w-16 h-16 object-contain origin-bottom-left"
+                        className="absolute -top-[16px] left-[34px] w-16 h-16 object-contain origin-bottom-left brightness-0 invert"
                         animate={{ rotate: [0, -15, 0, -15, 0] }}
                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.5 }}
                       />
@@ -337,7 +337,7 @@ const Index = () => {
                     <motion.img
                       src={weddingIcon}
                       alt={day.title}
-                      className="w-[90px] h-[90px] object-contain -ml-2 mb-1"
+                      className="w-[90px] h-[90px] object-contain -ml-2 mb-1 brightness-0 invert"
                       animate={{ y: [0, -5, 0] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
@@ -347,7 +347,7 @@ const Index = () => {
                       <motion.img
                         src={poolSun}
                         alt="Sun"
-                        className="absolute w-14 h-14 object-contain z-0"
+                        className="absolute w-14 h-14 object-contain z-0 brightness-0 invert"
                         animate={{
                           top: [17, -10, 17],
                           right: [44, 0, 44],
@@ -358,12 +358,12 @@ const Index = () => {
                       <img
                         src={poolUmbrella}
                         alt="Umbrella"
-                        className="absolute top-[30px] left-[22px] w-20 h-16 object-contain z-10"
+                        className="absolute top-[30px] left-[22px] w-20 h-16 object-contain z-10 brightness-0 invert"
                       />
                       <img
                         src={poolChairs}
                         alt="Chairs"
-                        className="absolute bottom-[-14px] left-0 w-28 h-12 object-contain z-[5]"
+                        className="absolute bottom-[-14px] left-0 w-28 h-12 object-contain z-[5] brightness-0 invert"
                       />
                     </div>
                   )}
