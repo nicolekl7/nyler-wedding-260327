@@ -40,13 +40,13 @@ const Navigation = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border/50" style={{ WebkitTransform: 'translateZ(0)' }}>
-      <div className="flex items-center justify-between pl-6 pr-4 md:pl-12 md:pr-6 py-4">
+      <div className="flex items-center justify-between pl-6 pr-3 md:pl-12 md:pr-4 py-4">
         <Link to="/" className="flex items-center">
           <img src={logo} alt="Tyler &amp; Nicole" className="h-8 md:h-10 w-auto object-contain" />
         </Link>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-4">
           <div className="flex items-center gap-7">
             {navItems.filter((item) => !item.cta).map((item) => (
               <Link
