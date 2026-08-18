@@ -11,6 +11,7 @@ import IndexV2 from "./pages/IndexV2";
 import HomeV2 from "./pages/HomeV2";
 import OurStory from "./pages/OurStory";
 import Faqs from "./pages/Faqs";
+import Registry from "./pages/Registry";
 import AccommodationsV2 from "./pages/AccommodationsV2";
 import BookingSuccess from "./pages/BookingSuccess";
 import Travel from "./pages/Travel";
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/details" element={<Navigate to="/our-story" replace />} />
           <Route path="/about-us" element={<Navigate to="/our-story" replace />} />
           <Route path="/faqs" element={<Faqs />} />
+          <Route path="/registry" element={<Registry />} />
           <Route path="/home-v2" element={<HomeV2 />} />
           <Route path="/home" element={<HomeV2 />} />
           <Route path="/payment" element={<Payment />} />
