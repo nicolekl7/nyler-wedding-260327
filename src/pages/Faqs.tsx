@@ -36,6 +36,30 @@ const faqContent = {
         q: "Are gifts expected?",
         a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola.",
       },
+      {
+        q: "Is there parking?",
+        a: "Yes, there is ample free parking at Borgo Laticastelli.",
+      },
+      {
+        q: "When is check-in / check-out?",
+        a: "Guests may check in starting at 3:00 PM on Wednesday (9/16) and are kindly asked to check out by 12:00 PM on Saturday (9/19).",
+      },
+      {
+        q: "What are the breakfast hours?",
+        a: "Breakfast will be served from 8:00-10:00 AM on Wednesday (9/16) and Thursday (9/17), and from 9:00-11:00 AM on Friday (9/18).",
+      },
+      {
+        q: "What are the pool hours at Laticastelli?",
+        a: "The pool will be open from 3:30-6:30 PM on Wednesday (9/16), 11:00 AM-3:00 PM on Thursday (9/17), and 11:00 AM until sunset on Friday (9/18).",
+      },
+      {
+        q: "Where can I get lunch on the day of the wedding?",
+        a: "Laticastelli's restaurant will be open for lunch for those who choose to stay on site. Lunch is pre-ordered during breakfast.",
+      },
+      {
+        q: "What is the venue's address?",
+        a: "Via Laticastelli, 1 53040 Rapolano Terme (SI)",
+      },
     ],
   },
   pl: {
@@ -52,6 +76,30 @@ const faqContent = {
       {
         q: "Czy oczekujemy prezentów?",
         a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — lista prezentów pojawi się wkrótce.",
+      },
+      {
+        q: "Czy jest parking?",
+        a: "Tak, przy Borgo Laticastelli jest mnóstwo bezpłatnych miejsc parkingowych.",
+      },
+      {
+        q: "Kiedy jest zameldowanie / wymeldowanie?",
+        a: "Zameldowanie możliwe jest od godziny 15:00 w środę (16.09), a wymeldowania prosimy dokonać do godziny 12:00 w sobotę (19.09).",
+      },
+      {
+        q: "W jakich godzinach podawane jest śniadanie?",
+        a: "Śniadanie będzie serwowane w godzinach 8:00-10:00 w środę (16.09) i czwartek (17.09) oraz w godzinach 9:00-11:00 w piątek (18.09).",
+      },
+      {
+        q: "W jakich godzinach czynny jest basen w Laticastelli?",
+        a: "Basen będzie czynny w godzinach 15:30-18:30 w środę (16.09), 11:00-15:00 w czwartek (17.09) oraz od 11:00 do zachodu słońca w piątek (18.09).",
+      },
+      {
+        q: "Gdzie można zjeść lunch w dniu ślubu?",
+        a: "Restauracja w Laticastelli będzie otwarta na lunch dla osób, które zdecydują się zostać na miejscu. Lunch zamawia się z wyprzedzeniem podczas śniadania.",
+      },
+      {
+        q: "Jaki jest adres miejsca uroczystości?",
+        a: "Via Laticastelli, 1 53040 Rapolano Terme (SI)",
       },
     ],
   },
