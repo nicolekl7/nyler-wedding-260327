@@ -119,7 +119,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Schedule B: Il Dolce Far Niente Pool Party",
             host: "Hosted by Nicole & Tyler",
             details:
-              "Embrace the art of doing nothing. Nicole and Tyler invite their friends to recover and relax poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will take a 5 minute shuttle into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
+              "Embrace the art of doing nothing. Nicole and Tyler invite their friends to recover and relax poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will go into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Daytime Attire:",
@@ -221,7 +221,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Plan B: Il Dolce Far Niente — impreza przy basenie",
             host: "Organizują Nicole i Tyler",
             details:
-              "Poczujcie sztukę nierobienia niczego. Nicole i Tyler zapraszają przyjaciół, by odpocząć i zrelaksować się przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem grupa pojedzie 5-minutowym transferem do pobliskiego miasteczka Rapolano Terme na swobodną kolację w Sapor in Torre.",
+              "Poczujcie sztukę nierobienia niczego. Nicole i Tyler zapraszają przyjaciół, by odpocząć i zrelaksować się przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem grupa uda się do pobliskiego miasteczka Rapolano Terme na swobodną kolację w Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Strój dzienny:",
