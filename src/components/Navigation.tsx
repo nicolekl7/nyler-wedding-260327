@@ -11,6 +11,7 @@ const navLabels = {
     faqs: "FAQs",
     guestPortal: "Guest Portal",
     ourStory: "Our Story",
+    registry: "Registry",
   },
   pl: {
     home: "Plan",
@@ -18,6 +19,7 @@ const navLabels = {
     faqs: "FAQ",
     guestPortal: "Moje Dane",
     ourStory: "Nasza Historia",
+    registry: "Lista Prezentów",
   },
 };
 
@@ -29,9 +31,10 @@ const Navigation = () => {
 
   const navItems = [
     { path: "/", label: labels.home },
-    { path: "/travel", label: labels.travel },
     { path: "/faqs", label: labels.faqs },
+    { path: "/travel", label: labels.travel },
     { path: "/our-story", label: labels.ourStory },
+    { path: "/registry", label: labels.registry },
     { path: "/shuttle", label: labels.guestPortal, cta: true },
   ];
 
