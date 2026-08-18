@@ -39,7 +39,7 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Shuttle reservations are now closed. If you missed the deadline or your train schedule has changed, please text Tyler or Nicole immediately so we can help coordinate.
+            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Shuttle reservations are now closed.
           </>
         ),
       },
@@ -86,7 +86,7 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Organizujemy transfery z dworca w Sienie do posiadłości w środę, 16 września, oraz transfery powrotne na dworzec w Sienie w sobotę, 19 września. Rezerwacje transferów są już zamknięte. Jeśli nie zdążyłeś/aś przed terminem lub Twój rozkład pociągów się zmienił, napisz SMS-a do Tylera lub Nicole, abyśmy mogli pomóc Ci zorganizować dojazd.
+            <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Organizujemy transfery z dworca w Sienie do posiadłości w środę, 16 września, oraz transfery powrotne na dworzec w Sienie w sobotę, 19 września. Rezerwacje transferów są już zamknięte.
           </>
         ),
       },

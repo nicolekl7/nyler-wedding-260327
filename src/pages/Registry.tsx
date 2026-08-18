@@ -41,7 +41,7 @@ const Registry = () => {
                 href={ZOLA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fdfbf7] text-sage border border-sage px-8 py-2.5 hover:bg-sage hover:text-[#fdfbf7] transition-colors duration-300"
+                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fdfbf7] text-sage border border-sage px-8 py-4 hover:bg-sage hover:text-[#fdfbf7] transition-colors duration-300"
               >
                 {registry.zolaLabel}
               </a>
@@ -49,7 +49,7 @@ const Registry = () => {
                 href={AMAZON_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fdfbf7] text-sage border border-sage px-8 py-2.5 hover:bg-sage hover:text-[#fdfbf7] transition-colors duration-300"
+                className="flex-1 inline-flex items-center justify-center gap-2 body-small tracking-widest uppercase bg-[#fdfbf7] text-sage border border-sage px-8 py-4 hover:bg-sage hover:text-[#fdfbf7] transition-colors duration-300"
               >
                 {registry.amazonLabel}
               </a>
