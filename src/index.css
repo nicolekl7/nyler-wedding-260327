@@ -145,7 +145,7 @@
   }
 
   .nav-link {
-    @apply font-body text-xs uppercase tracking-[0.1em] text-muted-foreground hover:text-foreground transition-colors duration-300;
+    @apply font-body text-xs uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground transition-colors duration-300;
   }
 
   /* 7. Small body — secondary copy, list/schedule items, button labels */
