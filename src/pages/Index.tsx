@@ -107,7 +107,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Schedule A: \"Best of Tuscany\" Day Trip",
             host: "Hosted by Grazyna & Waldemar",
             details:
-              "Skip the driving and explore Tuscany on a luxury coach tour! We'll wander Siena's historic streets, enjoy a wine-tasting lunch at a local agriturismo, and explore San Gimignano's medieval towers. We'll finish with a group dinner before returning around 10:00 PM.",
+              "Grazyna and Waldemar invite their guests to wander Siena's historic streets, enjoy a wine-tasting lunch at a local agriturismo, and explore San Gimignano's famous medieval towers. The day will conclude with a wonderful group dinner before returning to the Borgo.",
             attireBlocks: [
               {
                 title: "Tuscan Explorer",
@@ -119,7 +119,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Schedule B: Il Dolce Far Niente Pool Party",
             host: "Hosted by Nicole & Tyler",
             details:
-              "Embrace the art of doing nothing! Relax poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, we'll shuttle into Rapolano Terme for a casual dinner at Sapor in Torre.",
+              "Embrace the art of doing nothing. Nicole and Tyler invite their friends to recover and relax poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will take a 5 minute shuttle into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Daytime Attire:",
@@ -209,7 +209,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Plan A: Wycieczka „Najlepsze z Toskanii”",
             host: "Organizują Grażyna i Waldemar",
             details:
-              "Zapomnijcie o prowadzeniu — odkrywajcie Toskanię podczas luksusowej wycieczki autokarowej! Przejdziemy się historycznymi uliczkami Sieny, zjemy lunch z degustacją wina w lokalnym agriturismo i zwiedzimy średniowieczne wieże San Gimignano. Na koniec wspólna kolacja, a powrót około 22:00.",
+              "Grażyna i Waldemar zapraszają swoich gości na spacer historycznymi uliczkami Sieny, lunch z degustacją wina w lokalnym agriturismo oraz zwiedzanie słynnych średniowiecznych wież San Gimignano. Dzień zakończy się wspólną, wspaniałą kolacją przed powrotem do Borgo.",
             attireBlocks: [
               {
                 title: "Odkrywca Toskanii",
@@ -221,7 +221,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Plan B: Il Dolce Far Niente — impreza przy basenie",
             host: "Organizują Nicole i Tyler",
             details:
-              "Poczujcie sztukę nierobienia niczego! Odpoczywajcie przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem pojedziemy do Rapolano Terme na swobodną kolację w Sapor in Torre.",
+              "Poczujcie sztukę nierobienia niczego. Nicole i Tyler zapraszają przyjaciół, by odpocząć i zrelaksować się przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem grupa pojedzie 5-minutowym transferem do pobliskiego miasteczka Rapolano Terme na swobodną kolację w Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Strój dzienny:",
