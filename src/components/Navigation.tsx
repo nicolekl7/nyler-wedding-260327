@@ -46,20 +46,28 @@ const Navigation = () => {
         </Link>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-4">
-          {navItems.map((item) => (
+        <div className="hidden md:flex items-center gap-6">
+          <div className="flex items-center gap-7">
+            {navItems.filter((item) => !item.cta).map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
+                  location.pathname === item.path
+                    ? "text-foreground after:w-full"
+                    : "after:w-0 hover:after:w-full"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          {navItems.filter((item) => item.cta).map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={
-                item.cta
-                  ? "label-xs tracking-[0.1em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-                  : `nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
-                      location.pathname === item.path
-                        ? "text-foreground after:w-full"
-                        : "after:w-0 hover:after:w-full"
-                    }`
-              }
+              className="label-xs tracking-[0.1em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
               {item.label}
             </Link>
