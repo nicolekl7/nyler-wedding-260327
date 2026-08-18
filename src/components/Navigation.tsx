@@ -23,7 +23,7 @@ const navLabels = {
   },
 };
 
-const Navigation = () => {
+const Navigation = ({ dark = false }: { dark?: boolean }) => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const { language, setLanguage } = useLanguage();
@@ -42,7 +42,11 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border/50" style={{ WebkitTransform: 'translateZ(0)' }}>
       <div className="flex items-center justify-between pl-6 pr-3 md:pl-12 md:pr-4 py-4">
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="Tyler &amp; Nicole" className="h-8 md:h-10 w-auto object-contain" />
+          <img
+            src={logo}
+            alt="Tyler &amp; Nicole"
+            className={`h-8 md:h-10 w-auto object-contain${dark ? " brightness-0 invert" : ""}`}
+          />
         </Link>
 
         {/* Desktop */}
