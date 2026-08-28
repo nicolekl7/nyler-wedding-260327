@@ -20,6 +20,46 @@ const DEPARTURE_WAVES: Record<string, WaveDetail> = {
   wave_3: { time: "12:30 pm", from: "Laticastelli", to: "Siena train station", badge: "Wave 3" },
 };
 
+// ---------- authoritative roommate groupings (names only; room type/# untouched) ----------
+const ROOM_GROUPS: string[][] = [
+  ["Nicole Landmesser", "Tyler Magee"],
+  ["Charlene Atkinson", "Kaitlyn Istona"],
+  ["Phoebe Murray", "Naima Zen"],
+  ["Sabrina Hiller", "Daniel Chenery"],
+  ["Lexie Haubner", "Victor Haubner"],
+  ["Ben Kroll"],
+  ["Raymond Featherson", "Alex Telo"],
+  ["Nick Haubner", "Bri Pizzuto"],
+  ["Gary Bettello", "Valerie Stahli"],
+  ["Grazyna Landmesser", "Waldemar Landmesser"],
+  ["Arthur Landmesser", "Lara Landmesser", "Reid Landmesser", "Sloane Landmesser"],
+  ["Kevin Joslyn", "Michał Kuczma", "Kevin Smith", "Raymond Neenan"],
+  ["Meghan Shiels", "Clare Ryan", "Erika Rosendahl"],
+  ["Karen Olechnowicz", "Tom Olechnowicz"],
+  ["Brendon Bengel", "Gillian Muñoz"],
+  ["Wesley Baranowski", "Fletcher Huntley"],
+  ["Tyler Hiller", "Lydia Krenicki"],
+  ["Joy Hiller", "Paul Hiller"],
+  ["Ala Behnke", "Marek Behnke"],
+  ["Grazyna Maciejewski", "Jerzy Maciejewski"],
+  ["Everett Harris", "Mark Harris"],
+  ["Bob Stahli"],
+  ["Cathy Peluso", "Hailey Mancuso"],
+  ["Filip Trzeciak", "Kamila Potrapeluk"],
+  ["Patrick Magee", "Taylor Lukasik"],
+  ["Alana Bettello", "Gina Bettello"],
+  ["Casey Magee", "Kyle Shifflett"],
+  ["Anthony Granchelli", "Isabel Surapine"],
+  ["Hal Mutlu", "Jane Percival"],
+  ["Pat Landmesser", "Jess Landmesser", "Luna Landmesser", "Harper Landmesser"],
+  ["Jose Muñoz", "Nancy Muñoz"],
+  ["Anthony Giannico"],
+  ["Keishara Colby", "Tate Illers"],
+];
+
+const roomGroupFor = (fullName: string): string[] | null =>
+  ROOM_GROUPS.find((group) => group.some((member) => namesMatch(member, fullName))) || null;
+
 interface LookupResult {
   matchedName: string;
   invited: {
@@ -124,6 +164,8 @@ const Shuttle = () => {
         }
       }
 
+      const groupNames = roomGroupFor(matchedFullName);
+
       setResult({
         matchedName: matchedFullName,
         invited: {
@@ -145,10 +187,15 @@ const Shuttle = () => {
         room: room
           ? {
               category_name: catMap.get(room.room_category_id) || null,
-              guest_names: room.guest_names,
+              guest_names: groupNames ? groupNames.join(", ") : room.guest_names,
               payment_status: room.payment_status,
             }
-          : assignedRoom,
+          : assignedRoom
+          ? {
+              ...assignedRoom,
+              guest_names: groupNames ? groupNames.join(", ") : assignedRoom.guest_names,
+            }
+          : null,
       });
     } catch (err) {
       console.error(err);
