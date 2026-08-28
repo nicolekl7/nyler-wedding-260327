@@ -290,6 +290,7 @@ const Shuttle = () => {
           {result && (() => {
             const arr = ARRIVAL_WAVES[result.shuttle?.arrival_wave ?? ""];
             const dep = DEPARTURE_WAVES[result.shuttle?.departure_wave ?? ""];
+            const neitherWave = !!result.shuttle && !arr && !dep;
 
             const seen = new Set<string>();
             const roomGuests = parseGuestList(result.room?.guest_names).filter((g) => {
@@ -366,7 +367,7 @@ const Shuttle = () => {
 
                 {/* Shuttle */}
                 <Card>
-                  <CardTitle>Shuttle</CardTitle>
+                  {!neitherWave && <CardTitle>Shuttle</CardTitle>}
                   {result.shuttle ? (
                     <div className="grid grid-cols-2 gap-4">
                       <WaveBlock label="Arriving" wave={arr} />
@@ -480,7 +481,7 @@ const WaveBlock = ({
       </>
     ) : (
       <p className="heading-card text-foreground leading-tight">
-        Not taking the shuttle
+        No Shuttle
       </p>
     )}
   </div>
