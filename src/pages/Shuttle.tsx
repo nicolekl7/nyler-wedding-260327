@@ -166,6 +166,13 @@ const Shuttle = () => {
 
       const groupNames = roomGroupFor(matchedFullName);
 
+      // "Solo Guest Estate Pass" bookings don't reflect the guest's actual assigned
+      // room; look that up from room_assignments/estate_rooms to display instead.
+      const myAssignmentGlobal = roomAssignments.find((a) => a.guest_id === invited.id);
+      const assignedRoomType = myAssignmentGlobal
+        ? formatRoomLabel(roomTypeByNumber.get(String(myAssignmentGlobal.room_number)), myAssignmentGlobal.room_number)
+        : null;
+
       setResult({
         matchedName: matchedFullName,
         invited: {
@@ -186,7 +193,11 @@ const Shuttle = () => {
           : null,
         room: room
           ? {
-              category_name: catMap.get(room.room_category_id) || null,
+              category_name: (() => {
+                const cat = catMap.get(room.room_category_id) || null;
+                if (cat === "Solo Guest Estate Pass" && assignedRoomType) return assignedRoomType;
+                return cat;
+              })(),
               guest_names: groupNames ? groupNames.join(", ") : room.guest_names,
               payment_status: room.payment_status,
             }
