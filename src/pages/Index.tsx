@@ -117,7 +117,7 @@ const content: Record<"en" | "pl", LangContent> = {
           (
             <>
               To make the most of our time in Italy, Friday features two distinct, pre-planned itineraries.{" "}
-              <strong className="font-medium">Please check the Guest Portal to view your personalized Friday schedule.</strong>
+              <strong className="font-bold">Please check the Guest Portal to view your personalized Friday schedule.</strong>
             </>
           ),
         subSchedules: [
@@ -227,7 +227,7 @@ const content: Record<"en" | "pl", LangContent> = {
           (
             <>
               Aby jak najlepiej wykorzystać nasz czas we Włoszech, piątek obejmuje dwa odrębne, wcześniej zaplanowane plany dnia.{" "}
-              <strong className="font-medium">Sprawdź Portal Gościa, aby zobaczyć swój spersonalizowany harmonogram na piątek.</strong>
+              <strong className="font-bold">Sprawdź Portal Gościa, aby zobaczyć swój spersonalizowany harmonogram na piątek.</strong>
             </>
           ),
         subSchedules: [
