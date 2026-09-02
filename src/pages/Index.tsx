@@ -35,7 +35,6 @@ type LangContent = {
   countdown: string;
   days: string;
   heading: string;
-  intro: string;
   detailsLabel: string;
   attireLabel: string;
   scheduleLabel: string;
@@ -52,7 +51,6 @@ const content: Record<"en" | "pl", LangContent> = {
     countdown: "Countdown to Tuscany",
     days: "Days",
     heading: "The Itinerary",
-    intro: "Three days in the heart of the Tuscan countryside. Please find our complete weekend schedule and dress codes below.",
     detailsLabel: "The Details",
     attireLabel: "Attire:",
     scheduleLabel: "The Schedule",
@@ -158,7 +156,6 @@ const content: Record<"en" | "pl", LangContent> = {
     countdown: "Odliczanie dni",
     days: "Dni",
     heading: "Plan",
-    intro: "Trzy dni w sercu toskańskiej scenerii. Poniżej znajdziecie pełny harmonogram weekendu oraz obowiązujące stroje.",
     detailsLabel: "Szczegóły",
     attireLabel: "Strój:",
     scheduleLabel: "Harmonogram",
@@ -315,10 +312,7 @@ const Index = () => {
         <div className="w-[90%] max-w-[1000px] mx-auto">
           <FadeIn>
             <h2 className="heading-section italic text-center mb-4 opacity-95">{t.heading}</h2>
-            <div className="w-12 h-px bg-[#fdfbf7]/40 mx-auto mb-6" />
-            <p className="body-small opacity-75 text-center max-w-xl mx-auto mb-8 text-pretty">
-              {t.intro}
-            </p>
+            <div className="w-12 h-px bg-[#fdfbf7]/40 mx-auto mb-2" />
           </FadeIn>
 
           <div className="space-y-16 md:space-y-20">
