@@ -34,7 +34,7 @@ const faqContent = {
       },
       {
         q: "Are gifts expected?",
-        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola.",
+        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola. If you'd like to send a gift ahead of the wedding, please note we've moved — mail packages to our new address: 66 Summer St, #1507, Stamford, CT 06901.",
       },
       {
         q: "Is there parking?",
@@ -47,6 +47,10 @@ const faqContent = {
       {
         q: "What are the breakfast hours?",
         a: "Breakfast will be served from 8:00-10:00 AM on Wednesday (9/16) and Thursday (9/17), and from 9:00-11:00 AM on Friday (9/18).",
+      },
+      {
+        q: "Do I need to update my dietary restrictions?",
+        a: "If you have any dietary restrictions or allergies (including things like peanut allergies), please log in to the Guest Portal to review and confirm your meal notes one final time. We ask that you verify everything is accurate by September 5, 2026, so the venue can finalize meal counts before everyone flies out.",
       },
       {
         q: "What are the pool hours at Laticastelli?",
@@ -75,7 +79,7 @@ const faqContent = {
       },
       {
         q: "Czy oczekujemy prezentów?",
-        a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — lista prezentów pojawi się wkrótce.",
+        a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — jesteśmy zarejestrowani na Zola. Jeśli chcecie wysłać prezent przed ślubem, uwaga — przeprowadziliśmy się. Prosimy o wysyłkę na nasz nowy adres: 66 Summer St, #1507, Stamford, CT 06901.",
       },
       {
         q: "Czy jest parking?",
@@ -88,6 +92,10 @@ const faqContent = {
       {
         q: "W jakich godzinach podawane jest śniadanie?",
         a: "Śniadanie będzie serwowane w godzinach 8:00-10:00 w środę (16.09) i czwartek (17.09) oraz w godzinach 9:00-11:00 w piątek (18.09).",
+      },
+      {
+        q: "Czy muszę zaktualizować moje ograniczenia dietetyczne?",
+        a: "Jeśli macie jakiekolwiek ograniczenia dietetyczne lub alergie (np. na orzeszki ziemne), prosimy o zalogowanie się do Portalu Gościa, aby po raz ostatni sprawdzić i potwierdzić swoje notatki dotyczące posiłków. Prosimy o potwierdzenie tych informacji do 5 września 2026 roku, aby posiadłość mogła ostatecznie ustalić liczbę posiłków przed Waszym wylotem.",
       },
       {
         q: "W jakich godzinach czynny jest basen w Laticastelli?",

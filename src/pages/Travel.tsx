@@ -49,7 +49,7 @@ const pageContent = {
         alt: "Winding cypress-lined road through Tuscan hills",
         body: (
           <>
-            <strong className="text-foreground font-medium">By Car:</strong> If you feel comfortable, we highly recommend renting a car. It's great to have due to the lack of public transportation and rideshare options in Tuscany. Be sure to book quickly as automatic cars are in high demand.
+            <strong className="text-foreground font-medium">By Car:</strong> Shuttle reservations are now closed, so renting a car is essentially mandatory if you don't have private transportation arranged — rideshares do not exist in this part of Tuscany. Be sure to book quickly as automatic cars are in high demand.
           </>
         ),
       },
@@ -96,7 +96,7 @@ const pageContent = {
         alt: "Winding cypress-lined road through Tuscan hills",
         body: (
           <>
-            <strong className="text-foreground font-medium">Samochodem:</strong> Jeśli czujesz się na siłach, zdecydowanie polecamy wynajem samochodu. Przyda się ze względu na ograniczoną komunikację publiczną i niewiele opcji rideshare w Toskanii. Zarezerwuj szybko — samochody z automatyczną skrzynią biegów cieszą się dużym zainteresowaniem.
+            <strong className="text-foreground font-medium">Samochodem:</strong> Rezerwacje transferów są już zamknięte, więc wynajem samochodu jest praktycznie obowiązkowy, jeśli nie macie zorganizowanego prywatnego transportu — w tej części Toskanii usługi rideshare nie istnieją. Zarezerwuj szybko — samochody z automatyczną skrzynią biegów cieszą się dużym zainteresowaniem.
           </>
         ),
       },
