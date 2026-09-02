@@ -60,7 +60,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Wednesday, September 16",
         title: "Welcome to Tuscany",
         items: [
-          { time: "2:00 PM & 3:00 PM", label: "Private Shuttle Service: Siena Station to Borgo Laticastelli" },
+          { time: "2:00 PM & 3:00 PM", label: "Complimentary Shuttle Service: Siena Station to Borgo Laticastelli (Reservation Required)" },
           { time: "3:00 PM", label: "Guest Check-In & Estate Arrivals" },
           { time: "7:30 PM", label: "The Welcome Dinner" },
         ],
@@ -142,7 +142,7 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "Arrivederci",
         items: [
           { time: "8 - 10:00 AM", label: "Complimentary Breakfast" },
-          { time: "10:00 AM, 11:15 AM, 12:30 PM", label: "Shuttles depart Borgo Laticastelli for Siena Train Station" },
+          { time: "10:00 AM, 11:15 AM, 12:30 PM", label: "Complimentary Shuttle Service: Borgo Laticastelli to Siena Station (Reservation Required)" },
           { time: "12:00 PM", label: "Check-out & Arrivederci!" },
         ],
       },
@@ -165,7 +165,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Środa, 16 września",
         title: "Powitanie w Toskanii",
         items: [
-          { time: "14:00 i 15:00", label: "Prywatny transfer: dworzec w Sienie do Borgo Laticastelli" },
+          { time: "14:00 i 15:00", label: "Bezpłatny transfer: dworzec w Sienie do Borgo Laticastelli (wymagana rezerwacja)" },
           { time: "15:00", label: "Zameldowanie gości i przyjazd do posiadłości" },
           { time: "19:30", label: "Kolacja powitalna" },
         ],
@@ -247,7 +247,7 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "Arrivederci",
         items: [
           { time: "8:00 – 10:00", label: "Śniadanie w cenie pobytu" },
-          { time: "10:00, 11:15, 12:30", label: "Transfery odjeżdżają z Borgo Laticastelli do dworca kolejowego w Sienie" },
+          { time: "10:00, 11:15, 12:30", label: "Bezpłatny transfer: Borgo Laticastelli do dworca w Sienie (wymagana rezerwacja)" },
           { time: "12:00", label: "Wymeldowanie i Arrivederci!" },
         ],
       },
