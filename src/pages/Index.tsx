@@ -158,7 +158,7 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "Arrivederci",
         items: [
           { time: "8 - 10:00 AM", label: "Complimentary Breakfast" },
-          { time: "10:00 AM, 11:15 AM, 12:30 PM", label: "Complimentary Shuttle Service: Borgo Laticastelli to Siena Station (Reservation Required)" },
+          { time: "10:00 AM, 11:15 AM, 12:30 PM", label: "Complimentary Shuttle: Laticastelli to Siena Station (Reservation Required)" },
           { time: "12:00 PM", label: "Check-out & Arrivederci!" },
         ],
       },
@@ -268,7 +268,7 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "Arrivederci",
         items: [
           { time: "8:00 – 10:00", label: "Śniadanie w cenie pobytu" },
-          { time: "10:00, 11:15, 12:30", label: "Bezpłatny transfer: Borgo Laticastelli do dworca w Sienie (wymagana rezerwacja)" },
+          { time: "10:00, 11:15, 12:30", label: "Bezpłatny transfer: Laticastelli do dworca w Sienie (wymagana rezerwacja)" },
           { time: "12:00", label: "Wymeldowanie i Arrivederci!" },
         ],
       },
