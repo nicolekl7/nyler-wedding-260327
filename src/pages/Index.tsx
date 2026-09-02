@@ -81,7 +81,8 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "The Wedding Day",
         items: [
           { time: "8 - 10:00 AM", label: "Complimentary Breakfast" },
-          { time: "10:00 AM - 5:00 PM", label: "Free Time — visit the Rapolano Thermal Baths (5 minutes away) or take a 20-minute drive into Siena for lunch" },
+          { time: "10:00 AM - 4:00 PM", label: "Free Time (Check out the Travel page for exploring recommendations!)" },
+          { time: "4:30 PM", label: "Pre-Ceremony Refreshments" },
           { time: "5:00 PM", label: "The Wedding Ceremony" },
           { time: "5:30 PM", label: "Aperitivo (Cocktail Hour)" },
           { time: "7:30 PM", label: "The Wedding Reception & Dinner" },
@@ -186,7 +187,8 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "Dzień ślubu",
         items: [
           { time: "8:00 – 10:00", label: "Śniadanie w cenie pobytu" },
-          { time: "10:00 – 17:00", label: "Czas wolny — odwiedźcie Termy w Rapolano (5 minut drogi) lub wybierzcie się na 20-minutową przejażdżkę do Sieny na lunch" },
+          { time: "10:00 – 16:00", label: "Czas wolny (sprawdźcie stronę Podróż, aby zobaczyć nasze rekomendacje!)" },
+          { time: "16:30", label: "Poczęstunek przed ceremonią" },
           { time: "17:00", label: "Ceremonia ślubna" },
           { time: "17:30", label: "Aperitivo" },
           { time: "19:30", label: "Kolacja weselna" },
