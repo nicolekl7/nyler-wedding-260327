@@ -88,7 +88,7 @@ const content: Record<"en" | "pl", LangContent> = {
           { time: "7:30 PM", label: "The Wedding Reception & Dinner" },
           { time: "10:00 PM", label: "Cake-Cutting & Dancing" },
         ],
-        details: "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, an elegant dinner, and dancing the night away.",
+        details: "Join us for a pre-ceremony drink overlooking the Tuscan hills at 4:30 PM. The ceremony will begin promptly at 5:00 PM, followed by an evening of aperitivo, an elegant dinner, and dancing the night away.",
         attireBlocks: [
           {
             title: "Tuscan Formal",
@@ -194,7 +194,7 @@ const content: Record<"en" | "pl", LangContent> = {
           { time: "19:30", label: "Kolacja weselna" },
           { time: "22:00", label: "Krojenie tortu i tańce" },
         ],
-        details: "Nasza ceremonia z widokiem na toskańskie wzgórza, a potem wieczór pełen aperitivo, eleganckiej kolacji i tańców do białego rana.",
+        details: "Dołączcie do nas na przedceremonialny drink z widokiem na toskańskie wzgórza o 16:30. Ceremonia rozpocznie się punktualnie o 17:00, a następnie czeka nas wieczór pełen aperitivo, eleganckiej kolacji i tańców do białego rana.",
         attireBlocks: [
           {
             title: "Toskańska elegancja",
