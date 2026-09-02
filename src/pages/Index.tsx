@@ -14,6 +14,17 @@ import attireGraphicWelcomeParty from "@/assets/attire graphic welcome party.png
 
 const weddingDate = new Date("2026-09-17T16:30:00+02:00");
 
+const renderLabelWithParens = (label: string) =>
+  label.split(/(\([^)]*\))/g).map((part, i) =>
+    part.startsWith("(") && part.endsWith(")") ? (
+      <span key={i} className="text-[#b7d99a]">
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+
 type AttireBlock = { label?: string; title: string; body: string };
 type ScheduleItem = { time: string; label: string };
 type SubSchedule = { heading: string; host: string; details: string; attireBlocks: AttireBlock[] };
@@ -385,7 +396,7 @@ const Index = () => {
                     {day.items.map((item, idx) => (
                       <div key={idx} className="flex flex-col sm:flex-row sm:gap-3">
                         <span className="font-medium sm:min-w-[15rem] shrink-0">{item.time}</span>
-                        <span className="italic opacity-90">{item.label}</span>
+                        <span className="italic opacity-90">{renderLabelWithParens(item.label)}</span>
                       </div>
                     ))}
                   </div>
