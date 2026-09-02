@@ -70,7 +70,7 @@ const content: Record<"en" | "pl", LangContent> = {
         attireBlocks: [
           {
             title: "La Notte Bianca",
-            body: "You have spent years avoiding white at weddings; tonight is your night. We kindly request white from head to toe, with no exceptions.",
+            body: "Tonight is your night to wear white. To kick off our celebration in style, we request a strict all-white dress code for all our guests.",
           },
         ],
         image: attireGraphicWelcomeParty,
@@ -176,7 +176,7 @@ const content: Record<"en" | "pl", LangContent> = {
         attireBlocks: [
           {
             title: "La Notte Bianca",
-            body: "Przez lata unikaliście bieli na weselach — dziś wieczorem to Wasza noc. Prosimy o strój w kolorze białym od stóp do głów, bez wyjątków.",
+            body: "Dziś wieczorem nosicie biel. Aby rozpocząć nasze świętowanie w wielkim stylu, prosimy o ścisły, całkowicie biały dress code dla wszystkich gości.",
           },
         ],
         image: attireGraphicWelcomeParty,
