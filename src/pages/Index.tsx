@@ -32,7 +32,7 @@ type ScheduleDay = {
   date: string;
   title: string;
   items: ScheduleItem[];
-  details?: string;
+  details?: React.ReactNode;
   attireBlocks?: AttireBlock[];
   image?: string;
   imageAlt?: string;
@@ -114,7 +114,12 @@ const content: Record<"en" | "pl", LangContent> = {
           { time: "9 - 11:00 AM", label: "Complimentary Breakfast" },
         ],
         details:
-          "To make the most of our time in Italy, Friday features two distinct, pre-planned itineraries. Please log in to the Guest Portal to view your personalized Friday schedule, event timings, and transportation details.",
+          (
+            <>
+              To make the most of our time in Italy, Friday features two distinct, pre-planned itineraries.{" "}
+              <strong className="font-medium">Please check the Guest Portal to view your personalized Friday schedule.</strong>
+            </>
+          ),
         subSchedules: [
           {
             heading: "Schedule A: The Val d'Orcia Road Trip",
@@ -219,7 +224,12 @@ const content: Record<"en" | "pl", LangContent> = {
           { time: "9:00 – 11:00", label: "Śniadanie w cenie pobytu" },
         ],
         details:
-          "Aby jak najlepiej wykorzystać nasz czas we Włoszech, piątek obejmuje dwa odrębne, wcześniej zaplanowane plany dnia. Zaloguj się do Portalu Gościa, aby zobaczyć swój spersonalizowany harmonogram na piątek, godziny wydarzeń oraz szczegóły transportu.",
+          (
+            <>
+              Aby jak najlepiej wykorzystać nasz czas we Włoszech, piątek obejmuje dwa odrębne, wcześniej zaplanowane plany dnia.{" "}
+              <strong className="font-medium">Sprawdź Portal Gościa, aby zobaczyć swój spersonalizowany harmonogram na piątek.</strong>
+            </>
+          ),
         subSchedules: [
           {
             heading: "Plan A: Wycieczka do Val d'Orcia",
