@@ -34,7 +34,7 @@ const faqContent = {
       },
       {
         q: "Are gifts expected?",
-        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola. If you'd like to send a gift ahead of the wedding, please note we've moved — mail packages to our new address: 66 Summer St, #1507, Stamford, CT 06901.",
+        a: "No! The greatest gift you can give us is being there. Should you wish to honor us with a gift, we are registered at Zola and Amazon. We kindly request that any physical items be shipped directly to our home rather than brought to the venue.",
       },
       {
         q: "Is there parking?",
@@ -79,7 +79,7 @@ const faqContent = {
       },
       {
         q: "Czy oczekujemy prezentów?",
-        a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — jesteśmy zarejestrowani na Zola. Jeśli chcecie wysłać prezent przed ślubem, uwaga — przeprowadziliśmy się. Prosimy o wysyłkę na nasz nowy adres: 66 Summer St, #1507, Stamford, CT 06901.",
+        a: "Nie! Największym prezentem jest Wasza obecność. Jeśli chcielibyście nas obdarować, jesteśmy zarejestrowani na Zola i Amazon. Uprzejmie prosimy o wysyłkę wszelkich fizycznych prezentów bezpośrednio do naszego domu, a nie przynoszenie ich na miejsce uroczystości.",
       },
       {
         q: "Czy jest parking?",
