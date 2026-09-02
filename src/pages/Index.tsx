@@ -60,7 +60,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Wednesday, September 16",
         title: "Welcome to Tuscany",
         items: [
-          { time: "2:00 PM & 3:00 PM", label: "Complimentary Shuttle Service: Siena Station to Borgo Laticastelli (Reservation Required)" },
+          { time: "2:00 PM & 3:00 PM", label: "Complimentary Shuttle: Siena Station to Laticastelli (Reservation Required)" },
           { time: "3:00 PM", label: "Guest Check-In & Estate Arrivals" },
           { time: "7:30 PM", label: "The Welcome Dinner" },
         ],
@@ -165,7 +165,7 @@ const content: Record<"en" | "pl", LangContent> = {
         date: "Środa, 16 września",
         title: "Powitanie w Toskanii",
         items: [
-          { time: "14:00 i 15:00", label: "Bezpłatny transfer: dworzec w Sienie do Borgo Laticastelli (wymagana rezerwacja)" },
+          { time: "14:00 i 15:00", label: "Bezpłatny transfer: dworzec w Sienie do Laticastelli (wymagana rezerwacja)" },
           { time: "15:00", label: "Zameldowanie gości i przyjazd do posiadłości" },
           { time: "19:30", label: "Kolacja powitalna" },
         ],
