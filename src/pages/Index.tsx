@@ -111,7 +111,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Schedule A: The Val d'Orcia Road Trip",
             host: "Hosted by Grazyna & Waldemar",
             details:
-              "After breakfast, Grazyna and Waldemar's guests will head out on a relaxed excursion to the beautiful town of Pienza. Enjoy free time to wander the historic center, take in the local Renaissance festival, and grab lunch at your own pace. In the afternoon, the group will take a short drive to Casagori—a small, family-run organic farm—for a wine tasting amid the grape harvest, followed by an early, farm-to-table group dinner before returning to the Borgo.",
+              "After breakfast, Grazyna and Waldemar's guests will head out on a relaxed excursion to the beautiful town of Pienza. Enjoy free time to wander the historic center, take in the local Renaissance festival, and grab lunch at your own pace. In the afternoon, the group will take a short drive to Casagori—a small, family-run organic farm—for an optional wine and beer tasting amid the grape harvest, followed by an early, farm-to-table group dinner before returning to the Borgo.",
             attireBlocks: [
               {
                 title: "Tuscan Explorer Chic",
@@ -217,7 +217,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Plan A: Wycieczka do Val d'Orcia",
             host: "Organizują Grażyna i Waldemar",
             details:
-              "Po śniadaniu goście Grażyny i Waldemara wyruszą na relaksującą wycieczkę do pięknego miasteczka Pienza. Będzie czas wolny na spacer po historycznym centrum, udział w lokalnym festiwalu renesansowym oraz lunch we własnym tempie. Po południu grupa pojedzie na krótką przejażdżkę do Casagori — małego, rodzinnego gospodarstwa ekologicznego — na degustację wina podczas winobrania, a następnie na wczesną, wspólną kolację farm-to-table przed powrotem do Borgo.",
+              "Po śniadaniu goście Grażyny i Waldemara wyruszą na relaksującą wycieczkę do pięknego miasteczka Pienza. Będzie czas wolny na spacer po historycznym centrum, udział w lokalnym festiwalu renesansowym oraz lunch we własnym tempie. Po południu grupa pojedzie na krótką przejażdżkę do Casagori — małego, rodzinnego gospodarstwa ekologicznego — na opcjonalną degustację wina i piwa podczas winobrania, a następnie na wczesną, wspólną kolację farm-to-table przed powrotem do Borgo.",
             attireBlocks: [
               {
                 title: "Szykowny Odkrywca Toskanii",
