@@ -17,7 +17,7 @@ const weddingDate = new Date("2026-09-17T16:30:00+02:00");
 const renderLabelWithParens = (label: string) =>
   label.split(/(\([^)]*\))/g).map((part, i) =>
     part.startsWith("(") && part.endsWith(")") ? (
-      <span key={i} className="text-[#b7d99a]">
+      <span key={i} style={{ color: "hsl(63 30% 80%)" }}>
         {part}
       </span>
     ) : (
