@@ -98,20 +98,22 @@ const content: Record<"en" | "pl", LangContent> = {
       },
       {
         date: "Friday, September 18",
-        title: "The Recovery & The Road Trip",
+        title: "The Recovery Day",
         items: [
           { time: "9 - 11:00 AM", label: "Complimentary Breakfast" },
         ],
+        details:
+          "To make the most of our time in Italy, Friday features two distinct, pre-planned itineraries. Please log in to the Guest Portal to view your personalized Friday schedule, event timings, and transportation details.",
         subSchedules: [
           {
-            heading: "Schedule A: \"Best of Tuscany\" Day Trip",
+            heading: "Schedule A: The Val d'Orcia Road Trip",
             host: "Hosted by Grazyna & Waldemar",
             details:
-              "Grazyna and Waldemar invite their guests to wander Siena's historic streets, enjoy a wine-tasting lunch at a local agriturismo, and explore San Gimignano's famous medieval towers. The day will conclude with a wonderful group dinner before returning to the Borgo.",
+              "After a late breakfast and a slow morning, Grazyna and Waldemar's guests will head out on a relaxed excursion to the beautiful town of Pienza. Enjoy free time to wander the historic center, take in the local Renaissance festival, and grab lunch at your own pace. In the afternoon, the group will take a short drive to Casagori—a small, family-run organic farm—for a wine tasting amid the grape harvest, followed by an early, farm-to-table group dinner before returning to the Borgo. Transportation is fully provided! Guests will just be responsible for their own lunch in Pienza, the farm dinner, and any optional tastings.",
             attireBlocks: [
               {
-                title: "Tuscan Explorer",
-                body: "Chic, practical daywear with comfortable walking shoes for cobblestones. Bring a light evening layer.",
+                title: "Tuscan Explorer Chic",
+                body: "Practical daywear with comfortable walking shoes for cobblestones. Bring a light evening layer.",
               },
             ],
           },
@@ -119,7 +121,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Schedule B: Il Dolce Far Niente Pool Party",
             host: "Hosted by Nicole & Tyler",
             details:
-              "Embrace the art of doing nothing. Nicole and Tyler invite their friends to recover and relax poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will go into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
+              "Embrace the art of doing nothing. Nicole and Tyler's guests will spend the day recovering and relaxing poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will head into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Daytime Attire:",
@@ -200,20 +202,22 @@ const content: Record<"en" | "pl", LangContent> = {
       },
       {
         date: "Piątek, 18 września",
-        title: "Odpoczynek i wycieczka",
+        title: "Dzień Odpoczynku",
         items: [
           { time: "9:00 – 11:00", label: "Śniadanie w cenie pobytu" },
         ],
+        details:
+          "Aby jak najlepiej wykorzystać nasz czas we Włoszech, piątek obejmuje dwa odrębne, wcześniej zaplanowane plany dnia. Zaloguj się do Portalu Gościa, aby zobaczyć swój spersonalizowany harmonogram na piątek, godziny wydarzeń oraz szczegóły transportu.",
         subSchedules: [
           {
-            heading: "Plan A: Wycieczka „Najlepsze z Toskanii”",
+            heading: "Plan A: Wycieczka do Val d'Orcia",
             host: "Organizują Grażyna i Waldemar",
             details:
-              "Grażyna i Waldemar zapraszają swoich gości na spacer historycznymi uliczkami Sieny, lunch z degustacją wina w lokalnym agriturismo oraz zwiedzanie słynnych średniowiecznych wież San Gimignano. Dzień zakończy się wspólną, wspaniałą kolacją przed powrotem do Borgo.",
+              "Po późnym śniadaniu i spokojnym poranku, goście Grażyny i Waldemara wyruszą na relaksującą wycieczkę do pięknego miasteczka Pienza. Będzie czas wolny na spacer po historycznym centrum, udział w lokalnym festiwalu renesansowym oraz lunch we własnym tempie. Po południu grupa pojedzie na krótką przejażdżkę do Casagori — małego, rodzinnego gospodarstwa ekologicznego — na degustację wina podczas winobrania, a następnie na wczesną, wspólną kolację farm-to-table przed powrotem do Borgo. Transport jest w pełni zapewniony! Goście pokrywają jedynie koszt lunchu w Pienzy, kolacji na farmie oraz ewentualnych dodatkowych degustacji.",
             attireBlocks: [
               {
-                title: "Odkrywca Toskanii",
-                body: "Szykowny, ale praktyczny strój dzienny z wygodnymi butami na brukowane uliczki. Zabierzcie lekką warstwę na wieczór.",
+                title: "Szykowny Odkrywca Toskanii",
+                body: "Praktyczny strój dzienny z wygodnymi butami na brukowane uliczki. Zabierzcie lekką warstwę na wieczór.",
               },
             ],
           },
@@ -221,7 +225,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Plan B: Il Dolce Far Niente — impreza przy basenie",
             host: "Organizują Nicole i Tyler",
             details:
-              "Poczujcie sztukę nierobienia niczego. Nicole i Tyler zapraszają przyjaciół, by odpocząć i zrelaksować się przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem grupa uda się do pobliskiego miasteczka Rapolano Terme na swobodną kolację w Sapor in Torre.",
+              "Poczujcie sztukę nierobienia niczego. Goście Nicole i Tylera spędzą dzień, odpoczywając i relaksując się przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem grupa uda się do pobliskiego miasteczka Rapolano Terme na swobodną kolację w Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Strój dzienny:",
