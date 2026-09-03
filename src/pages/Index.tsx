@@ -308,7 +308,7 @@ const Index = () => {
           <h1 className="heading-display mb-4 text-[#fdfbf7]">
             Nicole <span className="font-light italic">&</span> Tyler
           </h1>
-          <p className="label-xs tracking-[0.158em] text-[#fdfbf7] opacity-75">
+          <p className="font-body uppercase text-sm sm:text-base md:text-lg tracking-[0.158em] text-[#fdfbf7] opacity-75">
             <span className="inline sm:hidden">{t.dateLine}</span>
             <span className="hidden sm:inline">{t.dateLineLong}</span>
           </p>
