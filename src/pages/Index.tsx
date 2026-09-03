@@ -305,10 +305,10 @@ const Index = () => {
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a2e1a]/90 via-[#1a2e1a]/20 to-transparent" />
         <FadeIn className="relative z-10 px-6 md:px-12 lg:px-24 pb-16 md:pb-24">
-          <h1 className="heading-display mb-4 text-[#fdfbf7]">
+          <h1 className="heading-display mb-2 text-[#fdfbf7]">
             Nicole <span className="font-light italic">&</span> Tyler
           </h1>
-          <p className="font-body uppercase text-sm sm:text-base md:text-lg tracking-[0.158em] text-[#fdfbf7] opacity-75">
+          <p className="font-body uppercase text-xs sm:text-sm md:text-base tracking-[0.158em] text-[#fdfbf7] opacity-75">
             <span className="inline sm:hidden">{t.dateLine}</span>
             <span className="hidden sm:inline">{t.dateLineLong}</span>
           </p>
