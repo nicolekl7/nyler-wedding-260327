@@ -80,19 +80,17 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
                         href={AMAZON_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-between gap-3 px-4 py-2 label-xs tracking-wide text-foreground hover:bg-muted transition-colors"
+                        className="nav-link block px-4 py-2 hover:bg-muted"
                       >
                         {labels.amazon}
-                        <span>&rsaquo;</span>
                       </a>
                       <a
                         href={ZOLA_URL}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-between gap-3 px-4 py-2 label-xs tracking-wide text-foreground hover:bg-muted transition-colors"
+                        className="nav-link block px-4 py-2 hover:bg-muted"
                       >
                         {labels.zola}
-                        <span>&rsaquo;</span>
                       </a>
                     </div>
                   </div>
@@ -195,17 +193,17 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
                       href={AMAZON_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="label-xs tracking-wide text-foreground/80 flex items-center gap-1"
+                      className="nav-link"
                     >
-                      {labels.amazon} <span>&rsaquo;</span>
+                      {labels.amazon}
                     </a>
                     <a
                       href={ZOLA_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="label-xs tracking-wide text-foreground/80 flex items-center gap-1"
+                      className="nav-link"
                     >
-                      {labels.zola} <span>&rsaquo;</span>
+                      {labels.zola}
                     </a>
                   </div>
                 </div>
