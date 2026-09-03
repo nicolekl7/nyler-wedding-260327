@@ -34,7 +34,19 @@ const faqContent = {
       },
       {
         q: "Are gifts expected?",
-        a: "No! The greatest gift you can give us is being there. Should you wish to honor us with a gift, we are registered at Zola and Amazon. We kindly request that any physical items be shipped directly to our home rather than brought to the venue.",
+        a: (
+          <>
+            No! The greatest gift you can give us is being there. Should you wish to honor us with a gift, we are registered at{" "}
+            <a href={ZOLA_URL} target="_blank" rel="noopener noreferrer" className="text-foreground font-medium underline underline-offset-4 hover:text-primary transition-colors">
+              Zola
+            </a>{" "}
+            and{" "}
+            <a href={AMAZON_URL} target="_blank" rel="noopener noreferrer" className="text-foreground font-medium underline underline-offset-4 hover:text-primary transition-colors">
+              Amazon
+            </a>
+            . We kindly request that any physical items be shipped directly to our home rather than brought to the venue.
+          </>
+        ),
       },
       {
         q: "Is there parking?",
@@ -79,7 +91,19 @@ const faqContent = {
       },
       {
         q: "Czy oczekujemy prezentów?",
-        a: "Nie! Największym prezentem jest Wasza obecność. Jeśli chcielibyście nas obdarować, jesteśmy zarejestrowani na Zola i Amazon. Uprzejmie prosimy o wysyłkę wszelkich fizycznych prezentów bezpośrednio do naszego domu, a nie przynoszenie ich na miejsce uroczystości.",
+        a: (
+          <>
+            Nie! Największym prezentem jest Wasza obecność. Jeśli chcielibyście nas obdarować, jesteśmy zarejestrowani na{" "}
+            <a href={ZOLA_URL} target="_blank" rel="noopener noreferrer" className="text-foreground font-medium underline underline-offset-4 hover:text-primary transition-colors">
+              Zola
+            </a>{" "}
+            i{" "}
+            <a href={AMAZON_URL} target="_blank" rel="noopener noreferrer" className="text-foreground font-medium underline underline-offset-4 hover:text-primary transition-colors">
+              Amazon
+            </a>
+            . Uprzejmie prosimy o wysyłkę wszelkich fizycznych prezentów bezpośrednio do naszego domu, a nie przynoszenie ich na miejsce uroczystości.
+          </>
+        ),
       },
       {
         q: "Czy jest parking?",
