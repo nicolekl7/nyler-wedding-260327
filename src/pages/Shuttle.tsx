@@ -301,8 +301,8 @@ const Shuttle = () => {
             });
 
             const fridayActivityLabel: Record<string, string> = {
-              "Recovery Day": "Pool Party & Dinner at Sapor in Torre",
-              "Wine Tour": "Siena Wine Tour",
+              "Recovery Day": "Il Dolce Far Niente Pool Party & Dinner",
+              "Wine Tour": "The Best of Tuscany Field Trip",
             };
 
             const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined; detail?: string }> = [
