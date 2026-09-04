@@ -425,7 +425,7 @@ const Index = () => {
                             <p className="label-xs text-[#fdfbf7] opacity-60 mb-2">
                               {t.detailsLabel}
                             </p>
-                            <p className="body-small leading-relaxed opacity-90">
+                            <p className="body-small leading-relaxed">
                               {day.details}
                             </p>
                           </div>
@@ -434,9 +434,10 @@ const Index = () => {
                         {day.attireBlocks && (
                           <div className="space-y-2">
                             {day.attireBlocks.map((block, bi) => (
-                              <p key={bi} className="body-small opacity-80 leading-relaxed">
+                              <p key={bi} className="body-small leading-relaxed">
                                 <span className="font-bold">{block.label ?? t.attireLabel}</span>{" "}
-                                <span className="font-bold">{block.title}</span> — {block.body}
+                                <span className="font-bold">{block.title}</span> —{" "}
+                                <span style={{ color: "hsl(63 30% 80%)" }}>{block.body}</span>
                               </p>
                             ))}
                           </div>
@@ -459,14 +460,15 @@ const Index = () => {
                               {sub.host}
                             </p>
                           </div>
-                          <p className="body-small leading-relaxed opacity-90">
+                          <p className="body-small leading-relaxed">
                             {sub.details}
                           </p>
                           <div className="space-y-2 pt-1">
                             {sub.attireBlocks.map((block, bi) => (
-                              <p key={bi} className="body-small opacity-80 leading-relaxed">
+                              <p key={bi} className="body-small leading-relaxed">
                                 <span className="font-bold">{block.label ?? t.attireLabel}</span>{" "}
-                                <span className="font-bold">{block.title}</span> — {block.body}
+                                <span className="font-bold">{block.title}</span> —{" "}
+                                <span style={{ color: "hsl(63 30% 80%)" }}>{block.body}</span>
                               </p>
                             ))}
                           </div>
