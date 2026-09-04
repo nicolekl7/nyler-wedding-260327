@@ -17,7 +17,7 @@ const weddingDate = new Date("2026-09-17T16:30:00+02:00");
 const renderLabelWithParens = (label: string) =>
   label.split(/(\([^)]*\))/g).map((part, i) =>
     part.startsWith("(") && part.endsWith(")") ? (
-      <span key={i} style={{ color: "hsl(63 30% 80%)" }}>
+      <span key={i} className="italic" style={{ color: "hsl(63 30% 80%)" }}>
         {part}
       </span>
     ) : (
@@ -406,7 +406,7 @@ const Index = () => {
                     {day.items.map((item, idx) => (
                       <div key={idx} className="flex flex-col sm:flex-row sm:gap-3">
                         <span className="font-medium sm:min-w-[15rem] shrink-0">{item.time}</span>
-                        <span className="italic opacity-90">{renderLabelWithParens(item.label)}</span>
+                        <span className="opacity-90">{renderLabelWithParens(item.label)}</span>
                       </div>
                     ))}
                   </div>
@@ -434,9 +434,9 @@ const Index = () => {
                         {day.attireBlocks && (
                           <div className="space-y-2">
                             {day.attireBlocks.map((block, bi) => (
-                              <p key={bi} className="body-small italic opacity-80 leading-relaxed">
-                                <span className="not-italic font-medium">{block.label ?? t.attireLabel}</span>{" "}
-                                <span className="not-italic">{block.title}</span> — {block.body}
+                              <p key={bi} className="body-small opacity-80 leading-relaxed">
+                                <span className="font-medium">{block.label ?? t.attireLabel}</span>{" "}
+                                <span>{block.title}</span> — {block.body}
                               </p>
                             ))}
                           </div>
@@ -464,9 +464,9 @@ const Index = () => {
                           </p>
                           <div className="space-y-2 pt-1">
                             {sub.attireBlocks.map((block, bi) => (
-                              <p key={bi} className="body-small italic opacity-80 leading-relaxed">
-                                <span className="not-italic font-medium">{block.label ?? t.attireLabel}</span>{" "}
-                                <span className="not-italic">{block.title}</span> — {block.body}
+                              <p key={bi} className="body-small opacity-80 leading-relaxed">
+                                <span className="font-medium">{block.label ?? t.attireLabel}</span>{" "}
+                                <span>{block.title}</span> — {block.body}
                               </p>
                             ))}
                           </div>
