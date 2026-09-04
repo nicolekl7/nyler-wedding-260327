@@ -17,7 +17,6 @@ const pageContent = {
   en: {
     heading: "Getting to Borgo Laticastelli",
     venueAddress: "Borgo Laticastelli: Via Laticastelli, 1 53040 Rapolano Terme (SI)",
-    intro: "Every route to Tuscany leads through some of the most beautiful landscape in the world.",
     thingsTitle: "Before You Go",
     beforeYouGoItems: [
       "Passport must be valid through March 2027",
@@ -41,7 +40,7 @@ const pageContent = {
         alt: "Winding cypress-lined road through Tuscan hills",
         body: (
           <>
-            <strong className="text-foreground font-medium">By Car:</strong> Shuttle reservations are now closed, so renting a car is essentially mandatory if you don't have private transportation arranged — rideshares do not exist in this part of Tuscany. Be sure to book quickly as automatic cars are in high demand.
+            <strong className="text-foreground font-medium">By Car:</strong> Renting a car is highly recommended if you don't have private transportation arranged — rideshares do not exist in this part of Tuscany but taxis may be available at Siena train station.
           </>
         ),
       },
@@ -55,7 +54,6 @@ const pageContent = {
   pl: {
     heading: "Jak dotrzeć do Borgo Laticastelli",
     venueAddress: "Borgo Laticastelli: Via Laticastelli, 1 53040 Rapolano Terme (SI)",
-    intro: "Każda droga do Toskanii wiedzie przez jedno z najpiękniejszych krajobrazów na świecie.",
     thingsTitle: "Przed wyjazdem",
     beforeYouGoItems: [
       "Paszport musi być ważny do marca 2027",
@@ -79,7 +77,7 @@ const pageContent = {
         alt: "Winding cypress-lined road through Tuscan hills",
         body: (
           <>
-            <strong className="text-foreground font-medium">Samochodem:</strong> Rezerwacje transferów są już zamknięte, więc wynajem samochodu jest praktycznie obowiązkowy, jeśli nie macie zorganizowanego prywatnego transportu — w tej części Toskanii usługi rideshare nie istnieją. Zarezerwuj szybko — samochody z automatyczną skrzynią biegów cieszą się dużym zainteresowaniem.
+            <strong className="text-foreground font-medium">Samochodem:</strong> Wynajem samochodu jest zdecydowanie zalecany, jeśli nie macie zorganizowanego prywatnego transportu — w tej części Toskanii usługi rideshare nie istnieją, ale na dworcu w Sienie mogą być dostępne taksówki.
           </>
         ),
       },
@@ -102,7 +100,7 @@ const faqContent = {
       },
       {
         q: "What shoes should I wear?",
-        a: "The estate features cobblestone paths and grass—stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
+        a: "The estate features cobblestone paths and grass—stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to all events on venue grounds.",
       },
       {
         q: "When is check-in/check-out?",
@@ -131,7 +129,7 @@ const faqContent = {
       },
       {
         q: "Jakie buty powinnam/powinienem włożyć?",
-        a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
+        a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie wszystkich wydarzeń na terenie posiadłości.",
       },
       {
         q: "Kiedy jest zameldowanie/wymeldowanie?",
@@ -308,9 +306,6 @@ const Travel = () => {
               {t.venueAddress}
             </p>
             <div className="w-12 h-px bg-primary mx-auto mb-8" />
-            <p className="body-editorial mx-auto text-balance">
-              {t.intro}
-            </p>
           </FadeIn>
         </div>
       </section>
