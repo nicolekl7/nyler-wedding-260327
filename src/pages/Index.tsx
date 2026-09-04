@@ -128,7 +128,7 @@ const content: Record<"en" | "pl", LangContent> = {
               "Grazyna and Waldemar's guests will head out on a relaxed excursion to the beautiful town of Pienza. Enjoy free time to wander the historic center, take in the local Renaissance festival, and grab lunch at your own pace. In the afternoon, the group will take a short drive to Casagori—a small, family-run organic farm—for an optional wine and beer tasting amid the grape harvest, followed by an early, farm-to-table group dinner before returning to the Borgo.",
             attireBlocks: [
               {
-                title: "Tuscan Explorer Chic",
+                title: "Countryside Chic",
                 body: "Practical daywear with comfortable walking shoes for cobblestones. Bring a light evening layer.",
               },
             ],
@@ -146,7 +146,7 @@ const content: Record<"en" | "pl", LangContent> = {
               },
               {
                 label: "Evening Attire:",
-                title: "Tuscan Casual",
+                title: "Trattoria Chic",
                 body: "Effortless styles like flowy dresses, linen trousers, short-sleeve button-downs, and comfortable sandals.",
               },
             ],
@@ -256,7 +256,7 @@ const content: Record<"en" | "pl", LangContent> = {
               },
               {
                 label: "Strój wieczorowy:",
-                title: "Tuscan Casual",
+                title: "Trattoria Chic",
                 body: "Swobodny styl — zwiewne sukienki, lniane spodnie, koszule z krótkim rękawem i wygodne sandały.",
               },
             ],
@@ -310,7 +310,7 @@ const Index = () => {
           </h1>
           <p className="label-xs tracking-[0.158em] text-[#fdfbf7] opacity-75">
             <span className="inline sm:hidden">{t.dateLine}</span>
-            <span className="hidden sm:inline text-[1.44em]">{t.dateLineLong}</span>
+            <span className="hidden sm:inline text-[1.584em]">{t.dateLineLong}</span>
           </p>
         </FadeIn>
       </section>
