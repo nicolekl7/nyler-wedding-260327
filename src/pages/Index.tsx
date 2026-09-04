@@ -92,9 +92,9 @@ const content: Record<"en" | "pl", LangContent> = {
           { time: "8 - 10:00 AM", label: "Complimentary Breakfast" },
           { time: "10 - 4:00 PM", label: "Free Time (Check out the Travel page for exploring recommendations!)" },
           { time: "4:30 PM", label: "Pre-Ceremony Refreshments" },
-          { time: "5:00 PM", label: "The Wedding Ceremony" },
+          { time: "5:00 PM", label: "Wedding Ceremony" },
           { time: "5:30 PM", label: "Aperitivo (Cocktail Hour)" },
-          { time: "7:30 PM", label: "The Wedding Reception & Dinner" },
+          { time: "7:30 PM", label: "Wedding Reception & Dinner" },
           { time: "10:00 PM", label: "Cake-Cutting & Dancing" },
         ],
         details: "Join us for a pre-ceremony drink overlooking the Tuscan hills at 4:30 PM. The ceremony will begin promptly at 5:00 PM, followed by an evening of aperitivo, an elegant dinner, and dancing the night away.",
@@ -435,8 +435,8 @@ const Index = () => {
                           <div className="space-y-2">
                             {day.attireBlocks.map((block, bi) => (
                               <p key={bi} className="body-small opacity-80 leading-relaxed">
-                                <span className="font-medium">{block.label ?? t.attireLabel}</span>{" "}
-                                <span>{block.title}</span> — {block.body}
+                                <span className="font-bold">{block.label ?? t.attireLabel}</span>{" "}
+                                <span className="font-bold">{block.title}</span> — {block.body}
                               </p>
                             ))}
                           </div>
@@ -465,8 +465,8 @@ const Index = () => {
                           <div className="space-y-2 pt-1">
                             {sub.attireBlocks.map((block, bi) => (
                               <p key={bi} className="body-small opacity-80 leading-relaxed">
-                                <span className="font-medium">{block.label ?? t.attireLabel}</span>{" "}
-                                <span>{block.title}</span> — {block.body}
+                                <span className="font-bold">{block.label ?? t.attireLabel}</span>{" "}
+                                <span className="font-bold">{block.title}</span> — {block.body}
                               </p>
                             ))}
                           </div>
