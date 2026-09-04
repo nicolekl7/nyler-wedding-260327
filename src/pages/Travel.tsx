@@ -24,7 +24,7 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. We are offering shuttles from Siena train station to the venue on Wednesday, September 16th as well as shuttles back to Siena train station on Saturday, September 19th. Shuttle reservations are now closed.
+            <strong className="text-foreground font-medium">By Train:</strong> Italy's high-speed rail connects all major airports to the region. The easiest way to get to and from Laticastelli via train is to take a train to Siena station then arrange a car to the venue from there. It is a 30 minute car ride from Siena train station to Borgo Laticastelli.
           </>
         ),
       },
@@ -55,7 +55,7 @@ const pageContent = {
         alt: "Italian train winding through Tuscan countryside",
         body: (
           <>
-            <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Organizujemy transfery z dworca w Sienie do posiadłości w środę, 16 września, oraz transfery powrotne na dworzec w Sienie w sobotę, 19 września. Rezerwacje transferów są już zamknięte.
+            <strong className="text-foreground font-medium">Pociągiem:</strong> Włoska szybka kolej łączy wszystkie główne lotniska z regionem. Najłatwiejszym sposobem dotarcia do i z Laticastelli pociągiem jest dojazd do dworca w Sienie, a następnie zorganizowanie samochodu do posiadłości. Z dworca w Sienie do Borgo Laticastelli jest to 30-minutowa jazda samochodem.
           </>
         ),
       },
