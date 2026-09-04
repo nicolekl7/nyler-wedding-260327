@@ -315,7 +315,7 @@ const Travel = () => {
         </FadeIn>
 
         <FadeIn delay={100}>
-          <div className="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-6 px-6 pb-2 md:mx-0 md:px-0 md:pb-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible">
+          <div className="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-6 px-6 pb-2 md:mx-0 md:px-0 md:pb-0 md:grid md:grid-cols-5 md:gap-3 md:overflow-visible">
             {guides.map((g) => (
               <div
                 key={g.title}
@@ -327,15 +327,15 @@ const Travel = () => {
                   loading="lazy"
                   width={300}
                   height={200}
-                  className="w-full h-24 md:h-28 object-cover"
+                  className="w-full h-24 md:h-20 object-cover"
                 />
-                <div className="p-3">
-                  <h3 className="body-small font-medium text-foreground mb-1.5 leading-snug">
+                <div className="p-2.5">
+                  <h3 className="body-small text-xs font-medium text-foreground mb-1.5 leading-snug">
                     {g.title}
                   </h3>
                   <ul className="space-y-1">
                     {g.bullets.map((b, bi) => (
-                      <li key={bi} className="body-small text-xs text-muted-foreground font-light leading-snug flex gap-1.5">
+                      <li key={bi} className="body-small text-[11px] text-muted-foreground font-light leading-snug flex gap-1">
                         <span className="text-primary">•</span>
                         <span>{b}</span>
                       </li>
