@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
-import airImg from "@/assets/travel-by-air.avif";
 import trainImg from "@/assets/travel-by-train.jpg";
 import carImg from "@/assets/travel-by-car.jpg";
 import callaLily2 from "@/assets/calla-lilly-side.png";
@@ -23,16 +22,6 @@ const pageContent = {
       "Pack Type C or Type L travel adapters",
     ],
     gettingThere: [
-      {
-        label: "By Air",
-        image: airImg,
-        alt: "Aerial view of Florence at golden hour",
-        body: (
-          <>
-            <strong className="text-foreground font-medium">By Air:</strong> Florence (FLR, 1 hr), Pisa (PSA, 2 hrs), or Rome (FCO, 2.5 hrs). Rome has the most direct international options; Florence is the easiest overall. Traveling solo? Let us know and we'll connect you with other guests for a shared ride.
-          </>
-        ),
-      },
       {
         label: "By Train",
         image: trainImg,
@@ -70,16 +59,6 @@ const pageContent = {
       "Zapakuj adaptery podróżne typu C lub L",
     ],
     gettingThere: [
-      {
-        label: "Samolotem",
-        image: airImg,
-        alt: "Aerial view of Florence at golden hour",
-        body: (
-          <>
-            <strong className="text-foreground font-medium">Samolotem:</strong> Florencja (FLR, 1 godz.), Piza (PSA, 2 godz.) lub Rzym (FCO, 2,5 godz.). Rzym ma najwięcej bezpośrednich połączeń międzynarodowych; Florencja jest najwygodniejsza ogólnie. Podróżujesz sam/sama? Daj nam znać, a połączymy Cię z innymi gośćmi na wspólny przejazd.
-          </>
-        ),
-      },
       {
         label: "Pociągiem",
         image: trainImg,
@@ -293,7 +272,7 @@ const Travel = () => {
       </section>
 
       <section className="px-6 md:px-12 lg:px-24 pb-16 md:pb-32 w-[90%] max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-8">
           {t.gettingThere.map((s, i) => (
             <FadeIn key={s.label} delay={i * 100}>
               <div className="flex flex-col gap-5">
