@@ -137,12 +137,12 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Il Dolce Far Niente Pool Party & Dinner",
             host: "Hosted by Nicole & Tyler",
             details:
-              "Nicole and Tyler's guests will spend the day recovering and relaxing poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will head into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
+              "Nicole and Tyler's guests will spend the day recovering and relaxing poolside at Borgo Laticastelli with music, spritzes, and lunch. Come prepared to lose to Nicole in 'spritz' pong. In the evening, the group will head into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Daytime Attire:",
-                title: "Vintage Resort Wear",
-                body: "Vintage-inspired swimwear and cover-ups.",
+                title: "La Dolce Vita Swim",
+                body: "Your favorite swimwear, oversized sunglasses, and chic linen cover-ups.",
               },
               {
                 label: "Evening Attire:",
@@ -247,12 +247,12 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Il Dolce Far Niente — impreza przy basenie",
             host: "Organizują Nicole i Tyler",
             details:
-              "Poczujcie sztukę nierobienia niczego. Goście Nicole i Tylera spędzą dzień, odpoczywając i relaksując się przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem grupa uda się do pobliskiego miasteczka Rapolano Terme na swobodną kolację w Sapor in Torre.",
+              "Goście Nicole i Tylera spędzą dzień, odpoczywając i relaksując się przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Przygotujcie się na przegraną z Nicole w \"spritz\" ponga. Wieczorem grupa uda się do pobliskiego miasteczka Rapolano Terme na swobodną kolację w Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Strój dzienny:",
-                title: "Vintage Resort Wear",
-                body: "Strój kąpielowy w stylu vintage i narzutki.",
+                title: "La Dolce Vita Swim",
+                body: "Wasz ulubiony strój kąpielowy, duże okulary przeciwsłoneczne i eleganckie lniane narzutki.",
               },
               {
                 label: "Strój wieczorowy:",
