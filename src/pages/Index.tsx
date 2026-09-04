@@ -310,7 +310,7 @@ const Index = () => {
           </h1>
           <p className="label-xs tracking-[0.158em] text-[#fdfbf7] opacity-75">
             <span className="inline sm:hidden">{t.dateLine}</span>
-            <span className="hidden sm:inline">{t.dateLineLong}</span>
+            <span className="hidden sm:inline text-[1.2em]">{t.dateLineLong}</span>
           </p>
         </FadeIn>
       </section>

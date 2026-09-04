@@ -59,7 +59,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
           <div className="flex items-center gap-7">
             {navItems.filter((item) => !item.cta).map((item) =>
               item.path === "/registry" ? (
-                <div key={item.path} className="relative group">
+                <div key={item.path} className="relative group flex items-center">
                   <Link
                     to={item.path}
                     className={`nav-link relative inline-flex items-center gap-1 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
