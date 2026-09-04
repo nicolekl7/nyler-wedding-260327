@@ -36,7 +36,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
   const labels = navLabels[language];
 
   const navItems = [
-    { path: "/", label: labels.home },
+    { path: "/", to: "/#itinerary", label: labels.home },
     { path: "/travel", label: labels.travel },
     { path: "/our-story", label: labels.ourStory },
     { path: "/registry", label: labels.registry },
@@ -61,7 +61,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
               item.path === "/registry" ? (
                 <div key={item.path} className="relative group flex items-center">
                   <Link
-                    to={item.path}
+                    to={item.to ?? item.path}
                     className={`nav-link relative inline-flex items-center gap-1 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
                       location.pathname === item.path
                         ? "text-foreground after:w-full"
@@ -95,7 +95,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
               ) : (
                 <Link
                   key={item.path}
-                  to={item.path}
+                  to={item.to ?? item.path}
                   className={`nav-link relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:bg-foreground after:transition-all after:duration-300 ${
                     location.pathname === item.path
                       ? "text-foreground after:w-full"
@@ -111,7 +111,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
           {navItems.filter((item) => item.cta).map((item) => (
             <Link
               key={item.path}
-              to={item.path}
+              to={item.to ?? item.path}
               className="label-xs tracking-[0.1em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
               {item.label}
@@ -162,7 +162,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
               <div key={item.path} className="flex flex-col">
                 <div className="flex items-center justify-between">
                   <Link
-                    to={item.path}
+                    to={item.to ?? item.path}
                     onClick={() => setOpen(false)}
                     className={`nav-link ${location.pathname === item.path ? "text-foreground" : ""}`}
                   >
@@ -208,7 +208,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
             ) : (
               <Link
                 key={item.path}
-                to={item.path}
+                to={item.to ?? item.path}
                 onClick={() => setOpen(false)}
                 className={`nav-link ${location.pathname === item.path ? "text-foreground" : ""}`}
               >

@@ -433,7 +433,7 @@ const Shuttle = () => {
                     Look up another name
                   </button>
                   <Link
-                    to="/"
+                    to="/#itinerary"
                     className="label-xs tracking-[0.28em] text-foreground hover:text-muted-foreground transition-colors underline underline-offset-4 leading-6 max-w-[7.5rem] sm:max-w-none text-center"
                   >
                     Full schedule

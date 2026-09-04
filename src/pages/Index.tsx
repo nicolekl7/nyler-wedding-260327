@@ -329,7 +329,7 @@ const Index = () => {
       </section>
 
       {/* Schedule Section */}
-      <section className="bg-[#464320] text-[#fdfbf7] py-16 md:py-24 overflow-hidden">
+      <section id="itinerary" className="bg-[#464320] text-[#fdfbf7] py-16 md:py-24 overflow-hidden scroll-mt-16">
         <div className="w-[90%] max-w-[1000px] mx-auto">
           <FadeIn>
             <h2 className="heading-section italic text-center mb-4 opacity-95">{t.heading}</h2>
