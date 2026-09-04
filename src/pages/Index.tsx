@@ -125,7 +125,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Schedule A: The Best of Tuscany Field Trip",
             host: "Hosted by Grazyna & Waldemar",
             details:
-              "After breakfast, Grazyna and Waldemar's guests will head out on a relaxed excursion to the beautiful town of Pienza. Enjoy free time to wander the historic center, take in the local Renaissance festival, and grab lunch at your own pace. In the afternoon, the group will take a short drive to Casagori—a small, family-run organic farm—for an optional wine and beer tasting amid the grape harvest, followed by an early, farm-to-table group dinner before returning to the Borgo.",
+              "Grazyna and Waldemar's guests will head out on a relaxed excursion to the beautiful town of Pienza. Enjoy free time to wander the historic center, take in the local Renaissance festival, and grab lunch at your own pace. In the afternoon, the group will take a short drive to Casagori—a small, family-run organic farm—for an optional wine and beer tasting amid the grape harvest, followed by an early, farm-to-table group dinner before returning to the Borgo.",
             attireBlocks: [
               {
                 title: "Tuscan Explorer Chic",
@@ -137,7 +137,7 @@ const content: Record<"en" | "pl", LangContent> = {
             heading: "Schedule B: Il Dolce Far Niente Pool Party & Dinner",
             host: "Hosted by Nicole & Tyler",
             details:
-              "Embrace the art of doing nothing. Nicole and Tyler's guests will spend the day recovering and relaxing poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will head into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
+              "Nicole and Tyler's guests will spend the day recovering and relaxing poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will head into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
             attireBlocks: [
               {
                 label: "Daytime Attire:",
