@@ -308,9 +308,9 @@ const Index = () => {
           <h1 className="heading-display mb-4 text-[#fdfbf7]">
             Nicole <span className="font-light italic">&</span> Tyler
           </h1>
-          <p className="label-xs tracking-[0.158em] text-[#fdfbf7] opacity-75">
+          <p className="label-xs tracking-[0.158em] text-[#fdfbf7] opacity-75 sm:-mt-2">
             <span className="inline sm:hidden">{t.dateLine}</span>
-            <span className="hidden sm:inline text-[1.584em]">{t.dateLineLong}</span>
+            <span className="hidden sm:inline text-[1.5048em]">{t.dateLineLong}</span>
           </p>
         </FadeIn>
       </section>
