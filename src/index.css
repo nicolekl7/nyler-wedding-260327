@@ -162,6 +162,15 @@
   .page-section {
     @apply px-5 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 md:py-24 lg:py-32;
   }
+
+  /* Hides the scrollbar on horizontally swipeable carousels (mobile) while keeping native scroll/snap. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes progress {

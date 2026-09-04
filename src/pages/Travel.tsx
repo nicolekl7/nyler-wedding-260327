@@ -91,116 +91,106 @@ const pageContent = {
 const guidesContent = {
   en: [
     {
-      title: "Rapolano Thermal Baths",
-      subtitle: "5 Minutes Away",
+      title: "Rapolano Thermal Baths (5 Min)",
       image: thermalImg,
       alt: "Natural thermal baths with turquoise pools in Rapolano Terme, Tuscany",
-      richBody: (
-        <p className="body-editorial">
-          Terme San Giovanni and Antica Querciolaia have travertine pools filled with natural hot springs. Go in the evening when they're lit up.
-        </p>
-      ),
+      bullets: [
+        "Terme San Giovanni & Antica Querciolaia",
+        "Natural hot spring travertine pools",
+        "Best at night, when lit up",
+      ],
     },
     {
-      title: "Siena",
-      subtitle: "20 Minutes Away",
+      title: "Siena (20 Min)",
       image: sienaImg,
       alt: "The medieval Piazza del Campo in Siena, Italy",
-      richBody: (
-        <p className="body-editorial">
-          Piazza del Campo, Torre del Mangia, the Duomo, gelato. Park outside the walls — the center is car-free. Free parking is easy to find.
-        </p>
-      ),
+      bullets: [
+        "Piazza del Campo, Torre del Mangia, the Duomo",
+        "Car-free center — park outside the walls",
+        "Free parking nearby",
+      ],
     },
     {
-      title: "Val d'Orcia & Pienza",
-      subtitle: "45 Minutes Away",
+      title: "Val d'Orcia & Pienza (45 Min)",
       image: valdorciaImg,
       alt: "Rolling green hills with cypress trees in Val d'Orcia, Tuscany",
-      richBody: (
-        <p className="body-editorial">
-          Pecorino cheese tastings at La Taverna del Pecorino with iconic Tuscan views. The Gladiator field is nearby — search "Gladiator scene" on Google Maps.
-        </p>
-      ),
+      bullets: [
+        "Pecorino tastings at La Taverna del Pecorino",
+        "Iconic Tuscan hillside views",
+        "Search \"Gladiator scene\" on Google Maps",
+      ],
     },
     {
-      title: "Chianti & Montepulciano",
-      subtitle: "45 Minutes Away",
+      title: "Chianti & Montepulciano (45 Min)",
       image: chiantiImg,
       alt: "Vineyards in Chianti with a rustic stone winery, Tuscany",
-      richBody: (
-        <p className="body-editorial">
-          Chianti Classico to the north, Vino Nobile to the south. Wineries: Avignonesi, Contucci, Argiano, Castiglion del Bosco.
-        </p>
-      ),
+      bullets: [
+        "Chianti Classico north, Vino Nobile south",
+        "Wineries: Avignonesi, Contucci",
+        "Wineries: Argiano, Castiglion del Bosco",
+      ],
     },
     {
-      title: "Montalcino",
-      subtitle: "1 Hour Away",
+      title: "Montalcino (1 Hr)",
       image: montalcinoImg,
       alt: "Hilltop town of Montalcino with vineyards, Tuscany",
-      richBody: (
-        <p className="body-editorial">
-          Brunello country. Walk the fortress, taste wine, grab chestnut honey. Wineries: Corte Pavone, Podere Le Ripi, Castello Banfi.
-        </p>
-      ),
+      bullets: [
+        "Brunello country",
+        "Walk the fortress, taste wine",
+        "Wineries: Corte Pavone, Podere Le Ripi, Castello Banfi",
+      ],
     },
   ],
   pl: [
     {
-      title: "Termy w Rapolano",
-      subtitle: "5 minut drogi",
+      title: "Termy w Rapolano (5 min)",
       image: thermalImg,
       alt: "Natural thermal baths with turquoise pools in Rapolano Terme, Tuscany",
-      richBody: (
-        <p className="body-editorial">
-          Terme San Giovanni i Antica Querciolaia mają trawertynowe baseny wypełnione naturalnymi gorącymi źródłami. Wybierz się wieczorem, gdy są podświetlone.
-        </p>
-      ),
+      bullets: [
+        "Terme San Giovanni i Antica Querciolaia",
+        "Baseny termalne w trawertynie",
+        "Najlepiej wieczorem, gdy są podświetlone",
+      ],
     },
     {
-      title: "Siena",
-      subtitle: "20 minut drogi",
+      title: "Siena (20 min)",
       image: sienaImg,
       alt: "The medieval Piazza del Campo in Siena, Italy",
-      richBody: (
-        <p className="body-editorial">
-          Piazza del Campo, Torre del Mangia, Duomo, gelato. Parkuj poza murami — centrum jest strefą tylko dla pieszych. Łatwo znajdziesz bezpłatne miejsce.
-        </p>
-      ),
+      bullets: [
+        "Piazza del Campo, Torre del Mangia, Duomo",
+        "Centrum bez samochodów — parkuj poza murami",
+        "Bezpłatny parking w pobliżu",
+      ],
     },
     {
-      title: "Val d'Orcia i Pienza",
-      subtitle: "45 minut drogi",
+      title: "Val d'Orcia i Pienza (45 min)",
       image: valdorciaImg,
       alt: "Rolling green hills with cypress trees in Val d'Orcia, Tuscany",
-      richBody: (
-        <p className="body-editorial">
-          Degustacje sera pecorino w La Taverna del Pecorino z widokami na Toskanię. Pole z filmu Gladiator jest niedaleko — wyszukaj "Gladiator scene" w Google Maps.
-        </p>
-      ),
+      bullets: [
+        "Degustacje sera pecorino w La Taverna del Pecorino",
+        "Charakterystyczne widoki na Toskanię",
+        "Wyszukaj \"Gladiator scene\" w Google Maps",
+      ],
     },
     {
-      title: "Chianti i Montepulciano",
-      subtitle: "45 minut drogi",
+      title: "Chianti i Montepulciano (45 min)",
       image: chiantiImg,
       alt: "Vineyards in Chianti with a rustic stone winery, Tuscany",
-      richBody: (
-        <p className="body-editorial">
-          Chianti Classico na północy, Vino Nobile na południu. Winnice: Avignonesi, Contucci, Argiano, Castiglion del Bosco.
-        </p>
-      ),
+      bullets: [
+        "Chianti Classico na północy, Vino Nobile na południu",
+        "Winnice: Avignonesi, Contucci",
+        "Winnice: Argiano, Castiglion del Bosco",
+      ],
     },
     {
-      title: "Montalcino",
-      subtitle: "1 godzina drogi",
+      title: "Montalcino (1 godz.)",
       image: montalcinoImg,
       alt: "Hilltop town of Montalcino with vineyards, Tuscany",
-      richBody: (
-        <p className="body-editorial">
-          Kraina Brunello. Przejdź się po fortecy, spróbuj wina, kup miód kasztanowy. Winnice: Corte Pavone, Podere Le Ripi, Castello Banfi.
-        </p>
-      ),
+      bullets: [
+        "Kraina Brunello",
+        "Forteca, degustacja wina, miód kasztanowy",
+        "Winnice: Corte Pavone, Podere Le Ripi, Castello Banfi",
+      ],
     },
   ],
 };
@@ -315,44 +305,47 @@ const Travel = () => {
       </section>
 
       {/* Explore Tuscany */}
-      <section className="w-[90%] max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 pb-24 md:pb-32">
+      <section className="w-[90%] max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24 pb-16 md:pb-24">
         <FadeIn>
           <h2 className="heading-section text-center mb-4">{t.exploreHeading}</h2>
           <div className="w-12 h-px bg-primary mx-auto mb-6" />
-          <p className="body-editorial text-center mx-auto mb-16">
+          <p className="body-editorial text-center mx-auto mb-8">
             {t.exploreIntro}
           </p>
         </FadeIn>
 
-        <div className="space-y-24">
-          {guides.map((g, i) => (
-            <FadeIn key={g.title} delay={i * 120}>
+        <FadeIn delay={100}>
+          <div className="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-6 px-6 pb-2 md:mx-0 md:px-0 md:pb-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible">
+            {guides.map((g) => (
               <div
-                className={`flex flex-col ${i % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"} gap-8 md:gap-14 items-center`}
+                key={g.title}
+                className="shrink-0 w-[65%] sm:w-[42%] md:w-auto snap-start border border-border bg-background overflow-hidden"
               >
-                <div className="md:w-1/2 overflow-hidden">
-                  <img
-                    src={g.image}
-                    alt={g.alt}
-                    loading="lazy"
-                    width={1024}
-                    height={768}
-                    className="w-full h-64 md:h-80 object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
-                <div className="md:w-1/2 space-y-3">
-                  <h3 className="heading-section">
+                <img
+                  src={g.image}
+                  alt={g.alt}
+                  loading="lazy"
+                  width={300}
+                  height={200}
+                  className="w-full h-24 md:h-28 object-cover"
+                />
+                <div className="p-3">
+                  <h3 className="body-small font-medium text-foreground mb-1.5 leading-snug">
                     {g.title}
                   </h3>
-                  {g.subtitle && (
-                    <p className="body-small text-muted-foreground">{g.subtitle}</p>
-                  )}
-                  {g.richBody}
+                  <ul className="space-y-1">
+                    {g.bullets.map((b, bi) => (
+                      <li key={bi} className="body-small text-xs text-muted-foreground font-light leading-snug flex gap-1.5">
+                        <span className="text-primary">•</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-            </FadeIn>
-          ))}
-        </div>
+            ))}
+          </div>
+        </FadeIn>
       </section>
 
       {/* Navigation buttons */}
