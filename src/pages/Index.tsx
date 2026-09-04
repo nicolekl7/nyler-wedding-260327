@@ -90,7 +90,7 @@ const content: Record<"en" | "pl", LangContent> = {
         title: "The Wedding Day",
         items: [
           { time: "8 - 10:00 AM", label: "Complimentary Breakfast" },
-          { time: "10 - 4:00 PM", label: "Free Time (Check out the Travel page for exploring recommendations!)" },
+          { time: "10 - 4:00 PM", label: "Free Time (Check out the Travel page for recs!)" },
           { time: "4:30 PM", label: "Pre-Ceremony Refreshments" },
           { time: "5:00 PM", label: "Wedding Ceremony" },
           { time: "5:30 PM", label: "Aperitivo (Cocktail Hour)" },
@@ -122,7 +122,7 @@ const content: Record<"en" | "pl", LangContent> = {
           ),
         subSchedules: [
           {
-            heading: "Schedule A: The Best of Tuscany Field Trip",
+            heading: "The Best of Tuscany Field Trip",
             host: "Hosted by Grazyna & Waldemar",
             details:
               "Grazyna and Waldemar's guests will head out on a relaxed excursion to the beautiful town of Pienza. Enjoy free time to wander the historic center, take in the local Renaissance festival, and grab lunch at your own pace. In the afternoon, the group will take a short drive to Casagori—a small, family-run organic farm—for an optional wine and beer tasting amid the grape harvest, followed by an early, farm-to-table group dinner before returning to the Borgo.",
@@ -134,7 +134,7 @@ const content: Record<"en" | "pl", LangContent> = {
             ],
           },
           {
-            heading: "Schedule B: Il Dolce Far Niente Pool Party & Dinner",
+            heading: "Il Dolce Far Niente Pool Party & Dinner",
             host: "Hosted by Nicole & Tyler",
             details:
               "Nicole and Tyler's guests will spend the day recovering and relaxing poolside at Borgo Laticastelli with music, spritzes, and lunch. In the evening, the group will head into the local town of Rapolano Terme for a casual dinner at Sapor in Torre.",
@@ -232,7 +232,7 @@ const content: Record<"en" | "pl", LangContent> = {
           ),
         subSchedules: [
           {
-            heading: "Plan A: Wycieczka do Val d'Orcia",
+            heading: "Wycieczka do Val d'Orcia",
             host: "Organizują Grażyna i Waldemar",
             details:
               "Po śniadaniu goście Grażyny i Waldemara wyruszą na relaksującą wycieczkę do pięknego miasteczka Pienza. Będzie czas wolny na spacer po historycznym centrum, udział w lokalnym festiwalu renesansowym oraz lunch we własnym tempie. Po południu grupa pojedzie na krótką przejażdżkę do Casagori — małego, rodzinnego gospodarstwa ekologicznego — na opcjonalną degustację wina i piwa podczas winobrania, a następnie na wczesną, wspólną kolację farm-to-table przed powrotem do Borgo.",
@@ -244,7 +244,7 @@ const content: Record<"en" | "pl", LangContent> = {
             ],
           },
           {
-            heading: "Plan B: Il Dolce Far Niente — impreza przy basenie",
+            heading: "Il Dolce Far Niente — impreza przy basenie",
             host: "Organizują Nicole i Tyler",
             details:
               "Poczujcie sztukę nierobienia niczego. Goście Nicole i Tylera spędzą dzień, odpoczywając i relaksując się przy basenie w Borgo Laticastelli przy muzyce, drinkach spritz i lunchu. Wieczorem grupa uda się do pobliskiego miasteczka Rapolano Terme na swobodną kolację w Sapor in Torre.",
