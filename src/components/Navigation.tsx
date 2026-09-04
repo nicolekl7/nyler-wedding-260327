@@ -10,8 +10,7 @@ const AMAZON_URL = "https://www.amazon.com/wedding/guest-view/10UL21FCFHV3X";
 const navLabels = {
   en: {
     home: "Schedule",
-    travel: "Travel",
-    faqs: "FAQs",
+    travel: "Travel & FAQs",
     guestPortal: "Guest Portal",
     ourStory: "Our Story",
     registry: "Registry",
@@ -20,8 +19,7 @@ const navLabels = {
   },
   pl: {
     home: "Plan",
-    travel: "Podróż",
-    faqs: "FAQ",
+    travel: "Podróż i FAQ",
     guestPortal: "Moje Dane",
     ourStory: "Nasza Historia",
     registry: "Lista Prezentów",
@@ -39,7 +37,6 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
 
   const navItems = [
     { path: "/", label: labels.home },
-    { path: "/faqs", label: labels.faqs },
     { path: "/travel", label: labels.travel },
     { path: "/our-story", label: labels.ourStory },
     { path: "/registry", label: labels.registry },

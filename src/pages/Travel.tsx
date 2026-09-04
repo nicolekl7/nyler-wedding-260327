@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { MapPin } from "lucide-react";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import trainImg from "@/assets/travel-by-train.jpg";
 import carImg from "@/assets/travel-by-car.jpg";
 import callaLily2 from "@/assets/calla-lilly-side.png";
@@ -14,6 +16,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const pageContent = {
   en: {
     heading: "Getting to Borgo Laticastelli",
+    venueAddress: "Borgo Laticastelli: Via Laticastelli, 1 53040 Rapolano Terme (SI)",
     intro: "Every route to Tuscany leads through some of the most beautiful landscape in the world.",
     thingsTitle: "Before You Go",
     beforeYouGoItems: [
@@ -51,6 +54,7 @@ const pageContent = {
   },
   pl: {
     heading: "Jak dotrzeć do Borgo Laticastelli",
+    venueAddress: "Borgo Laticastelli: Via Laticastelli, 1 53040 Rapolano Terme (SI)",
     intro: "Każda droga do Toskanii wiedzie przez jedno z najpiękniejszych krajobrazów na świecie.",
     thingsTitle: "Przed wyjazdem",
     beforeYouGoItems: [
@@ -85,6 +89,67 @@ const pageContent = {
     reserveShuttle: "Sprawdź swój harmonogram",
     exploreHeading: "Odkryj Toskanię",
     exploreIntro: "Przedłużasz pobyt? Oto nasze ulubione miejsca w Toskanii, w pobliżu posiadłości.",
+  },
+};
+
+const faqContent = {
+  en: {
+    heading: "Concierge FAQs",
+    faqs: [
+      {
+        q: "What is the weather like?",
+        a: "Late September in Tuscany is typically beautiful, with warm, sunny days (around 75°F / 24°C) and crisp evenings (around 55°F / 13°C). We recommend bringing a light jacket or wrap for the evening events. Don't forget a bathing suit!",
+      },
+      {
+        q: "What shoes should I wear?",
+        a: "The estate features cobblestone paths and grass—stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
+      },
+      {
+        q: "When is check-in/check-out?",
+        a: "Guests may check in starting at 3:00 PM on Wednesday (9/16) and are kindly asked to check out by 12:00 PM on Saturday (9/19).",
+      },
+      {
+        q: "What are the breakfast & pool hours?",
+        a: "Breakfast is served 8:00-10:00 AM Wed/Thu, and 9:00-11:00 AM Fri. The pool is open 3:30-6:30 PM Wed, 11:00 AM-3:00 PM Thu, and 11:00 AM until sunset on Fri.",
+      },
+      {
+        q: "Is there parking?",
+        a: "Yes, there is ample free parking at Borgo Laticastelli.",
+      },
+      {
+        q: "Where can I get lunch on the day of the wedding?",
+        a: "Laticastelli's restaurant will be open for lunch for those who choose to stay on site. Lunch is pre-ordered during breakfast.",
+      },
+    ],
+  },
+  pl: {
+    heading: "Najczęstsze pytania",
+    faqs: [
+      {
+        q: "Jaka jest pogoda?",
+        a: "Koniec września w Toskanii jest zazwyczaj piękny — ciepłe, słoneczne dni (około 24°C) i rześkie wieczory (około 13°C). Polecamy zabrać lekką kurtkę lub szal na wieczorne imprezy. I nie zapomnijcie o stroju kąpielowym!",
+      },
+      {
+        q: "Jakie buty powinnam/powinienem włożyć?",
+        a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
+      },
+      {
+        q: "Kiedy jest zameldowanie/wymeldowanie?",
+        a: "Zameldowanie możliwe jest od godziny 15:00 w środę (16.09), a wymeldowania prosimy dokonać do godziny 12:00 w sobotę (19.09).",
+      },
+      {
+        q: "W jakich godzinach jest śniadanie i basen?",
+        a: "Śniadanie jest serwowane w godzinach 8:00-10:00 w środę/czwartek oraz 9:00-11:00 w piątek. Basen jest czynny w godzinach 15:30-18:30 w środę, 11:00-15:00 w czwartek oraz od 11:00 do zachodu słońca w piątek.",
+      },
+      {
+        q: "Czy jest parking?",
+        a: "Tak, przy Borgo Laticastelli jest mnóstwo bezpłatnych miejsc parkingowych.",
+      },
+      {
+        q: "Gdzie można zjeść lunch w dniu ślubu?",
+        a: "Restauracja w Laticastelli będzie otwarta na lunch dla osób, które zdecydują się zostać na miejscu. Lunch zamawia się z wyprzedzeniem podczas śniadania.",
+      },
+    ],
   },
 };
 
@@ -198,6 +263,7 @@ const guidesContent = {
 const Travel = () => {
   const { language } = useLanguage();
   const t = pageContent[language];
+  const faq = faqContent[language];
   const guides = guidesContent[language];
 
   return (
@@ -237,6 +303,10 @@ const Travel = () => {
         <div className="max-w-[1000px] mx-auto">
           <FadeIn>
             <h1 className="heading-section mb-4">{t.heading}</h1>
+            <p className="body-small inline-flex items-center gap-2 font-medium tracking-wide text-primary mb-6">
+              <MapPin size={16} className="shrink-0" />
+              {t.venueAddress}
+            </p>
             <div className="w-12 h-px bg-primary mx-auto mb-8" />
             <p className="body-editorial mx-auto text-balance">
               {t.intro}
@@ -301,6 +371,28 @@ const Travel = () => {
               Book Train Tickets
             </a>
           </div>
+        </FadeIn>
+      </section>
+
+      {/* FAQs */}
+      <section className="px-6 md:px-12 lg:px-24 pb-16 md:pb-24 w-[90%] max-w-[800px] mx-auto">
+        <FadeIn>
+          <h2 className="heading-section text-center mb-4">{faq.heading}</h2>
+          <div className="w-12 h-px bg-primary mx-auto mb-10" />
+        </FadeIn>
+        <FadeIn delay={100}>
+          <Accordion type="single" collapsible className="w-full">
+            {faq.faqs.map((item, i) => (
+              <AccordionItem key={i} value={`item-${i}`} className="border-border">
+                <AccordionTrigger className="heading-card text-left text-foreground hover:no-underline">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="body-editorial max-w-none">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </FadeIn>
       </section>
 
