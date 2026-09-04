@@ -55,8 +55,9 @@ const App = () => (
           <Route path="/admin/reservations" element={<Navigate to="/admin?tab=reservations" replace />} />
           <Route path="/admin/shuttle" element={<Navigate to="/admin?tab=travel" replace />} />
           <Route path="/comingsoon" element={<ComingSoon />} />
-          <Route path="/shuttle" element={<Shuttle />} />
-          <Route path="/shuttle-form" element={<Navigate to="/shuttle" replace />} />
+          <Route path="/guest-portal" element={<Shuttle />} />
+          <Route path="/shuttle" element={<Navigate to="/guest-portal" replace />} />
+          <Route path="/shuttle-form" element={<Navigate to="/guest-portal" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

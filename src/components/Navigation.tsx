@@ -40,7 +40,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
     { path: "/travel", label: labels.travel },
     { path: "/our-story", label: labels.ourStory },
     { path: "/registry", label: labels.registry },
-    { path: "/shuttle", label: labels.guestPortal, cta: true },
+    { path: "/guest-portal", label: labels.guestPortal, cta: true },
   ];
 
   return (
