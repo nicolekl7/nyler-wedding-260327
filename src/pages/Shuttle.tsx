@@ -331,7 +331,7 @@ const Shuttle = () => {
               <div className="space-y-3">
                 <div className="text-center">
                   <h2 className="heading-section italic text-foreground mb-4 opacity-95">
-                    RSVP Details: {result.matchedName}
+                    RSVP Details: <span className="text-[90%]">{result.matchedName}</span>
                   </h2>
                 </div>
 
@@ -416,7 +416,7 @@ const Shuttle = () => {
                   <p className="label-xs tracking-[0.28em] mb-1">
                     Passport photo
                   </p>
-                  <p className={`body-small ${result.passportSubmitted ? "text-sage" : "text-destructive font-medium"}`}>
+                  <p className={`body-small ${result.passportSubmitted ? "text-sage" : "text-[#722F37] font-medium"}`}>
                     {result.passportSubmitted ? "Submitted" : "Not yet submitted"}
                   </p>
                 </Card>
