@@ -81,6 +81,7 @@ interface LookupResult {
     guest_names: string;
     payment_status: string;
   } | null;
+  passportSubmitted: boolean;
 }
 
 const Shuttle = () => {
@@ -101,19 +102,24 @@ const Shuttle = () => {
     setNotFound(false);
 
     try {
-      const [invRes, shuttleRes, bookRes, catRes, assignRes, estateRes] = await Promise.all([
+      const [invRes, shuttleRes, bookRes, catRes, assignRes, estateRes, passportRes] = await Promise.all([
         supabase.from("invited_guests").select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,friday_activity,dietary_restrictions"),
-        supabase.from("shuttle_signups").select("full_name,email,arrival_wave,departure_wave,departure_plan,party_size,guest_names"),
+        supabase.from("shuttle_signups").select("full_name,email,arrival_wave,departure_wave,departure_plan,party_size,guest_names,passport_paths"),
         supabase.from("room_bookings").select("email,guest_names,room_category_id,payment_status,is_released"),
         supabase.from("room_categories").select("id,name"),
         supabase.from("room_assignments" as any).select("room_number,guest_id"),
         supabase.from("estate_rooms" as any).select("room_number,room_type"),
+        supabase.from("passport_tracker" as any).select("full_name,received"),
       ]);
 
       if (invRes.error) throw invRes.error;
       if (shuttleRes.error) throw shuttleRes.error;
       if (bookRes.error) throw bookRes.error;
       if (catRes.error) throw catRes.error;
+      // passport_tracker may not exist in every environment — degrade gracefully.
+      const passportTracker = passportRes.error
+        ? []
+        : ((passportRes.data ?? []) as { full_name: string; received: boolean }[]);
       // room_assignments/estate_rooms may not exist in every environment — degrade
       // gracefully instead of breaking the whole lookup if those tables aren't present.
       const roomAssignments = assignRes.error ? [] : ((assignRes.data || []) as { room_number: string | number; guest_id: string }[]);
@@ -138,6 +144,10 @@ const Shuttle = () => {
         const guests = parseGuestList(s.guest_names);
         return guests.some((g) => namesMatch(g, matchedFullName));
       });
+
+      const passportSubmitted =
+        ((shuttle?.passport_paths as string[] | null)?.length ?? 0) > 0 ||
+        passportTracker.some((p) => p.received && namesMatch(p.full_name, matchedFullName));
 
       const catMap = new Map((catRes.data || []).map((c) => [c.id, c.name]));
       const room = (bookRes.data || []).find((b) => {
@@ -207,6 +217,7 @@ const Shuttle = () => {
               guest_names: groupNames ? groupNames.join(", ") : assignedRoom.guest_names,
             }
           : null,
+        passportSubmitted,
       });
     } catch (err) {
       console.error(err);
@@ -356,7 +367,7 @@ const Shuttle = () => {
                             </span>
                           </div>
                           {attending && e.detail && (
-                            <p className="body-small text-muted-foreground pl-8">{e.detail}</p>
+                            <p className="body-small italic text-muted-foreground pl-8">{e.detail}</p>
                           )}
                         </li>
                       );
@@ -400,6 +411,14 @@ const Shuttle = () => {
                       <GuestChips names={roomGuests} />
                     </>
                   )}
+
+                  <div className="h-px bg-border/70 my-3" />
+                  <p className="label-xs tracking-[0.28em] mb-1">
+                    Passport photo
+                  </p>
+                  <p className={`body-small ${result.passportSubmitted ? "text-sage" : "text-muted-foreground"}`}>
+                    {result.passportSubmitted ? "Submitted" : "Not yet submitted"}
+                  </p>
                 </Card>
 
                 <div className="flex items-center justify-center gap-8">
