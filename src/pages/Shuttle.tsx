@@ -57,6 +57,11 @@ const ROOM_GROUPS: string[][] = [
   ["Keishara Colby", "Tate Illers"],
 ];
 
+// "Pat Magee" and "Patrick Magee" are two different guests whose first names count as
+// nickname matches (see NICKNAMES in guestMatching), so a plain name lookup can't tell
+// them apart. Disambiguate by the email entered instead.
+const PATRICK_MAGEE_EMAILS = ["1999lukasik@gmail.com", "pmagee4@gmail.com", "vjstahli@gmail.com"];
+
 const roomGroupFor = (fullName: string): string[] | null =>
   ROOM_GROUPS.find((group) => group.some((member) => namesMatch(member, fullName))) || null;
 
@@ -126,9 +131,15 @@ const Shuttle = () => {
       const estateRooms = estateRes.error ? [] : ((estateRes.data || []) as { room_number: string | number; room_type: string }[]);
       const roomTypeByNumber = new Map(estateRooms.map((r) => [String(r.room_number), r.room_type]));
 
+      const wantsPatrickMagee = PATRICK_MAGEE_EMAILS.includes(email.trim().toLowerCase());
       const invited = (invRes.data || []).find((g) => {
         const full = `${g.first_name} ${g.last_name}`;
-        return namesMatch(full, name);
+        if (!namesMatch(full, name)) return false;
+        if (norm(g.last_name) === "magee" && ["pat", "patrick"].includes(norm(g.first_name))) {
+          const isPatrickRecord = norm(g.first_name) === "patrick";
+          return wantsPatrickMagee ? isPatrickRecord : !isPatrickRecord;
+        }
+        return true;
       });
 
       if (!invited) {
