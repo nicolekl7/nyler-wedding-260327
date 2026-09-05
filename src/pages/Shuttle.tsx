@@ -19,6 +19,18 @@ const DEPARTURE_WAVES: Record<string, WaveDetail> = {
   wave_3: { time: "12:30 pm", from: "Laticastelli", to: "Siena train station", badge: "Wave 3" },
 };
 
+const formatWaveLine = (wave: WaveDetail | undefined): string => {
+  if (!wave) return "Not scheduled";
+  const time = wave.time.replace(/(am|pm)/i, (m) => m.toUpperCase());
+  return `${time} (${wave.badge}) — ${wave.from} to ${wave.to}`;
+};
+
+const joinNames = (names: string[]): string => {
+  if (names.length === 0) return "";
+  if (names.length === 1) return names[0];
+  return `${names.slice(0, -1).join(", ")} & ${names[names.length - 1]}`;
+};
+
 // ---------- authoritative roommate groupings (names only; room type/# untouched) ----------
 const ROOM_GROUPS: string[][] = [
   ["Nicole Landmesser", "Tyler Magee"],
@@ -333,16 +345,16 @@ const Shuttle = () => {
 
             return (
               <div>
-                <div className="text-center mb-10">
+                <div className="text-center mb-14">
                   <h2 className="heading-card text-foreground leading-[1.05]">
                     Your Details
                   </h2>
                 </div>
 
                 {/* Events */}
-                <section className="pb-6">
+                <section className="mb-14">
                   <SectionTitle>Events</SectionTitle>
-                  <ul className="space-y-5">
+                  <div className="space-y-8">
                     {eventRows.map((e) => {
                       const attending = e.rsvp === "yes" || e.rsvp === "accept";
                       const declined = e.rsvp === "no" || e.rsvp === "decline";
@@ -353,8 +365,9 @@ const Shuttle = () => {
                         : "Awaiting response";
 
                       return (
-                        <li key={e.label} className="flex items-start justify-between gap-4">
-                          <div>
+                        <div key={e.label} className="sm:grid sm:grid-cols-4 sm:gap-x-6 sm:items-start">
+                          <p className="label-xs tracking-[0.28em] mb-1.5 sm:mb-0 sm:col-span-1 sm:pt-1">{e.day}</p>
+                          <div className="sm:col-span-3">
                             <p className="heading-card text-foreground leading-tight">{e.label}</p>
                             <p
                               className={
@@ -365,94 +378,88 @@ const Shuttle = () => {
                               {statusLabel}
                             </p>
                             {attending && e.detail && (
-                              <p className="body-small text-muted-foreground mt-1.5">{e.detail}</p>
+                              <p className="body-editorial mt-1.5">{e.detail}</p>
                             )}
                           </div>
-                          <span className="label-xs tracking-[0.28em] text-muted-foreground shrink-0 pt-1">
-                            {e.day}
-                          </span>
-                        </li>
+                        </div>
                       );
                     })}
-                  </ul>
+                  </div>
                 </section>
 
                 {/* Shuttle */}
-                <section className="pt-10 border-t border-border/40">
+                <section className="mb-14">
                   {!neitherWave && <SectionTitle>Shuttle</SectionTitle>}
                   {result.shuttle ? (
-                    <div className="space-y-4">
-                      <ShuttleRow label="Arriving" wave={arr} />
-                      <ShuttleRow label="Departing" wave={dep} />
+                    <div className="space-y-5 sm:space-y-4">
+                      <div className="sm:grid sm:grid-cols-4 sm:gap-x-6 sm:items-baseline">
+                        <p className="label-xs tracking-[0.28em] mb-1 sm:mb-0 sm:col-span-1">Arriving</p>
+                        <p className="heading-card text-foreground sm:col-span-3 leading-snug">
+                          {formatWaveLine(arr)}
+                        </p>
+                      </div>
+                      <div className="sm:grid sm:grid-cols-4 sm:gap-x-6 sm:items-baseline">
+                        <p className="label-xs tracking-[0.28em] mb-1 sm:mb-0 sm:col-span-1">Departing</p>
+                        <p className="heading-card text-foreground sm:col-span-3 leading-snug">
+                          {formatWaveLine(dep)}
+                        </p>
+                      </div>
                     </div>
                   ) : (
-                    <>
-                      <p className="body-editorial">
-                        No shuttle reserved. Please ensure you have arranged independent transportation
-                        from the train station.
-                      </p>
-                      <p className="body-editorial mt-3">
-                        Our final passenger manifests have been submitted to our transportation vendors.
-                        If you need to make an emergency change to your shuttle plans, please contact us
-                        directly.
-                      </p>
-                    </>
+                    <p className="body-editorial">
+                      No shuttle reserved. Please ensure you have arranged independent transportation
+                      from the train station.
+                    </p>
                   )}
                 </section>
 
                 {/* Room */}
-                <section className="pt-10 border-t border-border/40">
+                <section>
                   <SectionTitle>Your Room</SectionTitle>
 
-                  <p className="label-xs tracking-[0.28em] mb-1">
-                    Room
-                  </p>
-                  <h3 className="heading-card text-foreground leading-tight mb-5">
-                    {result.room?.category_name || "Not staying onsite"}
-                  </h3>
-
-                  {roomGuests.length > 0 && (
-                    <div className="mb-5">
-                      <p className="label-xs tracking-[0.28em] mb-1.5">
-                        Guests
-                      </p>
-                      <p className="body-small text-foreground leading-relaxed">
-                        {roomGuests.join(" · ")}
+                  <div className="space-y-5 sm:space-y-4">
+                    <div className="sm:grid sm:grid-cols-4 sm:gap-x-6 sm:items-baseline">
+                      <p className="label-xs tracking-[0.28em] mb-1 sm:mb-0 sm:col-span-1">Room</p>
+                      <p className="heading-card text-foreground sm:col-span-3 leading-snug">
+                        {result.room?.category_name || "Not staying onsite"}
                       </p>
                     </div>
-                  )}
 
-                  <div className="mb-5">
-                    <p
-                      className={
-                        "label-xs tracking-[0.28em] " +
-                        (result.passportReceived ? "text-primary" : "text-muted-foreground")
-                      }
-                    >
-                      Passport photo: {result.passportReceived ? "Received" : "Not submitted"}
-                    </p>
+                    {roomGuests.length > 0 && (
+                      <div className="sm:grid sm:grid-cols-4 sm:gap-x-6 sm:items-baseline">
+                        <p className="label-xs tracking-[0.28em] mb-1 sm:mb-0 sm:col-span-1">Guests</p>
+                        <p className="heading-card text-foreground sm:col-span-3 leading-snug">
+                          {joinNames(roomGuests)}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="sm:grid sm:grid-cols-4 sm:gap-x-6 sm:items-baseline">
+                      <p className="label-xs tracking-[0.28em] mb-1 sm:mb-0 sm:col-span-1">Passport</p>
+                      <p className="heading-card text-foreground sm:col-span-3 leading-snug">
+                        {result.passportReceived ? "Received" : "Not Submitted"}
+                      </p>
+                    </div>
+
+                    {result.invited?.dietary_restrictions && (
+                      <div className="sm:grid sm:grid-cols-4 sm:gap-x-6 sm:items-baseline">
+                        <p className="label-xs tracking-[0.28em] mb-1 sm:mb-0 sm:col-span-1">Dietary</p>
+                        <p className="heading-card text-foreground sm:col-span-3 leading-snug">
+                          {result.invited.dietary_restrictions}
+                        </p>
+                      </div>
+                    )}
                   </div>
 
-                  {result.invited?.dietary_restrictions && (
-                    <div className="mb-5">
-                      <p className="label-xs tracking-[0.28em] mb-1">
-                        Dietary notes
-                      </p>
-                      <p className="body-small text-foreground">
-                        {result.invited.dietary_restrictions}
-                      </p>
-                    </div>
-                  )}
-
                   {result.shuttle?.submitted_by && (
-                    <p className="label-xs normal-case tracking-normal leading-relaxed text-muted-foreground">
+                    <p className="label-xs normal-case tracking-normal leading-relaxed text-muted-foreground mt-8">
                       Submitted by {result.shuttle.submitted_by}. Something look wrong? Reply to your
                       confirmation email and we'll fix it.
                     </p>
                   )}
                 </section>
 
-                <div className="flex items-center justify-center gap-8">
+                <div className="flex items-center justify-center gap-8 mt-14">
                   <button
                     type="button"
                     onClick={reset}
@@ -477,32 +484,9 @@ const Shuttle = () => {
 };
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <>
+  <div className="text-center mb-8">
     <h3 className="heading-section italic mb-2">{children}</h3>
-    <div className="w-12 h-px bg-primary/40 mb-6" />
-  </>
-);
-
-const ShuttleRow = ({
-  label,
-  wave,
-}: {
-  label: string;
-  wave: WaveDetail | undefined;
-}) => (
-  <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-    <span className="label-xs tracking-[0.28em] w-28 shrink-0">{label}</span>
-    {wave ? (
-      <>
-        <span className="heading-card text-foreground">{wave.time}</span>
-        <span className="body-small text-muted-foreground">
-          {wave.from} to {wave.to}
-        </span>
-        <span className="label-xs tracking-[0.22em] text-muted-foreground">{wave.badge}</span>
-      </>
-    ) : (
-      <span className="heading-card text-foreground">No shuttle</span>
-    )}
+    <div className="w-12 h-px bg-primary/40 mx-auto" />
   </div>
 );
 
