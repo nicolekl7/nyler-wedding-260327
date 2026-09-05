@@ -349,7 +349,7 @@ const Shuttle = () => {
                                 {attending && <Check size={12} strokeWidth={2.5} />}
                                 {declined && <X size={12} strokeWidth={2.5} />}
                               </span>
-                              <span className="font-serif text-[0.5625rem] sm:text-[0.625rem] md:text-[0.75rem] font-light tracking-tight text-foreground">{e.label}</span>
+                              <span className="font-serif text-sm sm:text-base md:text-lg font-light tracking-tight text-foreground">{e.label}</span>
                             </div>
                             <span className="label-xs tracking-[0.28em]">
                               {e.day}
@@ -390,7 +390,7 @@ const Shuttle = () => {
                     </>
                   )}
 
-                  <h3 className="font-serif text-[0.5625rem] sm:text-[0.625rem] md:text-[0.75rem] font-light tracking-tight text-foreground leading-tight mb-2">
+                  <h3 className="font-serif text-sm sm:text-base md:text-lg font-light tracking-tight text-foreground leading-tight mb-2">
                     {result.room?.category_name || "Not staying onsite"}
                   </h3>
 
