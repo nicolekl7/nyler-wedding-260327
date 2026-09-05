@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,15 +8,15 @@ import { norm, namesMatch, parseGuestList } from "@/lib/guestMatching";
 import { formatRoomLabel } from "@/lib/roomLabel";
 
 // ---------- display helpers ----------
-type WaveDetail = { time: string; from: string; to: string; badge: string };
+type WaveDetail = { time: string; from: string; to: string };
 const ARRIVAL_WAVES: Record<string, WaveDetail> = {
-  wave_1: { time: "2:00 pm", from: "Siena train station", to: "Laticastelli", badge: "Wave 1" },
-  wave_2: { time: "3:00 pm", from: "Siena train station", to: "Laticastelli", badge: "Wave 2" },
+  wave_1: { time: "2:00 pm", from: "Siena train station", to: "Laticastelli" },
+  wave_2: { time: "3:00 pm", from: "Siena train station", to: "Laticastelli" },
 };
 const DEPARTURE_WAVES: Record<string, WaveDetail> = {
-  wave_1: { time: "10:00 am", from: "Laticastelli", to: "Siena train station", badge: "Wave 1" },
-  wave_2: { time: "11:15 am", from: "Laticastelli", to: "Siena train station", badge: "Wave 2" },
-  wave_3: { time: "12:30 pm", from: "Laticastelli", to: "Siena train station", badge: "Wave 3" },
+  wave_1: { time: "10:00 am", from: "Laticastelli", to: "Siena train station" },
+  wave_2: { time: "11:15 am", from: "Laticastelli", to: "Siena train station" },
+  wave_3: { time: "12:30 pm", from: "Laticastelli", to: "Siena train station" },
 };
 
 // ---------- authoritative roommate groupings (names only; room type/# untouched) ----------
@@ -300,22 +299,6 @@ const Shuttle = () => {
               return true;
             });
 
-            const fridayActivityLabel: Record<string, string> = {
-              "Recovery Day": "Il Dolce Far Niente Pool Party & Dinner",
-              "Wine Tour": "The Best of Tuscany Field Trip",
-            };
-
-            const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined; detail?: string }> = [
-              { label: "Welcome party", day: "Wed, Sept 16", rsvp: result.invited?.welcome_party_rsvp },
-              { label: "Wedding day", day: "Thu, Sept 17", rsvp: result.invited?.wedding_day_rsvp },
-              {
-                label: "Recovery day",
-                day: "Fri, Sept 18",
-                rsvp: result.invited?.pool_day_rsvp,
-                detail: result.invited?.friday_activity ? fridayActivityLabel[result.invited.friday_activity] : undefined,
-              },
-            ];
-
             return (
               <div className="space-y-3">
                 <div className="text-center">
@@ -324,75 +307,32 @@ const Shuttle = () => {
                   </h2>
                 </div>
 
-                {/* Events */}
-                <Card>
-                  <CardTitle>Events</CardTitle>
-                  <ul className="space-y-1.5">
-                    {eventRows.map((e) => {
-                      const attending = e.rsvp === "yes" || e.rsvp === "accept";
-                      const declined = e.rsvp === "no" || e.rsvp === "decline";
-
-                      return (
-                        <li key={e.label} className="space-y-1">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <span
-                                className={
-                                  "flex items-center justify-center w-5 h-5 rounded-full border " +
-                                  (attending
-                                    ? "bg-primary border-primary text-primary-foreground"
-                                    : declined
-                                    ? "border-border text-muted-foreground"
-                                    : "border-border text-transparent")
-                                }
-                                aria-label={attending ? "attending" : declined ? "not attending" : "no response"}
-                              >
-                                {attending && <Check size={12} strokeWidth={2.5} />}
-                                {declined && <X size={12} strokeWidth={2.5} />}
-                              </span>
-                              <span className="heading-card text-foreground">{e.label}</span>
-                            </div>
-                            <span className="label-xs tracking-[0.28em]">
-                              {e.day}
-                            </span>
-                          </div>
-                          {attending && e.detail && (
-                            <p className="body-small text-muted-foreground pl-8">{e.detail}</p>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </Card>
-
                 {/* Shuttle */}
-                <Card>
-                  {!neitherWave && <CardTitle>Shuttle</CardTitle>}
-                  {result.shuttle ? (
+                <Card className="border border-sage bg-sage p-3 sm:p-4">
+                  {result.shuttle && !neitherWave ? (
                     <div className="grid grid-cols-2 gap-4">
-                      <WaveBlock label="Arriving" wave={arr} />
-                      <WaveBlock label="Departing" wave={dep} />
+                      <WaveBlock label="Arrival Shuttle" wave={arr} />
+                      <WaveBlock label="Departure Shuttle" wave={dep} />
                     </div>
                   ) : (
-                    <>
-                      <p className="body-small text-muted-foreground">
-                        No shuttle reserved. Please ensure you have arranged independent transportation
-                        from the train station.
-                      </p>
-                      <p className="body-small text-muted-foreground mt-3">
-                        Our final passenger manifests have been submitted to our transportation vendors.
-                        If you need to make an emergency change to your shuttle plans, please contact us
-                        directly.
-                      </p>
-                    </>
+                    <p className="heading-card text-[#fdfbf7]">Shuttle N/A</p>
                   )}
                 </Card>
 
                 {/* Room */}
                 <Card>
-                  <p className="label-xs tracking-[0.28em] mb-1">
-                    Your room
-                  </p>
+                  {result.invited?.dietary_restrictions && (
+                    <>
+                      <p className="label-xs tracking-[0.28em] mb-1">
+                        Dietary notes
+                      </p>
+                      <p className="body-small text-foreground mb-3">
+                        {result.invited.dietary_restrictions}
+                      </p>
+                      <div className="h-px bg-border/70 mb-3" />
+                    </>
+                  )}
+
                   <h3 className="heading-card text-foreground leading-tight mb-2">
                     {result.room?.category_name || "Not staying onsite"}
                   </h3>
@@ -402,25 +342,6 @@ const Shuttle = () => {
                       <div className="h-px bg-border/70 mb-3" />
                       <GuestChips names={roomGuests} />
                     </>
-                  )}
-
-                  {result.invited?.dietary_restrictions && (
-                    <>
-                      <div className="h-px bg-border/70 my-1.5" />
-                      <p className="label-xs tracking-[0.28em] mb-1">
-                        Dietary notes
-                      </p>
-                      <p className="body-small text-foreground">
-                        {result.invited.dietary_restrictions}
-                      </p>
-                    </>
-                  )}
-
-                  {result.shuttle?.submitted_by && (
-                    <p className="label-xs normal-case tracking-normal mt-2 leading-relaxed">
-                      Submitted by {result.shuttle.submitted_by}. Something look wrong? Reply to your
-                      confirmation email and we'll fix it.
-                    </p>
                   )}
                 </Card>
 
@@ -448,12 +369,8 @@ const Shuttle = () => {
   );
 };
 
-const Card = ({ children }: { children: React.ReactNode }) => (
-  <div className="border border-border/70 bg-card p-3 sm:p-4">{children}</div>
-);
-
-const CardTitle = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="heading-card text-foreground mb-1.5">{children}</h3>
+const Card = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <div className={className ?? "border border-border/70 bg-card p-3 sm:p-4"}>{children}</div>
 );
 
 const WaveBlock = ({
@@ -464,24 +381,21 @@ const WaveBlock = ({
   wave: WaveDetail | undefined;
 }) => (
   <div>
-    <p className="label-xs tracking-[0.28em] mb-1">
+    <p className="font-body text-xs uppercase tracking-[0.224em] text-[#fdfbf7]/70 mb-1">
       {label}
     </p>
     {wave ? (
       <>
-        <p className="heading-card text-foreground leading-none mb-1">{wave.time}</p>
-        <p className="body-small text-muted-foreground leading-snug">
+        <p className="heading-card text-[#fdfbf7] leading-none mb-1">{wave.time}</p>
+        <p className="body-small text-[#fdfbf7]/80 leading-snug">
           {wave.from}
           <br />
           to {wave.to}
         </p>
-        <span className="inline-block mt-1.5 label-xs tracking-[0.22em] text-foreground bg-secondary px-3 py-1">
-          {wave.badge}
-        </span>
       </>
     ) : (
-      <p className="heading-card text-foreground leading-tight">
-        No Shuttle
+      <p className="heading-card text-[#fdfbf7] leading-tight">
+        N/A
       </p>
     )}
   </div>
