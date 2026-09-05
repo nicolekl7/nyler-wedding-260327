@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Check, X } from "lucide-react";
 import Layout from "@/components/Layout";
@@ -90,17 +90,22 @@ interface LookupResult {
   passportSubmitted: boolean;
 }
 
+// Remembers the last successful lookup on this browser so returning guests skip
+// re-entering their name/email. Not real auth — anyone using the same browser
+// afterward sees this guest's info.
+const STORAGE_KEY = "guestPortalLookup";
+
 const Shuttle = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<LookupResult | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [checkingSaved, setCheckingSaved] = useState(true);
 
-  const handleLookup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !email.trim()) {
-      toast.error("Please enter your name and email.");
+  const runLookup = async (lookupName: string, lookupEmail: string, opts?: { silent?: boolean }) => {
+    if (!lookupName.trim() || !lookupEmail.trim()) {
+      if (!opts?.silent) toast.error("Please enter your name and email.");
       return;
     }
     setLoading(true);
@@ -132,11 +137,11 @@ const Shuttle = () => {
       const estateRooms = estateRes.error ? [] : ((estateRes.data || []) as { room_number: string | number; room_type: string }[]);
       const roomTypeByNumber = new Map(estateRooms.map((r) => [String(r.room_number), r.room_type]));
 
-      const wantsPatrickMagee = PATRICK_MAGEE_EMAILS.includes(email.trim().toLowerCase());
-      const typedFirstName = norm(name).split(" ")[0];
+      const wantsPatrickMagee = PATRICK_MAGEE_EMAILS.includes(lookupEmail.trim().toLowerCase());
+      const typedFirstName = norm(lookupName).split(" ")[0];
       const invited = (invRes.data || []).find((g) => {
         const full = `${g.first_name} ${g.last_name}`;
-        if (!namesMatch(full, name)) return false;
+        if (!namesMatch(full, lookupName)) return false;
         if (norm(g.last_name) === "magee" && ["pat", "patrick"].includes(norm(g.first_name))) {
           const isPatrickRecord = norm(g.first_name) === "patrick";
           // Typed "Pat Magee" always means Nancy Magee's spouse. Typed "Patrick Magee"
@@ -148,7 +153,13 @@ const Shuttle = () => {
       });
 
       if (!invited) {
-        setNotFound(true);
+        // A saved lookup that no longer matches (e.g. data changed) shouldn't nag the
+        // guest with an error on a page they didn't actively search from.
+        if (opts?.silent) {
+          try { localStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+        } else {
+          setNotFound(true);
+        }
         setLoading(false);
         return;
       }
@@ -247,15 +258,45 @@ const Shuttle = () => {
           : null,
         passportSubmitted,
       });
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ name: lookupName, email: lookupEmail }));
+      } catch { /* ignore (private browsing, storage disabled, etc.) */ }
     } catch (err) {
       console.error(err);
-      toast.error("Something went wrong. Please try again.");
+      if (!opts?.silent) toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    let saved: { name?: string; email?: string } | null = null;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) saved = JSON.parse(raw);
+    } catch { /* ignore */ }
+
+    if (saved?.name && saved?.email) {
+      setName(saved.name);
+      setEmail(saved.email);
+      runLookup(saved.name, saved.email, { silent: true }).finally(() => setCheckingSaved(false));
+    } else {
+      setCheckingSaved(false);
+    }
+    // Only ever run once, on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleLookup = (e: React.FormEvent) => {
+    e.preventDefault();
+    runLookup(name, email);
+  };
+
   const reset = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch { /* ignore */ }
     setResult(null);
     setNotFound(false);
     setName("");
@@ -270,7 +311,11 @@ const Shuttle = () => {
         }`}
       >
         <FadeIn>
-          {!result && (
+          {checkingSaved && !result && (
+            <p className="body-small text-center text-muted-foreground">Loading your info…</p>
+          )}
+
+          {!checkingSaved && !result && (
             <>
               <h1 className="heading-section mb-4 text-center">Guest Portal</h1>
               <div className="w-12 h-px bg-primary mx-auto mb-10" />
@@ -280,7 +325,7 @@ const Shuttle = () => {
             </>
           )}
 
-          {!result && (
+          {!checkingSaved && !result && (
             <form onSubmit={handleLookup} className="space-y-8 max-w-md mx-auto">
               <div>
                 <label className="block label-xs mb-2">
