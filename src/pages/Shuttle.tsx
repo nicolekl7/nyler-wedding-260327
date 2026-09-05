@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Check, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { supabase } from "@/integrations/supabase/client";
@@ -299,6 +300,22 @@ const Shuttle = () => {
               return true;
             });
 
+            const fridayActivityLabel: Record<string, string> = {
+              "Recovery Day": "Il Dolce Far Niente Pool Party & Dinner",
+              "Wine Tour": "The Best of Tuscany Field Trip",
+            };
+
+            const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined; detail?: string }> = [
+              { label: "Welcome party", day: "Wed, Sept 16", rsvp: result.invited?.welcome_party_rsvp },
+              { label: "Wedding day", day: "Thu, Sept 17", rsvp: result.invited?.wedding_day_rsvp },
+              {
+                label: "Recovery day",
+                day: "Fri, Sept 18",
+                rsvp: result.invited?.pool_day_rsvp,
+                detail: result.invited?.friday_activity ? fridayActivityLabel[result.invited.friday_activity] : undefined,
+              },
+            ];
+
             return (
               <div className="space-y-3">
                 <div className="text-center">
@@ -306,6 +323,46 @@ const Shuttle = () => {
                     Your Details
                   </h2>
                 </div>
+
+                {/* Events */}
+                <Card>
+                  <ul className="space-y-1.5">
+                    {eventRows.map((e) => {
+                      const attending = e.rsvp === "yes" || e.rsvp === "accept";
+                      const declined = e.rsvp === "no" || e.rsvp === "decline";
+
+                      return (
+                        <li key={e.label} className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span
+                                className={
+                                  "flex items-center justify-center w-5 h-5 rounded-full border " +
+                                  (attending
+                                    ? "bg-primary border-primary text-primary-foreground"
+                                    : declined
+                                    ? "border-border text-muted-foreground"
+                                    : "border-border text-transparent")
+                                }
+                                aria-label={attending ? "attending" : declined ? "not attending" : "no response"}
+                              >
+                                {attending && <Check size={12} strokeWidth={2.5} />}
+                                {declined && <X size={12} strokeWidth={2.5} />}
+                              </span>
+                              <span className="heading-card text-foreground">{e.label}</span>
+                            </div>
+                            <span className="label-xs tracking-[0.28em]">
+                              {e.day}
+                            </span>
+                          </div>
+                          {attending && e.detail && (
+                            <p className="body-small text-muted-foreground pl-8">{e.detail}</p>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </Card>
 
                 {/* Shuttle */}
                 <Card className="border border-sage bg-sage p-3 sm:p-4">
