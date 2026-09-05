@@ -58,8 +58,9 @@ const ROOM_GROUPS: string[][] = [
 ];
 
 // "Pat Magee" and "Patrick Magee" are two different guests whose first names count as
-// nickname matches (see NICKNAMES in guestMatching), so a plain name lookup can't tell
-// them apart. Disambiguate by the email entered instead.
+// nickname matches (see NICKNAMES in guestMatching). Typing "Pat Magee" always means
+// Nancy Magee's spouse; typing "Patrick Magee" is ambiguous between the two, so that
+// case is disambiguated by the email entered.
 const PATRICK_MAGEE_EMAILS = ["1999lukasik@gmail.com", "pmagee4@gmail.com", "vjstahli@gmail.com"];
 
 const roomGroupFor = (fullName: string): string[] | null =>
@@ -132,11 +133,15 @@ const Shuttle = () => {
       const roomTypeByNumber = new Map(estateRooms.map((r) => [String(r.room_number), r.room_type]));
 
       const wantsPatrickMagee = PATRICK_MAGEE_EMAILS.includes(email.trim().toLowerCase());
+      const typedFirstName = norm(name).split(" ")[0];
       const invited = (invRes.data || []).find((g) => {
         const full = `${g.first_name} ${g.last_name}`;
         if (!namesMatch(full, name)) return false;
         if (norm(g.last_name) === "magee" && ["pat", "patrick"].includes(norm(g.first_name))) {
           const isPatrickRecord = norm(g.first_name) === "patrick";
+          // Typed "Pat Magee" always means Nancy Magee's spouse. Typed "Patrick Magee"
+          // is ambiguous between the two records, so check the email instead.
+          if (typedFirstName !== "patrick") return !isPatrickRecord;
           return wantsPatrickMagee ? isPatrickRecord : !isPatrickRecord;
         }
         return true;
