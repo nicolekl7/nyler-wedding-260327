@@ -307,7 +307,7 @@ const Shuttle = () => {
 
             const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined; detail?: string }> = [
               { label: "Welcome party", day: "Wed, Sept 16", rsvp: result.invited?.welcome_party_rsvp },
-              { label: "Wedding day", day: "Thu, Sept 17", rsvp: result.invited?.wedding_day_rsvp },
+              { label: "Wedding Day", day: "Thu, Sept 17", rsvp: result.invited?.wedding_day_rsvp },
               {
                 label: "Recovery day",
                 day: "Fri, Sept 18",
@@ -339,7 +339,7 @@ const Shuttle = () => {
                                 className={
                                   "flex items-center justify-center w-5 h-5 rounded-full border " +
                                   (attending
-                                    ? "bg-primary border-primary text-primary-foreground"
+                                    ? "bg-sage border-sage text-[#fdfbf7]"
                                     : declined
                                     ? "border-border text-muted-foreground"
                                     : "border-border text-transparent")
@@ -349,7 +349,7 @@ const Shuttle = () => {
                                 {attending && <Check size={12} strokeWidth={2.5} />}
                                 {declined && <X size={12} strokeWidth={2.5} />}
                               </span>
-                              <span className="heading-card text-foreground">{e.label}</span>
+                              <span className="font-serif text-[0.5625rem] sm:text-[0.625rem] md:text-[0.75rem] font-light tracking-tight text-foreground">{e.label}</span>
                             </div>
                             <span className="label-xs tracking-[0.28em]">
                               {e.day}
@@ -390,7 +390,7 @@ const Shuttle = () => {
                     </>
                   )}
 
-                  <h3 className="heading-card text-foreground leading-tight mb-2">
+                  <h3 className="font-serif text-[0.5625rem] sm:text-[0.625rem] md:text-[0.75rem] font-light tracking-tight text-foreground leading-tight mb-2">
                     {result.room?.category_name || "Not staying onsite"}
                   </h3>
 
