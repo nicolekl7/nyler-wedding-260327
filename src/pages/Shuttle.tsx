@@ -155,21 +155,33 @@ const Shuttle = () => {
 
       const matchedFullName = `${invited.first_name} ${invited.last_name}`;
 
+      // Pat and Patrick Magee are nickname-equivalent, so a plain namesMatch against
+      // records in other tables (shuttle, room bookings, passport tracker) can't tell
+      // them apart either. Reuse the same disambiguation the invited_guests lookup made.
+      const isPatrickRecord = norm(invited.first_name) === "patrick" && norm(invited.last_name) === "magee";
+      const isPatRecord = norm(invited.first_name) === "pat" && norm(invited.last_name) === "magee";
+      const matchesResolvedGuest = (candidate: string) => {
+        if (!namesMatch(candidate, matchedFullName)) return false;
+        if (!isPatrickRecord && !isPatRecord) return true;
+        const candidateIsPatrick = norm(candidate).split(" ")[0] === "patrick";
+        return isPatrickRecord ? candidateIsPatrick : !candidateIsPatrick;
+      };
+
       const shuttle = (shuttleRes.data || []).find((s) => {
-        if (namesMatch(s.full_name, matchedFullName)) return true;
+        if (matchesResolvedGuest(s.full_name)) return true;
         const guests = parseGuestList(s.guest_names);
-        return guests.some((g) => namesMatch(g, matchedFullName));
+        return guests.some((g) => matchesResolvedGuest(g));
       });
 
       const passportSubmitted =
         ((shuttle?.passport_paths as string[] | null)?.length ?? 0) > 0 ||
-        passportTracker.some((p) => p.received && namesMatch(p.full_name, matchedFullName));
+        passportTracker.some((p) => p.received && matchesResolvedGuest(p.full_name));
 
       const catMap = new Map((catRes.data || []).map((c) => [c.id, c.name]));
       const room = (bookRes.data || []).find((b) => {
         if (b.is_released) return false;
         const guests = parseGuestList(b.guest_names);
-        return guests.some((g) => namesMatch(g, matchedFullName));
+        return guests.some((g) => matchesResolvedGuest(g));
       });
 
       // Fallback: manually-assigned room (no self-serve booking on file).
@@ -190,7 +202,7 @@ const Shuttle = () => {
         }
       }
 
-      const groupNames = roomGroupFor(matchedFullName);
+      const groupNames = isPatRecord ? null : roomGroupFor(matchedFullName);
 
       // "Solo Guest Estate Pass" bookings don't reflect the guest's actual assigned
       // room; look that up from room_assignments/estate_rooms to display instead.
