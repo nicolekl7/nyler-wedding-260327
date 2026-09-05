@@ -416,7 +416,7 @@ const Shuttle = () => {
                   <p className="label-xs tracking-[0.28em] mb-1">
                     Passport photo
                   </p>
-                  <p className={`body-small ${result.passportSubmitted ? "text-sage" : "text-muted-foreground"}`}>
+                  <p className={`body-small ${result.passportSubmitted ? "text-sage" : "text-destructive font-medium"}`}>
                     {result.passportSubmitted ? "Submitted" : "Not yet submitted"}
                   </p>
                 </Card>
