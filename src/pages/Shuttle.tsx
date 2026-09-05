@@ -319,8 +319,8 @@ const Shuttle = () => {
             return (
               <div className="space-y-3">
                 <div className="text-center">
-                  <h2 className="heading-card text-foreground leading-[1.05]">
-                    Your Details
+                  <h2 className="heading-section italic text-foreground mb-4 opacity-95">
+                    RSVP Details: {result.matchedName}
                   </h2>
                 </div>
 
@@ -349,7 +349,7 @@ const Shuttle = () => {
                                 {attending && <Check size={12} strokeWidth={2.5} />}
                                 {declined && <X size={12} strokeWidth={2.5} />}
                               </span>
-                              <span className="font-serif text-base sm:text-lg md:text-xl font-light tracking-tight text-foreground">{e.label}</span>
+                              <span className="heading-card text-foreground">{e.label}</span>
                             </div>
                             <span className="label-xs tracking-[0.28em]">
                               {e.day}
@@ -390,7 +390,7 @@ const Shuttle = () => {
                     </>
                   )}
 
-                  <h3 className="font-serif text-base sm:text-lg md:text-xl font-light tracking-tight text-foreground leading-tight mb-2">
+                  <h3 className="heading-card text-foreground leading-tight mb-2">
                     {result.room?.category_name || "Not staying onsite"}
                   </h3>
 
