@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { supabase } from "@/integrations/supabase/client";
@@ -81,6 +80,7 @@ interface LookupResult {
     guest_names: string;
     payment_status: string;
   } | null;
+  passportReceived: boolean;
 }
 
 const Shuttle = () => {
@@ -101,24 +101,26 @@ const Shuttle = () => {
     setNotFound(false);
 
     try {
-      const [invRes, shuttleRes, bookRes, catRes, assignRes, estateRes] = await Promise.all([
+      const [invRes, shuttleRes, bookRes, catRes, assignRes, estateRes, passportRes] = await Promise.all([
         supabase.from("invited_guests").select("id,first_name,last_name,email,welcome_party_rsvp,pool_day_rsvp,wedding_day_rsvp,friday_activity,dietary_restrictions"),
-        supabase.from("shuttle_signups").select("full_name,email,arrival_wave,departure_wave,departure_plan,party_size,guest_names"),
+        supabase.from("shuttle_signups").select("full_name,email,arrival_wave,departure_wave,departure_plan,party_size,guest_names,passport_paths"),
         supabase.from("room_bookings").select("email,guest_names,room_category_id,payment_status,is_released"),
         supabase.from("room_categories").select("id,name"),
         supabase.from("room_assignments" as any).select("room_number,guest_id"),
         supabase.from("estate_rooms" as any).select("room_number,room_type"),
+        supabase.from("passport_tracker" as any).select("full_name"),
       ]);
 
       if (invRes.error) throw invRes.error;
       if (shuttleRes.error) throw shuttleRes.error;
       if (bookRes.error) throw bookRes.error;
       if (catRes.error) throw catRes.error;
-      // room_assignments/estate_rooms may not exist in every environment — degrade
-      // gracefully instead of breaking the whole lookup if those tables aren't present.
+      // room_assignments/estate_rooms/passport_tracker may not exist in every environment —
+      // degrade gracefully instead of breaking the whole lookup if those tables aren't present.
       const roomAssignments = assignRes.error ? [] : ((assignRes.data || []) as { room_number: string | number; guest_id: string }[]);
       const estateRooms = estateRes.error ? [] : ((estateRes.data || []) as { room_number: string | number; room_type: string }[]);
       const roomTypeByNumber = new Map(estateRooms.map((r) => [String(r.room_number), r.room_type]));
+      const passportTrackerEntries = passportRes.error ? [] : ((passportRes.data || []) as { full_name: string }[]);
 
       const invited = (invRes.data || []).find((g) => {
         const full = `${g.first_name} ${g.last_name}`;
@@ -173,6 +175,18 @@ const Shuttle = () => {
         ? formatRoomLabel(roomTypeByNumber.get(String(myAssignmentGlobal.room_number)), myAssignmentGlobal.room_number)
         : null;
 
+      // Passport photos are submitted per-party rather than per-guest, so a party
+      // is "received" once uploaded photos plus manually-tracked ones cover everyone.
+      const partyNames = shuttle ? parseGuestList(shuttle.guest_names || matchedFullName) : [matchedFullName];
+      const uploadedCount = shuttle?.passport_paths?.length ?? 0;
+      const sentSeparatelyCount = partyNames.filter((n) =>
+        passportTrackerEntries.some((p) => namesMatch(p.full_name, n))
+      ).length;
+      const passportsAccounted = uploadedCount + sentSeparatelyCount;
+      const passportReceived = shuttle?.party_size
+        ? passportsAccounted >= shuttle.party_size
+        : passportsAccounted > 0;
+
       setResult({
         matchedName: matchedFullName,
         invited: {
@@ -207,6 +221,7 @@ const Shuttle = () => {
               guest_names: groupNames ? groupNames.join(", ") : assignedRoom.guest_names,
             }
           : null,
+        passportReceived,
       });
     } catch (err) {
       console.error(err);
@@ -317,112 +332,125 @@ const Shuttle = () => {
             ];
 
             return (
-              <div className="space-y-3">
-                <div className="text-center">
+              <div>
+                <div className="text-center mb-10">
                   <h2 className="heading-card text-foreground leading-[1.05]">
                     Your Details
                   </h2>
                 </div>
 
                 {/* Events */}
-                <Card>
-                  <CardTitle>Events</CardTitle>
-                  <ul className="space-y-1.5">
+                <section className="pb-6">
+                  <SectionTitle>Events</SectionTitle>
+                  <ul className="space-y-5">
                     {eventRows.map((e) => {
                       const attending = e.rsvp === "yes" || e.rsvp === "accept";
                       const declined = e.rsvp === "no" || e.rsvp === "decline";
+                      const statusLabel = attending
+                        ? "Attending"
+                        : declined
+                        ? "Not attending"
+                        : "Awaiting response";
 
                       return (
-                        <li key={e.label} className="space-y-1">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <span
-                                className={
-                                  "flex items-center justify-center w-5 h-5 rounded-full border " +
-                                  (attending
-                                    ? "bg-primary border-primary text-primary-foreground"
-                                    : declined
-                                    ? "border-border text-muted-foreground"
-                                    : "border-border text-transparent")
-                                }
-                                aria-label={attending ? "attending" : declined ? "not attending" : "no response"}
-                              >
-                                {attending && <Check size={12} strokeWidth={2.5} />}
-                                {declined && <X size={12} strokeWidth={2.5} />}
-                              </span>
-                              <span className="heading-card text-foreground">{e.label}</span>
-                            </div>
-                            <span className="label-xs tracking-[0.28em]">
-                              {e.day}
-                            </span>
+                        <li key={e.label} className="flex items-start justify-between gap-4">
+                          <div>
+                            <p className="heading-card text-foreground leading-tight">{e.label}</p>
+                            <p
+                              className={
+                                "label-xs tracking-[0.28em] mt-1.5 " +
+                                (attending ? "text-primary" : "text-muted-foreground")
+                              }
+                            >
+                              {statusLabel}
+                            </p>
+                            {attending && e.detail && (
+                              <p className="body-small text-muted-foreground mt-1.5">{e.detail}</p>
+                            )}
                           </div>
-                          {attending && e.detail && (
-                            <p className="body-small text-muted-foreground pl-8">{e.detail}</p>
-                          )}
+                          <span className="label-xs tracking-[0.28em] text-muted-foreground shrink-0 pt-1">
+                            {e.day}
+                          </span>
                         </li>
                       );
                     })}
                   </ul>
-                </Card>
+                </section>
 
                 {/* Shuttle */}
-                <Card>
-                  {!neitherWave && <CardTitle>Shuttle</CardTitle>}
+                <section className="pt-10 border-t border-border/40">
+                  {!neitherWave && <SectionTitle>Shuttle</SectionTitle>}
                   {result.shuttle ? (
-                    <div className="grid grid-cols-2 gap-4">
-                      <WaveBlock label="Arriving" wave={arr} />
-                      <WaveBlock label="Departing" wave={dep} />
+                    <div className="space-y-4">
+                      <ShuttleRow label="Arriving" wave={arr} />
+                      <ShuttleRow label="Departing" wave={dep} />
                     </div>
                   ) : (
                     <>
-                      <p className="body-small text-muted-foreground">
+                      <p className="body-editorial">
                         No shuttle reserved. Please ensure you have arranged independent transportation
                         from the train station.
                       </p>
-                      <p className="body-small text-muted-foreground mt-3">
+                      <p className="body-editorial mt-3">
                         Our final passenger manifests have been submitted to our transportation vendors.
                         If you need to make an emergency change to your shuttle plans, please contact us
                         directly.
                       </p>
                     </>
                   )}
-                </Card>
+                </section>
 
                 {/* Room */}
-                <Card>
+                <section className="pt-10 border-t border-border/40">
+                  <SectionTitle>Your Room</SectionTitle>
+
                   <p className="label-xs tracking-[0.28em] mb-1">
-                    Your room
+                    Room
                   </p>
-                  <h3 className="heading-card text-foreground leading-tight mb-2">
+                  <h3 className="heading-card text-foreground leading-tight mb-5">
                     {result.room?.category_name || "Not staying onsite"}
                   </h3>
 
                   {roomGuests.length > 0 && (
-                    <>
-                      <div className="h-px bg-border/70 mb-3" />
-                      <GuestChips names={roomGuests} />
-                    </>
+                    <div className="mb-5">
+                      <p className="label-xs tracking-[0.28em] mb-1.5">
+                        Guests
+                      </p>
+                      <p className="body-small text-foreground leading-relaxed">
+                        {roomGuests.join(" · ")}
+                      </p>
+                    </div>
                   )}
 
+                  <div className="mb-5">
+                    <p
+                      className={
+                        "label-xs tracking-[0.28em] " +
+                        (result.passportReceived ? "text-primary" : "text-muted-foreground")
+                      }
+                    >
+                      Passport photo: {result.passportReceived ? "Received" : "Not submitted"}
+                    </p>
+                  </div>
+
                   {result.invited?.dietary_restrictions && (
-                    <>
-                      <div className="h-px bg-border/70 my-1.5" />
+                    <div className="mb-5">
                       <p className="label-xs tracking-[0.28em] mb-1">
                         Dietary notes
                       </p>
                       <p className="body-small text-foreground">
                         {result.invited.dietary_restrictions}
                       </p>
-                    </>
+                    </div>
                   )}
 
                   {result.shuttle?.submitted_by && (
-                    <p className="label-xs normal-case tracking-normal mt-2 leading-relaxed">
+                    <p className="label-xs normal-case tracking-normal leading-relaxed text-muted-foreground">
                       Submitted by {result.shuttle.submitted_by}. Something look wrong? Reply to your
                       confirmation email and we'll fix it.
                     </p>
                   )}
-                </Card>
+                </section>
 
                 <div className="flex items-center justify-center gap-8">
                   <button
@@ -448,55 +476,33 @@ const Shuttle = () => {
   );
 };
 
-const Card = ({ children }: { children: React.ReactNode }) => (
-  <div className="border border-border/70 bg-card p-3 sm:p-4">{children}</div>
+const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+  <>
+    <h3 className="heading-section italic mb-2">{children}</h3>
+    <div className="w-12 h-px bg-primary/40 mb-6" />
+  </>
 );
 
-const CardTitle = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="heading-card text-foreground mb-1.5">{children}</h3>
-);
-
-const WaveBlock = ({
+const ShuttleRow = ({
   label,
   wave,
 }: {
   label: string;
   wave: WaveDetail | undefined;
 }) => (
-  <div>
-    <p className="label-xs tracking-[0.28em] mb-1">
-      {label}
-    </p>
+  <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+    <span className="label-xs tracking-[0.28em] w-28 shrink-0">{label}</span>
     {wave ? (
       <>
-        <p className="heading-card text-foreground leading-none mb-1">{wave.time}</p>
-        <p className="body-small text-muted-foreground leading-snug">
-          {wave.from}
-          <br />
-          to {wave.to}
-        </p>
-        <span className="inline-block mt-1.5 label-xs tracking-[0.22em] text-foreground bg-secondary px-3 py-1">
-          {wave.badge}
+        <span className="heading-card text-foreground">{wave.time}</span>
+        <span className="body-small text-muted-foreground">
+          {wave.from} to {wave.to}
         </span>
+        <span className="label-xs tracking-[0.22em] text-muted-foreground">{wave.badge}</span>
       </>
     ) : (
-      <p className="heading-card text-foreground leading-tight">
-        No Shuttle
-      </p>
+      <span className="heading-card text-foreground">No shuttle</span>
     )}
-  </div>
-);
-
-const GuestChips = ({ names }: { names: string[] }) => (
-  <div className="grid grid-cols-2 gap-1.5">
-    {names.map((n) => (
-      <span
-        key={n}
-        className="body-small text-foreground border border-border/80 px-3 py-1.5 text-center truncate"
-      >
-        {n}
-      </span>
-    ))}
   </div>
 );
 
