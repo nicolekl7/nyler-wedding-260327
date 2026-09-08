@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import ScrollToTop from "./components/ScrollToTop";
 import CatTapRipple from "./components/CatTapRipple";
+import GuestPortalPopup from "./components/GuestPortalPopup";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -32,6 +33,7 @@ const App = () => (
       <CatTapRipple />
       <BrowserRouter>
         <ScrollToTop />
+        <GuestPortalPopup />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/the-weekend" element={<Navigate to="/" replace />} />
