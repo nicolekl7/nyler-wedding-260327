@@ -6,9 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const STORAGE_KEY = "hasSeenGuestPortalPopup";
@@ -72,18 +70,30 @@ const GuestPortalPopup = () => {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-md text-center sm:text-left">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="heading-card">{labels.title}</DialogTitle>
           <DialogDescription className="font-body text-muted-foreground">
             {labels.description}
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="sm:justify-start">
-          <Button onClick={handleVisitPortal} className="w-full sm:w-auto">
+
+        <div className="mt-2 space-y-3">
+          <button
+            type="button"
+            onClick={handleVisitPortal}
+            className="w-full py-4 bg-primary text-primary-foreground label-xs hover:opacity-90 transition-opacity"
+          >
             {labels.cta}
-          </Button>
-        </DialogFooter>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleOpenChange(false)}
+            className="w-full text-center label-xs text-muted-foreground hover:text-foreground transition-colors duration-300"
+          >
+            {labels.dismiss}
+          </button>
+        </div>
       </DialogContent>
     </Dialog>
   );
