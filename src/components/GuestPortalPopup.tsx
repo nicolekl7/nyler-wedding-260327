@@ -14,14 +14,14 @@ const EXCLUDED_PATH_PREFIXES = ["/guest-portal", "/admin", "/comingsoon"];
 
 const copy = {
   en: {
-    title: "Welcome!",
+    title: "Guest Portal",
     description:
       "Head to the Guest Portal to find your room, travel details, and everything else you need for the weekend.",
     cta: "Go to Guest Portal",
     dismiss: "Maybe later",
   },
   pl: {
-    title: "Witamy!",
+    title: "Portal Gościa",
     description:
       "Odwiedź Portal Gościa, aby znaleźć swój pokój, szczegóły podróży i wszystko, czego potrzebujesz na ten weekend.",
     cta: "Przejdź do Portalu Gościa",
@@ -72,8 +72,8 @@ const GuestPortalPopup = () => {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="heading-card">{labels.title}</DialogTitle>
-          <DialogDescription className="font-body text-muted-foreground">
+          <DialogTitle className="sr-only">{labels.title}</DialogTitle>
+          <DialogDescription className="font-body text-muted-foreground text-left">
             {labels.description}
           </DialogDescription>
         </DialogHeader>
