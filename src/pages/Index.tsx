@@ -73,6 +73,7 @@ const content: Record<"en" | "pl", LangContent> = {
         items: [
           { time: "2:00 PM & 3:00 PM", label: "Complimentary Shuttle: Siena Station to Laticastelli (Reservation Required)" },
           { time: "3:00 PM", label: "Guest Check-In & Estate Arrivals" },
+          { time: "7:00 PM", label: "Welcome Drink" },
           { time: "7:30 PM", label: "The Welcome Dinner" },
         ],
         details: "Join us under the stars for wood-fired pizza and exceptional local wine to officially welcome you to Tuscany.",
