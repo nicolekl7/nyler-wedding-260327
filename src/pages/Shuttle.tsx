@@ -390,7 +390,7 @@ const Shuttle = () => {
             };
 
             const eventRows: Array<{ label: string; day: string; rsvp: string | null | undefined; detail?: string }> = [
-              { label: "Welcome Party", day: "Wed, Sept 16", rsvp: result.invited?.welcome_party_rsvp },
+              { label: "Welcome Dinner", day: "Wed, Sept 16", rsvp: result.invited?.welcome_party_rsvp },
               { label: "Ceremony & Reception", day: "Thu, Sept 17", rsvp: result.invited?.wedding_day_rsvp },
               {
                 label: "Recovery Day",

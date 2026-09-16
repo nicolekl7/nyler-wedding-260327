@@ -6,7 +6,6 @@ const scheduleData = [
     day: "Wednesday, September 16",
     events: [
       { time: "3:00 PM", title: "Check-In" },
-      { time: "6:30 PM", title: "Welcome Party" },
       { time: "7:00 PM", title: "Welcome Drink" },
       { time: "7:30 PM", title: "Welcome Dinner" },
     ],
