@@ -13,7 +13,7 @@ const registryContent = {
     amazonLabel: "Amazon",
   },
   pl: {
-    body: "Nie oczekujemy żadnych prezentów — najważniejsze jest dla nas to, że będziecie z nami świętować we Włoszech! Jeśli mimo wszystko chcielibyście nas obdarować, jesteśmy zarejestrowani pod linkami poniżej.",
+    body: "Nie oczekujemy żadnych prezentów — po prostu cieszymy się, że możemy świętować z Wami we Włoszech! Jeśli mimo wszystko chcielibyście nas obdarować, jesteśmy zarejestrowani pod linkami poniżej.",
     signature: "xx Tyler i Nicole",
     zolaLabel: "Zola",
     amazonLabel: "Amazon",

@@ -28,7 +28,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [registryOpen, setRegistryOpen] = useState(false);
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const labels = navLabels[language];
 
   const navItems: { path: string; to?: string; label: string }[] = [
@@ -39,7 +39,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border/50" style={{ WebkitTransform: 'translateZ(0)' }}>
-      <div className="flex items-center justify-between px-6 md:px-12 py-4">
+      <div className="flex items-center justify-between pl-6 pr-3 md:pl-12 md:pr-4 py-4">
         <Link to="/" className="flex items-center">
           <img
             src={logo}
@@ -100,6 +100,27 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
                 </Link>
               ),
             )}
+          </div>
+
+          {/* Language switcher — desktop */}
+          <div className="flex items-center gap-0.5 label-xs tracking-normal">
+            <button
+              onClick={() => setLanguage("pl")}
+              className={`flex items-center gap-1 px-1 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
+              aria-label="Switch to Polish"
+            >
+              <span>🇵🇱</span>
+              <span>PL</span>
+            </button>
+            <span className="text-muted-foreground/50">|</span>
+            <button
+              onClick={() => setLanguage("en")}
+              className={`flex items-center gap-1 px-1 py-1 rounded transition-opacity ${language === "en" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
+              aria-label="Switch to English"
+            >
+              <span>🇺🇸</span>
+              <span>EN</span>
+            </button>
           </div>
         </div>
 
@@ -179,6 +200,27 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
               </Link>
             ),
           )}
+
+          {/* Language switcher — mobile */}
+          <div className="flex items-center gap-1 pt-2 border-t border-border/30 label-xs tracking-normal">
+            <button
+              onClick={() => { setLanguage("pl"); setOpen(false); }}
+              className={`flex items-center gap-1 px-1 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40"}`}
+              aria-label="Switch to Polish"
+            >
+              <span>🇵🇱</span>
+              <span>POLSKI</span>
+            </button>
+            <span className="text-muted-foreground/50">|</span>
+            <button
+              onClick={() => { setLanguage("en"); setOpen(false); }}
+              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "en" ? "opacity-100 font-medium" : "opacity-40"}`}
+              aria-label="Switch to English"
+            >
+              <span>🇺🇸</span>
+              <span>ENGLISH</span>
+            </button>
+          </div>
         </div>
       </div>
     </nav>
