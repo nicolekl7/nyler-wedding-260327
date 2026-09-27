@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import Layout from "@/components/archive/Layout";
+import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import RoomCardsDisplay from "@/components/RoomCardsDisplay";
 import RsvpFormEmbed from "@/components/RsvpFormEmbed";

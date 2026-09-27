@@ -1,4 +1,4 @@
-import Layout from "@/components/archive/Layout";
+import Layout from "@/components/Layout";
 
 const LateRsvp = () => {
   return (

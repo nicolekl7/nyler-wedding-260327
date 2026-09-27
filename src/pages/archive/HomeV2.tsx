@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Layout from "@/components/archive/Layout";
+import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 
 import p1 from "@/assets/photobooth/pb-1.jpg";

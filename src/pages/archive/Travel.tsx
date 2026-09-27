@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin } from "lucide-react";
-import Layout from "@/components/archive/Layout";
+import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import trainImg from "@/assets/travel-by-train.jpg";

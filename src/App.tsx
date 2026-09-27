@@ -7,10 +7,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Home from "./pages/Home";
+import OurStory from "./pages/OurStory";
+import Registry from "./pages/Registry";
 import Admin from "./pages/Admin";
 
-// Previous guest-facing pages, navigation and the guest portal popup are
-// archived under src/pages/archive and src/components/archive (not routed).
+// Previous guest-facing pages and the guest portal popup are archived under
+// src/pages/archive and src/components/archive (not routed).
 
 const queryClient = new QueryClient();
 
@@ -24,6 +26,8 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/our-story" element={<OurStory />} />
+          <Route path="/registry" element={<Registry />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/reservations" element={<Navigate to="/admin?tab=reservations" replace />} />
           <Route path="/admin/shuttle" element={<Navigate to="/admin?tab=travel" replace />} />

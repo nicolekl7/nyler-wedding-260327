@@ -9,18 +9,14 @@ const AMAZON_URL = "https://www.amazon.com/wedding/guest-view/10UL21FCFHV3X";
 
 const navLabels = {
   en: {
-    home: "Schedule",
-    travel: "Travel & FAQs",
-    guestPortal: "Guest Portal",
+    home: "Home",
     ourStory: "Our Story",
     registry: "Registry",
     amazon: "Amazon",
     zola: "Zola",
   },
   pl: {
-    home: "Plan",
-    travel: "Podróż i FAQ",
-    guestPortal: "Moje Dane",
+    home: "Start",
     ourStory: "Nasza Historia",
     registry: "Lista Prezentów",
     amazon: "Amazon",
@@ -32,20 +28,18 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [registryOpen, setRegistryOpen] = useState(false);
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const labels = navLabels[language];
 
-  const navItems = [
-    { path: "/", to: "/#itinerary", label: labels.home },
-    { path: "/travel", label: labels.travel },
+  const navItems: { path: string; to?: string; label: string }[] = [
+    { path: "/", label: labels.home },
     { path: "/our-story", label: labels.ourStory },
     { path: "/registry", label: labels.registry },
-    { path: "/guest-portal", label: labels.guestPortal, cta: true },
   ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border/50" style={{ WebkitTransform: 'translateZ(0)' }}>
-      <div className="flex items-center justify-between pl-6 pr-3 md:pl-12 md:pr-4 py-4">
+      <div className="flex items-center justify-between px-6 md:px-12 py-4">
         <Link to="/" className="flex items-center">
           <img
             src={logo}
@@ -57,7 +51,7 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-4">
           <div className="flex items-center gap-7">
-            {navItems.filter((item) => !item.cta).map((item) =>
+            {navItems.map((item) =>
               item.path === "/registry" ? (
                 <div key={item.path} className="relative group flex items-center">
                   <Link
@@ -106,37 +100,6 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
                 </Link>
               ),
             )}
-          </div>
-
-          {navItems.filter((item) => item.cta).map((item) => (
-            <Link
-              key={item.path}
-              to={item.to ?? item.path}
-              className="label-xs tracking-[0.1em] border border-foreground rounded-full px-5 py-2 text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
-            >
-              {item.label}
-            </Link>
-          ))}
-
-          {/* Language switcher — desktop */}
-          <div className="flex items-center gap-0.5 label-xs tracking-normal">
-            <button
-              onClick={() => setLanguage("pl")}
-              className={`flex items-center gap-1 px-1 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
-              aria-label="Switch to Polish"
-            >
-              <span>🇵🇱</span>
-              <span>PL</span>
-            </button>
-            <span className="text-muted-foreground/50">|</span>
-            <button
-              onClick={() => setLanguage("en")}
-              className={`flex items-center gap-1 px-1 py-1 rounded transition-opacity ${language === "en" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"}`}
-              aria-label="Switch to English"
-            >
-              <span>🇺🇸</span>
-              <span>EN</span>
-            </button>
           </div>
         </div>
 
@@ -216,27 +179,6 @@ const Navigation = ({ dark = false }: { dark?: boolean }) => {
               </Link>
             ),
           )}
-
-          {/* Language switcher — mobile */}
-          <div className="flex items-center gap-1 pt-2 border-t border-border/30 label-xs tracking-normal">
-            <button
-              onClick={() => { setLanguage("pl"); setOpen(false); }}
-              className={`flex items-center gap-1 px-1 py-1 rounded transition-opacity ${language === "pl" ? "opacity-100 font-medium" : "opacity-40"}`}
-              aria-label="Switch to Polish"
-            >
-              <span>🇵🇱</span>
-              <span>POLSKI</span>
-            </button>
-            <span className="text-muted-foreground/50">|</span>
-            <button
-              onClick={() => { setLanguage("en"); setOpen(false); }}
-              className={`flex items-center gap-1 px-2 py-1 rounded transition-opacity ${language === "en" ? "opacity-100 font-medium" : "opacity-40"}`}
-              aria-label="Switch to English"
-            >
-              <span>🇺🇸</span>
-              <span>ENGLISH</span>
-            </button>
-          </div>
         </div>
       </div>
     </nav>

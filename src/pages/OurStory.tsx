@@ -1,4 +1,4 @@
-import Layout from "@/components/archive/Layout";
+import Layout from "@/components/Layout";
 import FadeIn from "@/components/FadeIn";
 import RoadmapStop, { RoadmapStopData } from "@/components/RoadmapStop";
 import { useLanguage } from "@/contexts/LanguageContext";
