@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import Layout from "@/components/archive/Layout";
 import FadeIn from "@/components/FadeIn";
 import { useLanguage } from "@/contexts/LanguageContext";
 

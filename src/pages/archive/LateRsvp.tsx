@@ -1,17 +1,17 @@
-import Layout from "@/components/Layout";
+import Layout from "@/components/archive/Layout";
 
-const ComingSoon = () => {
+const LateRsvp = () => {
   return (
     <Layout>
       <section className="page-section max-w-xl mx-auto text-center">
-        <h1 className="heading-section mb-4">Travel Confirmation Page Coming Soon</h1>
+        <h1 className="heading-section mb-4">RSVPs Closed</h1>
         <div className="w-12 h-px bg-primary mx-auto mb-6" />
         <p className="body-editorial mx-auto text-balance">
-          Please check back shortly.
+          RSVPs for this event have closed. Contact Nicole or Tyler for help.
         </p>
       </section>
     </Layout>
   );
 };
 
-export default ComingSoon;
+export default LateRsvp;

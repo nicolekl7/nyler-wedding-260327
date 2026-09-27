@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
+import Layout from "@/components/archive/Layout";
 import FadeIn from "@/components/FadeIn";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";

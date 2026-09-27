@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Layout from "@/components/Layout";
+import Layout from "@/components/archive/Layout";
 import FadeIn from "@/components/FadeIn";
 
 import p1 from "@/assets/photobooth/pb-1.jpg";
@@ -8,14 +8,15 @@ import p2 from "@/assets/photobooth/pb-2.jpg";
 import p3 from "@/assets/photobooth/pb-3.jpg";
 import p4 from "@/assets/photobooth/pb-4.jpg";
 import p5 from "@/assets/photobooth/pb-5.jpg";
+import p6 from "@/assets/photobooth/pb-6.jpg";
 
-const photos = [p1, p2, p3, p4, p5];
+const photos = [p1, p2, p3, p4, p5, p6];
 
-const HomeV2 = () => {
+const IndexV2 = () => {
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % photos.length), 5000);
+    const t = setInterval(() => setIdx((i) => (i + 1) % photos.length), 7000);
     return () => clearInterval(t);
   }, []);
 
@@ -24,7 +25,7 @@ const HomeV2 = () => {
   }, []);
 
   return (
-    <Layout dark>
+    <Layout>
       <section className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-6 py-24 sm:py-32 overflow-x-hidden">
         <FadeIn>
           <div className="flex flex-col items-center text-center -translate-y-[20px]">
@@ -56,20 +57,20 @@ const HomeV2 = () => {
                   />
                 </div>
 
-                <h1 className="font-serif font-normal text-foreground tracking-tight leading-none text-[30vw] sm:text-[14vw] w-full sm:w-auto text-center -translate-y-[12px] -translate-x-[16px] sm:flex-1 sm:flex sm:items-end sm:justify-start sm:translate-y-0 sm:translate-x-0">
-                  T<span className="tracking-[0.04em]"></span>YLER
+                <h1 className="font-serif font-normal text-foreground tracking-tight leading-none text-[30vw] sm:text-[14vw] w-full sm:w-auto text-center -translate-y-[12px] -translate-x-[6px] sm:flex-1 sm:flex sm:items-end sm:justify-start sm:translate-y-0 sm:translate-x-0">
+                  T<span className="tracking-[0.04em]">​</span>YLER
                 </h1>
               </div>
             </div>
 
             {/* Subline */}
-            <p className="mt-10 sm:mt-14 label-xs tracking-[0.2em]">
+            <p className="mt-10 sm:mt-14 font-body uppercase tracking-[0.4em] text-xs sm:text-sm text-muted-foreground">
               September 17, 2026<span className="hidden sm:inline">&nbsp;|&nbsp;Tuscany, Italy</span><span className="block sm:hidden mt-2">Tuscany, Italy</span>
             </p>
 
             <Link
               to="/rsvp-v2"
-              className="inline-block mt-10 border border-foreground rounded-full px-8 py-3 label-xs tracking-[0.3em] text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
+              className="inline-block mt-10 border border-foreground rounded-full px-8 py-3 font-serif text-xs tracking-[0.3em] uppercase text-foreground hover:bg-foreground hover:text-background transition-colors duration-300"
             >
               RSVP
             </Link>
@@ -80,4 +81,4 @@ const HomeV2 = () => {
   );
 };
 
-export default HomeV2;
+export default IndexV2;

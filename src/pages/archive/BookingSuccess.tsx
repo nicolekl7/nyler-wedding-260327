@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import Layout from "@/components/Layout";
+import Layout from "@/components/archive/Layout";
 
 const BookingSuccess = () => {
   const location = useLocation();
