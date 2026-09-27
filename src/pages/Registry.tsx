@@ -7,13 +7,13 @@ const AMAZON_URL = "https://www.amazon.com/wedding/guest-view/10UL21FCFHV3X";
 
 const registryContent = {
   en: {
-    body: "No gifts expected—we are just thrilled to celebrate with you in Italy! Should you wish to honor us with a gift, we are registered at the links below. To save your precious suitcase space, we kindly request that any physical items be shipped directly to our home rather than brought to the venue.",
+    body: "No gifts expected—just thrilled to celebrate with you in Italy! Should you wish to honor us with a gift, we are registered at the links below.",
     signature: "xx Tyler & Nicole",
     zolaLabel: "Zola",
     amazonLabel: "Amazon",
   },
   pl: {
-    body: "Nie oczekujemy żadnych prezentów — najważniejsze jest dla nas to, że będziecie z nami świętować we Włoszech! Jeśli mimo wszystko chcielibyście nas obdarować, jesteśmy zarejestrowani pod linkami poniżej. Aby oszczędzić miejsce w bagażu, prosimy o wysyłkę fizycznych prezentów bezpośrednio do naszego domu, a nie przynoszenie ich na miejsce uroczystości.",
+    body: "Nie oczekujemy żadnych prezentów — najważniejsze jest dla nas to, że będziecie z nami świętować we Włoszech! Jeśli mimo wszystko chcielibyście nas obdarować, jesteśmy zarejestrowani pod linkami poniżej.",
     signature: "xx Tyler i Nicole",
     zolaLabel: "Zola",
     amazonLabel: "Amazon",
