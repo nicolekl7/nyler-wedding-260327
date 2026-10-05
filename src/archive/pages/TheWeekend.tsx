@@ -1,0 +1,301 @@
+import { Link } from "react-router-dom";
+import Layout from "@/archive/components/Layout";
+import FadeIn from "@/archive/components/FadeIn";
+import { motion } from "framer-motion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import welcomeBottle from "@/assets/Welcome-Party-Bottle.png";
+import welcomeCup from "@/assets/Welcome-Party-Cup.png";
+import weddingIcon from "@/assets/Wedding-4.png";
+import poolUmbrella from "@/assets/Pool-Party-Umbrella.png";
+import poolChairs from "@/assets/Pool-Party-Chairs.png";
+import poolSun from "@/assets/Pool-Party-Sun.png";
+import attireGraphic from "@/archive/assets/Attire Graphic v2.png";
+import attireGraphicWelcomeParty from "@/assets/attire graphic welcome party.png";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+const pageContent = {
+  en: {
+    heading: "The Itinerary",
+    intro: "Three days in the Tuscan countryside. Here's what to expect.",
+    faqHeading: "Concierge FAQs",
+    attireLabel: "Attire:",
+    colorsNote: "Here are a few colors to inspire but wear whatever makes you feel good.",
+    navTravel: "Travel →",
+    navRsvp: "RSVP →",
+    itinerary: [
+      {
+        day: "Wednesday, September 16",
+        title: "Welcome Party",
+        description:
+          "Join us under the stars for wood-fired pizza and the best wine in the world to welcome you to Tuscany.",
+        attire:
+          "La Notte Bianca — All white everything: linens, summer dresses, effortless Italian style. You've spent years avoiding white at weddings. This is your night. Head to toe, linens to silk.. whatever you'd like but all white, no exceptions.",
+      },
+      {
+        day: "Thursday, September 17",
+        title: "The Wedding Day",
+        description:
+          "Our ceremony overlooking the Tuscan hills, followed by an evening of aperitivo, dinner, and dancing the night away.",
+        attire:
+          "Tuscan Formal — An excuse to dress up. Floor-length dresses. Suits. Rich colors and textures are encouraged. Have fun with it!",
+      },
+      {
+        day: "Friday, September 18",
+        title: "Il Dolce Far Niente Pool Party",
+        description: "The art of doing nothing. Recover by the pool with lunch, drinks, and sunshine.",
+        attire: "Vintage Resort Wear",
+      },
+    ],
+    faqs: [
+      {
+        q: "What is the weather like in September?",
+        a: "Late September in Tuscany is typically beautiful, with warm, sunny days (around 75°F / 24°C) and crisp evenings (around 55°F / 13°C). We recommend bringing a light jacket or wrap for the evening events. Don't forget a bathing suit!",
+      },
+      {
+        q: "What shoes should I wear?",
+        a: "The estate features cobblestone paths and grass — stilettos will not be your friend. Block heels, wedges, or dressy flats are strongly recommended for all three days. This applies especially to the ceremony on Thursday.",
+      },
+      {
+        q: "Are kids welcome?",
+        a: "We love your kids, we really do. However, this celebration is just for the grown-ups. We do have a small number of children attending who are part of the immediate family. Thank you for understanding!",
+      },
+      {
+        q: "Can I bring a date?",
+        a: "While we'd love to celebrate with everyone, our venue has limited capacity. We are only able to accommodate the guests specifically listed on your invitation.",
+      },
+      {
+        q: "Are gifts expected?",
+        a: "No! The greatest gift you can give us is being there. That said, for those who'd like to celebrate from afar or do a little something extra, we are registered on Zola.",
+      },
+    ],
+  },
+  pl: {
+    heading: "Plan",
+    intro: "Trzy dni w toskańskiej scenerii. Oto, co na Was czeka.",
+    faqHeading: "Najczęstsze pytania",
+    attireLabel: "Strój:",
+    colorsNote: "Kilka kolorów dla inspiracji, ale przede wszystkim ubierz to, w czym czujesz się najlepiej.",
+    navTravel: "Podróż →",
+    navRsvp: "RSVP →",
+    itinerary: [
+      {
+        day: "Środa, 16 września",
+        title: "Przyjęcie powitalne",
+        description:
+          "Czeka na Was wieczór pod gwiazdami — pizza z pieca, toskańskie wino i pierwsze wspólne chwile przed wielkim dniem.",
+        attire:
+          "La Notte Bianca — biel od stóp do głów! Lniane tkaniny, letnie sukienki, nonszalancki włoski szyk. Przez lata omijałeś/omijałaś biel na weselach szerokim łukiem — ta noc jest Twoja. Len, jedwab, cokolwiek chcesz — byleby białe. Zero wyjątków. Serio.",
+      },
+      {
+        day: "Czwartek, 17 września",
+        title: "Dzień ślubu",
+        description:
+          "Ceremonia z widokiem na toskańskie wzgórza, a potem wieczór pełen aperitivo, kolacji i tańców do białego rana.",
+        attire:
+          "Toskańska elegancja — doskonały powód, żeby się wystroić. Suknie do ziemi. Garnitury. Głębokie kolory i wyraziste tkaniny jak najbardziej wskazane. Poszalej sobie!",
+      },
+      {
+        day: "Piątek, 18 września",
+        title: "La Dolce Far Niente — Przyjęcie przy basenie",
+        description: "Sztuka nierobienia niczego. Odpoczywaj przy basenie przy lunchu, drinkach i słońcu.",
+        attire: "Styl vintage resort",
+      },
+    ],
+    faqs: [
+      {
+        q: "Jaka jest pogoda we wrześniu?",
+        a: "Koniec września w Toskanii jest zazwyczaj piękny — ciepłe, słoneczne dni (około 24°C) i rześkie wieczory (około 13°C). Polecamy zabrać lekką kurtkę lub szal na wieczorne imprezy. I nie zapomnijcie o stroju kąpielowym!",
+      },
+      {
+        q: "Jakie buty powinnam/powinienem włożyć?",
+        a: "Posiadłość ma brukowane ścieżki i trawniki — szpilki nie będą najlepszym wyborem. Słupki, koturny lub eleganckie baleriny są zdecydowanie polecane na wszystkie trzy dni. Dotyczy to szczególnie ceremonii w czwartek.",
+      },
+      {
+        q: "Czy dzieci są mile widziane?",
+        a: "Naprawdę kochamy Wasze dzieci. Jednak to świętowanie jest tylko dla dorosłych. Na uroczystości będzie obecna niewielka liczba dzieci z najbliższej rodziny. Dziękujemy za zrozumienie!",
+      },
+      {
+        q: "Czy mogę przyjść z osobą towarzyszącą?",
+        a: "Z całego serca chcielibyśmy zaprosić wszystkich, ale liczba miejsc jest ograniczona. Prosimy o przybycie wyłącznie osób wskazanych na zaproszeniu.",
+      },
+      {
+        q: "Czy oczekujemy prezentów?",
+        a: "Nie! Największym prezentem jest Wasza obecność. Ale dla tych, którzy chcieliby świętować z daleka lub zrobić coś extra — lista prezentów pojawi się wkrótce.",
+      },
+    ],
+  },
+};
+
+const TheWeekend = () => {
+  const { language } = useLanguage();
+  const t = pageContent[language];
+  const { itinerary, faqs } = t;
+
+  return (
+    <Layout>
+      {/* Header */}
+      <section className="page-section w-[90%] max-w-[1000px] mx-auto text-center">
+        <FadeIn>
+          <h1 className="heading-section mb-4">{t.heading}</h1>
+          <div className="w-12 h-px bg-primary mx-auto mb-8" />
+          <p className="body-editorial mx-auto text-balance">
+            {t.intro}
+          </p>
+        </FadeIn>
+      </section>
+
+      {/* Itinerary Timeline */}
+      <section className="w-[90%] max-w-[800px] mx-auto pb-24">
+        <div className="relative w-[90%] max-w-[900px] mx-auto">
+          {/* Vertical line */}
+          <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10" />
+
+          <div className="space-y-20">
+            {itinerary.map((event, i) => (
+              <FadeIn key={event.title} delay={i * 150}>
+                <div className={`relative pl-16 ${i === 2 ? "mt-1" : ""}`}>
+                  {/* Timeline marker */}
+                  <div
+                    className={`absolute left-3.5 w-5 h-5 rounded-full border-2 border-primary/40 bg-background flex items-center justify-center ${i === 2 ? "top-2" : "top-1"}`}
+                  >
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                  </div>
+
+                  <p className={`heading-sub text-foreground mb-2 ${i === 2 ? "pt-1" : ""}`}>
+                    {i === 2 ? (
+                      <>
+                        <span className="block sm:inline">{event.day.split(", ")[0]},</span>{" "}
+                        <span className="block sm:inline">{event.day.split(", ")[1]}</span>
+                      </>
+                    ) : (
+                      event.day
+                    )}
+                  </p>
+
+                  {/* Icon */}
+                  {i === 0 ? (
+                    <div className="relative w-28 h-20 mb-1 mt-0.5">
+                      <img src={welcomeCup} alt="Glass" className="absolute bottom-0 left-0 w-12 h-12 object-contain" />
+                      <motion.img
+                        src={welcomeBottle}
+                        alt="Bottle"
+                        className="absolute -top-[16px] left-[34px] w-16 h-16 object-contain origin-bottom-left"
+                        animate={{ rotate: [0, -15, 0, -15, 0] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.5 }}
+                      />
+                    </div>
+                  ) : i === 2 ? (
+                    <div className="relative w-32 h-24 -mb-2 -mt-2.5">
+                      <motion.img
+                        src={poolSun}
+                        alt="Sun"
+                        className="absolute w-14 h-14 object-contain z-0"
+                        animate={{
+                          top: [17, -10, 17],
+                          right: [44, 0, 44],
+                          rotate: [0, 360, 0],
+                        }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                      <img
+                        src={poolUmbrella}
+                        alt="Umbrella"
+                        className="absolute top-[30px] left-[22px] w-20 h-16 object-contain z-10"
+                      />
+                      <img
+                        src={poolChairs}
+                        alt="Chairs"
+                        className="absolute bottom-[-14px] left-0 w-28 h-12 object-contain z-[5]"
+                      />
+                    </div>
+                  ) : (
+                    <motion.img
+                      src={weddingIcon}
+                      alt={event.title}
+                      className="w-[100px] h-[100px] object-contain -mt-5"
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  )}
+
+                  <h2
+                    className={`font-serif text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-4 ${i === 1 ? "-mt-3.5" : i === 2 ? "mt-2.5" : ""}`}
+                  >
+                    {event.title}
+                  </h2>
+                  <p className="body-editorial mb-4">{event.description}</p>
+                  <p className="font-body text-sm text-muted-foreground italic">{t.attireLabel} {event.attire}</p>
+                  {i === 0 && (
+                    <div className="mt-6">
+                      <img
+                        src={attireGraphicWelcomeParty}
+                        alt="Welcome party attire color palette illustration"
+                        className="block w-full max-w-[39.6rem]"
+                      />
+                    </div>
+                  )}
+                  {i === 1 && (
+                    <div className="mt-6">
+                      <img
+                        src={attireGraphic}
+                        alt="Wedding attire color palette illustration"
+                        className="block w-full max-w-xl"
+                      />
+                      <p className="font-body text-sm text-muted-foreground italic mt-4">
+                        {t.colorsNote}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Concierge FAQs */}
+      <section className="w-[90%] max-w-[800px] mx-auto pb-24">
+        <FadeIn>
+          <h2 className="heading-section text-center mb-4">{t.faqHeading}</h2>
+          <div className="w-12 h-px bg-primary mx-auto mb-12" />
+        </FadeIn>
+        <FadeIn delay={150}>
+          <Accordion type="single" collapsible className="space-y-2">
+            {faqs.map((faq, i) => (
+              <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 px-0">
+                <AccordionTrigger className="font-serif text-xl md:text-2xl text-foreground font-light py-6 hover:no-underline text-left">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="pb-8">
+                  <p className="body-editorial text-left">{faq.a}</p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </FadeIn>
+      </section>
+
+      {/* Navigation buttons */}
+      <section className="w-[90%] max-w-[900px] mx-auto px-6 md:px-12 pb-24">
+        <FadeIn>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/archive/travel"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+            >
+              {t.navTravel}
+            </Link>
+            <Link
+              to="/archive/rsvp-v2"
+              className="inline-flex items-center justify-center gap-2 font-body text-sm tracking-widest uppercase border border-border px-8 py-4 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+            >
+              {t.navRsvp}
+            </Link>
+          </div>
+        </FadeIn>
+      </section>
+    </Layout>
+  );
+};
+
+export default TheWeekend;
