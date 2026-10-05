@@ -14,16 +14,17 @@ const events = [
   { key: "pool_day_rsvp" as const, label: "Recovery Pool Day", sub: "Friday, Sept 18 · 12:00 PM" },
 ];
 
-const accommodationOptions = [
-  "Solo Guest Estate Pass",
-  "Request a Room",
-  "Not Staying Onsite",
-  "Joining a Reserved Room",
-];
+// Archive: the room choices from when rooms were still open (pre June 2).
+// The paid rooms between these are loaded from room_categories so the names
+// always match the room tiles.
+const SOLO_OPTION = "Solo Guest Estate Pass";
+const NON_ROOM_OPTIONS = ["Not Staying Onsite", "Choosing Room Later", "Joining a Reserved Room"];
 
-const ACCOMMODATION_LABELS: Record<string, string> = {};
+const ACCOMMODATION_LABELS: Record<string, string> = {
+  "Choosing Room Later": "Not Ready to Pick a Room Yet",
+};
 
-const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room", "Request a Room"];
+const NO_PAYMENT_ACCOMMODATIONS = ["Not Staying Onsite", "Joining a Reserved Room", "Choosing Room Later"];
 
 const EVENT_LABELS: Record<string, string> = {
   welcome_party_rsvp: "Welcome Party",
@@ -68,6 +69,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const [respondedPartyMembers, setRespondedPartyMembers] = useState<Array<{ name: string; fullName: string; rsvps: Record<string, string> }>>([]);
   const [unrespondedCount, setUnrespondedCount] = useState(0);
   const [soldOutRooms, setSoldOutRooms] = useState<Set<string>>(new Set());
+  const [roomNames, setRoomNames] = useState<string[]>([]);
+  const accommodationOptions = [SOLO_OPTION, ...roomNames, ...NON_ROOM_OPTIONS];
   const [inviteNames, setInviteNames] = useState<string[]>([]);
   const [showNameConfirmModal, setShowNameConfirmModal] = useState(false);
   const [nameConfirmChecked, setNameConfirmChecked] = useState(false);
@@ -81,6 +84,14 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const allEventsDeclined = events.length > 0 && events.every((ev) => eventRsvps[ev.key] === "decline");
 
   useEffect(() => {
+    supabase
+      .from("room_categories")
+      .select("name")
+      .order("price", { ascending: true })
+      .then(({ data }) => {
+        if (data) setRoomNames(data.map((r) => r.name).filter((n) => n !== SOLO_OPTION));
+      });
+
     // Archive: every guest starts fresh and every room shows as open, so skip
     // the "already RSVP'd" check and the live sold-out lookup.
     if (ARCHIVE_READ_ONLY) return;
