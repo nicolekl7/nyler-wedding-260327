@@ -70,7 +70,8 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
 
   const renderCard = (cat: RoomCategory, featured = false, delay = 0) => {
     const isSolo = cat.name === "Solo Guest Estate Pass";
-    const soldOut = !isSolo && cat.inventory_count <= 0;
+    // Archive: every room shows as open, regardless of live inventory.
+    const soldOut = false;
     const isSelected = selectedAccommodation === cat.name;
 
     return (
@@ -92,21 +93,6 @@ const RoomCardsDisplay = ({ selectedAccommodation, onSelectAccommodation, formRe
           <div>
             <div className="flex items-start justify-between mb-1">
               <h3 className="font-serif text-lg text-foreground">{cat.name}</h3>
-              {!isSolo && (
-                soldOut ? (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-muted-foreground">
-                    Sold Out
-                  </span>
-                ) : cat.inventory_count <= 3 ? (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300">
-                    Only {cat.inventory_count} Left
-                  </span>
-                ) : (
-                  <span className="text-xs uppercase tracking-widest font-body whitespace-nowrap ml-4 text-primary">
-                    {cat.inventory_count} left
-                  </span>
-                )
-              )}
             </div>
             {cat.description && (
               <p className="font-body text-sm text-muted-foreground font-light mb-2">

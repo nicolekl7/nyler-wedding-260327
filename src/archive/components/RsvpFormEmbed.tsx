@@ -81,6 +81,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   const allEventsDeclined = events.length > 0 && events.every((ev) => eventRsvps[ev.key] === "decline");
 
   useEffect(() => {
+    // Archive: every guest starts fresh and every room shows as open, so skip
+    // the "already RSVP'd" check and the live sold-out lookup.
+    if (ARCHIVE_READ_ONLY) return;
     if (localStorage.getItem("hasRSVPd") === "true") {
       setAlreadyRsvpd(true);
     }
@@ -147,7 +150,8 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
       return;
     }
 
-    const results = await Promise.all(
+    // Archive: ignore saved RSVPs so no party member shows as responded.
+    const results = ARCHIVE_READ_ONLY ? allMembers.map(m => ({ member: m, row: null })) : await Promise.all(
       allMembers.map(m =>
         supabase
           .from("invited_guests")

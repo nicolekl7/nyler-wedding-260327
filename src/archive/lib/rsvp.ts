@@ -8,6 +8,8 @@ export type GuestRecord = {
   max_guests: number;
 };
 
+const IGNORE_SAVED_RSVPS = true;
+
 export type EventRsvpMap = Record<string, string>;
 
 export const normalizeStr = (s: string) =>
@@ -57,7 +59,8 @@ export const loadPartyRsvpState = async (
   searchFirstName: string,
   searchLastName: string
 ) => {
-  const personalResponder = await fetchRespondedRow(searchFirstName, searchLastName);
+  // Archive copy of the site: ignore saved RSVPs so every guest gets a fresh form.
+  const personalResponder = IGNORE_SAVED_RSVPS ? null : await fetchRespondedRow(searchFirstName, searchLastName);
 
   // If this person hasn't personally responded yet, give them a fresh form for themselves only —
   // even if another party member has already RSVPd for part of the group.
