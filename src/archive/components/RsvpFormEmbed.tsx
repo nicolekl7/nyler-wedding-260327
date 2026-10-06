@@ -4,7 +4,7 @@ import FadeIn from "@/archive/components/FadeIn";
 import EventRsvpButton from "@/archive/components/EventRsvpButton";
 import { toast } from "sonner";
 import { Search } from "lucide-react";
-import { loadPartyRsvpState, savePartyRsvpState, fetchPartyMembers, normalizeStr, type GuestRecord } from "@/archive/lib/rsvp";
+import { loadPartyRsvpState, savePartyRsvpState, fetchPartyMembers, findDemoGuest, normalizeStr, type GuestRecord } from "@/archive/lib/rsvp";
 
 const ARCHIVE_READ_ONLY = true;
 
@@ -113,6 +113,9 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   // Accent-insensitive guest lookup: try exact ilike first, fall back to
   // fetching all guests and comparing normalized strings client-side.
   const findGuest = async (firstName: string, lastName: string): Promise<GuestRecord | null> => {
+    const demo = findDemoGuest(firstName, lastName);
+    if (demo) return demo;
+
     const { data: match } = await supabase
       .from("guests")
       .select("*")
@@ -240,6 +243,12 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
     const firstName = parts[0];
     const lastName = parts.slice(1).join(" ");
 
+    const demo = findDemoGuest(firstName, lastName);
+    if (demo) {
+      await loadGuest(demo);
+      return;
+    }
+
     const { data: match } = await supabase
       .from("guests")
       .select("*")
@@ -306,12 +315,6 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
   };
 
   const handleSubmit = async (skipNameCheck = false) => {
-    // Archived copy of the site: RSVPs are closed, so never write to Supabase,
-    // the Google Sheet, or send receipt emails from here.
-    if (ARCHIVE_READ_ONLY) {
-      toast("RSVPs are closed. This is an archived version of the site.");
-      return;
-    }
     setLoading(true);
     for (const ev of events) {
       if (!eventRsvps[ev.key]) {
@@ -363,6 +366,16 @@ const RsvpFormEmbed = ({ accommodation: externalAccommodation, onAccommodationCh
         setShowNameConfirmModal(true);
         return;
       }
+    }
+
+    // Archived copy of the site: show the confirmation screen but never write
+    // to Supabase, the Google Sheet, or send receipt emails.
+    if (ARCHIVE_READ_ONLY) {
+      setAllDeclined(declined);
+      setSubmitted(true);
+      onSubmitSuccess?.(declined, accommodation);
+      setLoading(false);
+      return;
     }
 
     const combinedTransferValue =

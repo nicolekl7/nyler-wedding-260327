@@ -10,6 +10,21 @@ export type GuestRecord = {
 
 const IGNORE_SAVED_RSVPS = true;
 
+// Archive: pretend guests for trying out the RSVP flow. They only exist in
+// this code, not in the guests table.
+const DEMO_PARTY = "Doe (demo)";
+const DEMO_GUESTS: GuestRecord[] = [
+  { id: "demo-jane-doe", first_name: "Jane", last_name: "Doe", party_name: DEMO_PARTY, max_guests: 2 },
+  { id: "demo-john-doe", first_name: "John", last_name: "Doe", party_name: DEMO_PARTY, max_guests: 2 },
+];
+
+export const findDemoGuest = (firstName: string, lastName: string) =>
+  DEMO_GUESTS.find(
+    (g) =>
+      normalizeStr(g.first_name) === normalizeStr(firstName) &&
+      normalizeStr(g.last_name) === normalizeStr(lastName)
+  ) ?? null;
+
 export type EventRsvpMap = Record<string, string>;
 
 export const normalizeStr = (s: string) =>
@@ -24,6 +39,9 @@ const splitFullName = (fullName: string) => {
 };
 
 export const fetchPartyMembers = async (partyName: string) => {
+  if (partyName === DEMO_PARTY) {
+    return DEMO_GUESTS.map(({ first_name, last_name }) => ({ first_name, last_name }));
+  }
   const { data } = await supabase
     .from("guests")
     .select("first_name, last_name")
